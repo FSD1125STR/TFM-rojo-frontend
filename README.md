@@ -82,14 +82,14 @@ El proyecto sigue un sistema de diseño definido en `DESIGN-SYSTEM.md`. Los colo
 │   ├── main.jsx          # Entry point
 │   ├── App.jsx           # Componente principal
 │   ├── index.css         # Estilos globales (TailwindCSS)
-│   ├── assets/       # Imágenes, iconos, fuentes                
-│   ├── components/   # Componentes reutilizables                
-│   ├── context/      # React Context providers                  
-│   ├── hooks/        # Custom hooks                             
-│   ├── pages/        # Vistas/páginas                           
-│   ├── services/     # Llamadas API                             
-│   ├── stories/      # Storybook (ya existía)                   
-│   └── utils/        # Funciones auxiliares  
+│   ├── assets/           # Imágenes, iconos, fuentes                
+│   ├── components/       # Componentes reutilizables                
+│   ├── context/          # React Context providers                  
+│   ├── hooks/            # Custom hooks                             
+│   ├── pages/            # Vistas/páginas                           
+│   ├── services/         # Llamadas API                             
+│   ├── stories/          # Storybook (ya existía)                   
+│   └── utils/            # Funciones auxiliares  
 ├── index.html
 ├── package.json
 ├── vite.config.js
