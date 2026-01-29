@@ -88,7 +88,7 @@ El proyecto sigue un sistema de diseño definido en `DESIGN-SYSTEM.md`. Los colo
 │   ├── hooks/            # Custom hooks                             
 │   ├── pages/            # Vistas/páginas                           
 │   ├── services/         # Llamadas API                             
-│   ├── stories/          # Storybook (ya existía)                   
+│   ├── stories/          # Storybook
 │   └── utils/            # Funciones auxiliares  
 ├── index.html
 ├── package.json
