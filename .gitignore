@@ -42,3 +42,8 @@ coverage
 # Misc
 *.pem
 .cache
+
+*storybook.log
+storybook-static
+
+package-lock.json
