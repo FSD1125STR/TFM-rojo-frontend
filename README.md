@@ -81,7 +81,7 @@ El proyecto sigue un sistema de diseño definido en `DESIGN-SYSTEM.md`. Los colo
 ├── src/
 │   ├── main.jsx          # Entry point
 │   ├── App.jsx           # Componente principal
-│   └── index.css         # Estilos globales (TailwindCSS)
+│   ├── index.css         # Estilos globales (TailwindCSS)
 │   ├── assets/       # Imágenes, iconos, fuentes                
 │   ├── components/   # Componentes reutilizables                
 │   ├── context/      # React Context providers                  
