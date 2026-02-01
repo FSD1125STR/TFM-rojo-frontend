@@ -31,24 +31,24 @@
 
 :root[data-theme="dark"],
 [data-theme="dark"] {
-  --color-primary: oklch(65% 0.06 160) !important;              /* #8AA39B más claro */
-  --color-primary-content: oklch(20% 0.02 260) !important;
-  --color-secondary: oklch(48% 0.05 160) !important;            /* #5C6F68 */
+  --color-primary: oklch(65% 0.08 160) !important;              /* verde claro */
+  --color-primary-content: oklch(15% 0.03 160) !important;      /* verde muy oscuro */
+  --color-secondary: oklch(50% 0.06 160) !important;            /* verde medio */
   --color-secondary-content: oklch(100% 0 0) !important;
-  --color-accent: oklch(92% 0.12 155) !important;               /* #A4F9C8 */
-  --color-accent-content: oklch(20% 0.02 260) !important;
-  --color-neutral: oklch(30% 0.02 260) !important;
-  --color-neutral-content: oklch(95% 0.01 260) !important;
-  --color-base-100: oklch(25% 0.02 260) !important;             /* fondo oscuro */
-  --color-base-200: oklch(20% 0.02 260) !important;
-  --color-base-300: oklch(35% 0.02 260) !important;
-  --color-base-content: oklch(95% 0.01 260) !important;         /* texto claro */
+  --color-accent: oklch(85% 0.12 155) !important;               /* verde menta */
+  --color-accent-content: oklch(15% 0.03 160) !important;
+  --color-neutral: oklch(25% 0.03 160) !important;              /* verde oscuro */
+  --color-neutral-content: oklch(90% 0.02 160) !important;
+  --color-base-100: oklch(20% 0.03 160) !important;             /* fondo verde oscuro */
+  --color-base-200: oklch(17% 0.03 160) !important;
+  --color-base-300: oklch(30% 0.04 160) !important;
+  --color-base-content: oklch(92% 0.02 160) !important;         /* texto claro verdoso */
   --color-info: oklch(62% 0.19 250) !important;
-  --color-info-content: oklch(20% 0.02 260) !important;
+  --color-info-content: oklch(100% 0 0) !important;
   --color-success: oklch(65% 0.2 145) !important;
-  --color-success-content: oklch(20% 0.02 260) !important;
+  --color-success-content: oklch(15% 0.03 160) !important;
   --color-warning: oklch(75% 0.18 75) !important;
-  --color-warning-content: oklch(20% 0.02 260) !important;
+  --color-warning-content: oklch(15% 0.03 160) !important;
   --color-error: oklch(60% 0.22 25) !important;
   --color-error-content: oklch(100% 0 0) !important;
 }
