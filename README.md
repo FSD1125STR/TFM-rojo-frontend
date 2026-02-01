@@ -1,120 +1,235 @@
-# TFM-rojo-frontend
+# FootMind Frontend
 
 Frontend del proyecto FootMind - Gestión de equipos de fútbol base.
+
+## Stack tecnológico
+
+| Tecnología | Versión | Descripción |
+|------------|---------|-------------|
+| React | 18.x | Framework UI con Hooks |
+| Vite | 6.x | Bundler y dev server |
+| TailwindCSS | 4.x | Framework CSS utility-first |
+| DaisyUI | 5.x | Componentes UI sobre Tailwind |
+| Material Icons | - | Sistema de iconos |
+| React Router | 7.x | Enrutamiento SPA |
+| Storybook | 8.x | Documentación de componentes |
 
 ## Requisitos
 
 - Node.js >= 18
 
-## Instalacion
+## Instalación
 
 ```bash
 npm install
 ```
 
-## Configuracion
+## Configuración
 
-Crea un archivo `.env` en la raiz del proyecto:
+Crea un archivo `.env` en la raíz del proyecto:
 
 ```env
 VITE_API_URL=http://localhost:3000
 ```
 
-## Ejecucion
+## Ejecución
 
 ```bash
 # Modo desarrollo
 npm run dev
 ```
 
-La aplicacion arranca en `http://localhost:5173`.
+La aplicación arranca en `http://localhost:5173`.
 
 ## Storybook
 
-El proyecto incluye Storybook para el desarrollo y documentacion de componentes.
+El proyecto incluye Storybook para desarrollo y documentación de componentes.
 
 ```bash
-# Iniciar Storybook
 npm run storybook
 ```
 
 Storybook arranca en `http://localhost:6006`.
 
-## Design System
+---
 
-El proyecto sigue un sistema de diseño definido en `DESIGN-SYSTEM.md`. Los colores y tipografia estan configurados en TailwindCSS.
+## Arquitectura
+
+### Estructura del proyecto
+
+```
+src/
+├── assets/              # Logos, favicon, imágenes
+├── components/
+│   ├── ui/              # Componentes atómicos reutilizables
+│   │   ├── Avatar/
+│   │   ├── Button/
+│   │   ├── Card/
+│   │   ├── Divider/
+│   │   ├── Icon/
+│   │   ├── IconButton/
+│   │   └── ThemeToggle/
+│   └── layout/          # Componentes de layout
+│       ├── AppLogo/
+│       ├── AppShell/
+│       ├── Breadcrumbs/
+│       ├── HeaderActions/
+│       ├── HeaderBar/
+│       ├── PageTitle/
+│       ├── Sidebar/
+│       ├── SidebarItem/
+│       └── UserCard/
+├── data/                # Datos mock y constantes
+├── hooks/               # Custom hooks (useTheme, useSidebar)
+├── pages/               # Vistas asociadas a rutas
+│   ├── Dashboard.jsx
+│   ├── Players.jsx
+│   ├── Callups.jsx
+│   ├── Matches.jsx
+│   ├── LiveMatch.jsx
+│   └── Users.jsx
+├── App.jsx              # Router y rutas
+├── main.jsx             # Entry point
+└── index.css            # Estilos globales y temas DaisyUI
+```
+
+### Criterios de organización
+
+| Carpeta | Contenido |
+|---------|-----------|
+| `components/ui/` | Componentes atómicos y reutilizables (Button, Card, Icon...) |
+| `components/layout/` | Componentes de estructura (Sidebar, Header, AppShell...) |
+| `pages/` | Vistas asociadas a rutas del router |
+| `hooks/` | Custom hooks de React |
+| `data/` | Datos mock, constantes, configuración de menú |
+
+---
+
+## Estilos y UI
+
+### DaisyUI como Design System
+
+El proyecto utiliza **DaisyUI v5** como sistema de componentes sobre TailwindCSS.
+
+```jsx
+// Botones
+<button className="btn btn-primary">Primario</button>
+<button className="btn btn-secondary">Secundario</button>
+<button className="btn btn-ghost">Ghost</button>
+
+// Cards
+<div className="card bg-base-100 shadow-md">
+  <div className="card-body">Contenido</div>
+</div>
+
+// Menu
+<ul className="menu">
+  <li><a>Item</a></li>
+</ul>
+```
 
 ### Paleta de colores
 
-| Clase Tailwind | Color | Uso |
-|----------------|-------|-----|
+Colores personalizados del Design System FootMind:
+
+| Token DaisyUI | Color | Uso |
+|---------------|-------|-----|
 | `primary` | #5C6F68 | Color estructural principal |
 | `secondary` | #8AA39B | Secundario / bordes |
-| `surface` | #95D9C3 | Superficies (cards, tablas) |
-| `hover` | #A4F9C8 | Hover / seleccion |
-| `background` | #EBFFFD | Fondo general |
+| `accent` | #A4F9C8 | Hover / selección |
+| `base-100` | #EBFFFD | Fondo general |
+| `base-300` | #95D9C3 | Superficies (cards, tablas) |
 
-### Tipografia
+### Tipografía
 
-- Fuente principal: **Montserrat**
+- Fuente principal: **Montserrat** (Google Fonts)
 - Configurada como `font-sans` en Tailwind
 
-### Ejemplos de uso
+### Temas Light/Dark
+
+DaisyUI soporta temas mediante `data-theme`:
 
 ```jsx
-// Boton primario
-<button className="bg-primary text-white">Guardar</button>
-
-// Card con superficie
-<div className="bg-surface rounded-lg p-4">Contenido</div>
-
-// Fondo de pagina
-<main className="bg-background min-h-screen">...</main>
+// Hook useTheme
+const { theme, toggleTheme } = useTheme()
 ```
 
-## Estructura del proyecto
+- Persistencia en `localStorage` (key: `ui.theme`)
+- Fallback a `prefers-color-scheme` del sistema
 
-```
-├── .storybook/           # Configuracion de Storybook
-├── public/
-│   └── vite.svg
-├── src/
-│   ├── main.jsx          # Entry point
-│   ├── App.jsx           # Componente principal
-│   ├── index.css         # Estilos globales (TailwindCSS)
-│   ├── assets/           # Imágenes, iconos, fuentes                
-│   ├── components/       # Componentes reutilizables                
-│   ├── context/          # React Context providers                  
-│   ├── hooks/            # Custom hooks                             
-│   ├── pages/            # Vistas/páginas                           
-│   ├── services/         # Llamadas API                             
-│   ├── stories/          # Storybook
-│   └── utils/            # Funciones auxiliares  
-├── index.html
-├── package.json
-├── vite.config.js
-├── tailwind.config.js    # Colores y tipografia del design system
-├── postcss.config.js
-├── DESIGN-SYSTEM.md      # Documentacion del sistema de diseño
-└── .env                  # Variables de entorno (no incluido en git)
+---
+
+## Sistema de iconos
+
+El proyecto utiliza **Material Icons** como sistema de iconos unificado.
+
+```jsx
+<span className="material-icons">dashboard</span>
+<span className="material-icons">person</span>
+<span className="material-icons">sports_soccer</span>
 ```
 
-## Tecnologias
+### Iconos principales
 
-- React 18
-- Vite
-- TailwindCSS
-- Storybook
-- ESLint
-- Vitest + Playwright
+| Icono | Nombre | Uso |
+|-------|--------|-----|
+| dashboard | `dashboard` | Dashboard |
+| person | `person` | Jugadores |
+| event | `event` | Convocatorias |
+| sports_soccer | `sports_soccer` | Partidos |
+| live_tv | `live_tv` | Partido en directo |
+| group | `group` | Usuarios |
+
+---
+
+## Sistema de layouts
+
+### AppShell
+
+Componente principal que estructura la aplicación:
+
+```
+┌─────────────────────────────────────────┐
+│ HeaderBar                               │
+├──────────┬──────────────────────────────┤
+│          │                              │
+│ Sidebar  │         Content              │
+│          │         (Outlet)             │
+│          │                              │
+└──────────┴──────────────────────────────┘
+```
+
+### Sidebar
+
+- **Expandido**: Muestra icono + label (desktop)
+- **Colapsado**: Solo icono (desktop)
+- **Drawer**: Panel deslizante (mobile)
+
+---
+
+## Testing
+
+Todos los componentes incluyen atributo `test-id` para testing:
+
+```jsx
+<button test-id="el-a1b2c3d4">Click</button>
+```
+
+---
 
 ## Scripts disponibles
 
-| Comando | Descripcion |
+| Comando | Descripción |
 |---------|-------------|
-| `npm run dev` | Inicia el servidor de desarrollo |
-| `npm run build` | Genera la build de produccion |
-| `npm run preview` | Previsualiza la build de produccion |
-| `npm run lint` | Ejecuta el linter |
-| `npm run storybook` | Inicia Storybook en puerto 6006 |
-| `npm run build-storybook` | Genera build estatica de Storybook |
+| `npm run dev` | Servidor de desarrollo |
+| `npm run build` | Build de producción |
+| `npm run preview` | Preview de build |
+| `npm run lint` | Ejecutar linter |
+| `npm run storybook` | Iniciar Storybook |
+| `npm run build-storybook` | Build de Storybook |
+
+---
+
+## Documentación adicional
+
+- `DESIGN-SYSTEM.md` - Sistema de diseño completo
