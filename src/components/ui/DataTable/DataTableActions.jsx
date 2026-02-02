@@ -9,8 +9,9 @@ export function DataTableActions({ actions, row }) {
   if (visibleActions.length === 0) return null
 
   return (
-    <div className="dropdown dropdown-end mr-2.5">
+    <div test-id="el-dta4d5e6" className="dropdown dropdown-end mr-2.5">
       <button
+        test-id="el-dta7f8g9"
         tabIndex={0}
         className="btn btn-ghost btn-sm btn-square"
         onClick={(e) => e.stopPropagation()}

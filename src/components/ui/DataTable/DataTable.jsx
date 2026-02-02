@@ -150,7 +150,7 @@ export function DataTable({
   )
 
   return (
-    <div className={`overflow-x-auto ${className}`}>
+    <div test-id="el-dt1a2b3c" className={`overflow-x-auto ${className}`}>
       <ReactDataTable
         columns={transformColumns(columns, actions)}
         data={data}
