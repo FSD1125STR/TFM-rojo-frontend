@@ -52,3 +52,21 @@
   --color-error: oklch(60% 0.22 25) !important;
   --color-error-content: oklch(100% 0 0) !important;
 }
+
+/* Datatable Custom Styles */
+
+/* Override react-data-table-component colors */
+[class*="rdt_TableRow"]:hover,
+[class*="TableRow"]:hover {
+  background-color: oklch(48% 0.05 160 / 0.1) !important;
+  outline: none !important;
+}
+
+/* Selected row - target rows with checked checkbox */
+.rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked) {
+  background-color: oklch(48% 0.05 160 / 0.2) !important;
+}
+
+.rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked):hover {
+  background-color: oklch(48% 0.05 160 / 0.25) !important;
+}
