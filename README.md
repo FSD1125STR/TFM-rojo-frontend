@@ -13,6 +13,7 @@ Frontend del proyecto FootMind - Gestión de equipos de fútbol base.
 | Material Icons | - | Sistema de iconos |
 | React Router | 7.x | Enrutamiento SPA |
 | Storybook | 8.x | Documentación de componentes |
+| react-data-table-component | 7.x | Tablas de datos con sorting y paginación |
 
 ## Requisitos
 
@@ -65,6 +66,7 @@ src/
 │   │   ├── Avatar/
 │   │   ├── Button/
 │   │   ├── Card/
+│   │   ├── DataTable/
 │   │   ├── Divider/
 │   │   ├── Icon/
 │   │   ├── IconButton/
