@@ -234,4 +234,4 @@ Todos los componentes incluyen atributo `test-id` para testing:
 
 ## Documentación adicional
 
-- `DESIGN-SYSTEM.md` - Sistema de diseño completo
+- `docs/DESIGN-SYSTEM.md` - Sistema de diseño completo
