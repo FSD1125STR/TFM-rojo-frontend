@@ -1,6 +1,6 @@
-import { createContext, useState, useEffect, useCallback } from 'react'
-import PropTypes from 'prop-types'
-import { authService } from '../services/authService'
+import { createContext, useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { authService } from '../services/authService';
 
 export const AuthContext = createContext({
   user: null,
@@ -9,40 +9,40 @@ export const AuthContext = createContext({
   isLoading: true,
   login: async () => {},
   logout: () => {},
-})
+});
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [token, setToken] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Inicializar estado desde localStorage
   useEffect(() => {
-    const storedToken = authService.getStoredToken()
-    const storedUser = authService.getStoredUser()
+    const storedToken = authService.getStoredToken();
+    const storedUser = authService.getStoredUser();
 
     if (storedToken && storedUser) {
-      setToken(storedToken)
-      setUser(storedUser)
+      setToken(storedToken);
+      setUser(storedUser);
     }
 
-    setIsLoading(false)
-  }, [])
+    setIsLoading(false);
+  }, []);
 
   const login = useCallback(async (email, password) => {
-    const { token: newToken, user: newUser } = await authService.login(email, password)
-    setToken(newToken)
-    setUser(newUser)
-    return { token: newToken, user: newUser }
-  }, [])
+    const { token: newToken, user: newUser } = await authService.login(email, password);
+    setToken(newToken);
+    setUser(newUser);
+    return { token: newToken, user: newUser };
+  }, []);
 
   const logout = useCallback(() => {
-    authService.logout()
-    setToken(null)
-    setUser(null)
+    authService.logout();
+    setToken(null);
+    setUser(null);
     // Redirigir a login con parámetro para mostrar mensaje
-    window.location.href = '/login?logout=true'
-  }, [])
+    window.location.href = '/login?logout=true';
+  }, []);
 
   const value = {
     user,
@@ -51,15 +51,15 @@ export function AuthProvider({ children }) {
     isLoading,
     login,
     logout,
-  }
+  };
 
   return (
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};

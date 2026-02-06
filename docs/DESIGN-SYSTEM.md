@@ -13,7 +13,6 @@ Implementado con **React 18 + TailwindCSS 4 + DaisyUI 5**.
 | TailwindCSS | 4.x | Utilidades CSS |
 | DaisyUI | 5.x | Componentes UI |
 | Material Symbols | - | Sistema de iconos |
-| react-data-table-component | 7.x | Tablas de datos |
 | Storybook | 8.x | Documentación de componentes |
 
 ---
@@ -178,33 +177,6 @@ import { IconButton } from '@/components/ui/IconButton/IconButton'
 <IconButton icon="delete" variant="ghost" />
 ```
 
-### DataTable
-
-```jsx
-import { DataTable } from '@/components/ui/DataTable'
-
-const columns = [
-  { key: 'name', label: 'Nombre', sortable: true },
-  { key: 'position', label: 'Posición', width: '30%' },
-  { key: 'status', label: 'Estado', render: (value) => <Badge>{value}</Badge> },
-]
-
-const actions = [
-  { label: 'Editar', icon: 'edit', onClick: (row) => edit(row) },
-  { label: 'Eliminar', icon: 'delete', onClick: (row) => remove(row), variant: 'danger' },
-]
-
-<DataTable
-  columns={columns}
-  data={players}
-  selectable
-  onSelectionChange={setSelected}
-  actions={actions}
-  pagination
-  paginationPerPage={10}
-/>
-```
-
 ### ThemeToggle
 
 ```jsx
@@ -284,7 +256,6 @@ src/
 │   │   ├── Avatar/
 │   │   ├── Button/
 │   │   ├── Card/
-│   │   ├── DataTable/
 │   │   ├── Divider/
 │   │   ├── Icon/
 │   │   ├── IconButton/

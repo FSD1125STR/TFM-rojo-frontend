@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
-import { Avatar } from '../../ui/Avatar/Avatar'
-import { IconButton } from '../../ui/IconButton/IconButton'
+import PropTypes from 'prop-types';
+import { Avatar } from '../../ui/Avatar/Avatar';
+import { IconButton } from '../../ui/IconButton/IconButton';
 
 export function UserCard({ user, variant = 'default', collapsed = false, onLogout }) {
   if (collapsed) {
@@ -17,7 +17,7 @@ export function UserCard({ user, variant = 'default', collapsed = false, onLogou
           />
         )}
       </div>
-    )
+    );
   }
 
   if (variant === 'compact') {
@@ -35,7 +35,7 @@ export function UserCard({ user, variant = 'default', collapsed = false, onLogou
           />
         )}
       </div>
-    )
+    );
   }
 
   return (
@@ -55,7 +55,7 @@ export function UserCard({ user, variant = 'default', collapsed = false, onLogou
         />
       )}
     </div>
-  )
+  );
 }
 
 UserCard.propTypes = {
@@ -67,4 +67,4 @@ UserCard.propTypes = {
   variant: PropTypes.oneOf(['default', 'compact']),
   collapsed: PropTypes.bool,
   onLogout: PropTypes.func,
-}
+};

@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types'
-import { AppLogo } from '../AppLogo/AppLogo'
-import { SidebarItem } from '../SidebarItem/SidebarItem'
-import { UserCard } from '../UserCard/UserCard'
-import { Divider } from '../../ui/Divider/Divider'
-import { menuItems } from '../../../data/menuItems'
-import { useAuth } from '../../../hooks/useAuth'
+import PropTypes from 'prop-types';
+import { AppLogo } from '../AppLogo/AppLogo';
+import { SidebarItem } from '../SidebarItem/SidebarItem';
+import { UserCard } from '../UserCard/UserCard';
+import { Divider } from '../../ui/Divider/Divider';
+import { menuItems } from '../../../data/menuItems';
+import { useAuth } from '../../../hooks/useAuth';
 
 export function Sidebar({
   mode = 'expanded',
@@ -14,13 +14,13 @@ export function Sidebar({
   onLogout: onLogoutProp,
   className = ''
 }) {
-  const { user: authUser, logout } = useAuth()
-  const user = userProp || authUser
-  const handleLogout = onLogoutProp || logout
-  const isCollapsed = mode === 'collapsed'
-  const isDrawer = mode === 'drawer'
+  const { user: authUser, logout } = useAuth();
+  const user = userProp || authUser;
+  const handleLogout = onLogoutProp || logout;
+  const isCollapsed = mode === 'collapsed';
+  const isDrawer = mode === 'drawer';
 
-  const sidebarWidth = isCollapsed ? 'w-24' : 'w-64'
+  const sidebarWidth = isCollapsed ? 'w-24' : 'w-64';
 
   const sidebarContent = (
     <div test-id="el-i1j2k3l4" className={`flex flex-col h-full bg-base-100 border-r border-base-300 ${isDrawer ? 'w-64' : sidebarWidth}`}>
@@ -48,7 +48,7 @@ export function Sidebar({
         </div>
       )}
     </div>
-  )
+  );
 
   if (isDrawer) {
     return (
@@ -70,14 +70,14 @@ export function Sidebar({
           {sidebarContent}
         </div>
       </>
-    )
+    );
   }
 
   return (
     <aside className={`${sidebarWidth} ${className}`}>
       {sidebarContent}
     </aside>
-  )
+  );
 }
 
 Sidebar.propTypes = {
@@ -91,4 +91,4 @@ Sidebar.propTypes = {
   }),
   onLogout: PropTypes.func,
   className: PropTypes.string,
-}
+};

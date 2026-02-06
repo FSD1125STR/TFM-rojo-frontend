@@ -1,11 +1,11 @@
-import { useContext } from 'react'
-import { AuthContext } from '../context/AuthContext'
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 // Detectar si estamos en Storybook
-const isStorybook = typeof window !== 'undefined' && window.location.href.includes('localhost:6006')
+const isStorybook = typeof window !== 'undefined' && window.location.href.includes('localhost:6006');
 
 export function useAuth() {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
 
   if (!context) {
     // En Storybook, devolver valores vacíos (las stories pasan user por prop)
@@ -17,11 +17,11 @@ export function useAuth() {
         isLoading: false,
         login: async () => {},
         logout: () => {},
-      }
+      };
     }
 
-    throw new Error('useAuth debe usarse dentro de un AuthProvider')
+    throw new Error('useAuth debe usarse dentro de un AuthProvider');
   }
 
-  return context
+  return context;
 }

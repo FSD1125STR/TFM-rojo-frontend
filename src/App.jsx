@@ -1,20 +1,20 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
-import { ProtectedRoute } from './components/ProtectedRoute'
-import { AppShell } from './components/layout/AppShell/AppShell'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { AppShell } from './components/layout/AppShell/AppShell';
 
 // Páginas públicas (auth)
-import { Login } from './pages/Login'
-import { ForgotPassword } from './pages/ForgotPassword'
-import { ResetPassword } from './pages/ResetPassword'
+import { Login } from './pages/Login';
+import { ForgotPassword } from './pages/ForgotPassword';
+import { ResetPassword } from './pages/ResetPassword';
 
 // Páginas protegidas
-import { Dashboard } from './pages/Dashboard'
-import { Players } from './pages/Players'
-import { Matches } from './pages/Matches'
-import { LiveMatch } from './pages/LiveMatch'
-import { Callups } from './pages/Callups'
-import { Users } from './pages/Users'
+import { Dashboard } from './pages/Dashboard';
+import { Players } from './pages/Players';
+import { Matches } from './pages/Matches';
+import { LiveMatch } from './pages/LiveMatch';
+import { Callups } from './pages/Callups';
+import { Users } from './pages/Users';
 
 function App() {
   return (
@@ -43,7 +43,7 @@ function App() {
         </Routes>
       </AuthProvider>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

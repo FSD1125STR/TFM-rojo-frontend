@@ -1,42 +1,42 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { authService } from '../services/authService'
-import { Button } from '../components/ui/Button/Button'
-import { Card } from '../components/ui/Card/Card'
-import { Icon } from '../components/ui/Icon/Icon'
-import logoHorizontal from '../assets/logo-horizontal.png'
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { authService } from '../services/authService';
+import { Button } from '../components/ui/Button/Button';
+import { Card } from '../components/ui/Card/Card';
+import { Icon } from '../components/ui/Icon/Icon';
+import { showError } from '../utils/alerts';
+import logoHorizontal from '../assets/logo-horizontal.png';
 
 export function ForgotPassword() {
-  const [email, setEmail] = useState('')
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
 
     if (!email) {
-      setError('Por favor, introduce tu email')
-      return
+      showError('Por favor, introduce tu email');
+      return;
     }
 
     if (!email.includes('@')) {
-      setError('Por favor, introduce un email válido')
-      return
+      showError('Por favor, introduce un email válido');
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      await authService.forgotPassword(email)
-      setSuccess(true)
+      await authService.forgotPassword(email);
+      setSuccess(true);
     } catch (err) {
-      setSuccess(true)
+      showError('Error al enviar el email. Inténtalo más tarde');
+      console.error('Forgot password error:', err);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div test-id="el-forgot1a2" className="min-h-screen flex items-center justify-center bg-base-200 px-4">
@@ -75,13 +75,6 @@ export function ForgotPassword() {
               </div>
             ) : (
               <>
-                {error && (
-                  <div className="alert alert-error mb-4">
-                    <Icon name="error" size="sm" />
-                    <span>{error}</span>
-                  </div>
-                )}
-
                 <form onSubmit={handleSubmit}>
                   <div className="form-control mb-6">
                     <label className="label">
@@ -123,5 +116,5 @@ export function ForgotPassword() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

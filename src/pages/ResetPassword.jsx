@@ -1,59 +1,58 @@
-import { useState } from 'react'
-import { useSearchParams, Link, Navigate } from 'react-router-dom'
-import { authService } from '../services/authService'
-import { Button } from '../components/ui/Button/Button'
-import { Card } from '../components/ui/Card/Card'
-import { Icon } from '../components/ui/Icon/Icon'
-import logoHorizontal from '../assets/logo-horizontal.png'
+import { useState } from 'react';
+import { useSearchParams, Link, Navigate } from 'react-router-dom';
+import { authService } from '../services/authService';
+import { Button } from '../components/ui/Button/Button';
+import { Card } from '../components/ui/Card/Card';
+import { Icon } from '../components/ui/Icon/Icon';
+import { showError } from '../utils/alerts';
+import logoHorizontal from '../assets/logo-horizontal.png';
 
 export function ResetPassword() {
-  const [searchParams] = useSearchParams()
-  const token = searchParams.get('token')
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
 
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!token) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/login" replace />;
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
 
     if (!password || !confirmPassword) {
-      setError('Por favor, completa todos los campos')
-      return
+      showError('Por favor, completa todos los campos');
+      return;
     }
 
     if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres')
-      return
+      showError('La contraseña debe tener al menos 6 caracteres');
+      return;
     }
 
     if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden')
-      return
+      showError('Las contraseñas no coinciden');
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      await authService.resetPassword(token, password)
-      setSuccess(true)
+      await authService.resetPassword(token, password);
+      setSuccess(true);
     } catch (err) {
       if (err.response?.status === 400) {
-        setError('El enlace ha expirado o no es válido')
+        showError('El enlace ha expirado o no es válido');
       } else {
-        setError('Error al restablecer la contraseña')
+        showError('Error al restablecer la contraseña');
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div test-id="el-reset1a2" className="min-h-screen flex items-center justify-center bg-base-200 px-4">
@@ -92,13 +91,6 @@ export function ResetPassword() {
               </div>
             ) : (
               <>
-                {error && (
-                  <div className="alert alert-error mb-4">
-                    <Icon name="error" size="sm" />
-                    <span>{error}</span>
-                  </div>
-                )}
-
                 <form onSubmit={handleSubmit}>
                   <div className="form-control mb-4">
                     <label className="label">
@@ -155,5 +147,5 @@ export function ResetPassword() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
