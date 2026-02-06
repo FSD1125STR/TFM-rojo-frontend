@@ -52,8 +52,12 @@ export function Login() {
       await login(email, password);
       navigate('/');
     } catch (err) {
+      console.log('Login error:', err);
+      console.log('Response:', err.response);
+      console.log('Data:', err.response?.data);
       const message = err.response?.data?.error
         || (err.response ? 'Error al iniciar sesión' : 'Sin conexión. Verifica tu internet');
+      console.log('Message to show:', message);
       showError(message);
     } finally {
       setIsLoading(false);
