@@ -44,11 +44,9 @@ export function ResetPassword() {
       await authService.resetPassword(token, password);
       setSuccess(true);
     } catch (err) {
-      if (err.response?.status === 400) {
-        showError('El enlace ha expirado o no es válido');
-      } else {
-        showError('Error al restablecer la contraseña');
-      }
+      const message = err.response?.data?.error
+        || (err.response ? 'Error al restablecer la contraseña' : 'Sin conexión. Verifica tu internet');
+      showError(message);
     } finally {
       setIsLoading(false);
     }

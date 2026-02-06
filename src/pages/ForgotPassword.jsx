@@ -31,8 +31,9 @@ export function ForgotPassword() {
       await authService.forgotPassword(email);
       setSuccess(true);
     } catch (err) {
-      showError('Error al enviar el email. Inténtalo más tarde');
-      console.error('Forgot password error:', err);
+      const message = err.response?.data?.error
+        || (err.response ? 'Error al enviar el email' : 'Sin conexión. Verifica tu internet');
+      showError(message);
     } finally {
       setIsLoading(false);
     }

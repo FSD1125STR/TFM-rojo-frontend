@@ -52,15 +52,9 @@ export function Login() {
       await login(email, password);
       navigate('/');
     } catch (err) {
-      if (err.response?.status === 401) {
-        showError('Email o contraseña incorrectos');
-      } else if (err.response?.status >= 500) {
-        showError('Error del servidor. Inténtalo más tarde');
-      } else if (!err.response) {
-        showError('Sin conexión. Verifica tu internet');
-      } else {
-        showError('Error al iniciar sesión');
-      }
+      const message = err.response?.data?.error
+        || (err.response ? 'Error al iniciar sesión' : 'Sin conexión. Verifica tu internet');
+      showError(message);
     } finally {
       setIsLoading(false);
     }
