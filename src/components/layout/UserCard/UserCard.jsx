@@ -1,11 +1,21 @@
 import PropTypes from 'prop-types'
 import { Avatar } from '../../ui/Avatar/Avatar'
+import { IconButton } from '../../ui/IconButton/IconButton'
 
-export function UserCard({ user, variant = 'default', collapsed = false }) {
+export function UserCard({ user, variant = 'default', collapsed = false, onLogout }) {
   if (collapsed) {
     return (
-      <div test-id="el-e7f8g9h0" className="flex justify-center py-2">
-        <Avatar name={user.name} src={user.avatar} size="sm" />
+      <div test-id="el-e7f8g9h0" className="flex flex-col items-center gap-2 py-2">
+        <Avatar name={user.fullName} src={user.avatar} size="sm" />
+        {onLogout && (
+          <IconButton
+            icon="logout"
+            ariaLabel="Cerrar sesión"
+            variant="ghost"
+            size="sm"
+            onClick={onLogout}
+          />
+        )}
       </div>
     )
   }
@@ -13,29 +23,48 @@ export function UserCard({ user, variant = 'default', collapsed = false }) {
   if (variant === 'compact') {
     return (
       <div test-id="el-e7f8g9h0" className="flex items-center gap-2 px-4 py-2">
-        <Avatar name={user.name} src={user.avatar} size="sm" />
-        <span className="text-sm font-medium truncate">{user.name}</span>
+        <Avatar name={user.fullName} src={user.avatar} size="sm" />
+        <span className="text-sm font-medium truncate flex-1">{user.fullName}</span>
+        {onLogout && (
+          <IconButton
+            icon="logout"
+            ariaLabel="Cerrar sesión"
+            variant="ghost"
+            size="sm"
+            onClick={onLogout}
+          />
+        )}
       </div>
     )
   }
 
   return (
     <div test-id="el-e7f8g9h0" className="flex items-center gap-3 px-4 py-3">
-      <Avatar name={user.name} src={user.avatar} size="md" />
-      <div className="flex flex-col min-w-0">
-        <span className="font-medium truncate">{user.name}</span>
-        <span className="text-xs text-base-content/60 truncate">{user.role}</span>
+      <Avatar name={user.fullName} src={user.avatar} size="md" />
+      <div className="flex flex-col min-w-0 flex-1">
+        <span className="font-medium truncate">{user.fullName}</span>
+        <span className="text-xs text-base-content/60 truncate capitalize">{user.role}</span>
       </div>
+      {onLogout && (
+        <IconButton
+          icon="logout"
+          ariaLabel="Cerrar sesión"
+          variant="ghost"
+          size="sm"
+          onClick={onLogout}
+        />
+      )}
     </div>
   )
 }
 
 UserCard.propTypes = {
   user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
+    fullName: PropTypes.string.isRequired,
     role: PropTypes.string,
     avatar: PropTypes.string,
   }).isRequired,
   variant: PropTypes.oneOf(['default', 'compact']),
   collapsed: PropTypes.bool,
+  onLogout: PropTypes.func,
 }

@@ -1,5 +1,5 @@
 export const mockUser = {
-  name: 'Dani Rodríguez',
+  fullName: 'Dani Rodríguez',
   role: 'Entrenador',
   avatar: null,
 }

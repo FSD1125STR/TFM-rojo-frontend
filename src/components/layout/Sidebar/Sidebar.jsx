@@ -4,14 +4,19 @@ import { SidebarItem } from '../SidebarItem/SidebarItem'
 import { UserCard } from '../UserCard/UserCard'
 import { Divider } from '../../ui/Divider/Divider'
 import { menuItems } from '../../../data/menuItems'
-import { mockUser } from '../../../data/mockUser'
+import { useAuth } from '../../../hooks/useAuth'
 
 export function Sidebar({
   mode = 'expanded',
   drawerOpen = false,
   onNavigate,
+  user: userProp,
+  onLogout: onLogoutProp,
   className = ''
 }) {
+  const { user: authUser, logout } = useAuth()
+  const user = userProp || authUser
+  const handleLogout = onLogoutProp || logout
   const isCollapsed = mode === 'collapsed'
   const isDrawer = mode === 'drawer'
 
@@ -36,10 +41,12 @@ export function Sidebar({
         </ul>
       </nav>
 
-      <div className="mt-auto">
-        <Divider className="my-0" />
-        <UserCard user={mockUser} collapsed={isCollapsed} />
-      </div>
+      {user && (
+        <div className="mt-auto">
+          <Divider className="my-0" />
+          <UserCard user={user} collapsed={isCollapsed} onLogout={handleLogout} />
+        </div>
+      )}
     </div>
   )
 
@@ -54,11 +61,12 @@ export function Sidebar({
           readOnly
         />
         <div className="drawer-side z-50">
-          <label
-            htmlFor="sidebar-drawer"
+          <button
+            type="button"
             className="drawer-overlay"
             onClick={onNavigate}
-          ></label>
+            aria-label="Cerrar menú"
+          />
           {sidebarContent}
         </div>
       </>
@@ -76,5 +84,11 @@ Sidebar.propTypes = {
   mode: PropTypes.oneOf(['expanded', 'collapsed', 'drawer']),
   drawerOpen: PropTypes.bool,
   onNavigate: PropTypes.func,
+  user: PropTypes.shape({
+    fullName: PropTypes.string.isRequired,
+    role: PropTypes.string,
+    avatar: PropTypes.string,
+  }),
+  onLogout: PropTypes.func,
   className: PropTypes.string,
 }

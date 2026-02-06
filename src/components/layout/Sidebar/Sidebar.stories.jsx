@@ -1,4 +1,9 @@
 import { Sidebar } from './Sidebar'
+import { mockUser } from '../../../data/mockUser'
+
+const handleLogout = () => {
+  console.log('Logout clicked')
+}
 
 export default {
   title: 'Layout/Sidebar',
@@ -8,6 +13,10 @@ export default {
       control: 'select',
       options: ['expanded', 'collapsed', 'drawer'],
     },
+  },
+  args: {
+    user: mockUser,
+    onLogout: handleLogout,
   },
   decorators: [
     (Story) => (
