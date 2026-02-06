@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { authService } from '../services/authService';
 
@@ -16,7 +16,6 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Inicializar estado desde localStorage
   useEffect(() => {
     const storedToken = authService.getStoredToken();
     const storedUser = authService.getStoredUser();
@@ -40,18 +39,17 @@ export function AuthProvider({ children }) {
     authService.logout();
     setToken(null);
     setUser(null);
-    // Redirigir a login con parámetro para mostrar mensaje
     window.location.href = '/login?logout=true';
   }, []);
 
-  const value = {
+  const value = useMemo(() => ({
     user,
     token,
     isAuthenticated: !!token,
     isLoading,
     login,
     logout,
-  };
+  }), [user, token, isLoading, login, logout]);
 
   return (
     <AuthContext.Provider value={value}>
