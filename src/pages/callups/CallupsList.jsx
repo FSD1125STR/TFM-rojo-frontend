@@ -1,8 +1,8 @@
-export function Callups() {
+export function CallupsList() {
   return (
-    <div test-id="el-g5h6i7j8">
+    <div test-id="el-callups-list">
       <h2 className="text-xl font-semibold mb-4">Convocatorias</h2>
       <p className="text-base-content/70">Gestión de convocatorias</p>
     </div>
-  )
+  );
 }

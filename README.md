@@ -13,6 +13,7 @@ Frontend del proyecto FootMind - Gestión de equipos de fútbol base.
 | Material Icons | - | Sistema de iconos |
 | React Router | 7.x | Enrutamiento SPA |
 | Storybook | 8.x | Documentación de componentes |
+| react-data-table-component | 7.x | Tablas de datos con sorting y paginación |
 
 ## Requisitos
 
@@ -65,6 +66,7 @@ src/
 │   │   ├── Avatar/
 │   │   ├── Button/
 │   │   ├── Card/
+│   │   ├── DataTable/
 │   │   ├── Divider/
 │   │   ├── Icon/
 │   │   ├── IconButton/
@@ -79,15 +81,29 @@ src/
 │       ├── Sidebar/
 │       ├── SidebarItem/
 │       └── UserCard/
+├── context/             # Context providers (AuthContext)
 ├── data/                # Datos mock y constantes
-├── hooks/               # Custom hooks (useTheme, useSidebar)
+├── hooks/               # Custom hooks (useTheme, useSidebar, useAuth)
 ├── pages/               # Vistas asociadas a rutas
+│   ├── players/         # Módulo jugadores
+│   │   ├── PlayersList.jsx
+│   │   └── PlayerDetail.jsx
+│   ├── matches/         # Módulo partidos
+│   │   ├── MatchesList.jsx
+│   │   └── MatchDetail.jsx
+│   ├── callups/         # Módulo convocatorias
+│   │   ├── CallupsList.jsx
+│   │   └── CallupDetail.jsx
+│   ├── users/           # Módulo usuarios
+│   │   ├── UsersList.jsx
+│   │   └── UserDetail.jsx
 │   ├── Dashboard.jsx
-│   ├── Players.jsx
-│   ├── Callups.jsx
-│   ├── Matches.jsx
 │   ├── LiveMatch.jsx
-│   └── Users.jsx
+│   ├── Login.jsx
+│   ├── ForgotPassword.jsx
+│   └── ResetPassword.jsx
+├── services/            # Servicios API (authService, api)
+├── utils/               # Utilidades (alerts)
 ├── App.jsx              # Router y rutas
 ├── main.jsx             # Entry point
 └── index.css            # Estilos globales y temas DaisyUI
@@ -99,8 +115,12 @@ src/
 |---------|-----------|
 | `components/ui/` | Componentes atómicos y reutilizables (Button, Card, Icon...) |
 | `components/layout/` | Componentes de estructura (Sidebar, Header, AppShell...) |
-| `pages/` | Vistas asociadas a rutas del router |
+| `pages/` | Vistas asociadas a rutas, organizadas por módulo |
+| `pages/{módulo}/` | Lista y detalle de cada entidad (players, matches, etc.) |
+| `context/` | Context providers de React (AuthContext) |
+| `services/` | Servicios de API y lógica de negocio |
 | `hooks/` | Custom hooks de React |
+| `utils/` | Funciones utilitarias (alerts, helpers) |
 | `data/` | Datos mock, constantes, configuración de menú |
 
 ---

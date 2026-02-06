@@ -10,11 +10,11 @@ import { ResetPassword } from './pages/ResetPassword';
 
 // Páginas protegidas
 import { Dashboard } from './pages/Dashboard';
-import { Players } from './pages/Players';
-import { Matches } from './pages/Matches';
+import { PlayersList, PlayerDetail } from './pages/players';
+import { MatchesList, MatchDetail } from './pages/matches';
+import { CallupsList, CallupDetail } from './pages/callups';
+import { UsersList, UserDetail } from './pages/users';
 import { LiveMatch } from './pages/LiveMatch';
-import { Callups } from './pages/Callups';
-import { Users } from './pages/Users';
 
 function App() {
   return (
@@ -30,11 +30,15 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<AppShell />}>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/jugadores" element={<Players />} />
-              <Route path="/partidos" element={<Matches />} />
+              <Route path="/jugadores" element={<PlayersList />} />
+              <Route path="/jugadores/:id" element={<PlayerDetail />} />
+              <Route path="/partidos" element={<MatchesList />} />
+              <Route path="/partidos/:id" element={<MatchDetail />} />
+              <Route path="/convocatorias" element={<CallupsList />} />
+              <Route path="/convocatorias/:id" element={<CallupDetail />} />
+              <Route path="/usuarios" element={<UsersList />} />
+              <Route path="/usuarios/:id" element={<UserDetail />} />
               <Route path="/directo" element={<LiveMatch />} />
-              <Route path="/convocatorias" element={<Callups />} />
-              <Route path="/usuarios" element={<Users />} />
             </Route>
           </Route>
 
