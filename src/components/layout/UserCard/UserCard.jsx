@@ -37,13 +37,17 @@ export function UserCard({ user, variant = 'default', collapsed = false, onLogou
       </div>
     );
   }
-
   return (
     <div test-id="el-e7f8g9h0" className="flex items-center gap-3 px-4 py-3">
       <Avatar name={user.fullName} src={user.avatar} size="md" />
       <div className="flex flex-col min-w-0 flex-1">
         <span className="font-medium truncate">{user.fullName}</span>
-        <span className="text-xs text-base-content/60 truncate capitalize">{user.role}</span>
+        {user.club?.name && (
+          <span className="text-xs text-base-content/60 truncate">{user.club.name}</span>
+        )}
+        <span className="text-xs text-base-content/60 truncate capitalize">
+          {user.role}{user.category?.name && ` · ${user.category.name}`}
+        </span>
       </div>
       {onLogout && (
         <IconButton
@@ -63,6 +67,14 @@ UserCard.propTypes = {
     fullName: PropTypes.string.isRequired,
     role: PropTypes.string,
     avatar: PropTypes.string,
+    club: PropTypes.shape({
+      name: PropTypes.string,
+      shortName: PropTypes.string,
+    }),
+    category: PropTypes.shape({
+      name: PropTypes.string,
+      season: PropTypes.string,
+    }),
   }).isRequired,
   variant: PropTypes.oneOf(['default', 'compact']),
   collapsed: PropTypes.bool,
