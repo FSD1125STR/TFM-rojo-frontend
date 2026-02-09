@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types'
-import { Outlet } from 'react-router-dom'
-import { Sidebar } from '../Sidebar/Sidebar'
-import { HeaderBar } from '../HeaderBar/HeaderBar'
-import { useSidebar } from '../../../hooks/useSidebar'
+import { useContext } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Sidebar } from '../Sidebar/Sidebar';
+import { HeaderBar } from '../HeaderBar/HeaderBar';
+import { useSidebar } from '../../../hooks/useSidebar';
+import { HeaderContext } from '../../../context/HeaderContext';
 
-export function AppShell({ title, breadcrumbs, actions }) {
-  const { mode, drawerOpen, toggleSidebar, closeDrawer } = useSidebar()
+export function AppShell() {
+  const { mode, drawerOpen, toggleSidebar, closeDrawer } = useSidebar();
+  const { title, breadcrumbs, actions } = useContext(HeaderContext);
 
   return (
     <div test-id="el-q9r0s1t2" className="drawer lg:drawer-open">
@@ -37,11 +39,5 @@ export function AppShell({ title, breadcrumbs, actions }) {
         onNavigate={closeDrawer}
       />
     </div>
-  )
-}
-
-AppShell.propTypes = {
-  title: PropTypes.string,
-  breadcrumbs: PropTypes.array,
-  actions: PropTypes.node,
+  );
 }

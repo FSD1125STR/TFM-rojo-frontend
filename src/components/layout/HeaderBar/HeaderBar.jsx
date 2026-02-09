@@ -22,7 +22,7 @@ export function HeaderBar({
   const { icon, label } = sidebarIcons[sidebarMode] || sidebarIcons.drawer
 
   return (
-    <header test-id="el-m5n6o7p8" className={`navbar bg-base-100 border-b border-base-300 px-4 ${className}`}>
+    <header test-id="el-m5n6o7p8" className={`navbar h-16 bg-base-100 border-b border-base-300 px-4 ${className}`}>
       <div className="flex-none">
         <IconButton
           icon={icon}
@@ -31,10 +31,13 @@ export function HeaderBar({
         />
       </div>
 
-      <div className="flex-1 flex flex-col items-start ml-4">
+      <div className="flex-1 flex items-center gap-4 ml-4">
         {title && <PageTitle>{title}</PageTitle>}
         {breadcrumbs.length > 0 && (
-          <Breadcrumbs items={breadcrumbs} variant="compact" />
+          <>
+            <span className="text-base-content/30">|</span>
+            <Breadcrumbs items={breadcrumbs} variant="compact" />
+          </>
         )}
       </div>
 
