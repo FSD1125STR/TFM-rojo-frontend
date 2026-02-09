@@ -1,22 +1,40 @@
 import { useState, useEffect } from 'react'
 
-const STORAGE_KEY = 'ui.theme'
+const STORAGE_PREFIX = 'ui.theme'
 
-function getInitialTheme() {
-  const stored = localStorage.getItem(STORAGE_KEY)
-  if (stored) return stored
-
+function getSystemTheme() {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
   return prefersDark ? 'dark' : 'light'
 }
 
-export function useTheme() {
-  const [theme, setThemeState] = useState(getInitialTheme)
+function getStoredTheme(userId) {
+  if (!userId) return null
+  return localStorage.getItem(`${STORAGE_PREFIX}.${userId}`)
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme)
+}
+
+export function useTheme(userId = null) {
+  const [theme, setThemeState] = useState(() => {
+    const stored = getStoredTheme(userId)
+    return stored || getSystemTheme()
+  })
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem(STORAGE_KEY, theme)
-  }, [theme])
+    const stored = getStoredTheme(userId)
+    const next = stored || getSystemTheme()
+    setThemeState(next)
+    applyTheme(next)
+  }, [userId])
+
+  useEffect(() => {
+    applyTheme(theme)
+    if (userId) {
+      localStorage.setItem(`${STORAGE_PREFIX}.${userId}`, theme)
+    }
+  }, [theme, userId])
 
   const toggleTheme = () => {
     setThemeState(prev => prev === 'light' ? 'dark' : 'light')

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { useTheme } from '../../../hooks/useTheme'
+import { useAuth } from '../../../hooks/useAuth'
 import { Icon } from '../Icon/Icon'
 
 const sizeClasses = {
@@ -8,7 +9,8 @@ const sizeClasses = {
 }
 
 export function ThemeToggle({ variant = 'icon', size = 'md' }) {
-  const { theme, toggleTheme } = useTheme()
+  const { user } = useAuth()
+  const { theme, toggleTheme } = useTheme(user?.id)
   const isDark = theme === 'dark'
 
   if (variant === 'switch') {
