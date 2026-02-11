@@ -1,0 +1,1 @@
+export { CardGeneric } from './CardGeneric'

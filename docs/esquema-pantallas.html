@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Esquema de Pantallas - TFM Rojo Frontend</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      padding: 40px;
+      color: #333;
+    }
+    h1 { text-align: center; margin-bottom: 40px; color: #2d3748; }
+    h2 {
+      color: #4a5568;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #68d391;
+    }
+    .page { margin-bottom: 60px; }
+
+    /* Screen container */
+    .screen {
+      background: #e8f5e9;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 30px;
+      border: 2px solid #a5d6a7;
+    }
+
+    /* Component styles */
+    .component {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 2px dashed #90caf9;
+      position: relative;
+    }
+    .component-label {
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      background: #2196f3;
+      color: white;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .component-label.card { background: #4caf50; }
+    .component-label.stats { background: #ff9800; }
+    .component-label.table { background: #9c27b0; }
+    .component-label.form { background: #00bcd4; }
+    .component-label.badge { background: #e91e63; }
+    .component-label.tabs { background: #795548; }
+
+    /* Grid layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1.5fr; gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .flex-row { display: flex; gap: 12px; align-items: center; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+    /* Header */
+    .header {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      border: 2px dashed #90caf9;
+      position: relative;
+    }
+    .header h3 { font-size: 20px; color: #2d3748; }
+    .header p { font-size: 13px; color: #718096; margin-top: 4px; }
+    .header .btn {
+      background: #2d3748;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+    .header .back-btn {
+      width: 32px;
+      height: 32px;
+      background: #e2e8f0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+    }
+
+    /* Stats card */
+    .stats-card {
+      background: #c8e6c9;
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+      border: 2px dashed #ff9800;
+    }
+    .stats-card .title { font-size: 12px; color: #4a5568; }
+    .stats-card .value { font-size: 28px; font-weight: 700; color: #2d3748; }
+    .stats-card .subtitle { font-size: 11px; color: #718096; margin-top: 4px; }
+
+    /* Card generic */
+    .card-generic {
+      background: #c8e6c9;
+      border-radius: 12px;
+      padding: 20px;
+      border: 2px dashed #4caf50;
+      position: relative;
+    }
+    .card-generic .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Info item */
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding: 8px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 8px;
+      border: 1px dashed #e91e63;
+      position: relative;
+    }
+    .info-item .icon { color: #718096; font-size: 18px; }
+    .info-item .label { font-size: 11px; color: #718096; }
+    .info-item .value { font-size: 13px; color: #2d3748; font-weight: 500; }
+
+    /* Stat box */
+    .stat-box {
+      text-align: center;
+      padding: 8px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 8px;
+      border: 1px dashed #ff9800;
+    }
+    .stat-box .number { font-size: 24px; font-weight: 700; color: #2d3748; }
+    .stat-box .number.yellow { color: #f59e0b; }
+    .stat-box .number.red { color: #ef4444; }
+    .stat-box .label { font-size: 10px; color: #718096; }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge.success { background: #c6f6d5; color: #276749; }
+    .badge.custom { background: #d1fae5; color: #065f46; }
+    .badge.warning { background: #fef3c7; color: #92400e; }
+    .badge.xs { padding: 2px 6px; font-size: 10px; }
+
+    /* Table */
+    .table-container {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px dashed #9c27b0;
+      position: relative;
+    }
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
+      background: #f7fafc;
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #4a5568;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .table-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
+      padding: 12px 16px;
+      font-size: 12px;
+      border-bottom: 1px solid #f0f0f0;
+      align-items: center;
+    }
+    .table-row:nth-child(even) { background: #f9fafb; }
+
+    /* Search & filters */
+    .search-filters {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .search-input {
+      flex: 2;
+      padding: 10px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      font-size: 13px;
+      color: #718096;
+      border: 2px dashed #00bcd4;
+    }
+    .select-filter {
+      padding: 10px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      font-size: 13px;
+      color: #4a5568;
+      border: 2px dashed #00bcd4;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      padding: 4px;
+      background: #e2e8f0;
+      border-radius: 8px;
+      width: fit-content;
+      border: 2px dashed #795548;
+      position: relative;
+    }
+    .tab {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #4a5568;
+    }
+    .tab.active { background: white; font-weight: 600; }
+
+    /* Avatar */
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #c8e6c9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 2px dashed;
+    }
+
+    /* Component list */
+    .component-list {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .component-list h4 { margin-bottom: 12px; color: #4a5568; }
+    .component-list ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .component-list li {
+      background: #f0f4f8;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>📱 Esquema de Pantallas - Componentes Storybook</h1>
+
+  <!-- PANTALLA 1: DETALLE JUGADOR -->
+  <div class="page">
+    <h2>1. Detalle de Jugador</h2>
+
+    <div class="screen">
+      <!-- Header -->
+      <div class="header">
+        <span class="component-label">PageHeader</span>
+        <div class="flex-between">
+          <div class="flex-row">
+            <div class="back-btn">←</div>
+            <div>
+              <h3>Carlos Rodríguez Martínez</h3>
+              <p>Dorsal 10 · Delantero</p>
+            </div>
+          </div>
+          <div class="btn">✏️ Editar Jugador</div>
+        </div>
+      </div>
+
+      <!-- Cards row -->
+      <div class="grid-2">
+        <!-- Info Personal -->
+        <div class="card-generic">
+          <span class="component-label card">CardGeneric</span>
+          <div class="card-title">Información Personal</div>
+
+          <div class="info-item">
+            <span class="component-label badge" style="font-size:9px;top:-6px;">InfoItem</span>
+            <span class="icon">📅</span>
+            <div>
+              <div class="label">Fecha de Nacimiento</div>
+              <div class="value">15/03/2010 (14 años)</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="icon">✉️</span>
+            <div>
+              <div class="label">Email</div>
+              <div class="value">carlos.rodriguez@email.com</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="icon">📞</span>
+            <div>
+              <div class="label">Teléfono</div>
+              <div class="value">+34 666 777 888</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="icon">⚡</span>
+            <div>
+              <div class="label">Estado</div>
+              <span class="badge success">Disponible</span>
+              <span style="font-size:9px;color:#e91e63;margin-left:4px;">← BadgeGeneric</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="card-generic">
+          <span class="component-label card">CardGeneric</span>
+          <div class="card-title">📈 Estadísticas de la Temporada</div>
+
+          <div class="grid-3" style="grid-template-columns: repeat(6, 1fr); margin-bottom: 16px;">
+            <div class="stat-box">
+              <span class="component-label stats" style="font-size:8px;top:-6px;">StatBox</span>
+              <div class="number">24</div>
+              <div class="label">Partidos</div>
+            </div>
+            <div class="stat-box">
+              <div class="number">1680</div>
+              <div class="label">Minutos</div>
+            </div>
+            <div class="stat-box">
+              <div class="number">18</div>
+              <div class="label">Goles</div>
+            </div>
+            <div class="stat-box">
+              <div class="number">12</div>
+              <div class="label">Asistencias</div>
+            </div>
+            <div class="stat-box">
+              <div class="number yellow">3</div>
+              <div class="label">T. Amarillas</div>
+            </div>
+            <div class="stat-box">
+              <div class="number red">0</div>
+              <div class="label">T. Rojas</div>
+            </div>
+          </div>
+          <p style="text-align:center;font-size:12px;color:#4a5568;">
+            Promedio de minutos por partido: <strong>70 min</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Historial -->
+      <div class="card-generic">
+        <span class="component-label card">CardGeneric</span>
+        <div class="card-title">Historial de Partidos</div>
+
+        <div class="tabs">
+          <span class="component-label tabs" style="font-size:9px;top:-8px;">Tabs</span>
+          <div class="tab active">Todos</div>
+          <div class="tab">Últimos 5</div>
+          <div class="tab">Casa</div>
+          <div class="tab">Fuera</div>
+        </div>
+
+        <div class="table-container">
+          <span class="component-label table">DataTableGeneric</span>
+          <div class="table-header">
+            <div>Fecha</div>
+            <div>Rival</div>
+            <div>Resultado</div>
+            <div>Min</div>
+            <div>Goles</div>
+            <div>Asist.</div>
+            <div>Tarjetas</div>
+            <div></div>
+          </div>
+          <div class="table-row">
+            <div>15/01/2026</div>
+            <div>CD Móstoles</div>
+            <div><span class="badge custom">3-1</span> <span style="font-size:8px;color:#e91e63;">BadgeGeneric</span></div>
+            <div>90'</div>
+            <div><strong>2</strong></div>
+            <div><strong>1</strong></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div class="table-row">
+            <div>12/01/2026</div>
+            <div>Rayo Vallecano B</div>
+            <div><span class="badge custom">2-2</span></div>
+            <div>75'</div>
+            <div><strong>1</strong></div>
+            <div><strong>0</strong></div>
+            <div><span class="badge warning xs">1</span> <span style="font-size:8px;color:#e91e63;">xs</span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-list">
+      <h4>Componentes utilizados:</h4>
+      <ul>
+        <li>PageHeader</li>
+        <li>CardGeneric ×3</li>
+        <li>InfoItem ×5</li>
+        <li>StatBox ×6</li>
+        <li>BadgeGeneric</li>
+        <li>Tabs</li>
+        <li>DataTableGeneric</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PANTALLA 2: LISTA JUGADORES -->
+  <div class="page">
+    <h2>2. Lista de Jugadores</h2>
+
+    <div class="screen">
+      <!-- Header -->
+      <div class="header">
+        <span class="component-label">PageHeader</span>
+        <div class="flex-between">
+          <div>
+            <h3>Jugadores</h3>
+            <p>Gestiona la plantilla del equipo</p>
+          </div>
+          <div class="btn">+ Nuevo Jugador</div>
+        </div>
+      </div>
+
+      <!-- Stats cards -->
+      <div class="grid-4" style="margin-bottom: 16px;">
+        <div class="stats-card">
+          <span class="component-label stats">StatsCard</span>
+          <div class="title">Total Jugadores</div>
+          <div class="value">5</div>
+        </div>
+        <div class="stats-card">
+          <div class="title">Porteros</div>
+          <div class="value">1</div>
+        </div>
+        <div class="stats-card">
+          <div class="title">Defensas</div>
+          <div class="value">1</div>
+        </div>
+        <div class="stats-card">
+          <div class="title">Delanteros</div>
+          <div class="value">2</div>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="search-filters">
+        <div class="search-input">
+          <span class="component-label form" style="top:-8px;">SearchInput</span>
+          🔍 Buscar por nombre o dorsal...
+        </div>
+        <div class="select-filter">
+          <span class="component-label form" style="top:-8px;">SelectFilter</span>
+          Todas las posiciones ▼
+        </div>
+        <div class="select-filter">
+          Activos ▼
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container">
+        <span class="component-label table">DataTableGeneric</span>
+        <div class="table-header">
+          <div>Jugador</div>
+          <div>Dorsal</div>
+          <div>Posición</div>
+          <div>Edad</div>
+          <div>Partidos</div>
+          <div>Goles</div>
+          <div>Estado</div>
+          <div>Acciones</div>
+        </div>
+        <div class="table-row">
+          <div class="flex-row">
+            <div class="avatar">CM</div>
+            <span>Carlos Méndez</span>
+            <span style="font-size:8px;color:#666;margin-left:4px;">Avatar</span>
+          </div>
+          <div>9</div>
+          <div><span class="badge custom">Delantero</span> <span style="font-size:8px;color:#e91e63;">BadgeGeneric</span></div>
+          <div>14</div>
+          <div>10</div>
+          <div>8</div>
+          <div><span class="badge success">Activo</span></div>
+          <div>⋮ <span style="font-size:8px;color:#9c27b0;">DataTableActions</span></div>
+        </div>
+        <div class="table-row">
+          <div class="flex-row">
+            <div class="avatar">DS</div>
+            <span>Diego Silva</span>
+          </div>
+          <div>10</div>
+          <div><span class="badge" style="background:#d1fae5;color:#065f46;">Centrocampista</span></div>
+          <div>15</div>
+          <div>12</div>
+          <div>3</div>
+          <div><span class="badge success">Activo</span></div>
+          <div>⋮</div>
+        </div>
+        <div class="table-row">
+          <div class="flex-row">
+            <div class="avatar">JT</div>
+            <span>Javier Torres</span>
+          </div>
+          <div>4</div>
+          <div><span class="badge" style="background:#dbeafe;color:#1e40af;">Defensa</span></div>
+          <div>14</div>
+          <div>11</div>
+          <div>1</div>
+          <div><span class="badge success">Activo</span></div>
+          <div>⋮</div>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:#718096;">Mostrando 5 de 6 jugadores</p>
+    </div>
+
+    <div class="component-list">
+      <h4>Componentes utilizados:</h4>
+      <ul>
+        <li>PageHeader</li>
+        <li>StatsCard ×4</li>
+        <li>SearchInput</li>
+        <li>SelectFilter ×2</li>
+        <li>DataTableGeneric</li>
+        <li>Avatar</li>
+        <li>BadgeGeneric</li>
+        <li>DataTableActions</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <h4 style="width:100%;margin-bottom:8px;">Leyenda de colores (bordes):</h4>
+    <div class="legend-item">
+      <div class="legend-color" style="border-color:#90caf9;"></div>
+      <span>PageHeader</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="border-color:#4caf50;background:#e8f5e9;"></div>
+      <span>CardGeneric</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="border-color:#ff9800;background:#fff3e0;"></div>
+      <span>StatsCard / StatBox</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="border-color:#9c27b0;background:#f3e5f5;"></div>
+      <span>DataTableGeneric</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="border-color:#00bcd4;background:#e0f7fa;"></div>
+      <span>SearchInput / SelectFilter</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="border-color:#e91e63;background:#fce4ec;"></div>
+      <span>InfoItem / BadgeGeneric</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="border-color:#795548;background:#efebe9;"></div>
+      <span>Tabs</span>
+    </div>
+  </div>
+</body>
+</html>

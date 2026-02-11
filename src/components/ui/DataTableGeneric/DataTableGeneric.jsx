@@ -33,6 +33,10 @@ const legacyStyles = {
       backgroundColor: 'oklch(var(--b1))',
       borderBottomColor: 'oklch(var(--b3))',
       minHeight: '3.25rem',
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: 'oklch(var(--b2))',
+      },
     },
   },
   cells: {
@@ -40,6 +44,7 @@ const legacyStyles = {
       color: 'oklch(var(--bc))',
       paddingLeft: '1rem',
       paddingRight: '1rem',
+      cursor: 'pointer',
     },
   },
   pagination: {
@@ -85,7 +90,7 @@ NoDataComponent.propTypes = {
 }
 
 // Transforma nuestras columnas al formato de react-data-table-component
-function transformColumns(columns, actions) {
+function transformColumns(columns, actions, actionsTitle) {
   const transformed = columns.map(col => ({
     name: col.label,
     selector: row => row[col.key],
@@ -101,48 +106,109 @@ function transformColumns(columns, actions) {
   // Añadir columna de acciones si hay actions
   if (actions && actions.length > 0) {
     transformed.push({
-      name: '',
-      width: '10%',
-      cell: row => <DataTableActions actions={actions} row={row} />,
+      name: actionsTitle,
+      width: '100px',
+      center: true,
+      cell: row => <DataTableActions actions={actions} row={row} title={actionsTitle} />,
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-      },
     })
   }
 
   return transformed
 }
 
-export function DataTable({
+// Componente de barra de acciones masivas
+function BulkActionsBar({ selectedCount, bulkActions, selectedRows, onClearSelection }) {
+  if (selectedCount === 0) return null
+
+  const normalActions = bulkActions.filter(a => a.variant !== 'danger')
+  const dangerActions = bulkActions.filter(a => a.variant === 'danger')
+
+  return (
+    <div className="flex items-center justify-between gap-4 px-4 py-3 bg-primary/10 border-b border-primary/20">
+      <div className="flex items-center gap-3">
+        <span className="text-sm font-medium text-primary">
+          <Icon name="check_box" size="sm" className="mr-1 align-middle" />
+          {selectedCount} {selectedCount === 1 ? 'fila seleccionada' : 'filas seleccionadas'}
+        </span>
+        <button
+          className="btn btn-ghost btn-xs text-base-content/60"
+          onClick={onClearSelection}
+        >
+          Deseleccionar
+        </button>
+      </div>
+      <div className="flex items-center gap-2">
+        {normalActions.map((action, index) => (
+          <button
+            key={index}
+            className="btn btn-sm btn-ghost"
+            onClick={() => action.onClick(selectedRows)}
+          >
+            {action.icon && <Icon name={action.icon} size="sm" />}
+            {action.label}
+          </button>
+        ))}
+        {dangerActions.map((action, index) => (
+          <button
+            key={index}
+            className="btn btn-sm btn-error btn-outline"
+            onClick={() => action.onClick(selectedRows)}
+          >
+            {action.icon && <Icon name={action.icon} size="sm" />}
+            {action.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+BulkActionsBar.propTypes = {
+  selectedCount: PropTypes.number.isRequired,
+  bulkActions: PropTypes.array.isRequired,
+  selectedRows: PropTypes.array.isRequired,
+  onClearSelection: PropTypes.func.isRequired,
+}
+
+export function DataTableGeneric({
   columns,
   data,
   keyField = 'id',
+  // Selección
   selectable = false,
   onSelectionChange,
+  // Acciones por fila
   actions = [],
+  actionsTitle = 'Acciones',
+  // Acciones masivas
+  bulkActions = [],
+  showBulkActionsBar = true,
+  // Estados
   isLoading = false,
   emptyMessage = 'Sin datos',
+  // Paginación
   pagination = false,
   paginationPerPage = 10,
   paginationRowsPerPageOptions = [5, 10, 20, 50],
   onRowClick,
   className = '',
-  // New props for search and filters
+  // Búsqueda y filtros
   searchable = false,
   searchPlaceholder = 'Buscar...',
   searchKeys = [],
   filters = [],
-  // Style variant
+  // Variante de estilos
   variant = 'default', // 'default' | 'green'
 }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterValues, setFilterValues] = useState(
     filters.reduce((acc, filter) => ({ ...acc, [filter.key]: '' }), {})
   )
+  const [selectedRows, setSelectedRows] = useState([])
+  const [toggleCleared, setToggleCleared] = useState(false)
 
   // Choose styles based on variant
   const customStyles = variant === 'green' ? defaultStyles : legacyStyles
@@ -174,36 +240,45 @@ export function DataTable({
     })
   }, [data, searchTerm, searchKeys, searchable, filters, filterValues])
 
+  // Handle selection change
   const handleSelectionChange = ({ selectedRows: selected }) => {
+    setSelectedRows(selected)
     if (onSelectionChange) {
       const selectedIds = selected.map(row => row[keyField])
-      onSelectionChange(selectedIds)
+      onSelectionChange(selectedIds, selected)
     }
   }
 
-  const LoadingComponent = () => (
-    <div className="py-10 flex justify-center">
-      <span className="loading loading-spinner loading-lg text-primary"></span>
-    </div>
-  )
-
-  const NoDataComponent = () => (
-    <div className="py-10 text-center text-base-content/60">
-      <Icon name="inbox" size="lg" className="mb-2 opacity-40" />
-      <p>{emptyMessage}</p>
-    </div>
-  )
+  // Clear selection
+  const handleClearSelection = () => {
+    setToggleCleared(!toggleCleared)
+    setSelectedRows([])
+    if (onSelectionChange) {
+      onSelectionChange([], [])
+    }
+  }
 
   const hasToolbar = searchable || filters.length > 0
+  const hasBulkActions = bulkActions.length > 0 && showBulkActionsBar
   const containerClass = variant === 'green'
-    ? 'rounded-xl shadow-sm overflow-hidden'
+    ? 'rounded-xl shadow-sm overflow-visible'
     : `overflow-x-auto ${className}`
   const containerStyle = variant === 'green'
     ? { backgroundColor: 'oklch(98% 0.02 175)' }
     : {}
 
   return (
-    <div test-id="el-dt1a2b3c" className={containerClass} style={containerStyle}>
+    <div test-id="el-dtg1a2b3c" className={containerClass} style={containerStyle}>
+      {/* Barra de acciones masivas */}
+      {hasBulkActions && selectedRows.length > 0 && (
+        <BulkActionsBar
+          selectedCount={selectedRows.length}
+          bulkActions={bulkActions}
+          selectedRows={selectedRows}
+          onClearSelection={handleClearSelection}
+        />
+      )}
+
       {/* Toolbar: Search + Filters */}
       {hasToolbar && (
         <div className="flex items-center justify-between gap-4 p-4 border-b border-gray-200">
@@ -247,19 +322,20 @@ export function DataTable({
       )}
 
       <ReactDataTable
-        columns={transformColumns(columns, actions)}
+        columns={transformColumns(columns, actions, actionsTitle)}
         data={filteredData}
         keyField={keyField}
         customStyles={customStyles}
         selectableRows={selectable}
         onSelectedRowsChange={handleSelectionChange}
+        clearSelectedRows={toggleCleared}
         pagination={pagination}
         paginationPerPage={paginationPerPage}
         paginationRowsPerPageOptions={paginationRowsPerPageOptions}
         paginationComponentOptions={defaultPaginationOptions}
         progressPending={isLoading}
         progressComponent={<LoadingComponent />}
-        noDataComponent={<NoDataComponent />}
+        noDataComponent={<NoDataComponent message={emptyMessage} />}
         highlightOnHover
         pointerOnHover={!!onRowClick}
         onRowClicked={onRowClick}
@@ -269,7 +345,8 @@ export function DataTable({
   )
 }
 
-DataTable.propTypes = {
+DataTableGeneric.propTypes = {
+  /** Configuración de columnas */
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,
@@ -280,10 +357,15 @@ DataTable.propTypes = {
       width: PropTypes.string,
     })
   ).isRequired,
+  /** Datos de la tabla */
   data: PropTypes.array.isRequired,
+  /** Campo único para identificar filas */
   keyField: PropTypes.string,
+  /** Habilitar selección de filas */
   selectable: PropTypes.bool,
+  /** Callback cuando cambia la selección (ids, rows) */
   onSelectionChange: PropTypes.func,
+  /** Acciones por fila (menú dropdown) */
   actions: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -293,12 +375,32 @@ DataTable.propTypes = {
       show: PropTypes.func,
     })
   ),
+  /** Título del menú de acciones */
+  actionsTitle: PropTypes.string,
+  /** Acciones masivas para filas seleccionadas */
+  bulkActions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      icon: PropTypes.string,
+      onClick: PropTypes.func.isRequired,
+      variant: PropTypes.oneOf(['default', 'danger']),
+    })
+  ),
+  /** Mostrar barra de acciones masivas */
+  showBulkActionsBar: PropTypes.bool,
+  /** Estado de carga */
   isLoading: PropTypes.bool,
+  /** Mensaje cuando no hay datos */
   emptyMessage: PropTypes.string,
+  /** Habilitar paginación */
   pagination: PropTypes.bool,
+  /** Filas por página */
   paginationPerPage: PropTypes.number,
+  /** Opciones de filas por página */
   paginationRowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
+  /** Callback al hacer clic en una fila */
   onRowClick: PropTypes.func,
+  /** Clase CSS adicional */
   className: PropTypes.string,
   /** Habilitar búsqueda */
   searchable: PropTypes.bool,
@@ -322,3 +424,5 @@ DataTable.propTypes = {
   /** Variante de estilos: 'default' o 'green' */
   variant: PropTypes.oneOf(['default', 'green']),
 }
+
+export default DataTableGeneric
