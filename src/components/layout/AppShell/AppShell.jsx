@@ -7,7 +7,7 @@ import { HeaderContext } from '../../../context/HeaderContext';
 
 export function AppShell() {
   const { mode, drawerOpen, toggleSidebar, closeDrawer } = useSidebar();
-  const { title, breadcrumbs, actions } = useContext(HeaderContext);
+  const { actions } = useContext(HeaderContext);
 
   return (
     <div test-id="el-q9r0s1t2" className="drawer lg:drawer-open">
@@ -21,8 +21,6 @@ export function AppShell() {
 
       <div className="drawer-content flex flex-col min-h-screen">
         <HeaderBar
-          title={title}
-          breadcrumbs={breadcrumbs}
           actions={actions}
           sidebarMode={mode}
           onToggleSidebar={toggleSidebar}

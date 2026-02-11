@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types'
 import { IconButton } from '../../ui/IconButton/IconButton'
 import { ThemeToggle } from '../../ui/ThemeToggle/ThemeToggle'
-import { PageTitle } from '../PageTitle/PageTitle'
-import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs'
 import { HeaderActions } from '../HeaderActions/HeaderActions'
+import { SearchBar } from '../SearchBar/SearchBar'
 
 const sidebarIcons = {
   drawer: { icon: 'menu', label: 'Abrir menú' },
@@ -12,8 +11,6 @@ const sidebarIcons = {
 }
 
 export function HeaderBar({
-  title,
-  breadcrumbs = [],
   actions,
   sidebarMode = 'drawer',
   onToggleSidebar,
@@ -31,14 +28,8 @@ export function HeaderBar({
         />
       </div>
 
-      <div className="flex-1 flex items-center gap-4 ml-4">
-        {title && <PageTitle>{title}</PageTitle>}
-        {breadcrumbs.length > 0 && (
-          <>
-            <span className="text-base-content/30">|</span>
-            <Breadcrumbs items={breadcrumbs} variant="compact" />
-          </>
-        )}
+      <div className="flex-1 mx-4">
+        <SearchBar />
       </div>
 
       <div className="flex-none flex items-center gap-2">
@@ -61,13 +52,6 @@ export function HeaderBar({
 }
 
 HeaderBar.propTypes = {
-  title: PropTypes.string,
-  breadcrumbs: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      to: PropTypes.string,
-    })
-  ),
   actions: PropTypes.node,
   sidebarMode: PropTypes.oneOf(['drawer', 'expanded', 'collapsed']),
   onToggleSidebar: PropTypes.func,
