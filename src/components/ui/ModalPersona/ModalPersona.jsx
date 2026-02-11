@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import './ModalPersona.styles.css'
 
-// Configuración de posiciones para jugadores
 const posicionesJugador = [
   { value: 'Portero', label: 'Portero' },
   { value: 'Defensa', label: 'Defensa' },
@@ -10,7 +9,6 @@ const posicionesJugador = [
   { value: 'Delantero', label: 'Delantero' },
 ]
 
-// Configuración de estados para jugadores
 const estadosJugador = [
   { value: 'Disponible', label: 'Disponible' },
   { value: 'Lesionado', label: 'Lesionado' },
@@ -18,7 +16,6 @@ const estadosJugador = [
   { value: 'No disponible', label: 'No disponible' },
 ]
 
-// Configuración de roles para usuarios
 const rolesUsuario = [
   { value: 'Entrenador', label: 'Entrenador' },
   { value: 'Cuerpo Técnico', label: 'Cuerpo Técnico' },
@@ -26,13 +23,11 @@ const rolesUsuario = [
   { value: 'Administrador', label: 'Administrador' },
 ]
 
-// Configuración de estados para usuarios
 const estadosUsuario = [
   { value: 'Activo', label: 'Activo' },
   { value: 'Inactivo', label: 'Inactivo' },
 ]
 
-// Función para calcular edad
 const calcularEdad = (fechaNacimiento) => {
   if (!fechaNacimiento) return null
   const fecha = new Date(fechaNacimiento)
@@ -45,7 +40,6 @@ const calcularEdad = (fechaNacimiento) => {
   return edad
 }
 
-// Estado inicial del formulario
 const getInitialFormData = (mode) => ({
   nombre: '',
   apellidos: '',
@@ -140,7 +134,6 @@ export function ModalPersona({
     }
   }
 
-  // Estilos inline para asegurar el grid
   const rowStyle = { display: 'grid', gap: '12px', marginBottom: '12px' }
   const row3Cols = { ...rowStyle, gridTemplateColumns: mode === 'jugador' ? '1fr 1.3fr 0.7fr' : '1fr 1.5fr' }
   const row2Cols = { ...rowStyle, gridTemplateColumns: '1fr 1fr' }
@@ -152,7 +145,6 @@ export function ModalPersona({
       onClick={handleBackdropClick}
     >
       <div className="modal-box">
-        {/* Header */}
         <div className="modal-persona-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div className="modal-persona-header-icon">
@@ -170,10 +162,8 @@ export function ModalPersona({
           </button>
         </div>
 
-        {/* Body */}
         <form onSubmit={handleSubmit}>
           <div className="modal-persona-body">
-            {/* Fila 1: Nombre, Apellidos, Dorsal */}
             <div style={row3Cols}>
               <div className="form-control">
                 <label className="label py-1">
@@ -228,7 +218,6 @@ export function ModalPersona({
               )}
             </div>
 
-            {/* Fila 2: Fecha nacimiento y Edad */}
             <div style={row2Cols}>
               <div className="form-control">
                 <label className="label py-1">
@@ -257,7 +246,6 @@ export function ModalPersona({
               </div>
             </div>
 
-            {/* Fila 3: Email y Teléfono */}
             <div style={row2Cols}>
               <div className="form-control">
                 <label className="label py-1">
@@ -295,7 +283,6 @@ export function ModalPersona({
               </div>
             </div>
 
-            {/* Fila 4: Dirección */}
             <div style={{ marginBottom: '12px' }}>
               <div className="form-control">
                 <label className="label py-1">
@@ -316,7 +303,6 @@ export function ModalPersona({
               </div>
             </div>
 
-            {/* Fila 5: Ciudad y Provincia */}
             <div style={row2Cols}>
               <div className="form-control">
                 <label className="label py-1">
@@ -348,7 +334,6 @@ export function ModalPersona({
               </div>
             </div>
 
-            {/* Fila 6: Posición/Rol y Estado */}
             <div style={{ ...row2Cols, marginBottom: 0 }}>
               {mode === 'jugador' ? (
                 <>
@@ -428,7 +413,6 @@ export function ModalPersona({
             </div>
           </div>
 
-          {/* Footer */}
           <div className="modal-persona-footer">
             <button type="button" className="btn btn-outline btn-error btn-sm" onClick={handleClose}>
               Cancelar

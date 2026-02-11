@@ -1,8 +1,8 @@
-import { BadgeGeneric } from './BadgeGeneric'
+import { Badge } from './Badge'
 
 export default {
-  title: 'UI/BadgeGeneric',
-  component: BadgeGeneric,
+  title: 'UI/Badge',
+  component: Badge,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
@@ -305,15 +305,15 @@ export const TamanoGrande = {
 export const TodasLasVariantes = {
   render: () => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
-      <BadgeGeneric variant="default" icon="circle">Default</BadgeGeneric>
-      <BadgeGeneric variant="primary" icon="star">Primary</BadgeGeneric>
-      <BadgeGeneric variant="secondary" icon="favorite">Secondary</BadgeGeneric>
-      <BadgeGeneric variant="success" icon="check_circle">Success</BadgeGeneric>
-      <BadgeGeneric variant="warning" icon="warning">Warning</BadgeGeneric>
-      <BadgeGeneric variant="error" icon="error">Error</BadgeGeneric>
-      <BadgeGeneric variant="info" icon="info">Info</BadgeGeneric>
-      <BadgeGeneric variant="neutral" icon="remove">Neutral</BadgeGeneric>
-      <BadgeGeneric variant="custom" icon="palette" customColor={{ bg: '#fef3c7', text: '#92400e' }}>Custom</BadgeGeneric>
+      <Badge variant="default" icon="circle">Default</Badge>
+      <Badge variant="primary" icon="star">Primary</Badge>
+      <Badge variant="secondary" icon="favorite">Secondary</Badge>
+      <Badge variant="success" icon="check_circle">Success</Badge>
+      <Badge variant="warning" icon="warning">Warning</Badge>
+      <Badge variant="error" icon="error">Error</Badge>
+      <Badge variant="info" icon="info">Info</Badge>
+      <Badge variant="neutral" icon="remove">Neutral</Badge>
+      <Badge variant="custom" icon="palette" customColor={{ bg: '#fef3c7', text: '#92400e' }}>Custom</Badge>
     </div>
   ),
   parameters: {
@@ -329,10 +329,10 @@ export const TodasLasVariantes = {
 export const TodosLosTamanos = {
   render: () => (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-      <BadgeGeneric variant="primary" size="xs" icon="star">Extra Pequeño</BadgeGeneric>
-      <BadgeGeneric variant="primary" size="sm" icon="star">Pequeño</BadgeGeneric>
-      <BadgeGeneric variant="primary" size="md" icon="star">Mediano</BadgeGeneric>
-      <BadgeGeneric variant="primary" size="lg" icon="star">Grande</BadgeGeneric>
+      <Badge variant="primary" size="xs" icon="star">Extra Pequeño</Badge>
+      <Badge variant="primary" size="sm" icon="star">Pequeño</Badge>
+      <Badge variant="primary" size="md" icon="star">Mediano</Badge>
+      <Badge variant="primary" size="lg" icon="star">Grande</Badge>
     </div>
   ),
   parameters: {
@@ -370,27 +370,27 @@ export const CasosDeUso = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <span style={{ width: '100px', color: '#666' }}>Estados:</span>
-        <BadgeGeneric variant="success" icon="check_circle">Activo</BadgeGeneric>
-        <BadgeGeneric variant="warning" icon="schedule">Pendiente</BadgeGeneric>
-        <BadgeGeneric variant="error" icon="cancel">Cancelado</BadgeGeneric>
+        <Badge variant="success" icon="check_circle">Activo</Badge>
+        <Badge variant="warning" icon="schedule">Pendiente</Badge>
+        <Badge variant="error" icon="cancel">Cancelado</Badge>
       </div>
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <span style={{ width: '100px', color: '#666' }}>Roles:</span>
-        <BadgeGeneric variant="primary" icon="admin_panel_settings">Admin</BadgeGeneric>
-        <BadgeGeneric variant="secondary" icon="edit">Editor</BadgeGeneric>
-        <BadgeGeneric variant="neutral" icon="person">Usuario</BadgeGeneric>
+        <Badge variant="primary" icon="admin_panel_settings">Admin</Badge>
+        <Badge variant="secondary" icon="edit">Editor</Badge>
+        <Badge variant="neutral" icon="person">Usuario</Badge>
       </div>
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <span style={{ width: '100px', color: '#666' }}>Categorías:</span>
-        <BadgeGeneric variant="info" icon="sports_soccer" pill>Fútbol</BadgeGeneric>
-        <BadgeGeneric variant="info" icon="sports_basketball" pill>Baloncesto</BadgeGeneric>
-        <BadgeGeneric variant="info" icon="sports_tennis" pill>Tenis</BadgeGeneric>
+        <Badge variant="info" icon="sports_soccer" pill>Fútbol</Badge>
+        <Badge variant="info" icon="sports_basketball" pill>Baloncesto</Badge>
+        <Badge variant="info" icon="sports_tennis" pill>Tenis</Badge>
       </div>
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <span style={{ width: '100px', color: '#666' }}>Custom:</span>
-        <BadgeGeneric variant="custom" icon="local_fire_department" customColor={{ bg: '#fee2e2', text: '#dc2626' }}>Urgente</BadgeGeneric>
-        <BadgeGeneric variant="custom" icon="eco" customColor={{ bg: '#d1fae5', text: '#059669' }}>Eco</BadgeGeneric>
-        <BadgeGeneric variant="custom" icon="diamond" customColor={{ bg: '#ede9fe', text: '#7c3aed' }}>Premium</BadgeGeneric>
+        <Badge variant="custom" icon="local_fire_department" customColor={{ bg: '#fee2e2', text: '#dc2626' }}>Urgente</Badge>
+        <Badge variant="custom" icon="eco" customColor={{ bg: '#d1fae5', text: '#059669' }}>Eco</Badge>
+        <Badge variant="custom" icon="diamond" customColor={{ bg: '#ede9fe', text: '#7c3aed' }}>Premium</Badge>
       </div>
     </div>
   ),
@@ -411,18 +411,18 @@ export const Tarjetas = {
         Ejemplo de uso de badges xs para tarjetas en historial de partidos:
       </p>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <BadgeGeneric variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>1</BadgeGeneric>
-        <BadgeGeneric variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>0</BadgeGeneric>
+        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>1</Badge>
+        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>0</Badge>
         <span style={{ color: '#666', fontSize: '14px', marginLeft: '8px' }}>← Sin tarjetas rojas</span>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <BadgeGeneric variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>2</BadgeGeneric>
-        <BadgeGeneric variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>1</BadgeGeneric>
+        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>2</Badge>
+        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>1</Badge>
         <span style={{ color: '#666', fontSize: '14px', marginLeft: '8px' }}>← 2 amarillas, 1 roja</span>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <BadgeGeneric variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>0</BadgeGeneric>
-        <BadgeGeneric variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>0</BadgeGeneric>
+        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>0</Badge>
+        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>0</Badge>
         <span style={{ color: '#666', fontSize: '14px', marginLeft: '8px' }}>← Sin tarjetas</span>
       </div>
     </div>
@@ -448,7 +448,7 @@ export const IconosDisponibles = {
         <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Navegación / Menú</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {['home', 'menu', 'close', 'arrow_back', 'arrow_forward', 'group', 'groups', 'assignment', 'cell_tower', 'manage_accounts', 'notifications'].map((iconName) => (
-            <BadgeGeneric key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</BadgeGeneric>
+            <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>
@@ -457,7 +457,7 @@ export const IconosDisponibles = {
         <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Contacto / Información</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {['calendar_month', 'calendar_today', 'mail', 'phone', 'location_on', 'bolt', 'cake', 'tag', 'info', 'help'].map((iconName) => (
-            <BadgeGeneric key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</BadgeGeneric>
+            <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>
@@ -466,7 +466,7 @@ export const IconosDisponibles = {
         <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Acciones</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {['edit', 'delete', 'add', 'remove', 'save', 'send', 'download', 'archive', 'visibility', 'content_copy', 'swap_horiz', 'search', 'settings'].map((iconName) => (
-            <BadgeGeneric key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</BadgeGeneric>
+            <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>
@@ -475,7 +475,7 @@ export const IconosDisponibles = {
         <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Usuarios</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {['person', 'person_add', 'person_off', 'admin_panel_settings', 'logout', 'badge'].map((iconName) => (
-            <BadgeGeneric key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</BadgeGeneric>
+            <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>
@@ -484,7 +484,7 @@ export const IconosDisponibles = {
         <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Estados</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {['check_circle', 'cancel', 'warning', 'error', 'schedule', 'pause_circle', 'block', 'healing', 'delete_forever', 'gavel'].map((iconName) => (
-            <BadgeGeneric key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</BadgeGeneric>
+            <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>
@@ -493,7 +493,7 @@ export const IconosDisponibles = {
         <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Datos / Estadísticas</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {['bar_chart', 'trending_up', 'history', 'emoji_events', 'target'].map((iconName) => (
-            <BadgeGeneric key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</BadgeGeneric>
+            <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>
@@ -502,7 +502,7 @@ export const IconosDisponibles = {
         <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Deportes</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {['sports_soccer', 'sports_handball', 'sports_basketball', 'sports_tennis', 'shield', 'sync_alt'].map((iconName) => (
-            <BadgeGeneric key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</BadgeGeneric>
+            <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>
@@ -511,7 +511,7 @@ export const IconosDisponibles = {
         <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Formas / Decoración</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {['star', 'favorite', 'circle', 'square', 'diamond', 'label', 'palette', 'brush', 'eco', 'local_fire_department'].map((iconName) => (
-            <BadgeGeneric key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</BadgeGeneric>
+            <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>

@@ -5,7 +5,6 @@ import { Icon } from '../Icon/Icon'
 import { DataTableActions } from '../DataTableActions/DataTableActions'
 import { defaultStyles, defaultPaginationOptions } from './dataTableStyles'
 
-// Estilos por defecto para DaisyUI (compatibilidad hacia atrás)
 const legacyStyles = {
   table: {
     style: {
@@ -33,6 +32,10 @@ const legacyStyles = {
       backgroundColor: 'oklch(var(--b1))',
       borderBottomColor: 'oklch(var(--b3))',
       minHeight: '3.25rem',
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: 'oklch(var(--b2))',
+      },
     },
   },
   cells: {
@@ -40,6 +43,7 @@ const legacyStyles = {
       color: 'oklch(var(--bc))',
       paddingLeft: '1rem',
       paddingRight: '1rem',
+      cursor: 'pointer',
     },
   },
   pagination: {
@@ -61,7 +65,6 @@ const legacyStyles = {
   },
 }
 
-// Componente de loading
 function LoadingComponent() {
   return (
     <div className="py-10 flex justify-center">
@@ -70,7 +73,6 @@ function LoadingComponent() {
   )
 }
 
-// Componente cuando no hay datos
 function NoDataComponent({ message }) {
   return (
     <div className="py-10 text-center text-base-content/60">
@@ -84,8 +86,7 @@ NoDataComponent.propTypes = {
   message: PropTypes.string,
 }
 
-// Transforma nuestras columnas al formato de react-data-table-component
-function transformColumns(columns, actions) {
+function transformColumns(columns, actions, actionsTitle) {
   const transformed = columns.map(col => ({
     name: col.label,
     selector: row => row[col.key],
@@ -98,23 +99,72 @@ function transformColumns(columns, actions) {
       : undefined,
   }))
 
-  // Añadir columna de acciones si hay actions
   if (actions && actions.length > 0) {
     transformed.push({
-      name: '',
-      width: '10%',
-      cell: row => <DataTableActions actions={actions} row={row} />,
+      name: actionsTitle,
+      width: '100px',
+      center: true,
+      cell: row => <DataTableActions actions={actions} row={row} title={actionsTitle} />,
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-      },
     })
   }
 
   return transformed
+}
+
+function BulkActionsBar({ selectedCount, bulkActions, selectedRows, onClearSelection }) {
+  if (selectedCount === 0) return null
+
+  const normalActions = bulkActions.filter(a => a.variant !== 'danger')
+  const dangerActions = bulkActions.filter(a => a.variant === 'danger')
+
+  return (
+    <div className="flex items-center justify-between gap-4 px-4 py-3 bg-primary/10 border-b border-primary/20">
+      <div className="flex items-center gap-3">
+        <span className="text-sm font-medium text-primary">
+          <Icon name="check_box" size="sm" className="mr-1 align-middle" />
+          {selectedCount} {selectedCount === 1 ? 'fila seleccionada' : 'filas seleccionadas'}
+        </span>
+        <button
+          className="btn btn-ghost btn-xs text-base-content/60"
+          onClick={onClearSelection}
+        >
+          Deseleccionar
+        </button>
+      </div>
+      <div className="flex items-center gap-2">
+        {normalActions.map((action, index) => (
+          <button
+            key={index}
+            className="btn btn-sm btn-ghost"
+            onClick={() => action.onClick(selectedRows)}
+          >
+            {action.icon && <Icon name={action.icon} size="sm" />}
+            {action.label}
+          </button>
+        ))}
+        {dangerActions.map((action, index) => (
+          <button
+            key={index}
+            className="btn btn-sm btn-error btn-outline"
+            onClick={() => action.onClick(selectedRows)}
+          >
+            {action.icon && <Icon name={action.icon} size="sm" />}
+            {action.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+BulkActionsBar.propTypes = {
+  selectedCount: PropTypes.number.isRequired,
+  bulkActions: PropTypes.array.isRequired,
+  selectedRows: PropTypes.array.isRequired,
+  onClearSelection: PropTypes.func.isRequired,
 }
 
 export function DataTable({
@@ -124,6 +174,9 @@ export function DataTable({
   selectable = false,
   onSelectionChange,
   actions = [],
+  actionsTitle = 'Acciones',
+  bulkActions = [],
+  showBulkActionsBar = true,
   isLoading = false,
   emptyMessage = 'Sin datos',
   pagination = false,
@@ -131,39 +184,34 @@ export function DataTable({
   paginationRowsPerPageOptions = [5, 10, 20, 50],
   onRowClick,
   className = '',
-  // New props for search and filters
   searchable = false,
   searchPlaceholder = 'Buscar...',
   searchKeys = [],
   filters = [],
-  // Style variant
-  variant = 'default', // 'default' | 'green'
+  variant = 'default',
 }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterValues, setFilterValues] = useState(
     filters.reduce((acc, filter) => ({ ...acc, [filter.key]: '' }), {})
   )
+  const [selectedRows, setSelectedRows] = useState([])
+  const [toggleCleared, setToggleCleared] = useState(false)
 
-  // Choose styles based on variant
   const customStyles = variant === 'green' ? defaultStyles : legacyStyles
 
-  // Handle filter change
   const handleFilterChange = (key, value) => {
     setFilterValues(prev => ({ ...prev, [key]: value }))
   }
 
-  // Filtered data
   const filteredData = useMemo(() => {
     if (!searchable && filters.length === 0) return data
 
     return data.filter(item => {
-      // Search filter
       const matchesSearch = !searchable || !searchTerm || searchKeys.some(key => {
         const value = item[key]
         return value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
       })
 
-      // Custom filters
       const matchesFilters = filters.every(filter => {
         const filterValue = filterValues[filter.key]
         if (!filterValue) return true
@@ -175,39 +223,43 @@ export function DataTable({
   }, [data, searchTerm, searchKeys, searchable, filters, filterValues])
 
   const handleSelectionChange = ({ selectedRows: selected }) => {
+    setSelectedRows(selected)
     if (onSelectionChange) {
       const selectedIds = selected.map(row => row[keyField])
-      onSelectionChange(selectedIds)
+      onSelectionChange(selectedIds, selected)
     }
   }
 
-  const LoadingComponent = () => (
-    <div className="py-10 flex justify-center">
-      <span className="loading loading-spinner loading-lg text-primary"></span>
-    </div>
-  )
-
-  const NoDataComponent = () => (
-    <div className="py-10 text-center text-base-content/60">
-      <Icon name="inbox" size="lg" className="mb-2 opacity-40" />
-      <p>{emptyMessage}</p>
-    </div>
-  )
+  const handleClearSelection = () => {
+    setToggleCleared(!toggleCleared)
+    setSelectedRows([])
+    if (onSelectionChange) {
+      onSelectionChange([], [])
+    }
+  }
 
   const hasToolbar = searchable || filters.length > 0
+  const hasBulkActions = bulkActions.length > 0 && showBulkActionsBar
   const containerClass = variant === 'green'
-    ? 'rounded-xl shadow-sm overflow-hidden'
+    ? 'rounded-xl shadow-sm overflow-visible'
     : `overflow-x-auto ${className}`
   const containerStyle = variant === 'green'
     ? { backgroundColor: 'oklch(98% 0.02 175)' }
     : {}
 
   return (
-    <div test-id="el-dt1a2b3c" className={containerClass} style={containerStyle}>
-      {/* Toolbar: Search + Filters */}
+    <div test-id="el-dtg1a2b3c" className={containerClass} style={containerStyle}>
+      {hasBulkActions && selectedRows.length > 0 && (
+        <BulkActionsBar
+          selectedCount={selectedRows.length}
+          bulkActions={bulkActions}
+          selectedRows={selectedRows}
+          onClearSelection={handleClearSelection}
+        />
+      )}
+
       {hasToolbar && (
         <div className="flex items-center justify-between gap-4 p-4 border-b border-gray-200">
-          {/* Search */}
           {searchable && (
             <div className="relative flex-1 max-w-lg">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
@@ -223,7 +275,6 @@ export function DataTable({
             </div>
           )}
 
-          {/* Filters */}
           {filters.length > 0 && (
             <div className="flex items-center gap-3">
               {filters.map(filter => (
@@ -247,19 +298,20 @@ export function DataTable({
       )}
 
       <ReactDataTable
-        columns={transformColumns(columns, actions)}
+        columns={transformColumns(columns, actions, actionsTitle)}
         data={filteredData}
         keyField={keyField}
         customStyles={customStyles}
         selectableRows={selectable}
         onSelectedRowsChange={handleSelectionChange}
+        clearSelectedRows={toggleCleared}
         pagination={pagination}
         paginationPerPage={paginationPerPage}
         paginationRowsPerPageOptions={paginationRowsPerPageOptions}
         paginationComponentOptions={defaultPaginationOptions}
         progressPending={isLoading}
         progressComponent={<LoadingComponent />}
-        noDataComponent={<NoDataComponent />}
+        noDataComponent={<NoDataComponent message={emptyMessage} />}
         highlightOnHover
         pointerOnHover={!!onRowClick}
         onRowClicked={onRowClick}
@@ -293,6 +345,16 @@ DataTable.propTypes = {
       show: PropTypes.func,
     })
   ),
+  actionsTitle: PropTypes.string,
+  bulkActions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      icon: PropTypes.string,
+      onClick: PropTypes.func.isRequired,
+      variant: PropTypes.oneOf(['default', 'danger']),
+    })
+  ),
+  showBulkActionsBar: PropTypes.bool,
   isLoading: PropTypes.bool,
   emptyMessage: PropTypes.string,
   pagination: PropTypes.bool,
@@ -300,13 +362,9 @@ DataTable.propTypes = {
   paginationRowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
   onRowClick: PropTypes.func,
   className: PropTypes.string,
-  /** Habilitar búsqueda */
   searchable: PropTypes.bool,
-  /** Placeholder del input de búsqueda */
   searchPlaceholder: PropTypes.string,
-  /** Keys del objeto a buscar */
   searchKeys: PropTypes.arrayOf(PropTypes.string),
-  /** Configuración de filtros */
   filters: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,
@@ -319,6 +377,7 @@ DataTable.propTypes = {
       ).isRequired,
     })
   ),
-  /** Variante de estilos: 'default' o 'green' */
   variant: PropTypes.oneOf(['default', 'green']),
 }
+
+export default DataTable

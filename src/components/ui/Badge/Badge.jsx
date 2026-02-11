@@ -9,7 +9,7 @@ const variantColors = {
   error: { bg: 'oklch(85% 0.15 25)', text: 'oklch(45% 0.18 25)' },
   info: { bg: 'oklch(88% 0.10 230)', text: 'oklch(45% 0.15 230)' },
   neutral: { bg: 'oklch(90% 0.02 260)', text: 'oklch(40% 0.02 260)' },
-  custom: null, // Se usará customColor
+  custom: null,
 }
 
 const sizeConfig = {
@@ -19,7 +19,7 @@ const sizeConfig = {
   lg: { padding: '8px 18px', fontSize: '16px', iconSize: '22px', minWidth: '120px' },
 }
 
-export function BadgeGeneric({
+export function Badge({
   children,
   variant = 'default',
   size = 'md',
@@ -31,7 +31,6 @@ export function BadgeGeneric({
   minWidth,
   className = '',
 }) {
-  // Si variant es 'custom', usar customColor; sino, usar la variante predefinida
   const colors = variant === 'custom'
     ? customColor
     : (variantColors[variant] || variantColors.default)
@@ -69,30 +68,20 @@ export function BadgeGeneric({
   )
 }
 
-BadgeGeneric.propTypes = {
-  /** Texto del badge */
+Badge.propTypes = {
   children: PropTypes.node.isRequired,
-  /** Variante de color (usa 'custom' para colores personalizados) */
   variant: PropTypes.oneOf(['default', 'primary', 'secondary', 'success', 'warning', 'error', 'info', 'neutral', 'custom']),
-  /** Tamaño del badge */
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg']),
-  /** Nombre del icono (Material Symbols) */
   icon: PropTypes.string,
-  /** Posición del icono */
   iconPosition: PropTypes.oneOf(['left', 'right']),
-  /** Bordes completamente redondeados */
   pill: PropTypes.bool,
-  /** Solo borde, sin fondo */
   outline: PropTypes.bool,
-  /** Colores personalizados (solo se usa cuando variant='custom') */
   customColor: PropTypes.shape({
     bg: PropTypes.string,
     text: PropTypes.string,
   }),
-  /** Ancho mínimo personalizado (ej: '100px', '8rem') */
   minWidth: PropTypes.string,
-  /** Clases CSS adicionales */
   className: PropTypes.string,
 }
 
-export default BadgeGeneric
+export default Badge

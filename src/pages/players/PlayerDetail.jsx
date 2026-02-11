@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { PageHeader } from '../../components/ui/PageHeader'
-import { CardGeneric } from '../../components/ui/CardGeneric'
+import { Card } from '../../components/ui/Card'
 import { InfoItem } from '../../components/ui/InfoItem'
 import { StatBox } from '../../components/ui/StatBox'
-import { BadgeGeneric } from '../../components/ui/BadgeGeneric'
+import { Badge } from '../../components/ui/Badge'
 import { Tabs } from '../../components/ui/Tabs'
-import { DataTableGeneric } from '../../components/ui/DataTableGeneric'
+import { DataTable } from '../../components/ui/DataTable'
 import { ModalPersona } from '../../components/ui/ModalPersona'
 import {
   jugadoresData,
@@ -17,22 +17,18 @@ import {
   estadoConfig,
 } from './data/mockData'
 
-export function JugadorDetallePage() {
+export function PlayerDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  // Buscar jugador inicial
   const jugadorInicial = jugadoresData.find((j) => j.id === parseInt(id))
 
-  // Estados
   const [jugador, setJugador] = useState(jugadorInicial)
   const [modalOpen, setModalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('todos')
 
-  // Historial del jugador
   const historialCompleto = historialPartidosData[id] || []
 
-  // Filtrar historial según tab
   const historialFiltrado = useMemo(() => {
     switch (activeTab) {
       case 'ultimos5':
@@ -46,7 +42,6 @@ export function JugadorDetallePage() {
     }
   }, [historialCompleto, activeTab])
 
-  // Si no existe el jugador
   if (!jugadorInicial) {
     return (
       <div style={{ padding: '24px', textAlign: 'center' }}>
@@ -58,7 +53,6 @@ export function JugadorDetallePage() {
     )
   }
 
-  // Handlers
   const handleBack = () => {
     navigate('/jugadores')
   }
@@ -68,18 +62,16 @@ export function JugadorDetallePage() {
   }
 
   const handleGuardar = (datos) => {
-    // Actualizar el estado local del jugador con los nuevos datos
+
     const jugadorActualizado = { ...jugador, ...datos }
     setJugador(jugadorActualizado)
-    // Guardar en localStorage para que JugadoresPage lo muestre primero
+
     localStorage.setItem('jugadorEditado', JSON.stringify(jugadorActualizado))
     setModalOpen(false)
   }
 
-  // Formatear fecha de nacimiento
   const fechaNacimientoFormateada = formatFecha(jugador.fechaNacimiento)
 
-  // Columnas del historial
   const historialColumns = [
     {
       key: 'fecha',
@@ -94,26 +86,26 @@ export function JugadorDetallePage() {
       width: '100px',
       align: 'center',
       render: (_, row) => {
-        // Determinar resultado: si esLocal, golesA son nuestros; si no, golesB son nuestros
+
         const golesNuestros = row.esLocal ? row.golesA : row.golesB
         const golesRival = row.esLocal ? row.golesB : row.golesA
 
         let colorConfig
         if (golesNuestros > golesRival) {
-          // Victoria - verde tenue
+     
           colorConfig = { bg: '#86efac', text: '#166534' }
         } else if (golesNuestros < golesRival) {
-          // Derrota - rojo tenue
+     
           colorConfig = { bg: '#fca5a5', text: '#991b1b' }
         } else {
-          // Empate - gris tenue
+   
           colorConfig = { bg: '#d1d5db', text: '#374151' }
         }
 
         return (
-          <BadgeGeneric variant="custom" size="sm" customColor={colorConfig}>
+          <Badge variant="custom" size="sm" customColor={colorConfig}>
             {row.golesA}-{row.golesB}
-          </BadgeGeneric>
+          </Badge>
         )
       },
     },
@@ -149,24 +141,24 @@ export function JugadorDetallePage() {
         return (
           <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
             {row.tarjetasAmarillas > 0 && (
-              <BadgeGeneric
+              <Badge
                 variant="custom"
                 size="xs"
                 customColor={{ bg: '#fde047', text: '#854d0e' }}
                 minWidth="28px"
               >
                 {row.tarjetasAmarillas}
-              </BadgeGeneric>
+              </Badge>
             )}
             {row.tarjetasRojas > 0 && (
-              <BadgeGeneric
+              <Badge
                 variant="custom"
                 size="xs"
                 customColor={{ bg: '#fca5a5', text: '#991b1b' }}
                 minWidth="28px"
               >
                 {row.tarjetasRojas}
-              </BadgeGeneric>
+              </Badge>
             )}
           </div>
         )
@@ -174,7 +166,7 @@ export function JugadorDetallePage() {
     },
   ]
 
-  // Calcular promedio de minutos
+
   const promedioMinutos =
     historialCompleto.length > 0
       ? Math.round(historialCompleto.reduce((acc, p) => acc + p.minutos, 0) / historialCompleto.length)
@@ -182,7 +174,7 @@ export function JugadorDetallePage() {
 
   return (
     <div style={{ padding: '24px' }}>
-      {/* Header */}
+
       <PageHeader
         title={`${jugador.nombre} ${jugador.apellidos}`}
         subtitle={`Dorsal ${jugador.dorsal} · ${jugador.posicion}`}
@@ -196,10 +188,10 @@ export function JugadorDetallePage() {
         }
       />
 
-      {/* Cards row */}
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '16px', marginTop: '24px' }}>
-        {/* Info Personal */}
-        <CardGeneric title="Información Personal">
+
+        <Card title="Información Personal">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <InfoItem
               icon="calendar_month"
@@ -213,34 +205,34 @@ export function JugadorDetallePage() {
               icon="sports_soccer"
               label="Posición"
               badge={
-                <BadgeGeneric
+                <Badge
                   variant="custom"
                   size="sm"
                   icon={posicionConfig[jugador.posicion]?.icon}
                   customColor={posicionConfig[jugador.posicion]?.color}
                 >
                   {jugador.posicion}
-                </BadgeGeneric>
+                </Badge>
               }
             />
             <InfoItem
               icon="bolt"
               label="Estado"
               badge={
-                <BadgeGeneric
+                <Badge
                   variant={estadoConfig[jugador.estado]?.variant || 'neutral'}
                   size="sm"
                   icon={estadoConfig[jugador.estado]?.icon}
                 >
                   {jugador.estado}
-                </BadgeGeneric>
+                </Badge>
               }
             />
           </div>
-        </CardGeneric>
+        </Card>
 
-        {/* Estadísticas */}
-        <CardGeneric title="Estadísticas de la Temporada" icon="trending_up">
+
+        <Card title="Estadísticas de la Temporada" icon="trending_up">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '16px', marginBottom: '20px' }}>
             <StatBox value={jugador.partidos} label="Partidos" />
             <StatBox value={jugador.minutos} label="Minutos" />
@@ -252,26 +244,24 @@ export function JugadorDetallePage() {
           <p style={{ textAlign: 'center', fontSize: '14px', color: '#4a5568', margin: 0 }}>
             Promedio de minutos por partido: <strong>{promedioMinutos} min</strong>
           </p>
-        </CardGeneric>
+        </Card>
       </div>
 
-      {/* Historial de Partidos */}
       <div style={{ marginTop: '16px' }}>
-        <CardGeneric title="Historial de Partidos">
+        <Card title="Historial de Partidos">
           <div style={{ marginBottom: '16px' }}>
             <Tabs tabs={historialTabs} activeTab={activeTab} onChange={setActiveTab} />
           </div>
           {historialFiltrado.length > 0 ? (
-            <DataTableGeneric columns={historialColumns} data={historialFiltrado} />
+            <DataTable columns={historialColumns} data={historialFiltrado} />
           ) : (
             <div style={{ padding: '40px', textAlign: 'center', color: '#718096' }}>
               No hay partidos para mostrar
             </div>
           )}
-        </CardGeneric>
+        </Card>
       </div>
 
-      {/* Modal */}
       <ModalPersona
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

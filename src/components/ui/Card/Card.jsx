@@ -1,54 +1,90 @@
 import PropTypes from 'prop-types'
 
-const variantClasses = {
-  default: 'bg-base-100 shadow-xl',
-  outlined: 'bg-base-100 border border-base-300',
-  flat: 'bg-base-200',
-}
+export function Card({
+  title,
+  icon,
+  children,
+  variant = 'default',
+  padding = 'md',
+  className = '',
+}) {
+  const variantStyles = {
+    default: {
+      background: 'oklch(95% 0.03 155)',
+      border: '1px solid oklch(90% 0.05 155)',
+    },
+    primary: {
+      background: 'oklch(92% 0.08 155)',
+      border: '1px solid oklch(85% 0.10 155)',
+    },
+    secondary: {
+      background: 'oklch(95% 0.02 260)',
+      border: '1px solid oklch(90% 0.03 260)',
+    },
+    white: {
+      background: '#ffffff',
+      border: '1px solid oklch(92% 0.02 260)',
+    },
+  }
 
-export function Card({ children, variant = 'default', className = '' }) {
-  const classes = [
-    'card',
-    variantClasses[variant],
-    className,
-  ].filter(Boolean).join(' ')
+  const paddingStyles = {
+    sm: '12px',
+    md: '20px',
+    lg: '28px',
+    none: '0',
+  }
+
+  const style = {
+    ...variantStyles[variant],
+    borderRadius: '12px',
+    padding: paddingStyles[padding],
+  }
+
+  const headerStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: title ? '16px' : '0',
+  }
+
+  const titleStyle = {
+    fontSize: '16px',
+    fontWeight: 600,
+    color: 'oklch(25% 0.02 260)',
+    margin: 0,
+  }
+
+  const iconStyle = {
+    fontSize: '20px',
+    color: 'oklch(45% 0.10 155)',
+  }
 
   return (
-    <div test-id="el-i9j0k1l2" className={classes}>
-      {children}
+    <div className={`card-generic ${className}`} style={style}>
+      {title && (
+        <div style={headerStyle}>
+          {icon && (
+            <span className="material-symbols-outlined" style={iconStyle}>
+              {icon}
+            </span>
+          )}
+          <h3 style={titleStyle}>{title}</h3>
+        </div>
+      )}
+      <div className="card-generic-content">
+        {children}
+      </div>
     </div>
   )
 }
 
-Card.Body = function CardBody({ children, className = '' }) {
-  return <div test-id="el-m3n4o5p6" className={`card-body ${className}`}>{children}</div>
-}
-
-Card.Title = function CardTitle({ children, className = '' }) {
-  return <h2 test-id="el-q7r8s9t0" className={`card-title ${className}`}>{children}</h2>
-}
-
-Card.Actions = function CardActions({ children, className = '' }) {
-  return <div test-id="el-u1v2w3x4" className={`card-actions ${className}`}>{children}</div>
-}
-
 Card.propTypes = {
+  title: PropTypes.string,
+  icon: PropTypes.string,
   children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['default', 'outlined', 'flat']),
+  variant: PropTypes.oneOf(['default', 'primary', 'secondary', 'white']),
+  padding: PropTypes.oneOf(['none', 'sm', 'md', 'lg']),
   className: PropTypes.string,
 }
 
-Card.Body.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-}
-
-Card.Title.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-}
-
-Card.Actions.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-}
+export default Card

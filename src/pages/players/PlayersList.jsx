@@ -4,8 +4,8 @@ import { PageHeader } from '../../components/ui/PageHeader'
 import { StatsCard } from '../../components/ui/StatsCard'
 import { SearchInput } from '../../components/ui/SearchInput'
 import { SelectFilter } from '../../components/ui/SelectFilter'
-import { DataTableGeneric } from '../../components/ui/DataTableGeneric'
-import { BadgeGeneric } from '../../components/ui/BadgeGeneric'
+import { DataTable } from '../../components/ui/DataTable'
+import { Badge } from '../../components/ui/Badge'
 import { Avatar } from '../../components/ui/Avatar/Avatar'
 import { ModalPersona } from '../../components/ui/ModalPersona'
 import {
@@ -17,45 +17,39 @@ import {
   getStatsPorPosicion,
 } from './data/mockData'
 
-export function JugadoresPage() {
+export function PlayersList() {
   const navigate = useNavigate()
 
-  // Estado de jugadores
   const [jugadores, setJugadores] = useState(initialJugadores)
 
-  // Estados para filtros
   const [searchTerm, setSearchTerm] = useState('')
   const [posicionFilter, setPosicionFilter] = useState('')
   const [estadoFilter, setEstadoFilter] = useState('')
 
-  // Estados para modal
   const [modalOpen, setModalOpen] = useState(false)
-  const [modalMode, setModalMode] = useState('nuevo') // 'nuevo' o 'editar'
+  const [modalMode, setModalMode] = useState('nuevo') 
   const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null)
 
-  // Verificar si hay un jugador editado desde la pantalla de detalle
   useEffect(() => {
     const jugadorEditadoStr = localStorage.getItem('jugadorEditado')
     if (jugadorEditadoStr) {
       const jugadorEditado = JSON.parse(jugadorEditadoStr)
-      // Actualizar el jugador en la lista y moverlo al principio
+
       setJugadores((prev) => {
         const sinEditado = prev.filter((j) => j.id !== jugadorEditado.id)
         return [jugadorEditado, ...sinEditado]
       })
-      // Limpiar filtros para mostrar el jugador editado
+
       setSearchTerm('')
       setPosicionFilter('')
       setEstadoFilter('')
-      // Limpiar localStorage
+
       localStorage.removeItem('jugadorEditado')
     }
   }, [])
 
-  // Calcular stats
   const stats = useMemo(() => getStatsPorPosicion(jugadores), [jugadores])
 
-  // Filtrar jugadores
   const jugadoresFiltrados = useMemo(() => {
     return jugadores.filter((jugador) => {
       const nombreCompleto = `${jugador.nombre} ${jugador.apellidos}`.toLowerCase()
@@ -69,7 +63,6 @@ export function JugadoresPage() {
     })
   }, [jugadores, searchTerm, posicionFilter, estadoFilter])
 
-  // Handlers
   const handleNuevoJugador = () => {
     setJugadorSeleccionado(null)
     setModalMode('nuevo')
@@ -98,9 +91,9 @@ export function JugadoresPage() {
         tarjetasAmarillas: 0,
         tarjetasRojas: 0,
       }
-      // Añadir al principio para que sea visible inmediatamente
+
       setJugadores([nuevoJugador, ...jugadores])
-      // Limpiar filtros para mostrar el nuevo jugador
+
       setSearchTerm('')
       setPosicionFilter('')
       setEstadoFilter('')
@@ -120,7 +113,6 @@ export function JugadoresPage() {
     }
   }
 
-  // Columnas de la tabla
   const columns = [
     {
       key: 'nombre',
@@ -143,7 +135,7 @@ export function JugadoresPage() {
       sortable: true,
       render: (value) => (
         <div style={{ pointerEvents: 'none' }}>
-          <BadgeGeneric
+          <Badge
             variant="custom"
             size="sm"
             icon={posicionConfig[value]?.icon}
@@ -151,7 +143,7 @@ export function JugadoresPage() {
             minWidth="130px"
           >
             {value}
-          </BadgeGeneric>
+          </Badge>
         </div>
       ),
     },
@@ -166,20 +158,19 @@ export function JugadoresPage() {
       sortable: true,
       render: (value) => (
         <div style={{ pointerEvents: 'none' }}>
-          <BadgeGeneric
+          <Badge
             variant={estadoConfig[value]?.variant || 'neutral'}
             size="sm"
             icon={estadoConfig[value]?.icon}
             minWidth="120px"
           >
             {value}
-          </BadgeGeneric>
+          </Badge>
         </div>
       ),
     },
   ]
 
-  // Acciones de la tabla
   const actions = [
     { label: 'Ver detalle', icon: 'visibility', onClick: handleVerDetalle },
     { label: 'Editar', icon: 'edit', onClick: handleEditarJugador },
@@ -188,7 +179,7 @@ export function JugadoresPage() {
 
   return (
     <div style={{ padding: '24px' }}>
-      {/* Header */}
+
       <PageHeader
         title="Jugadores"
         subtitle="Gestiona la plantilla del equipo"
@@ -200,7 +191,6 @@ export function JugadoresPage() {
         }
       />
 
-      {/* Stats Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginTop: '24px' }}>
         <StatsCard title="Total Jugadores" value={stats.total} variant="accent" />
         <StatsCard title="Porteros" value={stats.porteros} variant="accent" />
@@ -208,7 +198,6 @@ export function JugadoresPage() {
         <StatsCard title="Delanteros" value={stats.delanteros} variant="accent" />
       </div>
 
-      {/* Search & Filters */}
       <div style={{ display: 'flex', gap: '12px', marginTop: '16px', marginBottom: '16px' }}>
         <div style={{ flex: 2 }}>
           <SearchInput
@@ -231,9 +220,8 @@ export function JugadoresPage() {
         />
       </div>
 
-      {/* Table */}
       <div style={{ background: 'oklch(95% 0.03 155)', borderRadius: '12px', overflow: 'hidden' }}>
-        <DataTableGeneric
+        <DataTable
           columns={columns}
           data={jugadoresFiltrados}
           actions={actions}
@@ -244,7 +232,6 @@ export function JugadoresPage() {
         />
       </div>
 
-      {/* Modal */}
       <ModalPersona
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

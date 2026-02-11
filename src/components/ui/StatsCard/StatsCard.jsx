@@ -1,9 +1,5 @@
 import PropTypes from "prop-types";
 
-/**
- * StatsCard - Componente reutilizable para mostrar estadísticas
- * Muestra un título descriptivo y un valor numérico destacado
- */
 const StatsCard = ({
   title,
   value,
@@ -12,7 +8,6 @@ const StatsCard = ({
   variant = "default",
   className = "",
 }) => {
-  // Variantes de color usando clases DaisyUI
   const variantClasses = {
     default: "bg-base-200 text-base-content",
     primary: "bg-primary/10 text-primary border border-primary/20",
@@ -47,15 +42,10 @@ const StatsCard = ({
 };
 
 StatsCard.propTypes = {
-  /** Título descriptivo de la estadística */
   title: PropTypes.string.isRequired,
-  /** Valor numérico o texto a mostrar */
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  /** Texto secundario debajo del valor (opcional) */
   subtitle: PropTypes.node,
-  /** Nombre del icono de Material Symbols (opcional) */
   icon: PropTypes.string,
-  /** Variante de color */
   variant: PropTypes.oneOf([
     "default",
     "primary",
@@ -65,7 +55,6 @@ StatsCard.propTypes = {
     "warning",
     "error",
   ]),
-  /** Clases CSS adicionales */
   className: PropTypes.string,
 };
 

@@ -1,5 +1,5 @@
 import { InfoItem } from "./InfoItem";
-import { BadgeGeneric } from "../BadgeGeneric";
+import { Badge } from "../Badge";
 
 export default {
   title: "UI/InfoItem",
@@ -34,7 +34,7 @@ export const WithBadge = {
   args: {
     icon: "bolt",
     label: "Estado",
-    badge: <BadgeGeneric variant="success" size="sm">Disponible</BadgeGeneric>,
+    badge: <Badge variant="success" size="sm">Disponible</Badge>,
   },
 };
 
@@ -45,7 +45,7 @@ export const AllExamples = {
       <InfoItem icon="mail" label="Email" value="carlos.rodriguez@email.com" />
       <InfoItem icon="phone" label="Teléfono" value="+34 666 777 888" />
       <InfoItem icon="location_on" label="Dirección" value="Calle Mayor 123, Madrid" />
-      <InfoItem icon="bolt" label="Estado" badge={<BadgeGeneric variant="success" size="sm">Disponible</BadgeGeneric>} />
+      <InfoItem icon="bolt" label="Estado" badge={<Badge variant="success" size="sm">Disponible</Badge>} />
     </div>
   ),
 };

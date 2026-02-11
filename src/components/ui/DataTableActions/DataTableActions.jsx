@@ -12,18 +12,16 @@ export function DataTableActions({ actions, row, title = 'Acciones' }) {
     !action.show || action.show(row)
   )
 
-  // Calcular posición del menú
   const updatePosition = () => {
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect()
-      const menuHeight = 250 // Altura aproximada del menú
+      const menuHeight = 250
       const spaceBelow = window.innerHeight - rect.bottom
 
-      // Si no hay espacio abajo, mostrar arriba
       if (spaceBelow < menuHeight && rect.top > menuHeight) {
         setPosition({
           top: rect.top - 8,
-          left: rect.right - 192, // 192px = w-48
+          left: rect.right - 192,
           openUp: true
         })
       } else {
@@ -36,7 +34,6 @@ export function DataTableActions({ actions, row, title = 'Acciones' }) {
     }
   }
 
-  // Cerrar al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -82,7 +79,6 @@ export function DataTableActions({ actions, row, title = 'Acciones' }) {
 
   if (visibleActions.length === 0) return null
 
-  // Separar acciones normales de las danger
   const normalActions = visibleActions.filter(a => a.variant !== 'danger')
   const dangerActions = visibleActions.filter(a => a.variant === 'danger')
 
@@ -108,53 +104,48 @@ export function DataTableActions({ actions, row, title = 'Acciones' }) {
             zIndex: 99999,
           }}
         >
-          {/* Header */}
           {title && (
             <div className="px-4 py-2.5 border-b border-base-200 bg-base-100">
               <span className="font-semibold text-sm text-base-content">{title}</span>
             </div>
           )}
 
-          {/* Acciones normales */}
           {normalActions.length > 0 && (
-            <ul className="menu p-2 gap-0.5">
+            <div className="py-1">
               {normalActions.map((action, index) => (
-                <li key={index}>
-                  <a
-                    className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-base-200 transition-colors cursor-pointer"
-                    onClick={(e) => handleAction(e, action)}
-                  >
-                    {action.icon && (
-                      <Icon name={action.icon} size="sm" className="text-base-content/70" />
-                    )}
-                    <span>{action.label}</span>
-                  </a>
-                </li>
+                <a
+                  key={index}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-base-200 transition-colors cursor-pointer"
+                  onClick={(e) => handleAction(e, action)}
+                >
+                  {action.icon && (
+                    <Icon name={action.icon} size="sm" className="text-base-content/70" />
+                  )}
+                  <span>{action.label}</span>
+                </a>
               ))}
-            </ul>
+            </div>
           )}
 
-          {/* Separador y acciones danger */}
           {dangerActions.length > 0 && (
             <>
               {normalActions.length > 0 && (
-                <div className="border-t border-base-200 mx-2"></div>
+                <div className="border-t border-base-200"></div>
               )}
-              <ul className="menu p-2 gap-0.5">
+              <div className="py-1">
                 {dangerActions.map((action, index) => (
-                  <li key={index}>
-                    <a
-                      className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-error hover:bg-error/10 transition-colors cursor-pointer"
-                      onClick={(e) => handleAction(e, action)}
-                    >
-                      {action.icon && (
-                        <Icon name={action.icon} size="sm" />
-                      )}
-                      <span>{action.label}</span>
-                    </a>
-                  </li>
+                  <a
+                    key={index}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-error hover:bg-error/10 transition-colors cursor-pointer"
+                    onClick={(e) => handleAction(e, action)}
+                  >
+                    {action.icon && (
+                      <Icon name={action.icon} size="sm" />
+                    )}
+                    <span>{action.label}</span>
+                  </a>
                 ))}
-              </ul>
+              </div>
             </>
           )}
         </div>
@@ -164,24 +155,16 @@ export function DataTableActions({ actions, row, title = 'Acciones' }) {
 }
 
 DataTableActions.propTypes = {
-  /** Array de acciones disponibles */
   actions: PropTypes.arrayOf(
     PropTypes.shape({
-      /** Texto de la acción */
       label: PropTypes.string.isRequired,
-      /** Nombre del icono (Material Symbols) */
       icon: PropTypes.string,
-      /** Función a ejecutar al hacer clic */
       onClick: PropTypes.func.isRequired,
-      /** Variante de estilo: 'default' o 'danger' (rojo) */
       variant: PropTypes.oneOf(['default', 'danger']),
-      /** Función para mostrar/ocultar la acción según la fila */
       show: PropTypes.func,
     })
   ).isRequired,
-  /** Datos de la fila actual */
   row: PropTypes.object.isRequired,
-  /** Título del dropdown (por defecto: 'Acciones') */
   title: PropTypes.string,
 }
 
