@@ -11,14 +11,14 @@
   --color-primary-content: oklch(100% 0 0) !important;          /* blanco */
   --color-secondary: oklch(65% 0.06 160) !important;            /* #8AA39B */
   --color-secondary-content: oklch(100% 0 0) !important;        /* blanco */
-  --color-accent: oklch(92% 0.12 155) !important;               /* #A4F9C8 */
-  --color-accent-content: oklch(20% 0.02 260) !important;       /* gris oscuro */
-  --color-neutral: oklch(48% 0.05 160) !important;              /* #5C6F68 */
+  --color-accent: oklch(95% 0.04 160) !important;               /* verde muy claro - pill sidebar activo */
+  --color-accent-content: oklch(40% 0.08 160) !important;       /* verde oscuro - texto sidebar activo */
+  --color-neutral: oklch(45% 0.02 260) !important;              /* gris neutro */
   --color-neutral-content: oklch(100% 0 0) !important;
-  --color-base-100: oklch(98% 0.02 175) !important;             /* #EBFFFD */
-  --color-base-200: oklch(93% 0.04 170) !important;
-  --color-base-300: oklch(83% 0.09 165) !important;             /* #95D9C3 */
-  --color-base-content: oklch(20% 0.02 260) !important;         /* gris muy oscuro */
+  --color-base-100: oklch(100% 0 0) !important;                 /* blanco puro */
+  --color-base-200: oklch(96.5% 0 0) !important;               /* gris claro neutro */
+  --color-base-300: oklch(90% 0.005 260) !important;            /* gris claro - bordes */
+  --color-base-content: oklch(20% 0 0) !important;              /* gris muy oscuro puro */
   --color-info: oklch(62% 0.19 250) !important;
   --color-info-content: oklch(100% 0 0) !important;
   --color-success: oklch(65% 0.2 145) !important;
@@ -35,14 +35,14 @@
   --color-primary-content: oklch(15% 0.03 160) !important;      /* verde muy oscuro */
   --color-secondary: oklch(50% 0.06 160) !important;            /* verde medio */
   --color-secondary-content: oklch(100% 0 0) !important;
-  --color-accent: oklch(85% 0.12 155) !important;               /* verde menta */
-  --color-accent-content: oklch(15% 0.03 160) !important;
-  --color-neutral: oklch(25% 0.03 160) !important;              /* verde oscuro */
-  --color-neutral-content: oklch(90% 0.02 160) !important;
-  --color-base-100: oklch(20% 0.03 160) !important;             /* fondo verde oscuro */
-  --color-base-200: oklch(17% 0.03 160) !important;
-  --color-base-300: oklch(30% 0.04 160) !important;
-  --color-base-content: oklch(92% 0.02 160) !important;         /* texto claro verdoso */
+  --color-accent: oklch(30% 0.05 160) !important;               /* verde oscuro sutil - pill sidebar activo */
+  --color-accent-content: oklch(75% 0.1 160) !important;        /* verde claro - texto sidebar activo */
+  --color-neutral: oklch(25% 0.01 260) !important;              /* gris oscuro neutro */
+  --color-neutral-content: oklch(90% 0.005 260) !important;     /* gris claro neutro */
+  --color-base-100: oklch(20% 0.005 260) !important;            /* gris oscuro neutro */
+  --color-base-200: oklch(17% 0.005 260) !important;            /* gris muy oscuro neutro */
+  --color-base-300: oklch(28% 0.01 260) !important;             /* gris medio oscuro */
+  --color-base-content: oklch(92% 0.005 260) !important;        /* blanco neutro */
   --color-info: oklch(62% 0.19 250) !important;
   --color-info-content: oklch(100% 0 0) !important;
   --color-success: oklch(65% 0.2 145) !important;

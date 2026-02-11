@@ -9,7 +9,7 @@ export function SidebarItem({ icon, label, to, collapsed = false, onClick }) {
         to={to}
         onClick={onClick}
         className={({ isActive }) =>
-          `${isActive ? 'menu-item-active bg-primary text-primary-content' : ''} ${collapsed ? 'justify-center' : ''}`
+          `${isActive ? 'menu-item-active bg-accent text-accent-content font-semibold' : ''} ${collapsed ? 'justify-center' : ''}`
         }
         title={collapsed ? label : undefined}
       >
