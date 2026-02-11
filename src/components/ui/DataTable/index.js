@@ -1,2 +1,3 @@
-export { DataTable } from './DataTable';
-export { DataTableActions } from './DataTableActions';
+export { DataTable } from './DataTable'
+export { default } from './DataTable'
+export { defaultStyles, defaultPaginationOptions } from './dataTableStyles'
