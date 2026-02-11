@@ -73,10 +73,7 @@ export function Login() {
           </div>
         </div>
 
-        <Card>
-          <Card.Body>
-            <Card.Title className="justify-center mb-4">Iniciar sesión</Card.Title>
-
+        <Card title="Iniciar sesión" className="justify-center mb-4">
             <form onSubmit={handleSubmit}>
               <div className="form-control mb-4">
                 <label className="label">
@@ -127,7 +124,6 @@ export function Login() {
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
-          </Card.Body>
         </Card>
       </div>
     </div>
