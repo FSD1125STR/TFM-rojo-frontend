@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 export const SelectFilterProps = {
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
@@ -11,4 +11,5 @@ export const SelectFilterProps = {
   ).isRequired,
   placeholder: PropTypes.string,
   className: PropTypes.string,
+  multiple: PropTypes.bool,
 }

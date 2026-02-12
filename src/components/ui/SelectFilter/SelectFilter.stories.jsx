@@ -32,3 +32,33 @@ export const WithSelection = {
     onChange: (val) => console.log(val),
   },
 };
+
+export const MultiSelectEmpty = {
+  args: {
+    multiple: true,
+    placeholder: "Todas las posiciones",
+    value: [],
+    options: [
+      { value: "Portero", label: "Portero" },
+      { value: "Defensa", label: "Defensa" },
+      { value: "Centrocampista", label: "Centrocampista" },
+      { value: "Delantero", label: "Delantero" },
+    ],
+    onChange: (val) => console.log(val),
+  },
+};
+
+export const MultiSelectWithSelections = {
+  args: {
+    multiple: true,
+    placeholder: "Todas las posiciones",
+    value: ["Defensa", "Centrocampista"],
+    options: [
+      { value: "Portero", label: "Portero" },
+      { value: "Defensa", label: "Defensa" },
+      { value: "Centrocampista", label: "Centrocampista" },
+      { value: "Delantero", label: "Delantero" },
+    ],
+    onChange: (val) => console.log(val),
+  },
+};

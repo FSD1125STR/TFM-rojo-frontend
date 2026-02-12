@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 @plugin "daisyui";
+@import "preline/variants.css";
+@source "../node_modules/preline/dist/*.js";
 
 /* FootMind Design System - Custom Theme Colors for DaisyUI v5 */
 /* Usando !important para sobrescribir los colores de DaisyUI */
