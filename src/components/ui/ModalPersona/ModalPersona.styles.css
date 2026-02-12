@@ -1,6 +1,3 @@
-/* ModalPersona Styles - FootMind Design System */
-/* Usando los colores oklch del proyecto */
-
 .modal-persona .modal-box {
   width: 95%;
   max-width: 720px;
@@ -18,7 +15,6 @@
   }
 }
 
-/* Header del modal */
 .modal-persona-header {
   background: oklch(92% 0.12 155 / 0.15);
   border-bottom: 1px solid oklch(90% 0.05 155);
@@ -55,12 +51,10 @@
   color: oklch(50% 0.02 260);
 }
 
-/* Body del modal */
 .modal-persona-body {
   padding: 1rem 1.5rem;
 }
 
-/* Sección título */
 .modal-persona-section-title {
   display: flex;
   align-items: center;
@@ -80,14 +74,12 @@
   color: oklch(48% 0.05 160);
 }
 
-/* Labels */
 .modal-persona .form-control label span {
   font-weight: 600;
   font-size: 13px;
   color: oklch(50% 0.02 260);
 }
 
-/* Inputs con icono */
 .modal-persona-input-icon {
   position: relative;
 }
@@ -108,7 +100,6 @@
   padding-left: 36px !important;
 }
 
-/* Badge de edad - usa clases de DaisyUI input para heredar altura */
 .modal-persona .modal-persona-edad-badge {
   display: flex !important;
   align-items: center !important;
@@ -125,7 +116,6 @@
   font-size: 18px;
 }
 
-/* Footer del modal */
 .modal-persona-footer {
   background: oklch(98% 0.02 175);
   border-top: 1px solid oklch(90% 0.05 155);
@@ -136,7 +126,6 @@
   gap: 12px;
 }
 
-/* Botón primario personalizado */
 .modal-persona .btn-primary {
   background: linear-gradient(135deg, oklch(48% 0.05 160) 0%, oklch(40% 0.05 160) 100%);
   border: none;
@@ -150,7 +139,6 @@
   box-shadow: 0 4px 12px oklch(48% 0.05 160 / 0.4);
 }
 
-/* Botón ghost personalizado */
 .modal-persona .btn-ghost {
   color: oklch(50% 0.02 260);
   font-weight: 500;
@@ -161,7 +149,6 @@
   color: oklch(20% 0.02 260);
 }
 
-/* Focus en inputs */
 .modal-persona .input:focus,
 .modal-persona .select:focus {
   outline: none;
@@ -169,7 +156,6 @@
   box-shadow: 0 0 0 3px oklch(48% 0.05 160 / 0.15);
 }
 
-/* Input y select base */
 .modal-persona .input,
 .modal-persona .select {
   background: oklch(98% 0.02 175);
@@ -182,12 +168,10 @@
   color: oklch(60% 0.02 155);
 }
 
-/* Asterisco requerido */
 .modal-persona .text-error {
   color: oklch(60% 0.22 25);
 }
 
-/* Backdrop */
 .modal-persona::backdrop {
   background: rgba(0, 0, 0, 0.4);
 }

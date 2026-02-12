@@ -82,7 +82,6 @@ export default {
   },
 }
 
-// Story principal con todos los controles
 export const Default = {
   args: {
     children: 'Badge',
@@ -99,7 +98,6 @@ export const Default = {
   },
 }
 
-// Con icono
 export const ConIcono = {
   args: {
     children: 'Activo',
@@ -119,7 +117,6 @@ export const ConIcono = {
   },
 }
 
-// Icono a la derecha
 export const IconoDerecha = {
   args: {
     children: 'Siguiente',
@@ -139,7 +136,6 @@ export const IconoDerecha = {
   },
 }
 
-// Estilo Pill
 export const EstiloPill = {
   args: {
     children: 'Etiqueta',
@@ -159,7 +155,6 @@ export const EstiloPill = {
   },
 }
 
-// Estilo Outline
 export const EstiloOutline = {
   args: {
     children: 'Pendiente',
@@ -179,7 +174,6 @@ export const EstiloOutline = {
   },
 }
 
-// Pill + Outline
 export const PillOutline = {
   args: {
     children: 'Info',
@@ -199,7 +193,6 @@ export const PillOutline = {
   },
 }
 
-// Color Personalizado
 export const ColorPersonalizado = {
   args: {
     children: 'Personalizado',
@@ -220,7 +213,6 @@ export const ColorPersonalizado = {
   },
 }
 
-// Color Personalizado Outline
 export const ColorPersonalizadoOutline = {
   args: {
     children: 'Custom Outline',
@@ -241,7 +233,6 @@ export const ColorPersonalizadoOutline = {
   },
 }
 
-// Tamaño extra pequeño
 export const TamanoExtraPequeno = {
   args: {
     children: 'XS',
@@ -261,7 +252,6 @@ export const TamanoExtraPequeno = {
   },
 }
 
-// Tamaño pequeño
 export const TamanoPequeno = {
   args: {
     children: 'Pequeño',
@@ -281,7 +271,6 @@ export const TamanoPequeno = {
   },
 }
 
-// Tamaño grande
 export const TamanoGrande = {
   args: {
     children: 'Grande',
@@ -301,7 +290,6 @@ export const TamanoGrande = {
   },
 }
 
-// Todas las variantes
 export const TodasLasVariantes = {
   render: () => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
@@ -325,7 +313,6 @@ export const TodasLasVariantes = {
   },
 }
 
-// Todos los tamaños
 export const TodosLosTamanos = {
   render: () => (
     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -344,7 +331,6 @@ export const TodosLosTamanos = {
   },
 }
 
-// Sin icono
 export const SinIcono = {
   args: {
     children: 'Sin icono',
@@ -364,7 +350,6 @@ export const SinIcono = {
   },
 }
 
-// Casos de uso
 export const CasosDeUso = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -403,7 +388,6 @@ export const CasosDeUso = {
   },
 }
 
-// Tarjetas (Amarillas y Rojas)
 export const Tarjetas = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -436,7 +420,6 @@ export const Tarjetas = {
   },
 }
 
-// Iconos disponibles
 export const IconosDisponibles = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

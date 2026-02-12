@@ -1,4 +1,3 @@
-// Configuración de iconos y colores por posición
 export const posicionConfig = {
   Portero: { icon: 'sports_handball', color: { bg: '#fef3c7', text: '#92400e' } },
   Defensa: { icon: 'shield', color: { bg: '#dbeafe', text: '#1e40af' } },
@@ -6,7 +5,6 @@ export const posicionConfig = {
   Delantero: { icon: 'sports_soccer', color: { bg: '#fee2e2', text: '#991b1b' } },
 }
 
-// Configuración de iconos y variantes por estado
 export const estadoConfig = {
   Disponible: { icon: 'check_circle', variant: 'success' },
   Lesionado: { icon: 'healing', variant: 'error' },
@@ -14,7 +12,6 @@ export const estadoConfig = {
   'No disponible': { icon: 'block', variant: 'neutral' },
 }
 
-// Datos mock de jugadores (20 jugadores)
 export const jugadoresData = [
   {
     id: 1,
@@ -438,7 +435,6 @@ export const jugadoresData = [
   },
 ]
 
-// Historial de partidos por jugador
 export const historialPartidosData = {
   1: [
     { id: 1, fecha: '2026-01-15', rival: 'CD Móstoles', golesA: 3, golesB: 1, esLocal: true, minutos: 90, goles: 2, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
@@ -456,7 +452,6 @@ export const historialPartidosData = {
   ],
 }
 
-// Opciones para filtros (sin opción vacía, SelectFilter añade el placeholder)
 export const posicionOptions = [
   { value: 'Portero', label: 'Portero' },
   { value: 'Defensa', label: 'Defensa' },
@@ -471,7 +466,6 @@ export const estadoOptions = [
   { value: 'No disponible', label: 'No disponible' },
 ]
 
-// Colores por posición (legacy - usar posicionConfig)
 export const positionColors = {
   Portero: { bg: '#fef3c7', text: '#92400e' },
   Defensa: { bg: '#dbeafe', text: '#1e40af' },
@@ -479,7 +473,6 @@ export const positionColors = {
   Delantero: { bg: '#fee2e2', text: '#991b1b' },
 }
 
-// Tabs del historial
 export const historialTabs = [
   { value: 'todos', label: 'Todos' },
   { value: 'ultimos5', label: 'Últimos 5' },
@@ -487,7 +480,6 @@ export const historialTabs = [
   { value: 'fuera', label: 'Fuera' },
 ]
 
-// Helper para formatear fecha
 export const formatFecha = (fechaStr) => {
   const fecha = new Date(fechaStr)
   return fecha.toLocaleDateString('es-ES', {
@@ -497,7 +489,6 @@ export const formatFecha = (fechaStr) => {
   })
 }
 
-// Helper para calcular edad
 export const calcularEdad = (fechaNacimiento) => {
   const hoy = new Date()
   const nacimiento = new Date(fechaNacimiento)
@@ -509,7 +500,6 @@ export const calcularEdad = (fechaNacimiento) => {
   return edad
 }
 
-// Helper para obtener stats por posición
 export const getStatsPorPosicion = (jugadores) => {
   return {
     total: jugadores.length,

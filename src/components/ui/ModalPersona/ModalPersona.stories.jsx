@@ -48,7 +48,6 @@ export default {
   },
 }
 
-// Template para crear nuevo
 const NuevoTemplate = (args) => {
   const [isOpen, setIsOpen] = useState(args.isOpen || false)
 
@@ -79,7 +78,6 @@ const NuevoTemplate = (args) => {
   )
 }
 
-// Template para editar
 const EditarTemplate = (args) => {
   const [isOpen, setIsOpen] = useState(args.isOpen || false)
 
@@ -110,7 +108,6 @@ const EditarTemplate = (args) => {
   )
 }
 
-// Story: Nuevo Jugador (Default)
 export const NuevoJugador = NuevoTemplate.bind({})
 NuevoJugador.args = {
   mode: 'jugador',
@@ -118,7 +115,6 @@ NuevoJugador.args = {
   initialData: null,
 }
 
-// Story: Nuevo Usuario
 export const NuevoUsuario = NuevoTemplate.bind({})
 NuevoUsuario.args = {
   mode: 'usuario',
@@ -126,7 +122,6 @@ NuevoUsuario.args = {
   initialData: null,
 }
 
-// Story: Editar Jugador
 export const EditarJugador = EditarTemplate.bind({})
 EditarJugador.args = {
   mode: 'jugador',
@@ -146,7 +141,6 @@ EditarJugador.args = {
   },
 }
 
-// Story: Editar Usuario
 export const EditarUsuario = EditarTemplate.bind({})
 EditarUsuario.args = {
   mode: 'usuario',
@@ -165,7 +159,6 @@ EditarUsuario.args = {
   },
 }
 
-// Story: Interactivo
 export const Interactivo = (args) => {
   const [isOpen, setIsOpen] = useState(false)
   const [savedData, setSavedData] = useState(null)

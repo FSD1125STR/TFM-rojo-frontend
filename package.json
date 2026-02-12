@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@github/relative-time-element": "^5.0.0",
-    "axios": "^1.13.4",
     "@tailwindcss/vite": "^4.1.18",
+    "axios": "^1.13.5",
     "material-symbols": "^0.40.2",
     "react": "^18.3.1",
     "react-data-table-component": "^7.7.0",

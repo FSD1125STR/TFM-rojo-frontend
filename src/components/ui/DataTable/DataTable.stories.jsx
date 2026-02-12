@@ -1,19 +1,16 @@
 import { DataTable } from './DataTable'
 import { Badge } from '../Badge/Badge'
 
-// Función mock para las acciones
 const createAction = (name) => (row) => {
   console.log(`${name} clicked:`, row)
   alert(`${name}: ${row.nombre || row.id}`)
 }
 
-// Función mock para acciones masivas
 const createBulkAction = (name) => (rows) => {
   console.log(`${name} clicked for ${rows.length} rows:`, rows)
   alert(`${name}: ${rows.length} filas seleccionadas`)
 }
 
-// Datos genéricos de ejemplo
 const sampleData = [
   { id: 1, nombre: 'Juan García', email: 'juan@email.com', rol: 'Admin', estado: 'Activo' },
   { id: 2, nombre: 'María López', email: 'maria@email.com', rol: 'Editor', estado: 'Activo' },
@@ -25,7 +22,6 @@ const sampleData = [
   { id: 8, nombre: 'Sara Díaz', email: 'sara@email.com', rol: 'Usuario', estado: 'Inactivo' },
 ]
 
-// Configuración de columnas por defecto (editable)
 const defaultColumnConfig = [
   { key: 'id', label: 'ID', visible: true, sortable: true, align: 'center', width: '10%' },
   { key: 'nombre', label: 'Nombre', visible: true, sortable: true, align: 'left', width: '25%' },
@@ -34,21 +30,18 @@ const defaultColumnConfig = [
   { key: 'estado', label: 'Estado', visible: true, sortable: true, align: 'left', width: '20%' },
 ]
 
-// Acciones por fila por defecto
 const defaultActions = [
   { label: 'Ver detalle', icon: 'visibility', onClick: createAction('Ver detalle'), variant: 'default' },
   { label: 'Editar', icon: 'edit', onClick: createAction('Editar'), variant: 'default' },
   { label: 'Eliminar', icon: 'delete', onClick: createAction('Eliminar'), variant: 'danger' },
 ]
 
-// Acciones masivas por defecto
 const defaultBulkActions = [
   { label: 'Exportar', icon: 'download', onClick: createBulkAction('Exportar'), variant: 'default' },
   { label: 'Archivar', icon: 'archive', onClick: createBulkAction('Archivar'), variant: 'default' },
   { label: 'Eliminar', icon: 'delete', onClick: createBulkAction('Eliminar'), variant: 'danger' },
 ]
 
-// Función para construir columnas desde la configuración
 const buildColumnsFromConfig = (columnConfig) => {
   return columnConfig
     .filter(col => col.visible)
@@ -79,7 +72,6 @@ export default {
     },
   },
   argTypes: {
-    // ============ COLUMNAS ============
     columnConfig: {
       description: `**Configuración de columnas** - Array de objetos con:
 - \`key\`: nombre del campo en los datos
@@ -97,7 +89,6 @@ export default {
       table: { category: '1. Columnas' },
     },
 
-    // ============ ACCIONES POR FILA ============
     showActions: {
       description: 'Mostrar columna de acciones por fila',
       control: 'boolean',
@@ -117,7 +108,6 @@ export default {
       table: { category: '2. Acciones por fila' },
     },
 
-    // ============ SELECCIÓN Y ACCIONES MASIVAS ============
     selectable: {
       description: 'Habilitar checkboxes de selección',
       control: 'boolean',
@@ -137,7 +127,6 @@ export default {
       table: { category: '3. Selección' },
     },
 
-    // ============ PAGINACIÓN ============
     pagination: {
       description: 'Habilitar paginación',
       control: 'boolean',
@@ -154,7 +143,6 @@ export default {
       table: { category: '4. Paginación' },
     },
 
-    // ============ ESTADOS ============
     isLoading: {
       description: 'Mostrar estado de carga',
       control: 'boolean',
@@ -168,27 +156,20 @@ export default {
   },
 };
 
-// ==========================================
-// STORY PRINCIPAL - TODOS LOS CONTROLES
-// ==========================================
+
 export const Default = {
   args: {
-    // Columnas
     columnConfig: defaultColumnConfig,
     data: sampleData,
-    // Acciones por fila
     showActions: true,
     actionsConfig: defaultActions,
     actionsTitle: 'Acciones',
-    // Selección
     selectable: true,
     showBulkActionsBar: true,
     bulkActionsConfig: defaultBulkActions,
-    // Paginación
     pagination: true,
     paginationPerPage: 5,
     paginationRowsPerPageOptions: [5, 10, 25, 50],
-    // Estados
     isLoading: false,
     emptyMessage: 'No hay datos disponibles',
   },
@@ -214,9 +195,6 @@ export const Default = {
   },
 };
 
-// ==========================================
-// CON ACCIONES POR FILA
-// ==========================================
 export const ConAcciones = {
   args: {
     ...Default.args,
@@ -234,9 +212,7 @@ export const ConAcciones = {
   },
 };
 
-// ==========================================
-// CON SELECCIÓN DE FILAS
-// ==========================================
+
 export const ConSeleccion = {
   args: {
     ...Default.args,
@@ -254,9 +230,6 @@ export const ConSeleccion = {
   },
 }
 
-// ==========================================
-// CON ACCIONES MASIVAS
-// ==========================================
 export const ConAccionesMasivas = {
   args: {
     ...Default.args,
@@ -272,9 +245,6 @@ export const ConAccionesMasivas = {
   },
 }
 
-// ==========================================
-// COMPLETO: ACCIONES + SELECCIÓN + BULK
-// ==========================================
 export const Completo = {
   args: {
     ...Default.args,
@@ -289,9 +259,6 @@ export const Completo = {
   },
 }
 
-// ==========================================
-// ACCIONES PERSONALIZADAS
-// ==========================================
 export const AccionesPersonalizadas = {
   args: {
     ...Default.args,
@@ -319,9 +286,7 @@ export const AccionesPersonalizadas = {
   },
 }
 
-// ==========================================
-// TABLA BÁSICA (solo datos y paginación)
-// ==========================================
+
 export const TablaBasica = {
   args: {
     columnConfig: defaultColumnConfig,
@@ -344,9 +309,7 @@ export const TablaBasica = {
   },
 }
 
-// ==========================================
-// TABLA MÍNIMA
-// ==========================================
+
 export const TablaMinima = {
   args: {
     columnConfig: [
@@ -370,9 +333,7 @@ export const TablaMinima = {
   },
 }
 
-// ==========================================
-// DATOS DE JUGADORES
-// ==========================================
+
 export const TablaJugadores = {
   args: {
     columnConfig: [
@@ -418,9 +379,7 @@ export const TablaJugadores = {
   },
 }
 
-// ==========================================
-// ESTADOS: CARGANDO
-// ==========================================
+
 export const Cargando = {
   args: {
     ...Default.args,
@@ -437,9 +396,7 @@ export const Cargando = {
   },
 }
 
-// ==========================================
-// ESTADOS: SIN DATOS
-// ==========================================
+
 export const SinDatos = {
   args: {
     ...Default.args,
@@ -456,11 +413,7 @@ export const SinDatos = {
   },
 }
 
-// ==========================================
-// CON BADGES EN COLUMNAS
-// ==========================================
 
-// Mapeo de estados a variantes de badge
 const estadoToBadge = {
   Activo: { variant: 'success', icon: 'check_circle' },
   Inactivo: { variant: 'neutral', icon: 'cancel' },
@@ -469,14 +422,12 @@ const estadoToBadge = {
   Retirado: { variant: 'neutral', icon: 'logout' },
 }
 
-// Mapeo de roles a variantes de badge
 const rolToBadge = {
   Admin: { variant: 'primary', icon: 'admin_panel_settings' },
   Editor: { variant: 'info', icon: 'edit' },
   Usuario: { variant: 'default', icon: 'person' },
 }
 
-// Mapeo de posiciones a variantes de badge
 const posicionToBadge = {
   Portero: { variant: 'custom', customColor: { bg: '#fef3c7', text: '#92400e' }, icon: 'sports_handball' },
   Defensa: { variant: 'custom', customColor: { bg: '#dbeafe', text: '#1e40af' }, icon: 'shield' },
@@ -493,7 +444,6 @@ export const ConBadges = {
     selectable: false,
     pagination: true,
     paginationPerPage: 5,
-    // Configuración de badges
     badgeSize: 'sm',
     badgePill: true,
     badgeOutline: false,
@@ -539,7 +489,6 @@ export const ConBadges = {
     badgeMinWidth,
     ...args
   }) => {
-    // Columnas con render personalizado para badges
     const columns = [
       { key: 'id', label: 'ID', sortable: true, align: 'center', width: '80px' },
       { key: 'nombre', label: 'Nombre', sortable: true, width: '25%' },
@@ -628,9 +577,6 @@ Usa la propiedad \`render\` en la configuración de columnas para mostrar badges
   },
 }
 
-// ==========================================
-// TABLA DE JUGADORES CON BADGES
-// ==========================================
 export const JugadoresConBadges = {
   args: {
     data: [
@@ -656,7 +602,6 @@ export const JugadoresConBadges = {
     ],
     pagination: true,
     paginationPerPage: 5,
-    // Configuración de badges
     badgeSize: 'sm',
     badgePill: false,
     badgeOutline: false,
@@ -709,7 +654,6 @@ export const JugadoresConBadges = {
     badgeEstadoMinWidth,
     ...args
   }) => {
-    // Columnas con badges personalizados
     const columns = [
       { key: 'dorsal', label: '#', sortable: true, align: 'center', width: '60px' },
       { key: 'nombre', label: 'Nombre', sortable: true, width: '30%' },

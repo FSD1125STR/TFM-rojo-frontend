@@ -1,6 +1,5 @@
 import { DataTableActions } from './DataTableActions'
 
-// Función mock para las acciones
 const createAction = (name) => (row) => {
   console.log(`${name} clicked:`, row)
   alert(`${name}: ${row.nombre || row.id}`)
@@ -50,7 +49,6 @@ export default {
   ],
 }
 
-// Datos de ejemplo
 const sampleRow = {
   id: 1,
   nombre: 'Carlos Méndez',
@@ -59,7 +57,6 @@ const sampleRow = {
   estado: 'Activo',
 }
 
-// Acciones de ejemplo
 const defaultActions = [
   {
     label: 'Ver detalle',
@@ -79,7 +76,6 @@ const defaultActions = [
   },
 ]
 
-// Story principal
 export const Default = {
   args: {
     actions: defaultActions,
@@ -88,7 +84,6 @@ export const Default = {
   },
 }
 
-// Sin título
 export const SinTitulo = {
   args: {
     actions: defaultActions,
@@ -104,7 +99,6 @@ export const SinTitulo = {
   },
 }
 
-// Solo acciones normales (sin danger)
 export const SoloAccionesNormales = {
   args: {
     actions: [
@@ -124,7 +118,6 @@ export const SoloAccionesNormales = {
   },
 }
 
-// Solo acción danger
 export const SoloAccionDanger = {
   args: {
     actions: [
@@ -142,7 +135,6 @@ export const SoloAccionDanger = {
   },
 }
 
-// Múltiples acciones danger
 export const MultiplesAccionesDanger = {
   args: {
     actions: [
@@ -164,7 +156,6 @@ export const MultiplesAccionesDanger = {
   },
 }
 
-// Sin iconos
 export const SinIconos = {
   args: {
     actions: [
@@ -184,7 +175,6 @@ export const SinIconos = {
   },
 }
 
-// Título personalizado
 export const TituloPersonalizado = {
   args: {
     actions: defaultActions,
@@ -200,7 +190,6 @@ export const TituloPersonalizado = {
   },
 }
 
-// Muchas acciones
 export const MuchasAcciones = {
   args: {
     actions: [
@@ -224,7 +213,6 @@ export const MuchasAcciones = {
   },
 }
 
-// Ejemplo para jugadores
 export const AccionesJugador = {
   args: {
     actions: [
