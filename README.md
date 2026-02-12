@@ -10,6 +10,7 @@ Frontend del proyecto FootMind - Gestión de equipos de fútbol base.
 | Vite | 6.x | Bundler y dev server |
 | TailwindCSS | 4.x | Framework CSS utility-first |
 | DaisyUI | 5.x | Componentes UI sobre Tailwind |
+| Preline UI | 2.x | Advanced Select (multi-select) sobre Tailwind |
 | Material Icons | - | Sistema de iconos |
 | React Router | 7.x | Enrutamiento SPA |
 | Storybook | 8.x | Documentación de componentes |
@@ -64,12 +65,16 @@ src/
 ├── components/
 │   ├── ui/              # Componentes atómicos reutilizables
 │   │   ├── Avatar/
+│   │   ├── Badge/
 │   │   ├── Button/
 │   │   ├── Card/
 │   │   ├── DataTable/
 │   │   ├── Divider/
 │   │   ├── Icon/
 │   │   ├── IconButton/
+│   │   ├── Modal/
+│   │   ├── SearchInput/
+│   │   ├── SelectFilter/  # Single (DaisyUI) + Multi (Preline)
 │   │   └── ThemeToggle/
 │   └── layout/          # Componentes de layout
 │       ├── AppLogo/
@@ -127,9 +132,10 @@ src/
 
 ## Estilos y UI
 
-### DaisyUI como Design System
+### DaisyUI + Preline UI
 
 El proyecto utiliza **DaisyUI v5** como sistema de componentes sobre TailwindCSS.
+**Preline UI** se usa exclusivamente para el widget Advanced Select (multi-select en `SelectFilter`), coexistiendo con DaisyUI. El widget se estiliza con clases DaisyUI para mantener consistencia visual. Preline se inicializa automáticamente en cada cambio de ruta desde `App.jsx`.
 
 ```jsx
 // Botones

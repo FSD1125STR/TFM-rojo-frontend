@@ -12,6 +12,7 @@ Implementado con **React 18 + TailwindCSS 4 + DaisyUI 5**.
 | React | 18.x | Framework UI |
 | TailwindCSS | 4.x | Utilidades CSS |
 | DaisyUI | 5.x | Componentes UI |
+| Preline UI | 2.x | Advanced Select (multi-select) |
 | Material Symbols | - | Sistema de iconos |
 | react-data-table-component | 7.x | Tablas de datos |
 | Storybook | 8.x | Documentación de componentes |
@@ -36,11 +37,17 @@ La aplicación utiliza verde en los colores estructurales (primary/secondary) y 
 | `base-300` | oklch(90% 0.005 260) | Bordes (gris claro) |
 | `base-content` | oklch(20% 0 0) | Texto principal (gris muy oscuro) |
 
-### Configuración en CSS (DaisyUI v5)
+### Configuración en CSS (DaisyUI v5 + Preline)
 
-Los colores se configuran mediante variables CSS en `src/index.css`:
+Los colores se configuran mediante variables CSS en `src/index.css`.
+DaisyUI y Preline coexisten: DaisyUI aporta el sistema de componentes y temas, Preline solo se usa para el widget Advanced Select (multi-select).
 
 ```css
+@import "tailwindcss";
+@plugin "daisyui";
+@import "preline/variants.css";                        /* variantes Preline (hs-selected:, etc.) */
+@source "../node_modules/preline/dist/*.js";           /* Tailwind escanea clases de Preline */
+
 [data-theme="light"] {
   --color-primary: oklch(48% 0.05 160);              /* verde estructural */
   --color-secondary: oklch(65% 0.06 160);            /* verde medio */
@@ -214,6 +221,36 @@ const actions = [
 />
 ```
 
+### SelectFilter
+
+Filtro de selección para DataTable. Soporta modo single (nativo DaisyUI) y multi-select (Preline Advanced Select).
+
+```jsx
+import { SelectFilter } from '@/components/ui/SelectFilter'
+
+// Single-select (DaisyUI nativo)
+<SelectFilter
+  value={position}
+  onChange={setPosition}
+  options={[
+    { value: 'Portero', label: 'Portero' },
+    { value: 'Defensa', label: 'Defensa' },
+  ]}
+  placeholder="Todas las posiciones"
+/>
+
+// Multi-select (Preline Advanced Select)
+<SelectFilter
+  multiple
+  value={selectedPositions}
+  onChange={setSelectedPositions}
+  options={posicionOptions}
+  placeholder="Todas las posiciones"
+/>
+```
+
+El multi-select usa internamente `data-hs-select` de Preline con clases DaisyUI (`bg-base-100`, `border-base-300`, etc.) para mantener consistencia visual con el resto de la UI.
+
 ### ThemeToggle
 
 ```jsx
@@ -291,12 +328,16 @@ src/
 ├── components/
 │   ├── ui/                 # Componentes atómicos
 │   │   ├── Avatar/
+│   │   ├── Badge/
 │   │   ├── Button/
 │   │   ├── Card/
 │   │   ├── DataTable/
 │   │   ├── Divider/
 │   │   ├── Icon/
 │   │   ├── IconButton/
+│   │   ├── Modal/
+│   │   ├── SearchInput/
+│   │   ├── SelectFilter/    # Single (DaisyUI) + Multi (Preline Advanced Select)
 │   │   └── ThemeToggle/
 │   └── layout/             # Componentes de layout
 │       ├── AppLogo/
