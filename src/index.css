@@ -78,18 +78,39 @@
   border-bottom-right-radius: 0.75rem;
 }
 
-/* Override react-data-table-component hover colors */
-[class*="rdt_TableRow"]:hover,
-[class*="TableRow"]:hover {
-  background-color: color-mix(in oklch, var(--color-primary) 8%, var(--color-base-100)) !important;
+/* Override react-data-table-component hover colors
+   Hardcoded green oklch values to avoid DaisyUI/CSS-layers overriding --color-primary */
+
+/* Light theme hover */
+[data-theme="light"] [class*="rdt_TableRow"]:hover,
+[data-theme="light"] [class*="TableRow"]:hover {
+  background-color: oklch(94% 0.02 160) !important; /* green tint on white */
   outline: none !important;
 }
 
-/* Selected row - target rows with checked checkbox */
-.rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked) {
-  background-color: color-mix(in oklch, var(--color-primary) 20%, transparent) !important;
+/* Dark theme hover */
+[data-theme="dark"] [class*="rdt_TableRow"]:hover,
+[data-theme="dark"] [class*="TableRow"]:hover {
+  background-color: oklch(25% 0.03 160) !important; /* green tint on dark */
+  outline: none !important;
 }
 
-.rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked):hover {
-  background-color: color-mix(in oklch, var(--color-primary) 25%, transparent) !important;
+/* Selected row - light */
+[data-theme="light"] .rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked) {
+  background-color: oklch(90% 0.02 160) !important;
+}
+
+/* Selected row - dark */
+[data-theme="dark"] .rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked) {
+  background-color: oklch(28% 0.025 160) !important;
+}
+
+/* Selected row hover - light */
+[data-theme="light"] .rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked):hover {
+  background-color: oklch(87% 0.025 160) !important;
+}
+
+/* Selected row hover - dark */
+[data-theme="dark"] .rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked):hover {
+  background-color: oklch(30% 0.03 160) !important;
 }

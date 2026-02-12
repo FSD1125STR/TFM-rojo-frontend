@@ -43,7 +43,7 @@ function transformColumns(columns, actions, actionsTitle) {
   if (actions && actions.length > 0) {
     transformed.push({
       name: actionsTitle,
-      width: '100px',
+      width: '8%',
       center: true,
       cell: row => <DataTableActions actions={actions} row={row} title={actionsTitle} />,
       ignoreRowClick: true,
@@ -227,7 +227,6 @@ export function DataTable({
         progressPending={isLoading}
         progressComponent={<LoadingComponent />}
         noDataComponent={<NoDataComponent message={emptyMessage} />}
-        highlightOnHover
         pointerOnHover={!!onRowClick}
         onRowClicked={onRowClick}
         responsive

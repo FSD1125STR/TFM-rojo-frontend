@@ -38,10 +38,6 @@ export const tableStyles = {
       borderBottomWidth: '1px',
       borderBottomColor: 'var(--color-base-300)',
       minHeight: '56px',
-      '&:hover': {
-        backgroundColor: 'color-mix(in oklch, var(--color-primary) 8%, var(--color-base-100))',
-        cursor: 'pointer',
-      },
     },
   },
   cells: {

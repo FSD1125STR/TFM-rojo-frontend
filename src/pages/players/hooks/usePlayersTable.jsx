@@ -21,11 +21,11 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
         </div>
       ),
     },
-    { key: 'dorsal', label: 'Dorsal', width: '10%', align: 'center', sortable: true },
+    { key: 'dorsal', label: 'Dorsal', width: '9%', align: 'center', sortable: true },
     {
       key: 'posicion',
       label: 'Posición',
-      width: '15%',
+      width: '14%',
       align: 'center',
       sortable: true,
       render: (value) => (
@@ -42,12 +42,12 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
       ),
     },
     { key: 'edad', label: 'Edad', width: '8%', align: 'center', sortable: true },
-    { key: 'partidos', label: 'Partidos', width: '10%', align: 'center', sortable: true },
+    { key: 'partidos', label: 'Partidos', width: '9%', align: 'center', sortable: true },
     { key: 'goles', label: 'Goles', width: '8%', align: 'center', sortable: true },
     {
       key: 'estado',
       label: 'Estado',
-      width: '15%',
+      width: '14%',
       align: 'center',
       sortable: true,
       render: (value) => (
