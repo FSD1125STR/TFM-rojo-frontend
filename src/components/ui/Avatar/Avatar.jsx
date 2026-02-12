@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { AvatarProps } from './Avatar.props'
 
 const sizeClasses = {
   xs: 'w-6',
@@ -44,9 +44,4 @@ export function Avatar({ src, name, size = 'md', className = '' }) {
   )
 }
 
-Avatar.propTypes = {
-  src: PropTypes.string,
-  name: PropTypes.string,
-  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg']),
-  className: PropTypes.string,
-}
+Avatar.propTypes = AvatarProps

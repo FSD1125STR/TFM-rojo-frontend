@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import { useTheme } from '../../../hooks/useTheme'
+import { ThemeToggleProps } from './ThemeToggle.props'
 import { useAuth } from '../../../hooks/useAuth'
 import { Icon } from '../Icon/Icon'
 
@@ -42,7 +42,4 @@ export function ThemeToggle({ variant = 'icon', size = 'md' }) {
   )
 }
 
-ThemeToggle.propTypes = {
-  variant: PropTypes.oneOf(['icon', 'switch']),
-  size: PropTypes.oneOf(['sm', 'md']),
-}
+ThemeToggle.propTypes = ThemeToggleProps

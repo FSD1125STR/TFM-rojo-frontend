@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import { StatsCardProps } from './StatsCard.props'
 
 const StatsCard = ({
   title,
@@ -21,7 +21,7 @@ const StatsCard = ({
   return (
     <div
       className={`card rounded-xl p-5 ${variantClasses[variant]} ${className}`}
-      data-testid="stats-card"
+      test-id="el-s1t2c3d4"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
@@ -41,21 +41,6 @@ const StatsCard = ({
   );
 };
 
-StatsCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  subtitle: PropTypes.node,
-  icon: PropTypes.string,
-  variant: PropTypes.oneOf([
-    "default",
-    "primary",
-    "secondary",
-    "accent",
-    "success",
-    "warning",
-    "error",
-  ]),
-  className: PropTypes.string,
-};
+StatsCard.propTypes = StatsCardProps
 
 export default StatsCard;

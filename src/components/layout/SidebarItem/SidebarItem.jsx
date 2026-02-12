@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
+import { SidebarItemProps } from './SidebarItem.props'
 import { Icon } from '../../ui/Icon/Icon'
 
 export function SidebarItem({ icon, label, to, collapsed = false, onClick }) {
@@ -20,10 +20,4 @@ export function SidebarItem({ icon, label, to, collapsed = false, onClick }) {
   )
 }
 
-SidebarItem.propTypes = {
-  icon: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
-  collapsed: PropTypes.bool,
-  onClick: PropTypes.func,
-}
+SidebarItem.propTypes = SidebarItemProps

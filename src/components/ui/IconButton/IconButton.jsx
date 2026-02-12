@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import { Icon } from '../Icon/Icon'
+import { IconButtonProps } from './IconButton.props'
 
 const variantClasses = {
   primary: 'btn-primary',
@@ -39,10 +39,4 @@ export function IconButton({
   )
 }
 
-IconButton.propTypes = {
-  icon: PropTypes.string.isRequired,
-  variant: PropTypes.oneOf(['primary', 'ghost', 'danger']),
-  size: PropTypes.oneOf(['sm', 'md']),
-  ariaLabel: PropTypes.string.isRequired,
-  className: PropTypes.string,
-}
+IconButton.propTypes = IconButtonProps

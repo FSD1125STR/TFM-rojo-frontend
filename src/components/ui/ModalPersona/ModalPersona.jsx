@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
+import { ModalPersonaProps } from './ModalPersona.props'
 import './ModalPersona.styles.css'
 
 const posicionesJugador = [
@@ -140,6 +140,7 @@ export function ModalPersona({
 
   return (
     <dialog
+      test-id="el-m1d2l3p4"
       ref={modalRef}
       className="modal modal-persona"
       onClick={handleBackdropClick}
@@ -428,26 +429,6 @@ export function ModalPersona({
   )
 }
 
-ModalPersona.propTypes = {
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func,
-  onSave: PropTypes.func,
-  mode: PropTypes.oneOf(['jugador', 'usuario']),
-  initialData: PropTypes.shape({
-    nombre: PropTypes.string,
-    apellidos: PropTypes.string,
-    fechaNacimiento: PropTypes.string,
-    email: PropTypes.string,
-    telefono: PropTypes.string,
-    direccion: PropTypes.string,
-    ciudad: PropTypes.string,
-    provincia: PropTypes.string,
-    dorsal: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    posicion: PropTypes.string,
-    estado: PropTypes.string,
-    rol: PropTypes.string,
-  }),
-  title: PropTypes.string,
-}
+ModalPersona.propTypes = ModalPersonaProps
 
 export default ModalPersona

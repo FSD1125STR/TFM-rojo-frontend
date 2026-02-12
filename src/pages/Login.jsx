@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button/Button';
+import { Icon } from '../components/ui/Icon/Icon';
 import { Card } from '../components/ui/Card/Card';
 import { showError, showToast } from '../utils/alerts';
 import logoHorizontal from '../assets/logo-horizontal.png';
@@ -13,6 +14,7 @@ export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('logout') === 'true') {
@@ -94,15 +96,25 @@ export function Login() {
                 <label className="label">
                   <span className="label-text">Contraseña</span>
                 </label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  className="input input-bordered w-full"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                  autoComplete="current-password"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    className="input input-bordered w-full pr-10"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isLoading}
+                    autoComplete="current-password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer text-base-content/50 hover:text-base-content"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex={-1}
+                  >
+                    <Icon name={showPassword ? 'visibility_off' : 'visibility'} size="sm" />
+                  </button>
+                </div>
               </div>
 
               <Button

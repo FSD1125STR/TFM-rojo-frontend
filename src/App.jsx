@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { HeaderProvider } from './context/HeaderContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AppShell } from './components/layout/AppShell/AppShell';
+import { PublicLayout } from './components/layout/PublicLayout/PublicLayout';
 
 // Páginas públicas (auth)
 import { Login } from './pages/Login';
@@ -23,10 +24,12 @@ function App() {
       <AuthProvider>
         <HeaderProvider>
           <Routes>
-          {/* Rutas públicas */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          {/* Rutas públicas - siempre tema light */}
+          <Route element={<PublicLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+          </Route>
 
           {/* Rutas protegidas */}
           <Route element={<ProtectedRoute />}>

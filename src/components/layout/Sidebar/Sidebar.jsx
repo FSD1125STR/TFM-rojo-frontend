@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { AppLogo } from '../AppLogo/AppLogo';
+import { SidebarProps } from './Sidebar.props'
 import { SidebarItem } from '../SidebarItem/SidebarItem';
 import { UserCard } from '../UserCard/UserCard';
 import { Divider } from '../../ui/Divider/Divider';
@@ -80,15 +80,4 @@ export function Sidebar({
   );
 }
 
-Sidebar.propTypes = {
-  mode: PropTypes.oneOf(['expanded', 'collapsed', 'drawer']),
-  drawerOpen: PropTypes.bool,
-  onNavigate: PropTypes.func,
-  user: PropTypes.shape({
-    fullName: PropTypes.string.isRequired,
-    role: PropTypes.string,
-    avatar: PropTypes.string,
-  }),
-  onLogout: PropTypes.func,
-  className: PropTypes.string,
-};
+Sidebar.propTypes = SidebarProps

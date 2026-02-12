@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import { SearchInputProps } from './SearchInput.props'
 
 export function SearchInput({
   value = "",
@@ -7,7 +7,7 @@ export function SearchInput({
   className = "",
 }) {
   return (
-    <div className={`relative ${className}`}>
+    <div test-id="el-s1r2c3h4" className={`relative ${className}`}>
       <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-base-content/50 text-xl">
         search
       </span>
@@ -22,9 +22,4 @@ export function SearchInput({
   );
 }
 
-SearchInput.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-  className: PropTypes.string,
-};
+SearchInput.propTypes = SearchInputProps

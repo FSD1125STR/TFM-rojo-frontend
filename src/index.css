@@ -55,18 +55,41 @@
 
 /* Datatable Custom Styles */
 
-/* Override react-data-table-component colors */
+/* Strip internal border-radius from react-data-table-component wrappers */
+.datatable-root > div:not(.datatable-toolbar) {
+  border-radius: 0 !important;
+}
+
+/* Top rounding: head row when no toolbar */
+.datatable-root.no-toolbar .rdt_TableHead .rdt_TableHeadRow {
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+/* Bottom rounding: last row when no pagination */
+.datatable-root.no-pagination .rdt_TableBody .rdt_TableRow:last-child {
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+
+/* Bottom rounding: pagination when present */
+.datatable-root:not(.no-pagination) .rdt_Pagination {
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+
+/* Override react-data-table-component hover colors */
 [class*="rdt_TableRow"]:hover,
 [class*="TableRow"]:hover {
-  background-color: oklch(48% 0.05 160 / 0.1) !important;
+  background-color: color-mix(in oklch, var(--color-primary) 8%, var(--color-base-100)) !important;
   outline: none !important;
 }
 
 /* Selected row - target rows with checked checkbox */
 .rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked) {
-  background-color: oklch(48% 0.05 160 / 0.2) !important;
+  background-color: color-mix(in oklch, var(--color-primary) 20%, transparent) !important;
 }
 
 .rdt_TableBody .rdt_TableRow:has(input[type="checkbox"]:checked):hover {
-  background-color: oklch(48% 0.05 160 / 0.25) !important;
+  background-color: color-mix(in oklch, var(--color-primary) 25%, transparent) !important;
 }

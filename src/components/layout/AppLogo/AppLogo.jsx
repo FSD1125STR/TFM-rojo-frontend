@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { AppLogoProps } from './AppLogo.props'
 import logoHorizontal from '../../../assets/logo-horizontal.png'
 import logo from '../../../assets/logo.png'
 
@@ -15,6 +15,4 @@ export function AppLogo({ collapsed = false }) {
   )
 }
 
-AppLogo.propTypes = {
-  collapsed: PropTypes.bool,
-}
+AppLogo.propTypes = AppLogoProps

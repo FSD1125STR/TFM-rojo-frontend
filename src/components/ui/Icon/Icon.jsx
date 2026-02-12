@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { IconProps } from './Icon.props'
 
 const sizeClasses = {
   sm: 'text-lg',
@@ -8,14 +8,10 @@ const sizeClasses = {
 
 export function Icon({ name, size = 'md', className = '' }) {
   return (
-    <span className={`material-symbols-outlined ${sizeClasses[size]} ${className}`}>
+    <span test-id="el-i1c2o3n4" className={`material-symbols-outlined ${sizeClasses[size]} ${className}`}>
       {name}
     </span>
   )
 }
 
-Icon.propTypes = {
-  name: PropTypes.string.isRequired,
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
-  className: PropTypes.string,
-}
+Icon.propTypes = IconProps

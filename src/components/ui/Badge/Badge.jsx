@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { BadgeProps } from './Badge.props'
 
 const variantColors = {
   default: { bg: 'oklch(92% 0.02 260)', text: 'oklch(40% 0.02 260)' },
@@ -54,7 +54,7 @@ export function Badge({
   }
 
   return (
-    <span className={className} style={style}>
+    <span test-id="el-b1a2d3g4" className={className} style={style}>
       {icon && (
         <span
           className="material-symbols-outlined"
@@ -68,20 +68,6 @@ export function Badge({
   )
 }
 
-Badge.propTypes = {
-  children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['default', 'primary', 'secondary', 'success', 'warning', 'error', 'info', 'neutral', 'custom']),
-  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg']),
-  icon: PropTypes.string,
-  iconPosition: PropTypes.oneOf(['left', 'right']),
-  pill: PropTypes.bool,
-  outline: PropTypes.bool,
-  customColor: PropTypes.shape({
-    bg: PropTypes.string,
-    text: PropTypes.string,
-  }),
-  minWidth: PropTypes.string,
-  className: PropTypes.string,
-}
+Badge.propTypes = BadgeProps
 
 export default Badge

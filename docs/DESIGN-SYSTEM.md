@@ -20,17 +20,21 @@ Implementado con **React 18 + TailwindCSS 4 + DaisyUI 5**.
 
 ## Paleta cromática
 
-La aplicación utiliza una paleta monocromática en verdes suaves, asociada al entorno deportivo.
+La aplicación utiliza verde en los colores estructurales (primary/secondary) y una base neutra limpia (grises puros) para fondos y superficies, logrando una interfaz profesional y fácil de leer en sesiones largas.
 
-### Colores base (DaisyUI)
+### Colores base (DaisyUI) - Tema Light
 
-| Token DaisyUI | Hex | Uso |
-|---------------|-----|-----|
-| `primary` | #5C6F68 | Color estructural principal |
-| `secondary` | #8AA39B | Secundario / bordes |
-| `accent` | #A4F9C8 | Hover / selección |
-| `base-100` | #EBFFFD | Fondo general |
-| `base-300` | #95D9C3 | Superficies (cards, tablas) |
+| Token DaisyUI | Valor oklch | Uso |
+|---------------|-------------|-----|
+| `primary` | oklch(48% 0.05 160) | Color estructural principal (verde) |
+| `secondary` | oklch(65% 0.06 160) | Secundario (verde medio) |
+| `accent` | oklch(95% 0.04 160) | Pill sidebar activo (verde muy claro) |
+| `accent-content` | oklch(40% 0.08 160) | Texto sidebar activo (verde oscuro) |
+| `neutral` | oklch(45% 0.02 260) | Gris neutro |
+| `base-100` | oklch(100% 0 0) | Fondo general (blanco puro) |
+| `base-200` | oklch(96.5% 0 0) | Superficies secundarias (gris claro) |
+| `base-300` | oklch(90% 0.005 260) | Bordes (gris claro) |
+| `base-content` | oklch(20% 0 0) | Texto principal (gris muy oscuro) |
 
 ### Configuración en CSS (DaisyUI v5)
 
@@ -38,17 +42,22 @@ Los colores se configuran mediante variables CSS en `src/index.css`:
 
 ```css
 [data-theme="light"] {
-  --color-primary: oklch(48% 0.05 160);      /* #5C6F68 */
-  --color-secondary: oklch(65% 0.06 160);    /* #8AA39B */
-  --color-accent: oklch(92% 0.12 155);       /* #A4F9C8 */
-  --color-base-100: oklch(98% 0.02 175);     /* #EBFFFD */
-  --color-base-300: oklch(83% 0.09 165);     /* #95D9C3 */
+  --color-primary: oklch(48% 0.05 160);              /* verde estructural */
+  --color-secondary: oklch(65% 0.06 160);            /* verde medio */
+  --color-accent: oklch(95% 0.04 160);               /* verde muy claro - pill sidebar */
+  --color-accent-content: oklch(40% 0.08 160);       /* verde oscuro - texto sidebar */
+  --color-neutral: oklch(45% 0.02 260);              /* gris neutro */
+  --color-base-100: oklch(100% 0 0);                 /* blanco puro */
+  --color-base-200: oklch(96.5% 0 0);               /* gris claro neutro */
+  --color-base-300: oklch(90% 0.005 260);            /* gris claro - bordes */
+  --color-base-content: oklch(20% 0 0);              /* gris muy oscuro */
 }
 ```
 
 ### Reglas de uso
 - No añadir colores adicionales fuera de la paleta
-- Los verdes **no se usan para texto principal**
+- Los fondos (`base-*`) son **grises neutros**, sin tinte verde
+- El verde se reserva para `primary`, `secondary` y `accent` (sidebar activo)
 - Usar clases de DaisyUI: `btn-primary`, `bg-base-100`, etc.
 
 ---
@@ -311,7 +320,7 @@ src/
 - **Desktop-first**: Optimizado para uso en escritorio
 - **Diseño limpio y funcional**: Sin elementos decorativos innecesarios
 - **Jerarquía visual clara**: Uso consistente de espaciado y tipografía
-- **Sesiones largas**: Colores suaves, bajo contraste en fondos
+- **Sesiones largas**: Fondos neutros (grises puros), bajo contraste
 - **Consistencia**: Todo componente sigue los tokens de DaisyUI
 
 ---

@@ -27,34 +27,12 @@ const sampleData = [
 
 // Configuración de columnas por defecto (editable)
 const defaultColumnConfig = [
-  { key: 'id', label: 'ID', visible: true, sortable: true, align: 'center', width: '80px' },
-  { key: 'nombre', label: 'Nombre', visible: true, sortable: true, align: 'left', width: '' },
-  { key: 'email', label: 'Email', visible: true, sortable: true, align: 'left', width: '' },
-  { key: 'rol', label: 'Rol', visible: true, sortable: true, align: 'left', width: '' },
-  { key: 'estado', label: 'Estado', visible: true, sortable: true, align: 'left', width: '' },
+  { key: 'id', label: 'ID', visible: true, sortable: true, align: 'center', width: '10%' },
+  { key: 'nombre', label: 'Nombre', visible: true, sortable: true, align: 'left', width: '25%' },
+  { key: 'email', label: 'Email', visible: true, sortable: true, align: 'left', width: '30%' },
+  { key: 'rol', label: 'Rol', visible: true, sortable: true, align: 'left', width: '15%' },
+  { key: 'estado', label: 'Estado', visible: true, sortable: true, align: 'left', width: '20%' },
 ]
-
-// Filtros por defecto
-const defaultFilters = [
-  {
-    key: 'rol',
-    placeholder: 'Todos los roles',
-    options: [
-      { value: 'Admin', label: 'Admin' },
-      { value: 'Editor', label: 'Editor' },
-      { value: 'Usuario', label: 'Usuario' },
-    ],
-  },
-  {
-    key: 'estado',
-    placeholder: 'Todos los estados',
-    options: [
-      { value: 'Activo', label: 'Activo' },
-      { value: 'Inactivo', label: 'Inactivo' },
-      { value: 'Pendiente', label: 'Pendiente' },
-    ],
-  },
-];
 
 // Acciones por fila por defecto
 const defaultActions = [
@@ -79,7 +57,7 @@ const buildColumnsFromConfig = (columnConfig) => {
       label: col.label,
       sortable: col.sortable,
       align: col.align || 'left',
-      width: col.width || '',
+      width: col.width || undefined,
     }))
 }
 
@@ -92,11 +70,10 @@ export default {
     docs: {
       description: {
         component: `Componente DataTable genérico y reutilizable con soporte para:
-- **Columnas configurables**: visibilidad, ordenación, alineación
+- **Columnas configurables**: visibilidad, ordenación, alineación, ancho en %
 - **Acciones por fila**: menú dropdown con acciones personalizables
 - **Selección de filas**: checkboxes para selección múltiple
 - **Acciones masivas**: barra de acciones para filas seleccionadas
-- **Búsqueda y filtros**: toolbar con campo de búsqueda y filtros dropdown
 - **Paginación**: navegación entre páginas`,
       },
     },
@@ -110,7 +87,7 @@ export default {
 - \`visible\`: true/false para mostrar/ocultar
 - \`sortable\`: true/false para permitir ordenar
 - \`align\`: 'left', 'center', 'right'
-- \`width\`: ancho (ej: '100px', '20%')`,
+- \`width\`: ancho en porcentaje (ej: '25%')`,
       control: 'object',
       table: { category: '1. Columnas' },
     },
@@ -160,65 +137,33 @@ export default {
       table: { category: '3. Selección' },
     },
 
-    // ============ BÚSQUEDA ============
-    searchable: {
-      description: 'Habilitar campo de búsqueda',
-      control: 'boolean',
-      table: { category: '4. Búsqueda' },
-    },
-    searchPlaceholder: {
-      description: 'Placeholder del campo de búsqueda',
-      control: 'text',
-      table: { category: '4. Búsqueda' },
-    },
-    searchKeys: {
-      description: 'Keys de los campos donde buscar',
-      control: 'object',
-      table: { category: '4. Búsqueda' },
-    },
-
-    // ============ FILTROS ============
-    filters: {
-      description: 'Configuración de filtros dropdown',
-      control: 'object',
-      table: { category: '5. Filtros' },
-    },
-
     // ============ PAGINACIÓN ============
     pagination: {
       description: 'Habilitar paginación',
       control: 'boolean',
-      table: { category: '6. Paginación' },
+      table: { category: '4. Paginación' },
     },
     paginationPerPage: {
       description: 'Filas por página',
       control: { type: 'number', min: 1, max: 50 },
-      table: { category: '6. Paginación' },
+      table: { category: '4. Paginación' },
     },
     paginationRowsPerPageOptions: {
       description: 'Opciones de filas por página',
       control: 'object',
-      table: { category: '6. Paginación' },
+      table: { category: '4. Paginación' },
     },
 
     // ============ ESTADOS ============
     isLoading: {
       description: 'Mostrar estado de carga',
       control: 'boolean',
-      table: { category: '7. Estados' },
+      table: { category: '5. Estados' },
     },
     emptyMessage: {
       description: 'Mensaje cuando no hay datos',
       control: 'text',
-      table: { category: '7. Estados' },
-    },
-
-    // ============ ESTILOS ============
-    variant: {
-      description: 'Variante de estilos',
-      control: 'select',
-      options: ['default', 'green'],
-      table: { category: '8. Estilos' },
+      table: { category: '5. Estados' },
     },
   },
 };
@@ -239,12 +184,6 @@ export const Default = {
     selectable: true,
     showBulkActionsBar: true,
     bulkActionsConfig: defaultBulkActions,
-    // Búsqueda
-    searchable: true,
-    searchPlaceholder: 'Buscar por nombre o email...',
-    searchKeys: ['nombre', 'email'],
-    // Filtros
-    filters: defaultFilters,
     // Paginación
     pagination: true,
     paginationPerPage: 5,
@@ -252,8 +191,6 @@ export const Default = {
     // Estados
     isLoading: false,
     emptyMessage: 'No hay datos disponibles',
-    // Estilos
-    variant: 'green',
   },
   render: ({ columnConfig, showActions, actionsConfig, bulkActionsConfig, ...args }) => {
     const columns = buildColumnsFromConfig(columnConfig || [])
@@ -383,7 +320,7 @@ export const AccionesPersonalizadas = {
 }
 
 // ==========================================
-// SIN ACCIONES NI SELECCIÓN
+// TABLA BÁSICA (solo datos y paginación)
 // ==========================================
 export const TablaBasica = {
   args: {
@@ -394,19 +331,14 @@ export const TablaBasica = {
     selectable: false,
     showBulkActionsBar: false,
     bulkActionsConfig: [],
-    searchable: true,
-    searchPlaceholder: 'Buscar...',
-    searchKeys: ['nombre', 'email'],
-    filters: defaultFilters,
     pagination: true,
     paginationPerPage: 5,
-    variant: 'green',
   },
   render: Default.render,
   parameters: {
     docs: {
       description: {
-        story: 'Tabla básica sin acciones ni selección. Solo datos, búsqueda y filtros.',
+        story: 'Tabla básica sin acciones ni selección. Solo datos y paginación.',
       },
     },
   },
@@ -418,18 +350,15 @@ export const TablaBasica = {
 export const TablaMinima = {
   args: {
     columnConfig: [
-      { key: 'nombre', label: 'Nombre', visible: true, sortable: false },
-      { key: 'email', label: 'Email', visible: true, sortable: false },
+      { key: 'nombre', label: 'Nombre', visible: true, sortable: false, width: '50%' },
+      { key: 'email', label: 'Email', visible: true, sortable: false, width: '50%' },
     ],
     data: sampleData,
     showActions: false,
     actionsConfig: [],
     selectable: false,
     bulkActionsConfig: [],
-    searchable: false,
-    filters: [],
     pagination: false,
-    variant: 'green',
   },
   render: Default.render,
   parameters: {
@@ -448,7 +377,7 @@ export const TablaJugadores = {
   args: {
     columnConfig: [
       { key: 'dorsal', label: '#', visible: true, sortable: true, align: 'center', width: '60px' },
-      { key: 'nombre', label: 'Nombre', visible: true, sortable: true },
+      { key: 'nombre', label: 'Nombre', visible: true, sortable: true, width: '30%' },
       { key: 'posicion', label: 'Posición', visible: true, sortable: true },
       { key: 'edad', label: 'Edad', visible: true, sortable: true, align: 'center' },
       { key: 'estado', label: 'Estado', visible: true, sortable: true },
@@ -476,33 +405,8 @@ export const TablaJugadores = {
       { label: 'Exportar', icon: 'download', variant: 'default' },
       { label: 'Dar de baja', icon: 'person_off', variant: 'danger' },
     ],
-    searchable: true,
-    searchPlaceholder: 'Buscar jugador...',
-    searchKeys: ['nombre', 'posicion'],
-    filters: [
-      {
-        key: 'posicion',
-        placeholder: 'Posición',
-        options: [
-          { value: 'Portero', label: 'Portero' },
-          { value: 'Defensa', label: 'Defensa' },
-          { value: 'Centrocampista', label: 'Centrocampista' },
-          { value: 'Delantero', label: 'Delantero' },
-        ],
-      },
-      {
-        key: 'estado',
-        placeholder: 'Estado',
-        options: [
-          { value: 'Activo', label: 'Activo' },
-          { value: 'Lesionado', label: 'Lesionado' },
-          { value: 'Retirado', label: 'Retirado' },
-        ],
-      },
-    ],
     pagination: true,
     paginationPerPage: 5,
-    variant: 'green',
   },
   render: Default.render,
   parameters: {
@@ -553,24 +457,6 @@ export const SinDatos = {
 }
 
 // ==========================================
-// VARIANTE DEFAULT (sin verde)
-// ==========================================
-export const VarianteDefault = {
-  args: {
-    ...Default.args,
-    variant: 'default',
-  },
-  render: Default.render,
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tabla con estilos por defecto (DaisyUI).',
-      },
-    },
-  },
-}
-
-// ==========================================
 // CON BADGES EN COLUMNAS
 // ==========================================
 
@@ -598,15 +484,6 @@ const posicionToBadge = {
   Delantero: { variant: 'custom', customColor: { bg: '#fee2e2', text: '#991b1b' }, icon: 'sports_soccer' },
 }
 
-// Configuración por defecto de badges
-const defaultBadgeConfig = {
-  size: 'sm',
-  pill: true,
-  outline: false,
-  showIcon: true,
-  minWidth: '90px',
-}
-
 export const ConBadges = {
   args: {
     data: sampleData,
@@ -614,13 +491,8 @@ export const ConBadges = {
     actionsConfig: defaultActions,
     actionsTitle: 'Acciones',
     selectable: false,
-    searchable: true,
-    searchPlaceholder: 'Buscar...',
-    searchKeys: ['nombre', 'email'],
-    filters: defaultFilters,
     pagination: true,
     paginationPerPage: 5,
-    variant: 'green',
     // Configuración de badges
     badgeSize: 'sm',
     badgePill: true,
@@ -633,27 +505,27 @@ export const ConBadges = {
       description: 'Tamaño de todos los badges',
       control: 'select',
       options: ['sm', 'md', 'lg'],
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgePill: {
       description: 'Bordes redondeados (pill)',
       control: 'boolean',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgeOutline: {
       description: 'Solo borde, sin fondo',
       control: 'boolean',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgeShowIcon: {
       description: 'Mostrar iconos en badges',
       control: 'boolean',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgeMinWidth: {
       description: 'Ancho mínimo de badges',
       control: 'text',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
   },
   render: ({
@@ -670,8 +542,8 @@ export const ConBadges = {
     // Columnas con render personalizado para badges
     const columns = [
       { key: 'id', label: 'ID', sortable: true, align: 'center', width: '80px' },
-      { key: 'nombre', label: 'Nombre', sortable: true },
-      { key: 'email', label: 'Email', sortable: true },
+      { key: 'nombre', label: 'Nombre', sortable: true, width: '25%' },
+      { key: 'email', label: 'Email', sortable: true, width: '30%' },
       {
         key: 'rol',
         label: 'Rol',
@@ -782,33 +654,8 @@ export const JugadoresConBadges = {
       { label: 'Convocar', icon: 'groups', variant: 'default' },
       { label: 'Exportar', icon: 'download', variant: 'default' },
     ],
-    searchable: true,
-    searchPlaceholder: 'Buscar jugador...',
-    searchKeys: ['nombre'],
-    filters: [
-      {
-        key: 'posicion',
-        placeholder: 'Todas las posiciones',
-        options: [
-          { value: 'Portero', label: 'Portero' },
-          { value: 'Defensa', label: 'Defensa' },
-          { value: 'Centrocampista', label: 'Centrocampista' },
-          { value: 'Delantero', label: 'Delantero' },
-        ],
-      },
-      {
-        key: 'estado',
-        placeholder: 'Todos los estados',
-        options: [
-          { value: 'Activo', label: 'Activo' },
-          { value: 'Lesionado', label: 'Lesionado' },
-          { value: 'Retirado', label: 'Retirado' },
-        ],
-      },
-    ],
     pagination: true,
     paginationPerPage: 5,
-    variant: 'green',
     // Configuración de badges
     badgeSize: 'sm',
     badgePill: false,
@@ -822,32 +669,32 @@ export const JugadoresConBadges = {
       description: 'Tamaño de todos los badges',
       control: 'select',
       options: ['sm', 'md', 'lg'],
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgePill: {
       description: 'Bordes redondeados (pill)',
       control: 'boolean',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgeOutline: {
       description: 'Solo borde, sin fondo',
       control: 'boolean',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgeShowIcon: {
       description: 'Mostrar iconos en badges',
       control: 'boolean',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgePosicionMinWidth: {
       description: 'Ancho mínimo badges de Posición',
       control: 'text',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
     badgeEstadoMinWidth: {
       description: 'Ancho mínimo badges de Estado',
       control: 'text',
-      table: { category: '9. Badges' },
+      table: { category: '6. Badges' },
     },
   },
   render: ({
@@ -865,7 +712,7 @@ export const JugadoresConBadges = {
     // Columnas con badges personalizados
     const columns = [
       { key: 'dorsal', label: '#', sortable: true, align: 'center', width: '60px' },
-      { key: 'nombre', label: 'Nombre', sortable: true },
+      { key: 'nombre', label: 'Nombre', sortable: true, width: '30%' },
       {
         key: 'posicion',
         label: 'Posición',

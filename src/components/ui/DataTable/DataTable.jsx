@@ -1,69 +1,11 @@
 import { useState, useMemo } from 'react'
-import PropTypes from 'prop-types'
 import ReactDataTable from 'react-data-table-component'
+import { NoDataComponentProps, BulkActionsBarProps, DataTableProps } from './DataTable.props'
 import { Icon } from '../Icon/Icon'
+import { SearchInput } from '../SearchInput/SearchInput'
+import { SelectFilter } from '../SelectFilter/SelectFilter'
 import { DataTableActions } from '../DataTableActions/DataTableActions'
-import { defaultStyles, defaultPaginationOptions } from './dataTableStyles'
-
-const legacyStyles = {
-  table: {
-    style: {
-      backgroundColor: 'transparent',
-    },
-  },
-  headRow: {
-    style: {
-      backgroundColor: 'oklch(var(--b2))',
-      borderBottomColor: 'oklch(var(--b3))',
-      fontWeight: '600',
-      fontSize: '0.875rem',
-      minHeight: '3rem',
-    },
-  },
-  headCells: {
-    style: {
-      color: 'oklch(var(--bc))',
-      paddingLeft: '1rem',
-      paddingRight: '1rem',
-    },
-  },
-  rows: {
-    style: {
-      backgroundColor: 'oklch(var(--b1))',
-      borderBottomColor: 'oklch(var(--b3))',
-      minHeight: '3.25rem',
-      cursor: 'pointer',
-      '&:hover': {
-        backgroundColor: 'oklch(var(--b2))',
-      },
-    },
-  },
-  cells: {
-    style: {
-      color: 'oklch(var(--bc))',
-      paddingLeft: '1rem',
-      paddingRight: '1rem',
-      cursor: 'pointer',
-    },
-  },
-  pagination: {
-    style: {
-      backgroundColor: 'oklch(var(--b1))',
-      borderTopColor: 'oklch(var(--b3))',
-      color: 'oklch(var(--bc))',
-    },
-    pageButtonsStyle: {
-      color: 'oklch(var(--bc))',
-      fill: 'oklch(var(--bc))',
-    },
-  },
-  noData: {
-    style: {
-      backgroundColor: 'oklch(var(--b1))',
-      color: 'oklch(var(--bc) / 0.6)',
-    },
-  },
-}
+import { tableStyles, defaultPaginationOptions } from './dataTableStyles'
 
 function LoadingComponent() {
   return (
@@ -82,9 +24,7 @@ function NoDataComponent({ message }) {
   )
 }
 
-NoDataComponent.propTypes = {
-  message: PropTypes.string,
-}
+NoDataComponent.propTypes = NoDataComponentProps
 
 function transformColumns(columns, actions, actionsTitle) {
   const transformed = columns.map(col => ({
@@ -94,6 +34,7 @@ function transformColumns(columns, actions, actionsTitle) {
     width: col.width,
     center: col.align === 'center',
     right: col.align === 'right',
+    ignoreRowClick: col.ignoreRowClick || false,
     cell: col.render
       ? row => col.render(row[col.key], row)
       : undefined,
@@ -160,12 +101,7 @@ function BulkActionsBar({ selectedCount, bulkActions, selectedRows, onClearSelec
   )
 }
 
-BulkActionsBar.propTypes = {
-  selectedCount: PropTypes.number.isRequired,
-  bulkActions: PropTypes.array.isRequired,
-  selectedRows: PropTypes.array.isRequired,
-  onClearSelection: PropTypes.func.isRequired,
-}
+BulkActionsBar.propTypes = BulkActionsBarProps
 
 export function DataTable({
   columns,
@@ -188,20 +124,11 @@ export function DataTable({
   searchPlaceholder = 'Buscar...',
   searchKeys = [],
   filters = [],
-  variant = 'default',
 }) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [filterValues, setFilterValues] = useState(
-    filters.reduce((acc, filter) => ({ ...acc, [filter.key]: '' }), {})
-  )
+  const [filterValues, setFilterValues] = useState({})
   const [selectedRows, setSelectedRows] = useState([])
   const [toggleCleared, setToggleCleared] = useState(false)
-
-  const customStyles = variant === 'green' ? defaultStyles : legacyStyles
-
-  const handleFilterChange = (key, value) => {
-    setFilterValues(prev => ({ ...prev, [key]: value }))
-  }
 
   const filteredData = useMemo(() => {
     if (!searchable && filters.length === 0) return data
@@ -222,6 +149,10 @@ export function DataTable({
     })
   }, [data, searchTerm, searchKeys, searchable, filters, filterValues])
 
+  const handleFilterChange = (key, value) => {
+    setFilterValues(prev => ({ ...prev, [key]: value }))
+  }
+
   const handleSelectionChange = ({ selectedRows: selected }) => {
     setSelectedRows(selected)
     if (onSelectionChange) {
@@ -238,17 +169,40 @@ export function DataTable({
     }
   }
 
-  const hasToolbar = searchable || filters.length > 0
   const hasBulkActions = bulkActions.length > 0 && showBulkActionsBar
-  const containerClass = variant === 'green'
-    ? 'rounded-xl shadow-sm overflow-visible'
-    : `overflow-x-auto ${className}`
-  const containerStyle = variant === 'green'
-    ? { backgroundColor: 'oklch(98% 0.02 175)' }
-    : {}
+  const hasToolbar = searchable || filters.length > 0
+
+  const containerClasses = [
+    'datatable-root overflow-visible',
+    hasToolbar ? '' : 'no-toolbar',
+    pagination ? '' : 'no-pagination',
+    className,
+  ].filter(Boolean).join(' ')
 
   return (
-    <div test-id="el-dtg1a2b3c" className={containerClass} style={containerStyle}>
+    <div test-id="el-dtg1a2b3c" className={containerClasses}>
+      {hasToolbar && (
+        <div className="datatable-toolbar flex items-center gap-3 px-4 py-3 border-b border-base-300 bg-primary/5 rounded-t-xl">
+          {searchable && (
+            <SearchInput
+              value={searchTerm}
+              onChange={setSearchTerm}
+              placeholder={searchPlaceholder}
+              className="flex-1"
+            />
+          )}
+          {filters.map(filter => (
+            <SelectFilter
+              key={filter.key}
+              value={filterValues[filter.key] || ''}
+              onChange={(value) => handleFilterChange(filter.key, value)}
+              options={filter.options}
+              placeholder={filter.placeholder}
+            />
+          ))}
+        </div>
+      )}
+
       {hasBulkActions && selectedRows.length > 0 && (
         <BulkActionsBar
           selectedCount={selectedRows.length}
@@ -258,50 +212,11 @@ export function DataTable({
         />
       )}
 
-      {hasToolbar && (
-        <div className="flex items-center justify-between gap-4 p-4 border-b border-gray-200">
-          {searchable && (
-            <div className="relative flex-1 max-w-lg">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
-                search
-              </span>
-              <input
-                type="text"
-                placeholder={searchPlaceholder}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full h-10 pl-10 pr-4 rounded-lg text-sm bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-300"
-              />
-            </div>
-          )}
-
-          {filters.length > 0 && (
-            <div className="flex items-center gap-3">
-              {filters.map(filter => (
-                <select
-                  key={filter.key}
-                  value={filterValues[filter.key]}
-                  onChange={(e) => handleFilterChange(filter.key, e.target.value)}
-                  className="h-10 px-4 pr-8 rounded-lg text-sm bg-white border border-gray-300 cursor-pointer"
-                >
-                  <option value="">{filter.placeholder}</option>
-                  {filter.options.map(option => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
       <ReactDataTable
         columns={transformColumns(columns, actions, actionsTitle)}
         data={filteredData}
         keyField={keyField}
-        customStyles={customStyles}
+        customStyles={tableStyles}
         selectableRows={selectable}
         onSelectedRowsChange={handleSelectionChange}
         clearSelectedRows={toggleCleared}
@@ -321,63 +236,6 @@ export function DataTable({
   );
 }
 
-DataTable.propTypes = {
-  columns: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      sortable: PropTypes.bool,
-      align: PropTypes.oneOf(['left', 'center', 'right']),
-      render: PropTypes.func,
-      width: PropTypes.string,
-    })
-  ).isRequired,
-  data: PropTypes.array.isRequired,
-  keyField: PropTypes.string,
-  selectable: PropTypes.bool,
-  onSelectionChange: PropTypes.func,
-  actions: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      icon: PropTypes.string,
-      onClick: PropTypes.func.isRequired,
-      variant: PropTypes.oneOf(['default', 'danger']),
-      show: PropTypes.func,
-    })
-  ),
-  actionsTitle: PropTypes.string,
-  bulkActions: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      icon: PropTypes.string,
-      onClick: PropTypes.func.isRequired,
-      variant: PropTypes.oneOf(['default', 'danger']),
-    })
-  ),
-  showBulkActionsBar: PropTypes.bool,
-  isLoading: PropTypes.bool,
-  emptyMessage: PropTypes.string,
-  pagination: PropTypes.bool,
-  paginationPerPage: PropTypes.number,
-  paginationRowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
-  onRowClick: PropTypes.func,
-  className: PropTypes.string,
-  searchable: PropTypes.bool,
-  searchPlaceholder: PropTypes.string,
-  searchKeys: PropTypes.arrayOf(PropTypes.string),
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      placeholder: PropTypes.string.isRequired,
-      options: PropTypes.arrayOf(
-        PropTypes.shape({
-          value: PropTypes.string.isRequired,
-          label: PropTypes.string.isRequired,
-        })
-      ).isRequired,
-    })
-  ),
-  variant: PropTypes.oneOf(['default', 'green']),
-}
+DataTable.propTypes = DataTableProps
 
 export default DataTable

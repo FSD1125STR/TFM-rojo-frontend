@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import { InfoItemProps } from './InfoItem.props'
 
 export function InfoItem({
   icon,
@@ -7,7 +7,7 @@ export function InfoItem({
   badge,
 }) {
   return (
-    <div className="flex items-start gap-3">
+    <div test-id="el-f1i2t3m4" className="flex items-start gap-3">
       <span className="material-symbols-outlined text-base-content/50 text-xl mt-0.5">
         {icon}
       </span>
@@ -23,9 +23,4 @@ export function InfoItem({
   );
 }
 
-InfoItem.propTypes = {
-  icon: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  badge: PropTypes.node,
-};
+InfoItem.propTypes = InfoItemProps

@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import { StatBoxProps } from './StatBox.props'
 
 export function StatBox({
   value,
@@ -13,7 +13,7 @@ export function StatBox({
   };
 
   return (
-    <div className="text-center">
+    <div test-id="el-s1t2b3x4" className="text-center">
       <div className={`text-3xl font-bold ${colorClasses[color]}`}>
         {value}
       </div>
@@ -22,8 +22,4 @@ export function StatBox({
   );
 }
 
-StatBox.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  label: PropTypes.string.isRequired,
-  color: PropTypes.oneOf(["default", "yellow", "red", "green"]),
-};
+StatBox.propTypes = StatBoxProps

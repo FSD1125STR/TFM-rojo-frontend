@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { CardProps } from './Card.props'
 
 export function Card({
   title,
@@ -60,7 +60,7 @@ export function Card({
   }
 
   return (
-    <div className={`card-generic ${className}`} style={style}>
+    <div test-id="el-c1a2r3d4" className={`card-generic ${className}`} style={style}>
       {title && (
         <div style={headerStyle}>
           {icon && (
@@ -78,13 +78,6 @@ export function Card({
   )
 }
 
-Card.propTypes = {
-  title: PropTypes.string,
-  icon: PropTypes.string,
-  children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['default', 'primary', 'secondary', 'white']),
-  padding: PropTypes.oneOf(['none', 'sm', 'md', 'lg']),
-  className: PropTypes.string,
-}
+Card.propTypes = CardProps
 
 export default Card

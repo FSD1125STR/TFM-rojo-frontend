@@ -6,7 +6,7 @@ const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
 let testId = ''
 for (let i = 0; i < 8; i++) testId += chars.charAt(Math.floor(Math.random() * chars.length))
 -%>
-import PropTypes from 'prop-types'
+import { <%= name %>Props } from './<%= name %>.props'
 
 export function <%= name %>({ className = '', ...props }) {
   return (
@@ -16,6 +16,4 @@ export function <%= name %>({ className = '', ...props }) {
   )
 }
 
-<%= name %>.propTypes = {
-  className: PropTypes.string,
-}
+<%= name %>.propTypes = <%= name %>Props

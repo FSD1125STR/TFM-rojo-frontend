@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { PageTitleProps } from './PageTitle.props'
 
 export function PageTitle({ children, className = '' }) {
   return (
@@ -8,7 +8,4 @@ export function PageTitle({ children, className = '' }) {
   )
 }
 
-PageTitle.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-}
+PageTitle.propTypes = PageTitleProps

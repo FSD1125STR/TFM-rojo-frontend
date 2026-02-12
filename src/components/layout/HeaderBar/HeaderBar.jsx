@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import { IconButton } from '../../ui/IconButton/IconButton'
+import { HeaderBarProps } from './HeaderBar.props'
 import { ThemeToggle } from '../../ui/ThemeToggle/ThemeToggle'
 import { HeaderActions } from '../HeaderActions/HeaderActions'
 import { SearchBar } from '../SearchBar/SearchBar'
@@ -51,9 +51,4 @@ export function HeaderBar({
   )
 }
 
-HeaderBar.propTypes = {
-  actions: PropTypes.node,
-  sidebarMode: PropTypes.oneOf(['drawer', 'expanded', 'collapsed']),
-  onToggleSidebar: PropTypes.func,
-  className: PropTypes.string,
-}
+HeaderBar.propTypes = HeaderBarProps

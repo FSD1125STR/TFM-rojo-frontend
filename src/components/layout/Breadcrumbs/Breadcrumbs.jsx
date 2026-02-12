@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { BreadcrumbsProps } from './Breadcrumbs.props'
 
 export function Breadcrumbs({ items = [], variant = 'default' }) {
   if (items.length === 0) return null
@@ -23,12 +23,4 @@ export function Breadcrumbs({ items = [], variant = 'default' }) {
   )
 }
 
-Breadcrumbs.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      to: PropTypes.string,
-    })
-  ),
-  variant: PropTypes.oneOf(['default', 'compact']),
-}
+Breadcrumbs.propTypes = BreadcrumbsProps

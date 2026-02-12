@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import { TabsProps } from './Tabs.props'
 
 export function Tabs({
   tabs,
@@ -6,7 +6,7 @@ export function Tabs({
   onChange,
 }) {
   return (
-    <div className="flex gap-1 p-1 bg-base-200 rounded-lg w-fit">
+    <div test-id="el-t1a2b3s4" className="flex gap-1 p-1 bg-base-200 rounded-lg w-fit">
       {tabs.map((tab) => (
         <button
           key={tab.value}
@@ -24,13 +24,4 @@ export function Tabs({
   );
 }
 
-Tabs.propTypes = {
-  tabs: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  activeTab: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
+Tabs.propTypes = TabsProps

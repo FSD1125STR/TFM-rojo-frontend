@@ -1,5 +1,4 @@
 import { PageHeader } from "./PageHeader";
-import { Button } from "../Button/Button";
 
 export default {
   title: "UI/PageHeader",
@@ -33,11 +32,7 @@ export const WithActions = {
     title: "Carlos Rodríguez Martínez",
     subtitle: "Dorsal 10 · Delantero",
     showBack: true,
-    actions: (
-      <Button variant="primary">
-        <span className="material-symbols-outlined mr-2">edit</span>
-        Editar Jugador
-      </Button>
-    ),
+    actionLabel: "Editar Jugador",
+    actionIcon: "edit",
   },
 };

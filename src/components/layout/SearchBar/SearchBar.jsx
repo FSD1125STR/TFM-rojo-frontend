@@ -68,12 +68,12 @@ export function SearchBar() {
   const hasResults = categories.length > 0
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-xl">
+    <div test-id="el-s1b2a3r4" ref={containerRef} className="relative w-full max-w-xl">
       <div className="relative">
         <Icon
           name="search"
           size="sm"
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40 z-10 pointer-events-none"
         />
         <input
           type="text"

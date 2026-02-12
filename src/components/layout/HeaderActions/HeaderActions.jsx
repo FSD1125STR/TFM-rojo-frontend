@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { HeaderActionsProps } from './HeaderActions.props'
 
 export function HeaderActions({ children }) {
   return (
@@ -8,6 +8,4 @@ export function HeaderActions({ children }) {
   )
 }
 
-HeaderActions.propTypes = {
-  children: PropTypes.node,
-}
+HeaderActions.propTypes = HeaderActionsProps

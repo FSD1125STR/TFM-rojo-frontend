@@ -150,15 +150,16 @@ El proyecto utiliza **DaisyUI v5** como sistema de componentes sobre TailwindCSS
 
 ### Paleta de colores
 
-Colores personalizados del Design System FootMind:
+Colores personalizados del Design System FootMind. Verde en colores estructurales, grises neutros en fondos:
 
-| Token DaisyUI | Color | Uso |
-|---------------|-------|-----|
-| `primary` | #5C6F68 | Color estructural principal |
-| `secondary` | #8AA39B | Secundario / bordes |
-| `accent` | #A4F9C8 | Hover / selección |
-| `base-100` | #EBFFFD | Fondo general |
-| `base-300` | #95D9C3 | Superficies (cards, tablas) |
+| Token DaisyUI | Valor oklch | Uso |
+|---------------|-------------|-----|
+| `primary` | oklch(48% 0.05 160) | Color estructural principal (verde) |
+| `secondary` | oklch(65% 0.06 160) | Secundario (verde medio) |
+| `accent` | oklch(95% 0.04 160) | Pill sidebar activo (verde claro) |
+| `base-100` | oklch(100% 0 0) | Fondo general (blanco puro) |
+| `base-200` | oklch(96.5% 0 0) | Superficies secundarias (gris claro) |
+| `base-300` | oklch(90% 0.005 260) | Bordes (gris claro) |
 
 ### Tipografía
 

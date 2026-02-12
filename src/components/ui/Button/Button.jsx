@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { ButtonProps } from './Button.props'
 
 const variantClasses = {
   primary: 'btn-primary',
@@ -43,11 +43,4 @@ export function Button({
   )
 }
 
-Button.propTypes = {
-  children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['primary', 'secondary', 'ghost', 'danger']),
-  size: PropTypes.oneOf(['sm', 'md', 'lg']),
-  isLoading: PropTypes.bool,
-  isDisabled: PropTypes.bool,
-  className: PropTypes.string,
-}
+Button.propTypes = ButtonProps
