@@ -6,8 +6,9 @@ import { InfoItem } from '../../components/ui/InfoItem'
 import { StatBox } from '../../components/ui/StatBox'
 import { Badge } from '../../components/ui/Badge'
 import { Tabs } from '../../components/ui/Tabs'
+import { Button } from '../../components/ui/Button'
 import { DataTable } from '../../components/ui/DataTable'
-import { ModalPersona } from '../../components/ui/ModalPersona'
+import { ModalPlayer } from './components/ModalPlayer'
 import { usePlayerDetailTable } from './hooks/usePlayerDetailTable'
 import {
   jugadoresData,
@@ -47,9 +48,9 @@ export function PlayerDetail() {
     return (
       <div test-id="el-p7l8y9r0" className="p-6 text-center">
         <h2>Jugador no encontrado</h2>
-        <button className="btn btn-primary mt-4" onClick={() => navigate('/jugadores')}>
+        <Button variant="primary" className="mt-4" onClick={() => navigate('/jugadores')}>
           Volver a la lista
-        </button>
+        </Button>
       </div>
     )
   }
@@ -165,11 +166,9 @@ export function PlayerDetail() {
         </Card>
       </div>
 
-      <ModalPersona
+      <ModalPlayer
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        mode="jugador"
-        isEditing={true}
         initialData={jugador}
         onSave={handleGuardar}
       />

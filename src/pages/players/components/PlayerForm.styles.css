@@ -1,0 +1,72 @@
+/* PlayerForm Styles */
+
+/* Labels */
+.player-form .form-control label span {
+  font-weight: 600;
+  font-size: 13px;
+  color: oklch(50% 0.02 260);
+}
+
+/* Inputs con icono */
+.player-form-input-icon {
+  position: relative;
+}
+
+.player-form-input-icon .icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: oklch(48% 0.05 160);
+  font-size: 18px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.player-form-input-icon input,
+.player-form-input-icon select {
+  padding-left: 36px !important;
+}
+
+/* Badge de edad */
+.player-form .player-form-edad-badge {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px;
+  background: oklch(92% 0.12 155 / 0.15) !important;
+  font-weight: 600;
+  color: oklch(20% 0.02 260) !important;
+  border-color: oklch(90% 0.05 155) !important;
+}
+
+.player-form-edad-badge .material-symbols-outlined {
+  color: oklch(48% 0.05 160);
+  font-size: 18px;
+}
+
+/* Focus en inputs */
+.player-form .input:focus,
+.player-form .select:focus {
+  outline: none;
+  border-color: oklch(48% 0.05 160);
+  box-shadow: 0 0 0 3px oklch(48% 0.05 160 / 0.15);
+}
+
+/* Input y select base */
+.player-form .input,
+.player-form .select {
+  background: oklch(98% 0.02 175);
+  border-color: oklch(90% 0.05 155);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.player-form .input::placeholder {
+  color: oklch(60% 0.02 155);
+}
+
+/* Asterisco requerido */
+.player-form .text-error {
+  color: oklch(60% 0.22 25);
+}

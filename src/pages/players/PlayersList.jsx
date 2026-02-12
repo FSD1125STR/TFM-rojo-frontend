@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { StatsCard } from '../../components/ui/StatsCard'
 import { DataTable } from '../../components/ui/DataTable'
-import { ModalPersona } from '../../components/ui/ModalPersona'
+import { ModalPlayer } from './components/ModalPlayer'
 import { usePlayersTable } from './hooks/usePlayersTable'
 import {
   jugadoresData as initialJugadores,
@@ -16,7 +16,6 @@ export function PlayersList() {
   const [jugadores, setJugadores] = useState(initialJugadores)
 
   const [modalOpen, setModalOpen] = useState(false)
-  const [modalMode, setModalMode] = useState('nuevo')
   const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null)
 
   useEffect(() => {
@@ -37,13 +36,11 @@ export function PlayersList() {
 
   const handleNuevoJugador = () => {
     setJugadorSeleccionado(null)
-    setModalMode('nuevo')
     setModalOpen(true)
   }
 
   const handleEditarJugador = (jugador) => {
     setJugadorSeleccionado(jugador)
-    setModalMode('editar')
     setModalOpen(true)
   }
 
@@ -52,25 +49,14 @@ export function PlayersList() {
   }
 
   const handleGuardarJugador = (datos) => {
-    if (modalMode === 'nuevo') {
-      const nuevoJugador = {
-        ...datos,
-        id: Math.max(...jugadores.map((j) => j.id)) + 1,
-        partidos: 0,
-        minutos: 0,
-        goles: 0,
-        asistencias: 0,
-        tarjetasAmarillas: 0,
-        tarjetasRojas: 0,
-      }
-
-      setJugadores([nuevoJugador, ...jugadores])
-    } else {
+    // TODO: reemplazar por llamada al backend
+    if (jugadorSeleccionado) {
       setJugadores(
         jugadores.map((j) => (j.id === jugadorSeleccionado.id ? { ...j, ...datos } : j))
       )
+    } else {
+      setJugadores([datos, ...jugadores])
     }
-    setModalOpen(false)
   }
 
   const handleDarDeBaja = (jugador) => {
@@ -78,6 +64,14 @@ export function PlayersList() {
       setJugadores(
         jugadores.map((j) => (j.id === jugador.id ? { ...j, estado: 'No disponible' } : j))
       )
+    }
+  }
+
+  const handleEliminarSeleccionados = (selectedRows) => {
+    const nombres = selectedRows.map((j) => `${j.nombre} ${j.apellidos}`).join(', ')
+    if (confirm(`¿Estás seguro de eliminar a ${selectedRows.length} jugador(es)?\n${nombres}`)) {
+      const ids = selectedRows.map((j) => j.id)
+      setJugadores((prev) => prev.filter((j) => !ids.includes(j.id)))
     }
   }
 
@@ -108,6 +102,15 @@ export function PlayersList() {
         <DataTable
           columns={columns}
           data={jugadores}
+          selectable
+          bulkActions={[
+            {
+              label: 'Eliminar',
+              icon: 'delete',
+              variant: 'danger',
+              onClick: handleEliminarSeleccionados,
+            },
+          ]}
           actions={actions}
           filters={filters}
           {...searchConfig}
@@ -118,11 +121,9 @@ export function PlayersList() {
         />
       </div>
 
-      <ModalPersona
+      <ModalPlayer
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        mode="jugador"
-        isEditing={modalMode === 'editar'}
         initialData={jugadorSeleccionado}
         onSave={handleGuardarJugador}
       />
