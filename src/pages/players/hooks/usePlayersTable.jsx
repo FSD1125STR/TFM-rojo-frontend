@@ -71,7 +71,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
   ]
 
   const filters = [
-    { key: 'posicion', placeholder: 'Todas las posiciones', options: posicionOptions },
+    { key: 'posicion', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true },
     { key: 'estado', placeholder: 'Todos los estados', options: estadoOptions },
   ]
 
