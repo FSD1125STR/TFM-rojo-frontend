@@ -1,8 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { usePermissions } from '../hooks/usePermissions';
 
-export function ProtectedRoute() {
+export function ProtectedRoute({ permission }) {
   const { isAuthenticated, isLoading } = useAuth();
+  const { checkPermission } = usePermissions();
 
   if (isLoading) {
     return (
@@ -14,6 +16,10 @@ export function ProtectedRoute() {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (permission && !checkPermission(permission)) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

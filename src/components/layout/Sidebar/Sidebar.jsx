@@ -5,6 +5,7 @@ import { UserCard } from '../UserCard/UserCard';
 import { Divider } from '../../ui/Divider/Divider';
 import { menuItems } from '../../../data/menuItems';
 import { useAuth } from '../../../hooks/useAuth';
+import { usePermissions } from '../../../hooks/usePermissions';
 
 export function Sidebar({
   mode = 'expanded',
@@ -15,6 +16,7 @@ export function Sidebar({
   className = ''
 }) {
   const { user: authUser, logout } = useAuth();
+  const { checkPermission } = usePermissions();
   const user = userProp || authUser;
   const handleLogout = onLogoutProp || logout;
   const isCollapsed = mode === 'collapsed';
@@ -22,13 +24,15 @@ export function Sidebar({
 
   const sidebarWidth = isCollapsed ? 'w-24' : 'w-64';
 
+  const visibleItems = menuItems.filter(item => !item.permission || checkPermission(item.permission));
+
   const sidebarContent = (
     <div test-id="el-i1j2k3l4" className={`flex flex-col h-full bg-base-100 border-r border-base-300 ${isDrawer ? 'w-64' : sidebarWidth}`}>
       <AppLogo collapsed={isCollapsed} />
 
       <nav className="flex-1 overflow-y-auto px-2">
         <ul className="menu gap-1 w-full">
-          {menuItems.map((item) => (
+          {visibleItems.map((item) => (
             <SidebarItem
               key={item.to}
               icon={item.icon}
