@@ -33,7 +33,6 @@ export default {
   },
 }
 
-// Story básica
 export const Default = {
   args: {
     title: 'Título del Card',
@@ -42,7 +41,6 @@ export const Default = {
   },
 }
 
-// Sin título
 export const SinTitulo = {
   args: {
     children: <p style={{ margin: 0 }}>Card sin título, solo contenido.</p>,
@@ -56,7 +54,6 @@ export const SinTitulo = {
   },
 }
 
-// Todas las variantes
 export const TodasLasVariantes = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -83,7 +80,6 @@ export const TodasLasVariantes = {
   },
 }
 
-// Todos los paddings
 export const TodosLosPaddings = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

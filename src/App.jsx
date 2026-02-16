@@ -39,19 +39,39 @@ function AppRoutes() {
         <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
 
-      {/* Rutas protegidas */}
+      {/* Rutas protegidas - acceso general */}
       <Route element={<ProtectedRoute />}>
         <Route element={<AppShell />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/jugadores" element={<PlayersList />} />
-          <Route path="/jugadores/:id" element={<PlayerDetail />} />
-          <Route path="/partidos" element={<MatchesList />} />
-          <Route path="/partidos/:id" element={<MatchDetail />} />
-          <Route path="/convocatorias" element={<CallupsList />} />
-          <Route path="/convocatorias/:id" element={<CallupDetail />} />
-          <Route path="/usuarios" element={<UsersList />} />
-          <Route path="/usuarios/:id" element={<UserDetail />} />
-          <Route path="/directo" element={<LiveMatch />} />
+
+          {/* Rutas con permiso de jugadores */}
+          <Route element={<ProtectedRoute permission="players.view" />}>
+            <Route path="/jugadores" element={<PlayersList />} />
+            <Route path="/jugadores/:id" element={<PlayerDetail />} />
+          </Route>
+
+          {/* Rutas con permiso de partidos */}
+          <Route element={<ProtectedRoute permission="matches.view" />}>
+            <Route path="/partidos" element={<MatchesList />} />
+            <Route path="/partidos/:id" element={<MatchDetail />} />
+          </Route>
+
+          {/* Rutas con permiso de convocatorias */}
+          <Route element={<ProtectedRoute permission="callups.view" />}>
+            <Route path="/convocatorias" element={<CallupsList />} />
+            <Route path="/convocatorias/:id" element={<CallupDetail />} />
+          </Route>
+
+          {/* Rutas con permiso de usuarios */}
+          <Route element={<ProtectedRoute permission="users.view" />}>
+            <Route path="/usuarios" element={<UsersList />} />
+            <Route path="/usuarios/:id" element={<UserDetail />} />
+          </Route>
+
+          {/* Ruta con permiso de partido en directo */}
+          <Route element={<ProtectedRoute permission="live.update" />}>
+            <Route path="/directo" element={<LiveMatch />} />
+          </Route>
         </Route>
       </Route>
 

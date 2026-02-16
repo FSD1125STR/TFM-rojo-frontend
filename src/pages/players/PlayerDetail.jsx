@@ -10,6 +10,7 @@ import { Button } from '../../components/ui/Button'
 import { DataTable } from '../../components/ui/DataTable'
 import { ModalPlayer } from './components/ModalPlayer'
 import { usePlayerDetailTable } from './hooks/usePlayerDetailTable'
+import { usePermissions } from '../../hooks/usePermissions'
 import {
   jugadoresData,
   historialPartidosData,
@@ -22,6 +23,7 @@ import {
 export function PlayerDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { checkPermission } = usePermissions()
 
   const jugadorInicial = jugadoresData.find((j) => j.id === parseInt(id))
 
@@ -81,6 +83,8 @@ export function PlayerDetail() {
       ? Math.round(historialCompleto.reduce((acc, p) => acc + p.minutos, 0) / historialCompleto.length)
       : 0
 
+  const canEdit = checkPermission('players.edit')
+
   return (
     <div test-id="el-p7l8y9r0">
       <PageHeader
@@ -88,9 +92,11 @@ export function PlayerDetail() {
         subtitle={`Dorsal ${jugador.dorsal} · ${jugador.posicion}`}
         showBack
         onBack={handleBack}
-        actionLabel="Editar Jugador"
-        actionIcon="edit"
-        onAction={handleEditar}
+        {...(canEdit && {
+          actionLabel: "Editar Jugador",
+          actionIcon: "edit",
+          onAction: handleEditar,
+        })}
       />
 
       <div className="grid grid-cols-[1fr_1.5fr] gap-4 mt-6">
@@ -166,12 +172,14 @@ export function PlayerDetail() {
         </Card>
       </div>
 
-      <ModalPlayer
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        initialData={jugador}
-        onSave={handleGuardar}
-      />
+      {canEdit && (
+        <ModalPlayer
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          initialData={jugador}
+          onSave={handleGuardar}
+        />
+      )}
     </div>
   )
 }

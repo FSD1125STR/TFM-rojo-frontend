@@ -3,16 +3,23 @@ import { Avatar } from '../../../components/ui/Avatar/Avatar'
 import {
   posicionOptions,
   estadoOptions,
+  categoriaOptions,
   posicionConfig,
   estadoConfig,
 } from '../data/mockData'
 
-export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
+export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }) {
+  // Admin: 4% check + 88% datos + 8% acciones = 100%
+  // No admin: 92% datos + 8% acciones = 100%
+  const w = isAdmin
+    ? { nombre: '26%', dorsal: '9%', catPos: '14%', edad: '8%', partidos: '9%', goles: '8%', estado: '14%' }
+    : { nombre: '28%', dorsal: '10%', catPos: '15%', edad: '9%', partidos: '10%', goles: '8%', estado: '12%' }
+
   const columns = [
     {
       key: 'nombre',
       label: 'Jugador',
-      width: '25%',
+      width: w.nombre,
       sortable: true,
       render: (_, row) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', pointerEvents: 'none' }}>
@@ -21,33 +28,36 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
         </div>
       ),
     },
-    { key: 'dorsal', label: 'Dorsal', width: '9%', align: 'center', sortable: true },
-    {
-      key: 'posicion',
-      label: 'Posición',
-      width: '14%',
-      align: 'center',
-      sortable: true,
-      render: (value) => (
-        <div style={{ pointerEvents: 'none' }}>
-          <Badge
-            variant="custom"
-            size="sm"
-            icon={posicionConfig[value]?.icon}
-            customColor={posicionConfig[value]?.color}
-          >
-            {value}
-          </Badge>
-        </div>
-      ),
-    },
-    { key: 'edad', label: 'Edad', width: '8%', align: 'center', sortable: true },
-    { key: 'partidos', label: 'Partidos', width: '9%', align: 'center', sortable: true },
-    { key: 'goles', label: 'Goles', width: '8%', align: 'center', sortable: true },
+    { key: 'dorsal', label: 'Dorsal', width: w.dorsal, align: 'center', sortable: true },
+    ...(isAdmin
+      ? [{ key: 'categoria', label: 'Categoría', width: w.catPos, align: 'center', sortable: true }]
+      : [{
+          key: 'posicion',
+          label: 'Posición',
+          width: w.catPos,
+          align: 'center',
+          sortable: true,
+          render: (value) => (
+            <div style={{ pointerEvents: 'none' }}>
+              <Badge
+                variant="custom"
+                size="sm"
+                icon={posicionConfig[value]?.icon}
+                customColor={posicionConfig[value]?.color}
+              >
+                {value}
+              </Badge>
+            </div>
+          ),
+        }]
+    ),
+    { key: 'edad', label: 'Edad', width: w.edad, align: 'center', sortable: true },
+    { key: 'partidos', label: 'Partidos', width: w.partidos, align: 'center', sortable: true },
+    { key: 'goles', label: 'Goles', width: w.goles, align: 'center', sortable: true },
     {
       key: 'estado',
       label: 'Estado',
-      width: '14%',
+      width: w.estado,
       align: 'center',
       sortable: true,
       render: (value) => (
@@ -66,12 +76,15 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
 
   const actions = [
     { label: 'Ver detalle', icon: 'visibility', onClick: onVerDetalle },
-    { label: 'Editar', icon: 'edit', onClick: onEditar },
-    { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger' },
-  ]
+    onEditar && { label: 'Editar', icon: 'edit', onClick: onEditar },
+    onDarDeBaja && { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger' },
+  ].filter(Boolean)
 
   const filters = [
-    { key: 'posicion', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true },
+    ...(isAdmin
+      ? [{ key: 'categoria', placeholder: 'Todas las categorías', options: categoriaOptions }]
+      : [{ key: 'posicion', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true }]
+    ),
     { key: 'estado', placeholder: 'Todos los estados', options: estadoOptions },
   ]
 

@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react'
 
 const STORAGE_PREFIX = 'ui.theme'
 
-function getSystemTheme() {
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  return prefersDark ? 'dark' : 'light'
-}
+const DEFAULT_THEME = 'light';
 
 function getStoredTheme(userId) {
   if (!userId) return null
@@ -17,15 +14,15 @@ function applyTheme(theme) {
 }
 
 export function useTheme(userId = null) {
-  const [theme, setThemeState] = useState(() => {
+  const [theme, setTheme] = useState(() => {
     const stored = getStoredTheme(userId)
-    return stored || getSystemTheme()
+    return stored || DEFAULT_THEME
   })
 
   useEffect(() => {
     const stored = getStoredTheme(userId)
-    const next = stored || getSystemTheme()
-    setThemeState(next)
+    const next = stored || DEFAULT_THEME
+    setTheme(next)
     applyTheme(next)
   }, [userId])
 
@@ -40,9 +37,9 @@ export function useTheme(userId = null) {
     setThemeState(prev => prev === 'light' ? 'dark' : 'light')
   }
 
-  const setTheme = (newTheme) => {
-    setThemeState(newTheme)
+  const setNewTheme = (newTheme) => {
+    setTheme(newTheme)
   }
 
-  return { theme, toggleTheme, setTheme }
+  return { theme, toggleTheme, setNewTheme }
 }

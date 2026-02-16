@@ -44,7 +44,6 @@ export default {
   },
 };
 
-// Historia por defecto
 export const Default = {
   args: {
     title: "Total Jugadores",
@@ -53,7 +52,6 @@ export const Default = {
   },
 };
 
-// Con icono
 export const WithIcon = {
   args: {
     title: "Total Jugadores",
@@ -63,7 +61,6 @@ export const WithIcon = {
   },
 };
 
-// Variante Primary
 export const Primary = {
   args: {
     title: "Porteros",
@@ -73,7 +70,6 @@ export const Primary = {
   },
 };
 
-// Variante Secondary
 export const Secondary = {
   args: {
     title: "Defensas",
@@ -83,7 +79,6 @@ export const Secondary = {
   },
 };
 
-// Variante Accent
 export const Accent = {
   args: {
     title: "Delanteros",
@@ -93,7 +88,6 @@ export const Accent = {
   },
 };
 
-// Variante Success
 export const Success = {
   args: {
     title: "Partidos Ganados",
@@ -103,7 +97,6 @@ export const Success = {
   },
 };
 
-// Variante Warning
 export const Warning = {
   args: {
     title: "Lesionados",
@@ -113,7 +106,6 @@ export const Warning = {
   },
 };
 
-// Variante Error
 export const Error = {
   args: {
     title: "Tarjetas Rojas",
@@ -123,7 +115,6 @@ export const Error = {
   },
 };
 
-// Grid de ejemplo (como en la página de jugadores)
 export const StatsGrid = {
   render: () => (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -143,7 +134,6 @@ export const StatsGrid = {
   },
 };
 
-// Con subtítulo
 export const WithSubtitle = {
   args: {
     title: "Jugadores Activos",
@@ -154,7 +144,6 @@ export const WithSubtitle = {
   },
 };
 
-// Dashboard Grid (como en la app)
 export const DashboardGrid = {
   render: () => (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -197,7 +186,6 @@ export const DashboardGrid = {
   },
 };
 
-// Grid con iconos
 export const StatsGridWithIcons = {
   render: () => (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

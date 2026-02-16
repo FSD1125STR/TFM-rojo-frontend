@@ -1,4 +1,3 @@
-// Configuración de iconos y colores por posición
 export const posicionConfig = {
   Portero: { icon: 'sports_handball', color: { bg: '#fef3c7', text: '#92400e' } },
   Defensa: { icon: 'shield', color: { bg: '#dbeafe', text: '#1e40af' } },
@@ -6,7 +5,6 @@ export const posicionConfig = {
   Delantero: { icon: 'sports_soccer', color: { bg: '#fee2e2', text: '#991b1b' } },
 }
 
-// Configuración de iconos y variantes por estado
 export const estadoConfig = {
   Disponible: { icon: 'check_circle', variant: 'success' },
   Lesionado: { icon: 'healing', variant: 'error' },
@@ -14,7 +12,6 @@ export const estadoConfig = {
   'No disponible': { icon: 'block', variant: 'neutral' },
 }
 
-// Datos mock de jugadores (20 jugadores)
 export const jugadoresData = [
   {
     id: 1,
@@ -22,6 +19,7 @@ export const jugadoresData = [
     apellidos: 'Méndez García',
     dorsal: 9,
     posicion: 'Delantero',
+    categoria: 'Infantil A',
     fechaNacimiento: '2012-03-15',
     edad: 14,
     email: 'carlos.mendez@email.com',
@@ -43,6 +41,7 @@ export const jugadoresData = [
     apellidos: 'Silva López',
     dorsal: 10,
     posicion: 'Centrocampista',
+    categoria: 'Infantil A',
     fechaNacimiento: '2011-07-22',
     edad: 15,
     email: 'diego.silva@email.com',
@@ -64,6 +63,7 @@ export const jugadoresData = [
     apellidos: 'Torres Ruiz',
     dorsal: 4,
     posicion: 'Defensa',
+    categoria: 'Infantil A',
     fechaNacimiento: '2012-01-08',
     edad: 14,
     email: 'javier.torres@email.com',
@@ -85,6 +85,7 @@ export const jugadoresData = [
     apellidos: 'Ruiz Fernández',
     dorsal: 1,
     posicion: 'Portero',
+    categoria: 'Infantil A',
     fechaNacimiento: '2011-11-30',
     edad: 15,
     email: 'miguel.ruiz@email.com',
@@ -106,6 +107,7 @@ export const jugadoresData = [
     apellidos: 'Martín Sánchez',
     dorsal: 11,
     posicion: 'Delantero',
+    categoria: 'Infantil A',
     fechaNacimiento: '2013-05-14',
     edad: 13,
     email: 'alejandro.martin@email.com',
@@ -127,6 +129,7 @@ export const jugadoresData = [
     apellidos: 'García Hernández',
     dorsal: 5,
     posicion: 'Defensa',
+    categoria: 'Infantil A',
     fechaNacimiento: '2012-09-20',
     edad: 14,
     email: 'pablo.garcia@email.com',
@@ -148,6 +151,7 @@ export const jugadoresData = [
     apellidos: 'Fernández Díaz',
     dorsal: 7,
     posicion: 'Centrocampista',
+    categoria: 'Infantil A',
     fechaNacimiento: '2012-04-10',
     edad: 14,
     email: 'luis.fernandez@email.com',
@@ -169,6 +173,7 @@ export const jugadoresData = [
     apellidos: 'López Martín',
     dorsal: 3,
     posicion: 'Defensa',
+    categoria: 'Infantil A',
     fechaNacimiento: '2011-08-25',
     edad: 15,
     email: 'mario.lopez@email.com',
@@ -190,6 +195,7 @@ export const jugadoresData = [
     apellidos: 'Sánchez Gómez',
     dorsal: 8,
     posicion: 'Centrocampista',
+    categoria: 'Infantil A',
     fechaNacimiento: '2013-02-18',
     edad: 13,
     email: 'pedro.sanchez@email.com',
@@ -211,6 +217,7 @@ export const jugadoresData = [
     apellidos: 'Ruiz Pérez',
     dorsal: 6,
     posicion: 'Defensa',
+    categoria: 'Infantil A',
     fechaNacimiento: '2012-06-12',
     edad: 14,
     email: 'antonio.ruiz@email.com',
@@ -232,6 +239,7 @@ export const jugadoresData = [
     apellidos: 'Navarro Blanco',
     dorsal: 17,
     posicion: 'Delantero',
+    categoria: 'Cadete A',
     fechaNacimiento: '2012-10-05',
     edad: 14,
     email: 'roberto.navarro@email.com',
@@ -253,6 +261,7 @@ export const jugadoresData = [
     apellidos: 'Moreno Castro',
     dorsal: 14,
     posicion: 'Centrocampista',
+    categoria: 'Cadete A',
     fechaNacimiento: '2011-12-01',
     edad: 15,
     email: 'sergio.moreno@email.com',
@@ -274,6 +283,7 @@ export const jugadoresData = [
     apellidos: 'Jiménez Ortega',
     dorsal: 13,
     posicion: 'Portero',
+    categoria: 'Cadete A',
     fechaNacimiento: '2012-07-19',
     edad: 14,
     email: 'ivan.jimenez@email.com',
@@ -295,6 +305,7 @@ export const jugadoresData = [
     apellidos: 'Romero Vega',
     dorsal: 2,
     posicion: 'Defensa',
+    categoria: 'Cadete A',
     fechaNacimiento: '2013-03-28',
     edad: 13,
     email: 'adrian.romero@email.com',
@@ -316,6 +327,7 @@ export const jugadoresData = [
     apellidos: 'Alonso Ramos',
     dorsal: 16,
     posicion: 'Centrocampista',
+    categoria: 'Cadete A',
     fechaNacimiento: '2012-11-15',
     edad: 14,
     email: 'daniel.alonso@email.com',
@@ -337,6 +349,7 @@ export const jugadoresData = [
     apellidos: 'Gutiérrez Molina',
     dorsal: 19,
     posicion: 'Delantero',
+    categoria: 'Cadete A',
     fechaNacimiento: '2013-01-22',
     edad: 13,
     email: 'fernando.gutierrez@email.com',
@@ -358,6 +371,7 @@ export const jugadoresData = [
     apellidos: 'Herrera Santos',
     dorsal: 15,
     posicion: 'Defensa',
+    categoria: 'Cadete A',
     fechaNacimiento: '2011-09-08',
     edad: 15,
     email: 'raul.herrera@email.com',
@@ -379,6 +393,7 @@ export const jugadoresData = [
     apellidos: 'Vargas Campos',
     dorsal: 20,
     posicion: 'Centrocampista',
+    categoria: 'Cadete A',
     fechaNacimiento: '2012-05-30',
     edad: 14,
     email: 'oscar.vargas@email.com',
@@ -400,6 +415,7 @@ export const jugadoresData = [
     apellidos: 'Prieto Luna',
     dorsal: 18,
     posicion: 'Delantero',
+    categoria: 'Cadete A',
     fechaNacimiento: '2013-08-14',
     edad: 13,
     email: 'hugo.prieto@email.com',
@@ -421,6 +437,7 @@ export const jugadoresData = [
     apellidos: 'Méndez Serrano',
     dorsal: 12,
     posicion: 'Defensa',
+    categoria: 'Cadete A',
     fechaNacimiento: '2012-02-26',
     edad: 14,
     email: 'alvaro.mendez@email.com',
@@ -438,7 +455,6 @@ export const jugadoresData = [
   },
 ]
 
-// Historial de partidos por jugador
 export const historialPartidosData = {
   1: [
     { id: 1, fecha: '2026-01-15', rival: 'CD Móstoles', golesA: 3, golesB: 1, esLocal: true, minutos: 90, goles: 2, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
@@ -456,7 +472,6 @@ export const historialPartidosData = {
   ],
 }
 
-// Opciones para filtros (sin opción vacía, SelectFilter añade el placeholder)
 export const posicionOptions = [
   { value: 'Portero', label: 'Portero' },
   { value: 'Defensa', label: 'Defensa' },
@@ -471,6 +486,11 @@ export const estadoOptions = [
   { value: 'No disponible', label: 'No disponible' },
 ]
 
+export const categoriaOptions = [
+  { value: 'Infantil A', label: 'Infantil A' },
+  { value: 'Cadete A', label: 'Cadete A' },
+]
+
 // Colores por posición (legacy - usar posicionConfig)
 export const positionColors = {
   Portero: { bg: '#fef3c7', text: '#92400e' },
@@ -479,7 +499,6 @@ export const positionColors = {
   Delantero: { bg: '#fee2e2', text: '#991b1b' },
 }
 
-// Tabs del historial
 export const historialTabs = [
   { value: 'todos', label: 'Todos' },
   { value: 'ultimos5', label: 'Últimos 5' },
@@ -487,7 +506,6 @@ export const historialTabs = [
   { value: 'fuera', label: 'Fuera' },
 ]
 
-// Helper para formatear fecha
 export const formatFecha = (fechaStr) => {
   const fecha = new Date(fechaStr)
   return fecha.toLocaleDateString('es-ES', {
@@ -497,7 +515,6 @@ export const formatFecha = (fechaStr) => {
   })
 }
 
-// Helper para calcular edad
 export const calcularEdad = (fechaNacimiento) => {
   const hoy = new Date()
   const nacimiento = new Date(fechaNacimiento)
@@ -509,7 +526,6 @@ export const calcularEdad = (fechaNacimiento) => {
   return edad
 }
 
-// Helper para obtener stats por posición
 export const getStatsPorPosicion = (jugadores) => {
   return {
     total: jugadores.length,

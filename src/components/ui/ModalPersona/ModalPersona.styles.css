@@ -1,0 +1,177 @@
+.modal-persona .modal-box {
+  width: 95%;
+  max-width: 720px;
+  min-width: 600px;
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: oklch(100% 0 0);
+}
+
+@media (max-width: 768px) {
+  .modal-persona .modal-box {
+    min-width: auto;
+    width: 95%;
+  }
+}
+
+.modal-persona-header {
+  background: oklch(92% 0.12 155 / 0.15);
+  border-bottom: 1px solid oklch(90% 0.05 155);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-persona-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, oklch(48% 0.05 160) 0%, oklch(40% 0.05 160) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px oklch(48% 0.05 160 / 0.3);
+}
+
+.modal-persona-header-icon .material-symbols-outlined {
+  color: white;
+  font-size: 24px;
+}
+
+.modal-persona-header-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: oklch(20% 0.02 260);
+}
+
+.modal-persona-header-subtitle {
+  font-size: 0.75rem;
+  color: oklch(50% 0.02 260);
+}
+
+.modal-persona-body {
+  padding: 1rem 1.5rem;
+}
+
+.modal-persona-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: oklch(50% 0.02 260);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 20px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid oklch(90% 0.05 155);
+}
+
+.modal-persona-section-title .material-symbols-outlined {
+  font-size: 18px;
+  color: oklch(48% 0.05 160);
+}
+
+.modal-persona .form-control label span {
+  font-weight: 600;
+  font-size: 13px;
+  color: oklch(50% 0.02 260);
+}
+
+.modal-persona-input-icon {
+  position: relative;
+}
+
+.modal-persona-input-icon .icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: oklch(48% 0.05 160);
+  font-size: 18px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.modal-persona-input-icon input,
+.modal-persona-input-icon select {
+  padding-left: 36px !important;
+}
+
+.modal-persona .modal-persona-edad-badge {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px;
+  background: oklch(92% 0.12 155 / 0.15) !important;
+  font-weight: 600;
+  color: oklch(20% 0.02 260) !important;
+  border-color: oklch(90% 0.05 155) !important;
+}
+
+.modal-persona-edad-badge .material-symbols-outlined {
+  color: oklch(48% 0.05 160);
+  font-size: 18px;
+}
+
+.modal-persona-footer {
+  background: oklch(98% 0.02 175);
+  border-top: 1px solid oklch(90% 0.05 155);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-persona .btn-primary {
+  background: linear-gradient(135deg, oklch(48% 0.05 160) 0%, oklch(40% 0.05 160) 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+}
+
+.modal-persona .btn-primary:hover {
+  background: linear-gradient(135deg, oklch(42% 0.05 160) 0%, oklch(35% 0.05 160) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px oklch(48% 0.05 160 / 0.4);
+}
+
+.modal-persona .btn-ghost {
+  color: oklch(50% 0.02 260);
+  font-weight: 500;
+}
+
+.modal-persona .btn-ghost:hover {
+  background: oklch(92% 0.12 155 / 0.15);
+  color: oklch(20% 0.02 260);
+}
+
+.modal-persona .input:focus,
+.modal-persona .select:focus {
+  outline: none;
+  border-color: oklch(48% 0.05 160);
+  box-shadow: 0 0 0 3px oklch(48% 0.05 160 / 0.15);
+}
+
+.modal-persona .input,
+.modal-persona .select {
+  background: oklch(98% 0.02 175);
+  border-color: oklch(90% 0.05 155);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.modal-persona .input::placeholder {
+  color: oklch(60% 0.02 155);
+}
+
+.modal-persona .text-error {
+  color: oklch(60% 0.22 25);
+}
+
+.modal-persona::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}

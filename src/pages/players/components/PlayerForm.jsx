@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types'
 import { Icon } from '../../../components/ui/Icon'
-import './PlayerForm.styles.css'
+import { PlayerFormProps } from './PlayerForm.props'
 
 const posiciones = [
   { value: 'Portero', label: 'Portero' },
@@ -28,6 +27,12 @@ const calcularEdad = (fechaNacimiento) => {
   return edad
 }
 
+const LABEL_CLS = 'font-semibold text-[13px] text-base-content/70'
+const INPUT_CLS = 'input input-bordered input-sm w-full bg-base-200/50 border-base-300 text-sm transition-all placeholder:text-base-content/40 focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15'
+const INPUT_ICON_CLS = `${INPUT_CLS} pl-9`
+const SELECT_CLS = 'select select-bordered select-sm w-full bg-base-200/50 border-base-300 text-sm transition-all focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15'
+const ICON_CLS = 'absolute left-2.5 top-1/2 -translate-y-1/2 text-primary text-lg z-[1] pointer-events-none'
+
 export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -35,20 +40,20 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
   }
 
   return (
-    <form id={formId} onSubmit={onSubmit} className="player-form">
+    <form id={formId} onSubmit={onSubmit}>
       <div className="grid grid-cols-[1fr_1.3fr_0.7fr] gap-3 mb-3">
         <div className="form-control">
           <label className="label py-1">
-            <span>Nombre <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Nombre <span className="text-error">*</span></span>
           </label>
-          <div className="player-form-input-icon">
-            <Icon name="person" className="icon" />
+          <div className="relative">
+            <Icon name="person" className={ICON_CLS} />
             <input
               type="text"
               name="nombre"
               value={formData.nombre}
               onChange={handleChange}
-              className="input input-bordered input-sm w-full"
+              className={INPUT_ICON_CLS}
               placeholder="Nombre"
               required
             />
@@ -56,30 +61,30 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
         </div>
         <div className="form-control">
           <label className="label py-1">
-            <span>Apellidos <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Apellidos <span className="text-error">*</span></span>
           </label>
           <input
             type="text"
             name="apellidos"
             value={formData.apellidos}
             onChange={handleChange}
-            className="input input-bordered input-sm w-full"
+            className={INPUT_CLS}
             placeholder="Apellidos"
             required
           />
         </div>
         <div className="form-control">
           <label className="label py-1">
-            <span>Dorsal</span>
+            <span className={LABEL_CLS}>Dorsal</span>
           </label>
-          <div className="player-form-input-icon">
-            <Icon name="tag" className="icon" />
+          <div className="relative">
+            <Icon name="tag" className={ICON_CLS} />
             <input
               type="number"
               name="dorsal"
               value={formData.dorsal}
               onChange={handleChange}
-              className="input input-bordered input-sm w-full"
+              className={INPUT_ICON_CLS}
               placeholder="--"
               min="1"
               max="99"
@@ -91,27 +96,27 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
           <label className="label py-1">
-            <span>Fecha de nacimiento <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Fecha de nacimiento <span className="text-error">*</span></span>
           </label>
-          <div className="player-form-input-icon">
-            <Icon name="calendar_month" className="icon" />
+          <div className="relative">
+            <Icon name="calendar_month" className={ICON_CLS} />
             <input
               type="date"
               name="fechaNacimiento"
               value={formData.fechaNacimiento}
               onChange={handleChange}
-              className="input input-bordered input-sm w-full"
+              className={INPUT_ICON_CLS}
               required
             />
           </div>
         </div>
         <div className="form-control">
           <label className="label py-1">
-            <span>Edad</span>
+            <span className={LABEL_CLS}>Edad</span>
           </label>
-          <div className="input input-bordered input-sm w-full player-form-edad-badge">
-            <Icon name="cake" />
-            <span>{edad !== null ? `${edad} años` : '-- años'}</span>
+          <div className="input input-bordered input-sm w-full flex items-center justify-center gap-1.5 bg-success/15 font-semibold border-success/30">
+            <Icon name="cake" className="text-primary text-lg" />
+            <span>{edad !== null ? edad == 1 ? `${edad} año` : `${edad} años` : '-- años'}</span>
           </div>
         </div>
       </div>
@@ -119,16 +124,16 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
           <label className="label py-1">
-            <span>Email <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Email <span className="text-error">*</span></span>
           </label>
-          <div className="player-form-input-icon">
-            <Icon name="mail" className="icon" />
+          <div className="relative">
+            <Icon name="mail" className={ICON_CLS} />
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="input input-bordered input-sm w-full"
+              className={INPUT_ICON_CLS}
               placeholder="correo@ejemplo.com"
               required
             />
@@ -136,16 +141,16 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
         </div>
         <div className="form-control">
           <label className="label py-1">
-            <span>Teléfono <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Teléfono <span className="text-error">*</span></span>
           </label>
-          <div className="player-form-input-icon">
-            <Icon name="phone" className="icon" />
+          <div className="relative">
+            <Icon name="phone" className={ICON_CLS} />
             <input
               type="tel"
               name="telefono"
               value={formData.telefono}
               onChange={handleChange}
-              className="input input-bordered input-sm w-full"
+              className={INPUT_ICON_CLS}
               placeholder="+34 600 000 000"
               required
             />
@@ -156,16 +161,16 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
       <div className="mb-3">
         <div className="form-control">
           <label className="label py-1">
-            <span>Dirección <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Dirección <span className="text-error">*</span></span>
           </label>
-          <div className="player-form-input-icon">
-            <Icon name="location_on" className="icon" />
+          <div className="relative">
+            <Icon name="location_on" className={ICON_CLS} />
             <input
               type="text"
               name="direccion"
               value={formData.direccion}
               onChange={handleChange}
-              className="input input-bordered input-sm w-full"
+              className={INPUT_ICON_CLS}
               placeholder="Calle, número, piso..."
               required
             />
@@ -176,28 +181,28 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
           <label className="label py-1">
-            <span>Ciudad <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Ciudad <span className="text-error">*</span></span>
           </label>
           <input
             type="text"
             name="ciudad"
             value={formData.ciudad}
             onChange={handleChange}
-            className="input input-bordered input-sm w-full"
+            className={INPUT_CLS}
             placeholder="Ciudad"
             required
           />
         </div>
         <div className="form-control">
           <label className="label py-1">
-            <span>Provincia <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Provincia <span className="text-error">*</span></span>
           </label>
           <input
             type="text"
             name="provincia"
             value={formData.provincia}
             onChange={handleChange}
-            className="input input-bordered input-sm w-full"
+            className={INPUT_CLS}
             placeholder="Provincia"
             required
           />
@@ -207,13 +212,13 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
       <div className="grid grid-cols-2 gap-3">
         <div className="form-control">
           <label className="label py-1">
-            <span>Posición <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Posición <span className="text-error">*</span></span>
           </label>
           <select
             name="posicion"
             value={formData.posicion}
             onChange={handleChange}
-            className="select select-bordered select-sm w-full"
+            className={SELECT_CLS}
             required
           >
             <option value="">Seleccionar posición</option>
@@ -224,13 +229,13 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
         </div>
         <div className="form-control">
           <label className="label py-1">
-            <span>Estado <span className="text-error">*</span></span>
+            <span className={LABEL_CLS}>Estado <span className="text-error">*</span></span>
           </label>
           <select
             name="estado"
             value={formData.estado}
             onChange={handleChange}
-            className="select select-bordered select-sm w-full"
+            className={SELECT_CLS}
             required
           >
             <option value="">Seleccionar estado</option>
@@ -260,10 +265,4 @@ PlayerForm.INITIAL_DATA = {
   estado: 'Disponible',
 }
 
-PlayerForm.propTypes = {
-  formId: PropTypes.string.isRequired,
-  formData: PropTypes.object.isRequired,
-  edad: PropTypes.number,
-  onChange: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-}
+PlayerForm.propTypes = PlayerFormProps

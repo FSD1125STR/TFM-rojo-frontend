@@ -1,17 +1,21 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { StatsCard } from '../../components/ui/StatsCard'
 import { DataTable } from '../../components/ui/DataTable'
 import { ModalPlayer } from './components/ModalPlayer'
 import { usePlayersTable } from './hooks/usePlayersTable'
-import {
-  jugadoresData as initialJugadores,
-  getStatsPorPosicion,
-} from './data/mockData'
+import { usePlayersKpis } from './hooks/usePlayersKpis'
+import { usePermissions } from '../../hooks/usePermissions'
+import { useAuth } from '../../hooks/useAuth'
+import { jugadoresData as initialJugadores } from './data/mockData'
 
 export function PlayersList() {
   const navigate = useNavigate()
+  const { checkPermission } = usePermissions()
+  const { isAdmin, user } = useAuth()
+  const categoryId = user?.categoryId?._id || user?.categoryId || null
+  const kpis = usePlayersKpis(isAdmin ? null : categoryId)
 
   const [jugadores, setJugadores] = useState(initialJugadores)
 
@@ -31,8 +35,6 @@ export function PlayersList() {
       localStorage.removeItem('jugadorEditado')
     }
   }, [])
-
-  const stats = useMemo(() => getStatsPorPosicion(jugadores), [jugadores])
 
   const handleNuevoJugador = () => {
     setJugadorSeleccionado(null)
@@ -77,40 +79,68 @@ export function PlayersList() {
 
   const { columns, actions, filters, searchConfig } = usePlayersTable({
     onVerDetalle: handleVerDetalle,
-    onEditar: handleEditarJugador,
-    onDarDeBaja: handleDarDeBaja,
+    onEditar: checkPermission('players.edit') ? handleEditarJugador : undefined,
+    onDarDeBaja: checkPermission('players.edit') ? handleDarDeBaja : undefined,
+    isAdmin,
   })
+
+  const canCreate = checkPermission('players.create')
 
   return (
     <div test-id="el-f4g5h6i7">
       <PageHeader
         title="Jugadores"
         subtitle="Gestiona la plantilla del equipo"
-        actionLabel="Nuevo Jugador"
-        actionIcon="add"
-        onAction={handleNuevoJugador}
+        {...(canCreate && {
+          actionLabel: "Nuevo Jugador",
+          actionIcon: "add",
+          onAction: handleNuevoJugador,
+        })}
       />
 
-      <div className="grid grid-cols-4 gap-4 mt-6">
-        <StatsCard title="Total Jugadores" value={stats.total} variant="accent" />
-        <StatsCard title="Porteros" value={stats.porteros} variant="accent" />
-        <StatsCard title="Defensas" value={stats.defensas} variant="accent" />
-        <StatsCard title="Delanteros" value={stats.delanteros} variant="accent" />
-      </div>
+      {!isAdmin && <div className="grid grid-cols-4 gap-4 mt-6">
+        <StatsCard
+          title="Disponibles"
+          value={kpis?.available ?? '–'}
+          icon="check_circle"
+          variant="success"
+        />
+        <StatsCard
+          title="Lesionados"
+          value={kpis?.injured ?? '–'}
+          icon="personal_injury"
+          variant={kpis?.injured > 0 ? 'error' : 'success'}
+        />
+        <StatsCard
+          title="Sancionados"
+          value={kpis?.sanctioned ?? '–'}
+          icon="gavel"
+          variant={kpis?.sanctioned > 0 ? 'warning' : 'success'}
+        />
+        <StatsCard
+          title="Riesgo convocatoria"
+          value={kpis?.convocationRisk ? 'Sí' : 'No'}
+          subtitle={kpis ? `Mínimo requerido: ${kpis.minimumRequired}` : ''}
+          icon="warning"
+          variant={kpis?.convocationRisk ? 'error' : 'success'}
+        />
+      </div>}
 
       <div className="mt-4">
         <DataTable
           columns={columns}
           data={jugadores}
-          selectable
-          bulkActions={[
-            {
-              label: 'Eliminar',
-              icon: 'delete',
-              variant: 'danger',
-              onClick: handleEliminarSeleccionados,
-            },
-          ]}
+          selectable={canCreate}
+          {...(canCreate && {
+            bulkActions: [
+              {
+                label: 'Eliminar',
+                icon: 'delete',
+                variant: 'danger',
+                onClick: handleEliminarSeleccionados,
+              },
+            ],
+          })}
           actions={actions}
           filters={filters}
           {...searchConfig}
