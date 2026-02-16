@@ -66,6 +66,7 @@ export const DataTableProps = {
           label: PropTypes.string.isRequired,
         })
       ).isRequired,
+      multiple: PropTypes.bool,
     })
   ),
 }

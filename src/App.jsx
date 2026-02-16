@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { HeaderProvider } from './context/HeaderContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -18,38 +19,74 @@ import { CallupsList, CallupDetail } from './pages/callups';
 import { UsersList, UserDetail } from './pages/users';
 import { LiveMatch } from './pages/LiveMatch';
 
+function AppRoutes() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const init = async () => {
+      await import('preline/dist/index.js');
+      window.HSStaticMethods?.autoInit();
+    };
+    init();
+  }, [location.pathname]);
+
+  return (
+    <Routes>
+      {/* Rutas públicas - siempre tema light */}
+      <Route element={<PublicLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Route>
+
+      {/* Rutas protegidas - acceso general */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppShell />}>
+          <Route path="/" element={<Dashboard />} />
+
+          {/* Rutas con permiso de jugadores */}
+          <Route element={<ProtectedRoute permission="players.view" />}>
+            <Route path="/jugadores" element={<PlayersList />} />
+            <Route path="/jugadores/:id" element={<PlayerDetail />} />
+          </Route>
+
+          {/* Rutas con permiso de partidos */}
+          <Route element={<ProtectedRoute permission="matches.view" />}>
+            <Route path="/partidos" element={<MatchesList />} />
+            <Route path="/partidos/:id" element={<MatchDetail />} />
+          </Route>
+
+          {/* Rutas con permiso de convocatorias */}
+          <Route element={<ProtectedRoute permission="callups.view" />}>
+            <Route path="/convocatorias" element={<CallupsList />} />
+            <Route path="/convocatorias/:id" element={<CallupDetail />} />
+          </Route>
+
+          {/* Rutas con permiso de usuarios */}
+          <Route element={<ProtectedRoute permission="users.view" />}>
+            <Route path="/usuarios" element={<UsersList />} />
+            <Route path="/usuarios/:id" element={<UserDetail />} />
+          </Route>
+
+          {/* Ruta con permiso de partido en directo */}
+          <Route element={<ProtectedRoute permission="live.update" />}>
+            <Route path="/directo" element={<LiveMatch />} />
+          </Route>
+        </Route>
+      </Route>
+
+      {/* Fallback - redirige a inicio */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <HeaderProvider>
-          <Routes>
-          {/* Rutas públicas - siempre tema light */}
-          <Route element={<PublicLayout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-          </Route>
-
-          {/* Rutas protegidas */}
-          <Route element={<ProtectedRoute />}>
-            <Route element={<AppShell />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/jugadores" element={<PlayersList />} />
-              <Route path="/jugadores/:id" element={<PlayerDetail />} />
-              <Route path="/partidos" element={<MatchesList />} />
-              <Route path="/partidos/:id" element={<MatchDetail />} />
-              <Route path="/convocatorias" element={<CallupsList />} />
-              <Route path="/convocatorias/:id" element={<CallupDetail />} />
-              <Route path="/usuarios" element={<UsersList />} />
-              <Route path="/usuarios/:id" element={<UserDetail />} />
-              <Route path="/directo" element={<LiveMatch />} />
-            </Route>
-          </Route>
-
-          {/* Fallback - redirige a inicio */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <AppRoutes />
         </HeaderProvider>
       </AuthProvider>
     </BrowserRouter>

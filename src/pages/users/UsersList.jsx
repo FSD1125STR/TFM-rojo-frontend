@@ -1,14 +1,17 @@
 import { useHeader } from '../../hooks/useHeader';
 import { Button } from '../../components/ui/Button/Button';
+import { usePermissions } from '../../hooks/usePermissions';
 
 export function UsersList() {
+  const { checkPermission } = usePermissions();
+
   useHeader({
     title: 'Usuarios',
     breadcrumbs: [
       { label: 'Inicio', to: '/' },
       { label: 'Usuarios' }
     ],
-    actions: <Button variant="primary">Crear usuario</Button>
+    actions: checkPermission('users.create') ? <Button variant="primary">Crear usuario</Button> : null
   });
 
   return (

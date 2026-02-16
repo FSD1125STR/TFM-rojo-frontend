@@ -12,7 +12,7 @@ const StatsCard = ({
     default: "bg-base-200 text-base-content",
     primary: "bg-primary/10 text-primary border border-primary/20",
     secondary: "bg-secondary/10 text-secondary border border-secondary/20",
-    accent: "bg-accent/20 text-accent-content border border-accent/30",
+    accent: "bg-accent text-accent-content border border-accent/30",
     success: "bg-success/10 text-success border border-success/20",
     warning: "bg-warning/10 text-warning border border-warning/20",
     error: "bg-error/10 text-error border border-error/20",

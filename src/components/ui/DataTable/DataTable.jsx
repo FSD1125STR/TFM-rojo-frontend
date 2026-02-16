@@ -43,7 +43,7 @@ function transformColumns(columns, actions, actionsTitle) {
   if (actions && actions.length > 0) {
     transformed.push({
       name: actionsTitle,
-      width: '100px',
+      width: '8%',
       center: true,
       cell: row => <DataTableActions actions={actions} row={row} title={actionsTitle} />,
       ignoreRowClick: true,
@@ -141,7 +141,8 @@ export function DataTable({
 
       const matchesFilters = filters.every(filter => {
         const filterValue = filterValues[filter.key]
-        if (!filterValue) return true
+        if (!filterValue || (Array.isArray(filterValue) && filterValue.length === 0)) return true
+        if (Array.isArray(filterValue)) return filterValue.includes(item[filter.key])
         return item[filter.key] === filterValue
       })
 
@@ -194,10 +195,11 @@ export function DataTable({
           {filters.map(filter => (
             <SelectFilter
               key={filter.key}
-              value={filterValues[filter.key] || ''}
+              value={filterValues[filter.key] || (filter.multiple ? [] : '')}
               onChange={(value) => handleFilterChange(filter.key, value)}
               options={filter.options}
               placeholder={filter.placeholder}
+              multiple={filter.multiple}
             />
           ))}
         </div>
@@ -227,7 +229,6 @@ export function DataTable({
         progressPending={isLoading}
         progressComponent={<LoadingComponent />}
         noDataComponent={<NoDataComponent message={emptyMessage} />}
-        highlightOnHover
         pointerOnHover={!!onRowClick}
         onRowClicked={onRowClick}
         responsive

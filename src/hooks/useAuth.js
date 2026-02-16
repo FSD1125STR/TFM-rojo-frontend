@@ -15,6 +15,7 @@ export function useAuth() {
         token: null,
         isAuthenticated: false,
         isLoading: false,
+        isAdmin: false,
         login: async () => {},
         logout: () => {},
       };
@@ -23,5 +24,7 @@ export function useAuth() {
     throw new Error('useAuth debe usarse dentro de un AuthProvider');
   }
 
-  return context;
+  const isAdmin = context.user?.role === 'administrador';
+
+  return { ...context, isAdmin };
 }
