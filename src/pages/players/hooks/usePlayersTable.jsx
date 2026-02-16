@@ -3,11 +3,12 @@ import { Avatar } from '../../../components/ui/Avatar/Avatar'
 import {
   posicionOptions,
   estadoOptions,
+  categoriaOptions,
   posicionConfig,
   estadoConfig,
 } from '../data/mockData'
 
-export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
+export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }) {
   const columns = [
     {
       key: 'nombre',
@@ -22,25 +23,28 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
       ),
     },
     { key: 'dorsal', label: 'Dorsal', width: '9%', align: 'center', sortable: true },
-    {
-      key: 'posicion',
-      label: 'Posición',
-      width: '14%',
-      align: 'center',
-      sortable: true,
-      render: (value) => (
-        <div style={{ pointerEvents: 'none' }}>
-          <Badge
-            variant="custom"
-            size="sm"
-            icon={posicionConfig[value]?.icon}
-            customColor={posicionConfig[value]?.color}
-          >
-            {value}
-          </Badge>
-        </div>
-      ),
-    },
+    ...(isAdmin
+      ? [{ key: 'categoria', label: 'Categoría', width: '14%', align: 'center', sortable: true }]
+      : [{
+          key: 'posicion',
+          label: 'Posición',
+          width: '14%',
+          align: 'center',
+          sortable: true,
+          render: (value) => (
+            <div style={{ pointerEvents: 'none' }}>
+              <Badge
+                variant="custom"
+                size="sm"
+                icon={posicionConfig[value]?.icon}
+                customColor={posicionConfig[value]?.color}
+              >
+                {value}
+              </Badge>
+            </div>
+          ),
+        }]
+    ),
     { key: 'edad', label: 'Edad', width: '8%', align: 'center', sortable: true },
     { key: 'partidos', label: 'Partidos', width: '9%', align: 'center', sortable: true },
     { key: 'goles', label: 'Goles', width: '8%', align: 'center', sortable: true },
@@ -66,12 +70,15 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja }) {
 
   const actions = [
     { label: 'Ver detalle', icon: 'visibility', onClick: onVerDetalle },
-    { label: 'Editar', icon: 'edit', onClick: onEditar },
-    { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger' },
-  ]
+    onEditar && { label: 'Editar', icon: 'edit', onClick: onEditar },
+    onDarDeBaja && { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger' },
+  ].filter(Boolean)
 
   const filters = [
-    { key: 'posicion', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true },
+    ...(isAdmin
+      ? [{ key: 'categoria', placeholder: 'Todas las categorías', options: categoriaOptions }]
+      : [{ key: 'posicion', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true }]
+    ),
     { key: 'estado', placeholder: 'Todos los estados', options: estadoOptions },
   ]
 

@@ -6,6 +6,7 @@ import { DataTable } from '../../components/ui/DataTable'
 import { ModalPlayer } from './components/ModalPlayer'
 import { usePlayersTable } from './hooks/usePlayersTable'
 import { usePermissions } from '../../hooks/usePermissions'
+import { useAuth } from '../../hooks/useAuth'
 import {
   jugadoresData as initialJugadores,
   getStatsPorPosicion,
@@ -14,6 +15,7 @@ import {
 export function PlayersList() {
   const navigate = useNavigate()
   const { checkPermission } = usePermissions()
+  const { isAdmin } = useAuth()
 
   const [jugadores, setJugadores] = useState(initialJugadores)
 
@@ -81,6 +83,7 @@ export function PlayersList() {
     onVerDetalle: handleVerDetalle,
     onEditar: checkPermission('players.edit') ? handleEditarJugador : undefined,
     onDarDeBaja: checkPermission('players.edit') ? handleDarDeBaja : undefined,
+    isAdmin,
   })
 
   const canCreate = checkPermission('players.create')
@@ -97,12 +100,12 @@ export function PlayersList() {
         })}
       />
 
-      <div className="grid grid-cols-4 gap-4 mt-6">
+      {!isAdmin && (<div className="grid grid-cols-4 gap-4 mt-6">
         <StatsCard title="Total Jugadores" value={stats.total} variant="accent" />
         <StatsCard title="Porteros" value={stats.porteros} variant="accent" />
         <StatsCard title="Defensas" value={stats.defensas} variant="accent" />
         <StatsCard title="Delanteros" value={stats.delanteros} variant="accent" />
-      </div>
+      </div>)}
 
       <div className="mt-4">
         <DataTable
