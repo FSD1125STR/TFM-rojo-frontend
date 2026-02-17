@@ -37,13 +37,13 @@ export const Default = {
   args: {
     title: 'Título del Card',
     icon: 'info',
-    children: <p style={{ margin: 0 }}>Contenido del card. Puedes incluir cualquier contenido aquí.</p>,
+    children: <p className="m-0">Contenido del card. Puedes incluir cualquier contenido aquí.</p>,
   },
 }
 
 export const SinTitulo = {
   args: {
-    children: <p style={{ margin: 0 }}>Card sin título, solo contenido.</p>,
+    children: <p className="m-0">Card sin título, solo contenido.</p>,
   },
   parameters: {
     docs: {
@@ -56,18 +56,18 @@ export const SinTitulo = {
 
 export const TodasLasVariantes = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div className="flex flex-col gap-4">
       <Card title="Variante Default" icon="star" variant="default">
-        <p style={{ margin: 0 }}>Fondo verde claro, el estilo principal de la app.</p>
+        <p className="m-0">Fondo verde claro, el estilo principal de la app.</p>
       </Card>
       <Card title="Variante Primary" icon="star" variant="primary">
-        <p style={{ margin: 0 }}>Fondo verde más intenso.</p>
+        <p className="m-0">Fondo verde más intenso.</p>
       </Card>
       <Card title="Variante Secondary" icon="star" variant="secondary">
-        <p style={{ margin: 0 }}>Fondo gris neutro.</p>
+        <p className="m-0">Fondo gris neutro.</p>
       </Card>
       <Card title="Variante White" icon="star" variant="white">
-        <p style={{ margin: 0 }}>Fondo blanco limpio.</p>
+        <p className="m-0">Fondo blanco limpio.</p>
       </Card>
     </div>
   ),
@@ -82,18 +82,18 @@ export const TodasLasVariantes = {
 
 export const TodosLosPaddings = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div className="flex flex-col gap-4">
       <Card title="Padding None" padding="none">
-        <div style={{ background: 'oklch(85% 0.10 155)', padding: '8px' }}>Contenido sin padding</div>
+        <div className="bg-primary/20 p-2">Contenido sin padding</div>
       </Card>
       <Card title="Padding SM" padding="sm">
-        <p style={{ margin: 0 }}>Padding pequeño (12px)</p>
+        <p className="m-0">Padding pequeño (12px)</p>
       </Card>
       <Card title="Padding MD" padding="md">
-        <p style={{ margin: 0 }}>Padding mediano (20px) - por defecto</p>
+        <p className="m-0">Padding mediano (20px) - por defecto</p>
       </Card>
       <Card title="Padding LG" padding="lg">
-        <p style={{ margin: 0 }}>Padding grande (28px)</p>
+        <p className="m-0">Padding grande (28px)</p>
       </Card>
     </div>
   ),

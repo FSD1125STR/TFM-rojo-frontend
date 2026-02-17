@@ -42,7 +42,7 @@ export default {
   },
   decorators: [
     (Story) => (
-      <div style={{ minHeight: '250px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: '20px' }}>
+      <div className="min-h-[250px] flex items-start justify-center pt-5">
         <Story />
       </div>
     ),

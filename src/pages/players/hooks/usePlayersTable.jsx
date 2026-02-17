@@ -9,8 +9,6 @@ import {
 } from '../data/mockData'
 
 export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }) {
-  // Admin: 4% check + 88% datos + 8% acciones = 100%
-  // No admin: 92% datos + 8% acciones = 100%
   const w = isAdmin
     ? { nombre: '26%', dorsal: '9%', catPos: '14%', edad: '8%', partidos: '9%', goles: '8%', estado: '14%' }
     : { nombre: '28%', dorsal: '10%', catPos: '15%', edad: '9%', partidos: '10%', goles: '8%', estado: '12%' }
@@ -22,9 +20,9 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }
       width: w.nombre,
       sortable: true,
       render: (_, row) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', pointerEvents: 'none' }}>
+        <div className="flex items-center gap-3 pointer-events-none">
           <Avatar name={`${row.nombre} ${row.apellidos}`} size="sm" />
-          <span style={{ fontWeight: 500, whiteSpace: 'nowrap' }}>{row.nombre} {row.apellidos}</span>
+          <span className="font-medium whitespace-nowrap">{row.nombre} {row.apellidos}</span>
         </div>
       ),
     },
@@ -38,7 +36,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }
           align: 'center',
           sortable: true,
           render: (value) => (
-            <div style={{ pointerEvents: 'none' }}>
+            <div className='pointer-events-none'>
               <Badge
                 variant="custom"
                 size="sm"
@@ -61,7 +59,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }
       align: 'center',
       sortable: true,
       render: (value) => (
-        <div style={{ pointerEvents: 'none' }}>
+        <div className="pointer-events-none">
           <Badge
             variant={estadoConfig[value]?.variant || 'neutral'}
             size="sm"

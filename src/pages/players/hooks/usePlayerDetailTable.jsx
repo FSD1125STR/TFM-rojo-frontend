@@ -63,9 +63,9 @@ export function usePlayerDetailTable() {
       align: 'center',
       render: (_, row) => {
         const hayTarjetas = row.tarjetasAmarillas > 0 || row.tarjetasRojas > 0
-        if (!hayTarjetas) return <span style={{ color: '#9ca3af' }}>-</span>
+        if (!hayTarjetas) return <span className="text-base-content/40">-</span>
         return (
-          <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
+          <div className="flex gap-1.5 justify-center">
             {row.tarjetasAmarillas > 0 && (
               <Badge
                 variant="custom"
