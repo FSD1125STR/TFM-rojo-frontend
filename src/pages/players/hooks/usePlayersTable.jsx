@@ -8,7 +8,7 @@ import {
   estadoConfig,
 } from '../data/mockData'
 
-export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }) {
+export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarRecuperado, isAdmin }) {
   const w = isAdmin
     ? { nombre: '26%', dorsal: '9%', catPos: '14%', edad: '8%', partidos: '9%', goles: '8%', estado: '14%' }
     : { nombre: '28%', dorsal: '10%', catPos: '15%', edad: '9%', partidos: '10%', goles: '8%', estado: '12%' }
@@ -58,8 +58,8 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }
       width: w.estado,
       align: 'center',
       sortable: true,
-      render: (value) => (
-        <div className="pointer-events-none">
+      render: (value, row) => {
+        const badge = (
           <Badge
             variant={estadoConfig[value]?.variant || 'neutral'}
             size="sm"
@@ -67,14 +67,28 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, isAdmin }
           >
             {value}
           </Badge>
-        </div>
-      ),
+        )
+
+        if (row.sanction) {
+          return (
+            <div
+              className="tooltip tooltip-left"
+              data-tip={`${row.sanction.remainingMatches} de ${row.sanction.totalMatches} partidos restantes`}
+            >
+              <div className="pointer-events-none">{badge}</div>
+            </div>
+          )
+        }
+
+        return <div className="pointer-events-none">{badge}</div>
+      },
     },
   ]
 
   const actions = [
     { label: 'Ver detalle', icon: 'visibility', onClick: onVerDetalle },
     onEditar && { label: 'Editar', icon: 'edit', onClick: onEditar },
+    onMarcarRecuperado && { label: 'Marcar recuperado', icon: 'health_and_safety', onClick: onMarcarRecuperado, show: (row) => row.estado === 'Lesionado' },
     onDarDeBaja && { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger' },
   ].filter(Boolean)
 

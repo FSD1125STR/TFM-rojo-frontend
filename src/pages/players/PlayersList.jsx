@@ -9,6 +9,7 @@ import { usePlayersKpis } from './hooks/usePlayersKpis'
 import { usePermissions } from '../../hooks/usePermissions'
 import { useAuth } from '../../hooks/useAuth'
 import { jugadoresData as initialJugadores } from './data/mockData'
+import { showConfirm, showSuccess } from '../../utils/alerts'
 
 export function PlayersList() {
   const navigate = useNavigate()
@@ -69,6 +70,19 @@ export function PlayersList() {
     }
   }
 
+  const handleMarcarRecuperado = async (jugador) => {
+    const confirmed = await showConfirm(
+      `${jugador.nombre} ${jugador.apellidos} pasará a estado "Disponible".`,
+      '¿Marcar como recuperado?'
+    )
+    if (confirmed) {
+      setJugadores((prev) =>
+        prev.map((j) => (j.id === jugador.id ? { ...j, estado: 'Disponible' } : j))
+      )
+      showSuccess(`${jugador.nombre} ${jugador.apellidos} está disponible.`)
+    }
+  }
+
   const handleEliminarSeleccionados = (selectedRows) => {
     const nombres = selectedRows.map((j) => `${j.nombre} ${j.apellidos}`).join(', ')
     if (confirm(`¿Estás seguro de eliminar a ${selectedRows.length} jugador(es)?\n${nombres}`)) {
@@ -81,6 +95,7 @@ export function PlayersList() {
     onVerDetalle: handleVerDetalle,
     onEditar: checkPermission('players.edit') ? handleEditarJugador : undefined,
     onDarDeBaja: checkPermission('players.edit') ? handleDarDeBaja : undefined,
+    onMarcarRecuperado: checkPermission('players.edit') ? handleMarcarRecuperado : undefined,
     isAdmin,
   })
 
