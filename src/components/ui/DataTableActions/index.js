@@ -1,2 +1,2 @@
-export { DataTableActions } from './DataTableActions'
-export { default } from './DataTableActions'
+export { DataTableActions } from './DataTableActions';
+export { default } from './DataTableActions';

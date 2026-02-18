@@ -1,4 +1,4 @@
-import { Badge } from './Badge'
+import { Badge } from './Badge';
 
 export default {
   title: 'UI/Badge',
@@ -80,7 +80,7 @@ export default {
       },
     },
   },
-}
+};
 
 export const Default = {
   args: {
@@ -96,7 +96,7 @@ export const Default = {
       "text": "#1d4ed8"
     },
   },
-}
+};
 
 export const ConIcono = {
   args: {
@@ -115,7 +115,7 @@ export const ConIcono = {
       },
     },
   },
-}
+};
 
 export const IconoDerecha = {
   args: {
@@ -134,7 +134,7 @@ export const IconoDerecha = {
       },
     },
   },
-}
+};
 
 export const EstiloPill = {
   args: {
@@ -153,7 +153,7 @@ export const EstiloPill = {
       },
     },
   },
-}
+};
 
 export const EstiloOutline = {
   args: {
@@ -172,7 +172,7 @@ export const EstiloOutline = {
       },
     },
   },
-}
+};
 
 export const PillOutline = {
   args: {
@@ -191,7 +191,7 @@ export const PillOutline = {
       },
     },
   },
-}
+};
 
 export const ColorPersonalizado = {
   args: {
@@ -211,7 +211,7 @@ export const ColorPersonalizado = {
       },
     },
   },
-}
+};
 
 export const ColorPersonalizadoOutline = {
   args: {
@@ -231,7 +231,7 @@ export const ColorPersonalizadoOutline = {
       },
     },
   },
-}
+};
 
 export const TamanoExtraPequeno = {
   args: {
@@ -250,7 +250,7 @@ export const TamanoExtraPequeno = {
       },
     },
   },
-}
+};
 
 export const TamanoPequeno = {
   args: {
@@ -269,7 +269,7 @@ export const TamanoPequeno = {
       },
     },
   },
-}
+};
 
 export const TamanoGrande = {
   args: {
@@ -288,7 +288,7 @@ export const TamanoGrande = {
       },
     },
   },
-}
+};
 
 export const TodasLasVariantes = {
   render: () => (
@@ -311,7 +311,7 @@ export const TodasLasVariantes = {
       },
     },
   },
-}
+};
 
 export const TodosLosTamanos = {
   render: () => (
@@ -329,7 +329,7 @@ export const TodosLosTamanos = {
       },
     },
   },
-}
+};
 
 export const SinIcono = {
   args: {
@@ -348,7 +348,7 @@ export const SinIcono = {
       },
     },
   },
-}
+};
 
 export const CasosDeUso = {
   render: () => (
@@ -386,7 +386,7 @@ export const CasosDeUso = {
       },
     },
   },
-}
+};
 
 export const Tarjetas = {
   render: () => (
@@ -418,7 +418,7 @@ export const Tarjetas = {
       },
     },
   },
-}
+};
 
 export const IconosDisponibles = {
   render: () => (
@@ -511,4 +511,4 @@ export const IconosDisponibles = {
       },
     },
   },
-}
+};

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Modal } from './Modal'
+import { useState } from 'react';
+import { Modal } from './Modal';
 
 export default {
   title: 'UI/Modal',
@@ -18,10 +18,10 @@ export default {
     subtitle: { control: 'text' },
     icon: { control: 'text' },
   },
-}
+};
 
 const Template = (args) => {
-  const [isOpen, setIsOpen] = useState(args.isOpen || false)
+  const [isOpen, setIsOpen] = useState(args.isOpen || false);
 
   return (
     <div className="min-h-screen p-8 bg-base-200">
@@ -33,15 +33,15 @@ const Template = (args) => {
         {...args}
         isOpen={isOpen}
         onClose={() => {
-          setIsOpen(false)
-          args.onClose?.()
+          setIsOpen(false);
+          args.onClose?.();
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   isOpen: false,
   title: 'Titulo del Modal',
@@ -51,9 +51,9 @@ Default.args = {
   children: (
     <p>Contenido del modal. Puedes colocar cualquier elemento aqui.</p>
   ),
-}
+};
 
-export const ConAcciones = Template.bind({})
+export const ConAcciones = Template.bind({});
 ConAcciones.args = {
   isOpen: false,
   title: 'Confirmar accion',
@@ -69,9 +69,9 @@ ConAcciones.args = {
       <button className="btn btn-primary btn-sm">Confirmar</button>
     </>
   ),
-}
+};
 
-export const SinHeader = Template.bind({})
+export const SinHeader = Template.bind({});
 SinHeader.args = {
   isOpen: false,
   size: 'sm',
@@ -85,9 +85,9 @@ SinHeader.args = {
   actions: (
     <button className="btn btn-primary btn-sm">Aceptar</button>
   ),
-}
+};
 
-export const Grande = Template.bind({})
+export const Grande = Template.bind({});
 Grande.args = {
   isOpen: false,
   title: 'Modal grande',
@@ -120,4 +120,4 @@ Grande.args = {
       <button className="btn btn-primary btn-sm">Guardar</button>
     </>
   ),
-}
+};

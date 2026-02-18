@@ -1,21 +1,21 @@
-import { Icon } from '../Icon/Icon'
-import { DataTableActionsProps } from './DataTableActions.props'
+import { Icon } from '../Icon/Icon';
+import { DataTableActionsProps } from './DataTableActions.props';
 
 export function DataTableActions({ actions, row, title = 'Acciones' }) {
   const visibleActions = actions.filter(action =>
     !action.show || action.show(row)
-  )
+  );
 
-  if (visibleActions.length === 0) return null
+  if (visibleActions.length === 0) return null;
 
-  const normalActions = visibleActions.filter(a => a.variant !== 'danger')
-  const dangerActions = visibleActions.filter(a => a.variant === 'danger')
+  const normalActions = visibleActions.filter(a => a.variant !== 'danger');
+  const dangerActions = visibleActions.filter(a => a.variant === 'danger');
 
   const handleAction = (e, action) => {
-    e.stopPropagation()
-    action.onClick(row)
-    document.activeElement?.blur()
-  }
+    e.stopPropagation();
+    action.onClick(row);
+    document.activeElement?.blur();
+  };
 
   return (
     <div test-id="el-dta4d5e6" className="dropdown dropdown-end">
@@ -72,9 +72,9 @@ export function DataTableActions({ actions, row, title = 'Acciones' }) {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
-DataTableActions.propTypes = DataTableActionsProps
+DataTableActions.propTypes = DataTableActionsProps;
 
-export default DataTableActions
+export default DataTableActions;

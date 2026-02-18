@@ -1,29 +1,29 @@
-import { AvatarProps } from './Avatar.props'
+import { AvatarProps } from './Avatar.props';
 
 const sizeClasses = {
   xs: 'w-6',
   sm: 'w-8',
   md: 'w-10',
   lg: 'w-12',
-}
+};
 
 const textSizeClasses = {
   xs: 'text-xs',
   sm: 'text-xs',
   md: 'text-sm',
   lg: 'text-base',
-}
+};
 
 function getInitials(name) {
-  if (!name) return '?'
-  const parts = name.trim().split(' ')
-  if (parts.length === 1) return parts[0].charAt(0).toUpperCase()
-  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase()
+  if (!name) return '?';
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
 export function Avatar({ src, name, size = 'md', className = '' }) {
-  const sizeClass = sizeClasses[size]
-  const textSize = textSizeClasses[size]
+  const sizeClass = sizeClasses[size];
+  const textSize = textSizeClasses[size];
 
   if (src) {
     return (
@@ -32,7 +32,7 @@ export function Avatar({ src, name, size = 'md', className = '' }) {
           <img src={src} alt={name || 'Avatar'} />
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -41,7 +41,7 @@ export function Avatar({ src, name, size = 'md', className = '' }) {
         <span className={textSize}>{getInitials(name)}</span>
       </div>
     </div>
-  )
+  );
 }
 
-Avatar.propTypes = AvatarProps
+Avatar.propTypes = AvatarProps;

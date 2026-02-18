@@ -3,14 +3,14 @@ export const posicionConfig = {
   Defensa: { icon: 'shield', color: { bg: '#dbeafe', text: '#1e40af' } },
   Centrocampista: { icon: 'target', color: { bg: '#dcfce7', text: '#166534' } },
   Delantero: { icon: 'sports_soccer', color: { bg: '#fee2e2', text: '#991b1b' } },
-}
+};
 
 export const estadoConfig = {
   Disponible: { icon: 'check_circle', variant: 'success' },
   Lesionado: { icon: 'healing', variant: 'error' },
   Sancionado: { icon: 'gavel', variant: 'warning' },
   'No disponible': { icon: 'block', variant: 'neutral' },
-}
+};
 
 export const jugadoresData = [
   {
@@ -455,7 +455,7 @@ export const jugadoresData = [
     tarjetasAmarillas: 2,
     tarjetasRojas: 0,
   },
-]
+];
 
 export const historialPartidosData = {
   1: [
@@ -472,26 +472,26 @@ export const historialPartidosData = {
     { id: 2, fecha: '2026-01-12', rival: 'Rayo Vallecano B', golesA: 2, golesB: 2, esLocal: true, minutos: 90, goles: 1, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
     { id: 3, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 90, goles: 1, asistencias: 0, tarjetasAmarillas: 2, tarjetasRojas: 1 },
   ],
-}
+};
 
 export const posicionOptions = [
   { value: 'Portero', label: 'Portero' },
   { value: 'Defensa', label: 'Defensa' },
   { value: 'Centrocampista', label: 'Centrocampista' },
   { value: 'Delantero', label: 'Delantero' },
-]
+];
 
 export const estadoOptions = [
   { value: 'Disponible', label: 'Disponible' },
   { value: 'Lesionado', label: 'Lesionado' },
   { value: 'Sancionado', label: 'Sancionado' },
   { value: 'No disponible', label: 'No disponible' },
-]
+];
 
 export const categoriaOptions = [
   { value: 'Infantil A', label: 'Infantil A' },
   { value: 'Cadete A', label: 'Cadete A' },
-]
+];
 
 // Colores por posición (legacy - usar posicionConfig)
 export const positionColors = {
@@ -499,34 +499,34 @@ export const positionColors = {
   Defensa: { bg: '#dbeafe', text: '#1e40af' },
   Centrocampista: { bg: '#dcfce7', text: '#166534' },
   Delantero: { bg: '#fee2e2', text: '#991b1b' },
-}
+};
 
 export const historialTabs = [
   { value: 'todos', label: 'Todos' },
   { value: 'ultimos5', label: 'Últimos 5' },
   { value: 'casa', label: 'Casa' },
   { value: 'fuera', label: 'Fuera' },
-]
+];
 
 export const formatFecha = (fechaStr) => {
-  const fecha = new Date(fechaStr)
+  const fecha = new Date(fechaStr);
   return fecha.toLocaleDateString('es-ES', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
-  })
-}
+  });
+};
 
 export const calcularEdad = (fechaNacimiento) => {
-  const hoy = new Date()
-  const nacimiento = new Date(fechaNacimiento)
-  let edad = hoy.getFullYear() - nacimiento.getFullYear()
-  const mes = hoy.getMonth() - nacimiento.getMonth()
+  const hoy = new Date();
+  const nacimiento = new Date(fechaNacimiento);
+  let edad = hoy.getFullYear() - nacimiento.getFullYear();
+  const mes = hoy.getMonth() - nacimiento.getMonth();
   if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
-    edad--
+    edad--;
   }
-  return edad
-}
+  return edad;
+};
 
 export const getStatsPorPosicion = (jugadores) => {
   return {
@@ -535,5 +535,5 @@ export const getStatsPorPosicion = (jugadores) => {
     defensas: jugadores.filter(j => j.posicion === 'Defensa').length,
     centrocampistas: jugadores.filter(j => j.posicion === 'Centrocampista').length,
     delanteros: jugadores.filter(j => j.posicion === 'Delantero').length,
-  }
-}
+  };
+};

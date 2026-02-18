@@ -1,4 +1,4 @@
-import { IconButton } from './IconButton'
+import { IconButton } from './IconButton';
 
 export default {
   title: 'UI/IconButton',
@@ -13,7 +13,7 @@ export default {
       options: ['sm', 'md'],
     },
   },
-}
+};
 
 export const Ghost = {
   args: {
@@ -21,7 +21,7 @@ export const Ghost = {
     ariaLabel: 'Menu',
     variant: 'ghost',
   },
-}
+};
 
 export const Primary = {
   args: {
@@ -29,7 +29,7 @@ export const Primary = {
     ariaLabel: 'Add',
     variant: 'primary',
   },
-}
+};
 
 export const Danger = {
   args: {
@@ -37,7 +37,7 @@ export const Danger = {
     ariaLabel: 'Delete',
     variant: 'danger',
   },
-}
+};
 
 export const Small = {
   args: {
@@ -46,4 +46,4 @@ export const Small = {
     variant: 'ghost',
     size: 'sm',
   },
-}
+};

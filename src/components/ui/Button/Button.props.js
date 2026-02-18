@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const ButtonProps = {
   children: PropTypes.node.isRequired,
@@ -7,4 +7,4 @@ export const ButtonProps = {
   isLoading: PropTypes.bool,
   isDisabled: PropTypes.bool,
   className: PropTypes.string,
-}
+};

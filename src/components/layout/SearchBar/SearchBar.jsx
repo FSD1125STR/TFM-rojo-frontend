@@ -1,71 +1,71 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Icon } from '../../ui/Icon/Icon'
-import { searchGlobal } from '../../../services/searchService'
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Icon } from '../../ui/Icon/Icon';
+import { searchGlobal } from '../../../services/searchService';
 
 const CATEGORY_CONFIG = {
   players:  { label: 'Jugadores',     icon: 'group',           basePath: '/jugadores' },
   matches:  { label: 'Partidos',      icon: 'sports_soccer',   basePath: '/partidos' },
   callups:  { label: 'Convocatorias', icon: 'assignment',      basePath: '/convocatorias' },
   users:    { label: 'Usuarios',      icon: 'manage_accounts', basePath: '/usuarios' },
-}
+};
 
 export function SearchBar() {
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const containerRef = useRef(null)
-  const navigate = useNavigate()
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const containerRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (query.length < 2) {
-      setResults(null)
-      setIsOpen(false)
-      return
+      setResults(null);
+      setIsOpen(false);
+      return;
     }
 
     const timer = setTimeout(async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
-        const data = await searchGlobal(query)
-        setResults(data)
-        setIsOpen(true)
+        const data = await searchGlobal(query);
+        setResults(data);
+        setIsOpen(true);
       } catch {
-        setResults(null)
+        setResults(null);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }, 300)
+    }, 300);
 
-    return () => clearTimeout(timer)
-  }, [query])
+    return () => clearTimeout(timer);
+  }, [query]);
 
   useEffect(() => {
     function handleClickOutside(e) {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Escape') setIsOpen(false)
-  }, [])
+    if (e.key === 'Escape') setIsOpen(false);
+  }, []);
 
   const handleSelect = useCallback((basePath, id) => {
-    navigate(`${basePath}/${id}`)
-    setIsOpen(false)
-    setQuery('')
-  }, [navigate])
+    navigate(`${basePath}/${id}`);
+    setIsOpen(false);
+    setQuery('');
+  }, [navigate]);
 
   const categories = results
     ? Object.entries(CATEGORY_CONFIG).filter(([key]) => results[key]?.length > 0)
-    : []
+    : [];
 
-  const hasResults = categories.length > 0
+  const hasResults = categories.length > 0;
 
   return (
     <div test-id="el-s1b2a3r4" ref={containerRef} className="relative w-full max-w-xl">
@@ -109,7 +109,10 @@ export function SearchBar() {
                   >
                     <span className="font-medium text-sm">{item.name}</span>
                     {item.subtitle && (
-                      <span className="text-xs text-base-content/50">{item.subtitle}</span>
+                      <span className="text-xs text-base-content/50 capitalize">
+                        {item.subtitle}
+                        {item.category && ` · ${item.category}`}
+                      </span>
                     )}
                   </button>
                 ))}
@@ -123,5 +126,5 @@ export function SearchBar() {
         </div>
       )}
     </div>
-  )
+  );
 }

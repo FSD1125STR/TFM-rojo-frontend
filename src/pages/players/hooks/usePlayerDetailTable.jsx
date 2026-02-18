@@ -1,5 +1,5 @@
-import { Badge } from '../../../components/ui/Badge'
-import { formatFecha } from '../data/mockData'
+import { Badge } from '../../../components/ui/Badge';
+import { formatFecha } from '../data/mockData';
 
 export function usePlayerDetailTable() {
   const columns = [
@@ -16,23 +16,23 @@ export function usePlayerDetailTable() {
       width: '12%',
       align: 'center',
       render: (_, row) => {
-        const golesNuestros = row.esLocal ? row.golesA : row.golesB
-        const golesRival = row.esLocal ? row.golesB : row.golesA
+        const golesNuestros = row.esLocal ? row.golesA : row.golesB;
+        const golesRival = row.esLocal ? row.golesB : row.golesA;
 
-        let colorConfig
+        let colorConfig;
         if (golesNuestros > golesRival) {
-          colorConfig = { bg: '#86efac', text: '#166534' }
+          colorConfig = { bg: '#86efac', text: '#166534' };
         } else if (golesNuestros < golesRival) {
-          colorConfig = { bg: '#fca5a5', text: '#991b1b' }
+          colorConfig = { bg: '#fca5a5', text: '#991b1b' };
         } else {
-          colorConfig = { bg: '#d1d5db', text: '#374151' }
+          colorConfig = { bg: '#d1d5db', text: '#374151' };
         }
 
         return (
           <Badge variant="custom" size="sm" customColor={colorConfig}>
             {row.golesA}-{row.golesB}
           </Badge>
-        )
+        );
       },
     },
     {
@@ -62,8 +62,8 @@ export function usePlayerDetailTable() {
       width: '15%',
       align: 'center',
       render: (_, row) => {
-        const hayTarjetas = row.tarjetasAmarillas > 0 || row.tarjetasRojas > 0
-        if (!hayTarjetas) return <span className="text-base-content/40">-</span>
+        const hayTarjetas = row.tarjetasAmarillas > 0 || row.tarjetasRojas > 0;
+        if (!hayTarjetas) return <span className="text-base-content/40">-</span>;
         return (
           <div className="flex gap-1.5 justify-center">
             {row.tarjetasAmarillas > 0 && (
@@ -87,10 +87,10 @@ export function usePlayerDetailTable() {
               </Badge>
             )}
           </div>
-        )
+        );
       },
     },
-  ]
+  ];
 
-  return { columns }
+  return { columns };
 }

@@ -1,5 +1,5 @@
 import { Avatar } from '../../ui/Avatar/Avatar';
-import { UserCardProps } from './UserCard.props'
+import { UserCardProps } from './UserCard.props';
 import { IconButton } from '../../ui/IconButton/IconButton';
 
 export function UserCard({ user, variant = 'default', collapsed = false, onLogout }) {
@@ -62,4 +62,4 @@ export function UserCard({ user, variant = 'default', collapsed = false, onLogou
   );
 }
 
-UserCard.propTypes = UserCardProps
+UserCard.propTypes = UserCardProps;

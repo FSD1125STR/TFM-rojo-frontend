@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const UserCardProps = {
   user: PropTypes.shape({
@@ -17,4 +17,4 @@ export const UserCardProps = {
   variant: PropTypes.oneOf(['default', 'compact']),
   collapsed: PropTypes.bool,
   onLogout: PropTypes.func,
-}
+};

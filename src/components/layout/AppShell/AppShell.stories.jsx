@@ -1,5 +1,5 @@
-import { AppShell } from './AppShell'
-import { Button } from '../../ui/Button/Button'
+import { AppShell } from './AppShell';
+import { Button } from '../../ui/Button/Button';
 
 export default {
   title: 'Layout/AppShell',
@@ -7,7 +7,7 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
-}
+};
 
 export const DesktopExpanded = {
   args: {
@@ -18,7 +18,7 @@ export const DesktopExpanded = {
       defaultViewport: 'desktop',
     },
   },
-}
+};
 
 export const DesktopWithActions = {
   args: {
@@ -34,7 +34,7 @@ export const DesktopWithActions = {
       </>
     ),
   },
-}
+};
 
 export const Mobile = {
   args: {
@@ -45,7 +45,7 @@ export const Mobile = {
       defaultViewport: 'mobile1',
     },
   },
-}
+};
 
 export const Tablet = {
   args: {
@@ -60,4 +60,4 @@ export const Tablet = {
       defaultViewport: 'tablet',
     },
   },
-}
+};

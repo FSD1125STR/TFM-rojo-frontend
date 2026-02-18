@@ -1,4 +1,4 @@
-import { InfoItemProps } from './InfoItem.props'
+import { InfoItemProps } from './InfoItem.props';
 
 export function InfoItem({
   icon,
@@ -23,4 +23,4 @@ export function InfoItem({
   );
 }
 
-InfoItem.propTypes = InfoItemProps
+InfoItem.propTypes = InfoItemProps;

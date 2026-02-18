@@ -1,16 +1,16 @@
-import { useState, useMemo } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { Card } from '../../components/ui/Card'
-import { InfoItem } from '../../components/ui/InfoItem'
-import { StatBox } from '../../components/ui/StatBox'
-import { Badge } from '../../components/ui/Badge'
-import { Tabs } from '../../components/ui/Tabs'
-import { Button } from '../../components/ui/Button'
-import { DataTable } from '../../components/ui/DataTable'
-import { ModalPlayer } from './components/ModalPlayer'
-import { usePlayerDetailTable } from './hooks/usePlayerDetailTable'
-import { usePermissions } from '../../hooks/usePermissions'
+import { useState, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { PageHeader } from '../../components/ui/PageHeader';
+import { Card } from '../../components/ui/Card';
+import { InfoItem } from '../../components/ui/InfoItem';
+import { StatBox } from '../../components/ui/StatBox';
+import { Badge } from '../../components/ui/Badge';
+import { Tabs } from '../../components/ui/Tabs';
+import { Button } from '../../components/ui/Button';
+import { DataTable } from '../../components/ui/DataTable';
+import { ModalPlayer } from './components/ModalPlayer';
+import { usePlayerDetailTable } from './hooks/usePlayerDetailTable';
+import { usePermissions } from '../../hooks/usePermissions';
 import {
   jugadoresData,
   historialPartidosData,
@@ -18,33 +18,33 @@ import {
   formatFecha,
   posicionConfig,
   estadoConfig,
-} from './data/mockData'
+} from './data/mockData';
 
 export function PlayerDetail() {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const { checkPermission } = usePermissions()
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { checkPermission } = usePermissions();
 
-  const jugadorInicial = jugadoresData.find((j) => j.id === parseInt(id))
+  const jugadorInicial = jugadoresData.find((j) => j.id === parseInt(id));
 
-  const [jugador, setJugador] = useState(jugadorInicial)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('todos')
+  const [jugador, setJugador] = useState(jugadorInicial);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('todos');
 
-  const historialCompleto = historialPartidosData[id] || []
+  const historialCompleto = historialPartidosData[id] || [];
 
   const historialFiltrado = useMemo(() => {
     switch (activeTab) {
       case 'ultimos5':
-        return historialCompleto.slice(0, 5)
+        return historialCompleto.slice(0, 5);
       case 'casa':
-        return historialCompleto.filter((p) => p.esLocal)
+        return historialCompleto.filter((p) => p.esLocal);
       case 'fuera':
-        return historialCompleto.filter((p) => !p.esLocal)
+        return historialCompleto.filter((p) => !p.esLocal);
       default:
-        return historialCompleto
+        return historialCompleto;
     }
-  }, [historialCompleto, activeTab])
+  }, [historialCompleto, activeTab]);
 
   if (!jugadorInicial) {
     return (
@@ -54,36 +54,36 @@ export function PlayerDetail() {
           Volver a la lista
         </Button>
       </div>
-    )
+    );
   }
 
   const handleBack = () => {
-    navigate('/jugadores')
-  }
+    navigate('/jugadores');
+  };
 
   const handleEditar = () => {
-    setModalOpen(true)
-  }
+    setModalOpen(true);
+  };
 
   const handleGuardar = (datos) => {
 
-    const jugadorActualizado = { ...jugador, ...datos }
-    setJugador(jugadorActualizado)
+    const jugadorActualizado = { ...jugador, ...datos };
+    setJugador(jugadorActualizado);
 
-    localStorage.setItem('jugadorEditado', JSON.stringify(jugadorActualizado))
-    setModalOpen(false)
-  }
+    localStorage.setItem('jugadorEditado', JSON.stringify(jugadorActualizado));
+    setModalOpen(false);
+  };
 
-  const fechaNacimientoFormateada = formatFecha(jugador.fechaNacimiento)
+  const fechaNacimientoFormateada = formatFecha(jugador.fechaNacimiento);
 
-  const { columns: historialColumns } = usePlayerDetailTable()
+  const { columns: historialColumns } = usePlayerDetailTable();
 
   const promedioMinutos =
     historialCompleto.length > 0
       ? Math.round(historialCompleto.reduce((acc, p) => acc + p.minutos, 0) / historialCompleto.length)
-      : 0
+      : 0;
 
-  const canEdit = checkPermission('players.edit')
+  const canEdit = checkPermission('players.edit');
 
   return (
     <div test-id="el-p7l8y9r0">
@@ -181,5 +181,5 @@ export function PlayerDetail() {
         />
       )}
     </div>
-  )
+  );
 }

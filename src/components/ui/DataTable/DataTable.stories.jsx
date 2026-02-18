@@ -1,15 +1,15 @@
-import { DataTable } from './DataTable'
-import { Badge } from '../Badge/Badge'
+import { DataTable } from './DataTable';
+import { Badge } from '../Badge/Badge';
 
 const createAction = (name) => (row) => {
-  console.log(`${name} clicked:`, row)
-  alert(`${name}: ${row.nombre || row.id}`)
-}
+  console.log(`${name} clicked:`, row);
+  alert(`${name}: ${row.nombre || row.id}`);
+};
 
 const createBulkAction = (name) => (rows) => {
-  console.log(`${name} clicked for ${rows.length} rows:`, rows)
-  alert(`${name}: ${rows.length} filas seleccionadas`)
-}
+  console.log(`${name} clicked for ${rows.length} rows:`, rows);
+  alert(`${name}: ${rows.length} filas seleccionadas`);
+};
 
 const sampleData = [
   { id: 1, nombre: 'Juan García', email: 'juan@email.com', rol: 'Admin', estado: 'Activo' },
@@ -20,7 +20,7 @@ const sampleData = [
   { id: 6, nombre: 'Laura Fernández', email: 'laura@email.com', rol: 'Usuario', estado: 'Activo' },
   { id: 7, nombre: 'Miguel Torres', email: 'miguel@email.com', rol: 'Editor', estado: 'Activo' },
   { id: 8, nombre: 'Sara Díaz', email: 'sara@email.com', rol: 'Usuario', estado: 'Inactivo' },
-]
+];
 
 const defaultColumnConfig = [
   { key: 'id', label: 'ID', visible: true, sortable: true, align: 'center', width: '10%' },
@@ -28,19 +28,19 @@ const defaultColumnConfig = [
   { key: 'email', label: 'Email', visible: true, sortable: true, align: 'left', width: '30%' },
   { key: 'rol', label: 'Rol', visible: true, sortable: true, align: 'left', width: '15%' },
   { key: 'estado', label: 'Estado', visible: true, sortable: true, align: 'left', width: '20%' },
-]
+];
 
 const defaultActions = [
   { label: 'Ver detalle', icon: 'visibility', onClick: createAction('Ver detalle'), variant: 'default' },
   { label: 'Editar', icon: 'edit', onClick: createAction('Editar'), variant: 'default' },
   { label: 'Eliminar', icon: 'delete', onClick: createAction('Eliminar'), variant: 'danger' },
-]
+];
 
 const defaultBulkActions = [
   { label: 'Exportar', icon: 'download', onClick: createBulkAction('Exportar'), variant: 'default' },
   { label: 'Archivar', icon: 'archive', onClick: createBulkAction('Archivar'), variant: 'default' },
   { label: 'Eliminar', icon: 'delete', onClick: createBulkAction('Eliminar'), variant: 'danger' },
-]
+];
 
 const buildColumnsFromConfig = (columnConfig) => {
   return columnConfig
@@ -51,8 +51,8 @@ const buildColumnsFromConfig = (columnConfig) => {
       sortable: col.sortable,
       align: col.align || 'left',
       width: col.width || undefined,
-    }))
-}
+    }));
+};
 
 export default {
   title: 'UI/DataTable',
@@ -174,15 +174,15 @@ export const Default = {
     emptyMessage: 'No hay datos disponibles',
   },
   render: ({ columnConfig, showActions, actionsConfig, bulkActionsConfig, ...args }) => {
-    const columns = buildColumnsFromConfig(columnConfig || [])
+    const columns = buildColumnsFromConfig(columnConfig || []);
     const actions = showActions ? actionsConfig.map(a => ({
       ...a,
       onClick: createAction(a.label)
-    })) : []
+    })) : [];
     const bulkActions = bulkActionsConfig.map(a => ({
       ...a,
       onClick: createBulkAction(a.label)
-    }))
+    }));
 
     return (
       <DataTable
@@ -191,7 +191,7 @@ export const Default = {
         bulkActions={bulkActions}
         {...args}
       />
-    )
+    );
   },
 };
 
@@ -228,7 +228,7 @@ export const ConSeleccion = {
       },
     },
   },
-}
+};
 
 export const ConAccionesMasivas = {
   args: {
@@ -243,7 +243,7 @@ export const ConAccionesMasivas = {
       },
     },
   },
-}
+};
 
 export const Completo = {
   args: {
@@ -257,7 +257,7 @@ export const Completo = {
       },
     },
   },
-}
+};
 
 export const AccionesPersonalizadas = {
   args: {
@@ -284,7 +284,7 @@ export const AccionesPersonalizadas = {
       },
     },
   },
-}
+};
 
 
 export const TablaBasica = {
@@ -307,7 +307,7 @@ export const TablaBasica = {
       },
     },
   },
-}
+};
 
 
 export const TablaMinima = {
@@ -331,7 +331,7 @@ export const TablaMinima = {
       },
     },
   },
-}
+};
 
 
 export const TablaJugadores = {
@@ -377,7 +377,7 @@ export const TablaJugadores = {
       },
     },
   },
-}
+};
 
 
 export const Cargando = {
@@ -394,7 +394,7 @@ export const Cargando = {
       },
     },
   },
-}
+};
 
 
 export const SinDatos = {
@@ -411,7 +411,7 @@ export const SinDatos = {
       },
     },
   },
-}
+};
 
 
 const estadoToBadge = {
@@ -420,20 +420,20 @@ const estadoToBadge = {
   Pendiente: { variant: 'warning', icon: 'schedule' },
   Lesionado: { variant: 'error', icon: 'healing' },
   Retirado: { variant: 'neutral', icon: 'logout' },
-}
+};
 
 const rolToBadge = {
   Admin: { variant: 'primary', icon: 'admin_panel_settings' },
   Editor: { variant: 'info', icon: 'edit' },
   Usuario: { variant: 'default', icon: 'person' },
-}
+};
 
 const posicionToBadge = {
   Portero: { variant: 'custom', customColor: { bg: '#fef3c7', text: '#92400e' }, icon: 'sports_handball' },
   Defensa: { variant: 'custom', customColor: { bg: '#dbeafe', text: '#1e40af' }, icon: 'shield' },
   Centrocampista: { variant: 'custom', customColor: { bg: '#dcfce7', text: '#166534' }, icon: 'sync_alt' },
   Delantero: { variant: 'custom', customColor: { bg: '#fee2e2', text: '#991b1b' }, icon: 'sports_soccer' },
-}
+};
 
 export const ConBadges = {
   args: {
@@ -498,7 +498,7 @@ export const ConBadges = {
         label: 'Rol',
         sortable: true,
         render: (value) => {
-          const config = rolToBadge[value] || { variant: 'default' }
+          const config = rolToBadge[value] || { variant: 'default' };
           return (
             <Badge
               variant={config.variant}
@@ -510,7 +510,7 @@ export const ConBadges = {
             >
               {value}
             </Badge>
-          )
+          );
         }
       },
       {
@@ -518,7 +518,7 @@ export const ConBadges = {
         label: 'Estado',
         sortable: true,
         render: (value) => {
-          const config = estadoToBadge[value] || { variant: 'default' }
+          const config = estadoToBadge[value] || { variant: 'default' };
           return (
             <Badge
               variant={config.variant}
@@ -530,7 +530,7 @@ export const ConBadges = {
             >
               {value}
             </Badge>
-          )
+          );
         }
       },
     ];
@@ -538,12 +538,12 @@ export const ConBadges = {
     const actions = showActions ? actionsConfig.map(a => ({
       ...a,
       onClick: createAction(a.label)
-    })) : []
+    })) : [];
 
     const bulkActions = (bulkActionsConfig || []).map(a => ({
       ...a,
       onClick: createBulkAction(a.label)
-    }))
+    }));
 
     return (
       <DataTable
@@ -552,7 +552,7 @@ export const ConBadges = {
         bulkActions={bulkActions}
         {...args}
       />
-    )
+    );
   },
   parameters: {
     docs: {
@@ -575,7 +575,7 @@ Usa la propiedad \`render\` en la configuración de columnas para mostrar badges
       },
     },
   },
-}
+};
 
 export const JugadoresConBadges = {
   args: {
@@ -662,7 +662,7 @@ export const JugadoresConBadges = {
         label: 'Posición',
         sortable: true,
         render: (value) => {
-          const config = posicionToBadge[value] || { variant: 'default' }
+          const config = posicionToBadge[value] || { variant: 'default' };
           return (
             <Badge
               variant={config.variant}
@@ -675,7 +675,7 @@ export const JugadoresConBadges = {
             >
               {value}
             </Badge>
-          )
+          );
         }
       },
       { key: 'edad', label: 'Edad', sortable: true, align: 'center' },
@@ -684,7 +684,7 @@ export const JugadoresConBadges = {
         label: 'Estado',
         sortable: true,
         render: (value) => {
-          const config = estadoToBadge[value] || { variant: 'default' }
+          const config = estadoToBadge[value] || { variant: 'default' };
           return (
             <Badge
               variant={config.variant}
@@ -696,7 +696,7 @@ export const JugadoresConBadges = {
             >
               {value}
             </Badge>
-          )
+          );
         }
       },
     ];
@@ -704,12 +704,12 @@ export const JugadoresConBadges = {
     const actions = showActions ? actionsConfig.map(a => ({
       ...a,
       onClick: createAction(a.label)
-    })) : []
+    })) : [];
 
     const bulkActions = (bulkActionsConfig || []).map(a => ({
       ...a,
       onClick: createBulkAction(a.label)
-    }))
+    }));
 
     return (
       <DataTable
@@ -718,7 +718,7 @@ export const JugadoresConBadges = {
         bulkActions={bulkActions}
         {...args}
       />
-    )
+    );
   },
   parameters: {
     docs: {
@@ -727,4 +727,4 @@ export const JugadoresConBadges = {
       },
     },
   },
-}
+};

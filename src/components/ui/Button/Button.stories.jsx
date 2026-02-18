@@ -1,4 +1,4 @@
-import { Button } from './Button'
+import { Button } from './Button';
 
 export default {
   title: 'UI/Button',
@@ -13,35 +13,35 @@ export default {
       options: ['sm', 'md', 'lg'],
     },
   },
-}
+};
 
 export const Primary = {
   args: {
     children: 'Guardar',
     variant: 'primary',
   },
-}
+};
 
 export const Secondary = {
   args: {
     children: 'Cancelar',
     variant: 'secondary',
   },
-}
+};
 
 export const Ghost = {
   args: {
     children: 'Ver más',
     variant: 'ghost',
   },
-}
+};
 
 export const Danger = {
   args: {
     children: 'Eliminar',
     variant: 'danger',
   },
-}
+};
 
 export const Small = {
   args: {
@@ -49,7 +49,7 @@ export const Small = {
     variant: 'primary',
     size: 'sm',
   },
-}
+};
 
 export const Large = {
   args: {
@@ -57,7 +57,7 @@ export const Large = {
     variant: 'primary',
     size: 'lg',
   },
-}
+};
 
 export const Loading = {
   args: {
@@ -65,7 +65,7 @@ export const Loading = {
     variant: 'primary',
     isLoading: true,
   },
-}
+};
 
 export const Disabled = {
   args: {
@@ -73,4 +73,4 @@ export const Disabled = {
     variant: 'primary',
     isDisabled: true,
   },
-}
+};

@@ -27,5 +27,6 @@ export default [{ ignores: ['dist'] }, {
       'warn',
       { allowConstantExport: true },
     ],
+    'semi': ['error', 'always'],
   },
 }, ...storybook.configs["flat/recommended"]];

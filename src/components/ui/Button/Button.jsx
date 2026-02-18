@@ -1,17 +1,17 @@
-import { ButtonProps } from './Button.props'
+import { ButtonProps } from './Button.props';
 
 const variantClasses = {
   primary: 'btn-primary',
   secondary: 'btn-secondary',
   ghost: 'btn-ghost',
   danger: 'btn-error',
-}
+};
 
 const sizeClasses = {
   sm: 'btn-sm',
   md: '',
   lg: 'btn-lg',
-}
+};
 
 export function Button({
   children,
@@ -28,7 +28,7 @@ export function Button({
     sizeClasses[size],
     isLoading && 'loading',
     className,
-  ].filter(Boolean).join(' ')
+  ].filter(Boolean).join(' ');
 
   return (
     <button
@@ -40,7 +40,7 @@ export function Button({
       {isLoading && <span className="loading loading-spinner loading-sm"></span>}
       {children}
     </button>
-  )
+  );
 }
 
-Button.propTypes = ButtonProps
+Button.propTypes = ButtonProps;

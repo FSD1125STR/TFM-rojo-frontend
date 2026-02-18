@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const CardProps = {
   title: PropTypes.string,
@@ -7,4 +7,4 @@ export const CardProps = {
   variant: PropTypes.oneOf(['default', 'primary', 'secondary', 'white']),
   padding: PropTypes.oneOf(['none', 'sm', 'md', 'lg']),
   className: PropTypes.string,
-}
+};

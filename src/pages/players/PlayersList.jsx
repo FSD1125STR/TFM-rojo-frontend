@@ -1,95 +1,95 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { StatsCard } from '../../components/ui/StatsCard'
-import { DataTable } from '../../components/ui/DataTable'
-import { ModalPlayer } from './components/ModalPlayer'
-import { usePlayersTable } from './hooks/usePlayersTable'
-import { usePlayersKpis } from './hooks/usePlayersKpis'
-import { usePermissions } from '../../hooks/usePermissions'
-import { useAuth } from '../../hooks/useAuth'
-import { jugadoresData as initialJugadores } from './data/mockData'
-import { showConfirm, showSuccess } from '../../utils/alerts'
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PageHeader } from '../../components/ui/PageHeader';
+import { StatsCard } from '../../components/ui/StatsCard';
+import { DataTable } from '../../components/ui/DataTable';
+import { ModalPlayer } from './components/ModalPlayer';
+import { usePlayersTable } from './hooks/usePlayersTable';
+import { usePlayersKpis } from './hooks/usePlayersKpis';
+import { usePermissions } from '../../hooks/usePermissions';
+import { useAuth } from '../../hooks/useAuth';
+import { jugadoresData as initialJugadores } from './data/mockData';
+import { showConfirm, showSuccess } from '../../utils/alerts';
 
 export function PlayersList() {
-  const navigate = useNavigate()
-  const { checkPermission } = usePermissions()
-  const { isAdmin, user } = useAuth()
-  const categoryId = user?.categoryId?._id || user?.categoryId || null
-  const kpis = usePlayersKpis(isAdmin ? null : categoryId)
+  const navigate = useNavigate();
+  const { checkPermission } = usePermissions();
+  const { isAdmin, user } = useAuth();
+  const categoryId = user?.categoryId?._id || user?.categoryId || null;
+  const kpis = usePlayersKpis(isAdmin ? null : categoryId);
 
-  const [jugadores, setJugadores] = useState(initialJugadores)
+  const [jugadores, setJugadores] = useState(initialJugadores);
 
-  const [modalOpen, setModalOpen] = useState(false)
-  const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
   useEffect(() => {
-    const jugadorEditadoStr = localStorage.getItem('jugadorEditado')
+    const jugadorEditadoStr = localStorage.getItem('jugadorEditado');
     if (jugadorEditadoStr) {
-      const jugadorEditado = JSON.parse(jugadorEditadoStr)
+      const jugadorEditado = JSON.parse(jugadorEditadoStr);
 
       setJugadores((prev) => {
-        const sinEditado = prev.filter((j) => j.id !== jugadorEditado.id)
-        return [jugadorEditado, ...sinEditado]
-      })
+        const sinEditado = prev.filter((j) => j.id !== jugadorEditado.id);
+        return [jugadorEditado, ...sinEditado];
+      });
 
-      localStorage.removeItem('jugadorEditado')
+      localStorage.removeItem('jugadorEditado');
     }
-  }, [])
+  }, []);
 
   const handleNuevoJugador = () => {
-    setJugadorSeleccionado(null)
-    setModalOpen(true)
-  }
+    setJugadorSeleccionado(null);
+    setModalOpen(true);
+  };
 
   const handleEditarJugador = (jugador) => {
-    setJugadorSeleccionado(jugador)
-    setModalOpen(true)
-  }
+    setJugadorSeleccionado(jugador);
+    setModalOpen(true);
+  };
 
   const handleVerDetalle = (jugador) => {
-    navigate(`/jugadores/${jugador.id}`)
-  }
+    navigate(`/jugadores/${jugador.id}`);
+  };
 
   const handleGuardarJugador = (datos) => {
     // TODO: reemplazar por llamada al backend
     if (jugadorSeleccionado) {
       setJugadores(
         jugadores.map((j) => (j.id === jugadorSeleccionado.id ? { ...j, ...datos } : j))
-      )
+      );
     } else {
-      setJugadores([datos, ...jugadores])
+      setJugadores([datos, ...jugadores]);
     }
-  }
+  };
 
   const handleDarDeBaja = (jugador) => {
     if (confirm(`¿Estás seguro de dar de baja a ${jugador.nombre} ${jugador.apellidos}?`)) {
       setJugadores(
         jugadores.map((j) => (j.id === jugador.id ? { ...j, estado: 'No disponible' } : j))
-      )
+      );
     }
-  }
+  };
 
   const handleMarcarRecuperado = async (jugador) => {
     const confirmed = await showConfirm(
       `${jugador.nombre} ${jugador.apellidos} pasará a estado "Disponible".`,
       '¿Marcar como recuperado?'
-    )
+    );
     if (confirmed) {
       setJugadores((prev) =>
         prev.map((j) => (j.id === jugador.id ? { ...j, estado: 'Disponible' } : j))
-      )
-      showSuccess(`${jugador.nombre} ${jugador.apellidos} está disponible.`)
+      );
+      showSuccess(`${jugador.nombre} ${jugador.apellidos} está disponible.`);
     }
-  }
+  };
 
   const handleEliminarSeleccionados = (selectedRows) => {
-    const nombres = selectedRows.map((j) => `${j.nombre} ${j.apellidos}`).join(', ')
+    const nombres = selectedRows.map((j) => `${j.nombre} ${j.apellidos}`).join(', ');
     if (confirm(`¿Estás seguro de eliminar a ${selectedRows.length} jugador(es)?\n${nombres}`)) {
-      const ids = selectedRows.map((j) => j.id)
-      setJugadores((prev) => prev.filter((j) => !ids.includes(j.id)))
+      const ids = selectedRows.map((j) => j.id);
+      setJugadores((prev) => prev.filter((j) => !ids.includes(j.id)));
     }
-  }
+  };
 
   const { columns, actions, filters, searchConfig } = usePlayersTable({
     onVerDetalle: handleVerDetalle,
@@ -97,9 +97,9 @@ export function PlayersList() {
     onDarDeBaja: checkPermission('players.edit') ? handleDarDeBaja : undefined,
     onMarcarRecuperado: checkPermission('players.edit') ? handleMarcarRecuperado : undefined,
     isAdmin,
-  })
+  });
 
-  const canCreate = checkPermission('players.create')
+  const canCreate = checkPermission('players.create');
 
   return (
     <div test-id="el-f4g5h6i7">
@@ -173,5 +173,5 @@ export function PlayersList() {
         onSave={handleGuardarJugador}
       />
     </div>
-  )
+  );
 }

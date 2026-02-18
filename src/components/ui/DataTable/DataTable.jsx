@@ -1,18 +1,20 @@
-import { useState, useMemo } from 'react'
-import ReactDataTable from 'react-data-table-component'
-import { NoDataComponentProps, BulkActionsBarProps, DataTableProps } from './DataTable.props'
-import { Icon } from '../Icon/Icon'
-import { SearchInput } from '../SearchInput/SearchInput'
-import { SelectFilter } from '../SelectFilter/SelectFilter'
-import { DataTableActions } from '../DataTableActions/DataTableActions'
-import { tableStyles, defaultPaginationOptions } from './dataTableStyles'
+import { useState, useMemo } from 'react';
+import ReactDataTable from 'react-data-table-component';
+import { NoDataComponentProps, BulkActionsBarProps, DataTableProps } from './DataTable.props';
+import { Icon } from '../Icon/Icon';
+import { Button } from '../Button/Button';
+import { SearchInput } from '../SearchInput/SearchInput';
+import { SelectFilter } from '../SelectFilter/SelectFilter';
+import { DataTableActions } from '../DataTableActions/DataTableActions';
+import { tableStyles, defaultPaginationOptions } from './dataTableStyles';
+import { normalizeText } from '../../../utils/normalize';
 
 function LoadingComponent() {
   return (
     <div className="py-10 flex justify-center">
       <span className="loading loading-spinner loading-lg text-primary"></span>
     </div>
-  )
+  );
 }
 
 function NoDataComponent({ message }) {
@@ -21,10 +23,10 @@ function NoDataComponent({ message }) {
       <Icon name="inbox" size="lg" className="mb-2 opacity-40" />
       <p>{message}</p>
     </div>
-  )
+  );
 }
 
-NoDataComponent.propTypes = NoDataComponentProps
+NoDataComponent.propTypes = NoDataComponentProps;
 
 function transformColumns(columns, actions, actionsTitle) {
   const transformed = columns.map(col => ({
@@ -49,17 +51,17 @@ function transformColumns(columns, actions, actionsTitle) {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-    })
+    });
   }
 
   return transformed;
 }
 
 function BulkActionsBar({ selectedCount, bulkActions, selectedRows, onClearSelection }) {
-  if (selectedCount === 0) return null
+  if (selectedCount === 0) return null;
 
-  const normalActions = bulkActions.filter(a => a.variant !== 'danger')
-  const dangerActions = bulkActions.filter(a => a.variant === 'danger')
+  const normalActions = bulkActions.filter(a => a.variant !== 'danger');
+  const dangerActions = bulkActions.filter(a => a.variant === 'danger');
 
   return (
     <div className="flex items-center justify-between gap-4 px-4 py-3 bg-primary/10 border-b border-primary/20">
@@ -76,9 +78,9 @@ function BulkActionsBar({ selectedCount, bulkActions, selectedRows, onClearSelec
         </button>
       </div>
       <div className="flex items-center gap-2">
-        {normalActions.map((action, index) => (
+        {normalActions.map((action) => (
           <button
-            key={index}
+            key={action.label || action.key}
             className="btn btn-sm btn-ghost"
             onClick={() => action.onClick(selectedRows)}
           >
@@ -86,9 +88,9 @@ function BulkActionsBar({ selectedCount, bulkActions, selectedRows, onClearSelec
             {action.label}
           </button>
         ))}
-        {dangerActions.map((action, index) => (
+        {dangerActions.map((action) => (
           <button
-            key={index}
+            key={action.label || action.key}
             className="btn btn-sm btn-error btn-outline"
             onClick={() => action.onClick(selectedRows)}
           >
@@ -98,10 +100,10 @@ function BulkActionsBar({ selectedCount, bulkActions, selectedRows, onClearSelec
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-BulkActionsBar.propTypes = BulkActionsBarProps
+BulkActionsBar.propTypes = BulkActionsBarProps;
 
 export function DataTable({
   columns,
@@ -125,60 +127,70 @@ export function DataTable({
   searchKeys = [],
   filters = [],
 }) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filterValues, setFilterValues] = useState({})
-  const [selectedRows, setSelectedRows] = useState([])
-  const [toggleCleared, setToggleCleared] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterValues, setFilterValues] = useState({});
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [toggleCleared, setToggleCleared] = useState(false);
 
   const filteredData = useMemo(() => {
-    if (!searchable && filters.length === 0) return data
+    if (!searchable && filters.length === 0) return data;
 
     return data.filter(item => {
       const matchesSearch = !searchable || !searchTerm || searchKeys.some(key => {
-        const value = item[key]
-        return value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      })
+        const value = item[key];
+        return normalizeText(value).includes(normalizeText(searchTerm));
+      });
 
       const matchesFilters = filters.every(filter => {
-        const filterValue = filterValues[filter.key]
-        if (!filterValue || (Array.isArray(filterValue) && filterValue.length === 0)) return true
-        if (Array.isArray(filterValue)) return filterValue.includes(item[filter.key])
-        return item[filter.key] === filterValue
-      })
+        const filterValue = filterValues[filter.key];
+        if (!filterValue || (Array.isArray(filterValue) && filterValue.length === 0)) return true;
+        if (Array.isArray(filterValue)) return filterValue.includes(item[filter.key]);
+        return item[filter.key] === filterValue;
+      });
 
-      return matchesSearch && matchesFilters
-    })
-  }, [data, searchTerm, searchKeys, searchable, filters, filterValues])
+      return matchesSearch && matchesFilters;
+    });
+  }, [data, searchTerm, searchKeys, searchable, filters, filterValues]);
 
   const handleFilterChange = (key, value) => {
-    setFilterValues(prev => ({ ...prev, [key]: value }))
-  }
+    setFilterValues(prev => ({ ...prev, [key]: value }));
+  };
 
   const handleSelectionChange = ({ selectedRows: selected }) => {
-    setSelectedRows(selected)
+    setSelectedRows(selected);
     if (onSelectionChange) {
-      const selectedIds = selected.map(row => row[keyField])
-      onSelectionChange(selectedIds, selected)
+      const selectedIds = selected.map(row => row[keyField]);
+      onSelectionChange(selectedIds, selected);
     }
   };
 
   const handleClearSelection = () => {
-    setToggleCleared(!toggleCleared)
-    setSelectedRows([])
+    setToggleCleared(!toggleCleared);
+    setSelectedRows([]);
     if (onSelectionChange) {
-      onSelectionChange([], [])
+      onSelectionChange([], []);
     }
-  }
+  };
 
-  const hasBulkActions = bulkActions.length > 0 && showBulkActionsBar
-  const hasToolbar = searchable || filters.length > 0
+  const hasActiveFilters = searchTerm !== '' || filters.some(f => {
+    const v = filterValues[f.key];
+    return v && (!Array.isArray(v) || v.length > 0);
+  });
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setFilterValues({});
+  };
+
+  const hasBulkActions = bulkActions.length > 0 && showBulkActionsBar;
+  const hasToolbar = searchable || filters.length > 0;
 
   const containerClasses = [
     'datatable-root overflow-visible',
     hasToolbar ? '' : 'no-toolbar',
     pagination ? '' : 'no-pagination',
     className,
-  ].filter(Boolean).join(' ')
+  ].filter(Boolean).join(' ');
 
   return (
     <div test-id="el-dtg1a2b3c" className={containerClasses}>
@@ -202,6 +214,12 @@ export function DataTable({
               multiple={filter.multiple}
             />
           ))}
+          {hasActiveFilters && (
+            <Button variant="ghost" size="sm" onClick={handleClearFilters}>
+              <Icon name="filter_list_off" size="sm" className="mr-1" />
+              Limpiar
+            </Button>
+          )}
         </div>
       )}
 
@@ -237,6 +255,6 @@ export function DataTable({
   );
 }
 
-DataTable.propTypes = DataTableProps
+DataTable.propTypes = DataTableProps;
 
-export default DataTable
+export default DataTable;

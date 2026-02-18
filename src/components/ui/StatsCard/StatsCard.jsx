@@ -1,4 +1,4 @@
-import { StatsCardProps } from './StatsCard.props'
+import { StatsCardProps } from './StatsCard.props';
 
 const StatsCard = ({
   title,
@@ -41,6 +41,6 @@ const StatsCard = ({
   );
 };
 
-StatsCard.propTypes = StatsCardProps
+StatsCard.propTypes = StatsCardProps;
 
 export default StatsCard;

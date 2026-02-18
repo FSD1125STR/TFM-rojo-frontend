@@ -1,17 +1,17 @@
-import { useTheme } from '../../../hooks/useTheme'
-import { ThemeToggleProps } from './ThemeToggle.props'
-import { useAuth } from '../../../hooks/useAuth'
-import { Icon } from '../Icon/Icon'
+import { useTheme } from '../../../hooks/useTheme';
+import { ThemeToggleProps } from './ThemeToggle.props';
+import { useAuth } from '../../../hooks/useAuth';
+import { Icon } from '../Icon/Icon';
 
 const sizeClasses = {
   sm: 'btn-sm',
   md: '',
-}
+};
 
 export function ThemeToggle({ variant = 'icon', size = 'md' }) {
-  const { user } = useAuth()
-  const { theme, toggleTheme } = useTheme(user?.id)
-  const isDark = theme === 'dark'
+  const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme(user?.id);
+  const isDark = theme === 'dark';
 
   if (variant === 'switch') {
     return (
@@ -25,7 +25,7 @@ export function ThemeToggle({ variant = 'icon', size = 'md' }) {
         <Icon name="light_mode" size="sm" className="swap-off" />
         <Icon name="dark_mode" size="sm" className="swap-on" />
       </label>
-    )
+    );
   }
 
   return (
@@ -39,7 +39,7 @@ export function ThemeToggle({ variant = 'icon', size = 'md' }) {
       <Icon name="light_mode" size="sm" className="swap-off" />
       <Icon name="dark_mode" size="sm" className="swap-on" />
     </label>
-  )
+  );
 }
 
-ThemeToggle.propTypes = ThemeToggleProps
+ThemeToggle.propTypes = ThemeToggleProps;

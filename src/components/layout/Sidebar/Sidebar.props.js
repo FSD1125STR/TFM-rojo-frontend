@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const SidebarProps = {
   mode: PropTypes.oneOf(['expanded', 'collapsed', 'drawer']),
@@ -11,4 +11,4 @@ export const SidebarProps = {
   }),
   onLogout: PropTypes.func,
   className: PropTypes.string,
-}
+};

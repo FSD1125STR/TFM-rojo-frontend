@@ -66,9 +66,7 @@ export function ResetPassword() {
           <h1 className="text-2xl font-bold text-base-content">FootMind</h1>
         </div>
 
-        <Card>
-          <Card.Body>
-            <Card.Title className="justify-center mb-2">Nueva contraseña</Card.Title>
+        <Card title="Nueva contraseña">
             <p className="text-center text-base-content/60 text-sm mb-4">
               Introduce tu nueva contraseña.
             </p>
@@ -141,7 +139,6 @@ export function ResetPassword() {
                 </div>
               </>
             )}
-          </Card.Body>
         </Card>
       </div>
     </div>

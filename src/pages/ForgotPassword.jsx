@@ -50,12 +50,9 @@ export function ForgotPassword() {
               className="h-16"
             />
           </div>
-          <h1 className="text-2xl font-bold text-base-content">FootMind</h1>
         </div>
 
-        <Card>
-          <Card.Body>
-            <Card.Title className="justify-center mb-2">Recuperar contraseña</Card.Title>
+        <Card title="Recuperar contraseña">
             <p className="text-center text-base-content/60 text-sm mb-4">
               Introduce tu email y te enviaremos un enlace para restablecer tu contraseña.
             </p>
@@ -113,7 +110,6 @@ export function ForgotPassword() {
                 </div>
               </>
             )}
-          </Card.Body>
         </Card>
       </div>
     </div>

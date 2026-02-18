@@ -1,18 +1,18 @@
-import { CardProps } from './Card.props'
+import { CardProps } from './Card.props';
 
 const variantClasses = {
   default: 'bg-base-200 border border-base-300',
   primary: 'bg-primary/10 border border-primary/20',
   secondary: 'bg-secondary/10 border border-secondary/20',
   white: 'bg-white border border-base-300',
-}
+};
 
 const paddingClasses = {
   none: 'p-0',
   sm: 'p-3',
   md: 'p-5',
   lg: 'p-7',
-}
+};
 
 export function Card({
   title,
@@ -41,9 +41,9 @@ export function Card({
         {children}
       </div>
     </div>
-  )
+  );
 }
 
-Card.propTypes = CardProps
+Card.propTypes = CardProps;
 
-export default Card
+export default Card;

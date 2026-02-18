@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { PageHeaderProps } from './PageHeader.props'
+import { PageHeaderProps } from './PageHeader.props';
 import { Icon } from "../Icon/Icon";
 
 export function PageHeader({
@@ -51,4 +51,4 @@ export function PageHeader({
   );
 }
 
-PageHeader.propTypes = PageHeaderProps
+PageHeader.propTypes = PageHeaderProps;

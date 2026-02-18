@@ -1,13 +1,13 @@
-import { useRef, useEffect, useId } from 'react'
-import { Icon } from '../Icon/Icon'
-import { IconButton } from '../IconButton/IconButton'
-import { ModalProps } from './Modal.props'
+import { useRef, useEffect, useId } from 'react';
+import { Icon } from '../Icon/Icon';
+import { IconButton } from '../IconButton/IconButton';
+import { ModalProps } from './Modal.props';
 
 const sizeClasses = {
   sm: 'max-w-md',
   md: 'max-w-lg',
   lg: 'max-w-3xl min-w-[600px] max-md:min-w-0',
-}
+};
 
 export function Modal({
   isOpen = false,
@@ -20,38 +20,38 @@ export function Modal({
   children,
   className = '',
 }) {
-  const modalRef = useRef(null)
-  const titleId = useId()
+  const modalRef = useRef(null);
+  const titleId = useId();
 
   useEffect(() => {
-    const dialog = modalRef.current
-    if (!dialog) return
+    const dialog = modalRef.current;
+    if (!dialog) return;
 
     if (isOpen) {
-      dialog.showModal()
+      dialog.showModal();
     } else {
-      dialog.close()
+      dialog.close();
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   useEffect(() => {
-    const dialog = modalRef.current
-    if (!dialog) return
+    const dialog = modalRef.current;
+    if (!dialog) return;
 
     const handleCancel = (e) => {
-      e.preventDefault()
-      onClose?.()
-    }
+      e.preventDefault();
+      onClose?.();
+    };
 
-    dialog.addEventListener('cancel', handleCancel)
-    return () => dialog.removeEventListener('cancel', handleCancel)
-  }, [onClose])
+    dialog.addEventListener('cancel', handleCancel);
+    return () => dialog.removeEventListener('cancel', handleCancel);
+  }, [onClose]);
 
   const handleBackdropClick = (e) => {
     if (e.target === modalRef.current) {
-      onClose?.()
+      onClose?.();
     }
-  }
+  };
 
   return (
     <dialog
@@ -90,7 +90,7 @@ export function Modal({
         )}
       </div>
     </dialog>
-  )
+  );
 }
 
-Modal.propTypes = ModalProps
+Modal.propTypes = ModalProps;

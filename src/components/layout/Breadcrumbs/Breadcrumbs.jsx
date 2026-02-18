@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
-import { BreadcrumbsProps } from './Breadcrumbs.props'
+import { Link } from 'react-router-dom';
+import { BreadcrumbsProps } from './Breadcrumbs.props';
 
 export function Breadcrumbs({ items = [], variant = 'default' }) {
-  if (items.length === 0) return null
+  if (items.length === 0) return null;
 
-  const textSize = variant === 'compact' ? 'text-xs' : 'text-sm'
+  const textSize = variant === 'compact' ? 'text-xs' : 'text-sm';
 
   return (
     <div test-id="el-o1p2q3r4" className={`breadcrumbs ${textSize}`}>
@@ -20,7 +20,7 @@ export function Breadcrumbs({ items = [], variant = 'default' }) {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
-Breadcrumbs.propTypes = BreadcrumbsProps
+Breadcrumbs.propTypes = BreadcrumbsProps;

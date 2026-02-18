@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const BadgeProps = {
   children: PropTypes.node.isRequired,
@@ -14,4 +14,4 @@ export const BadgeProps = {
   }),
   minWidth: PropTypes.string,
   className: PropTypes.string,
-}
+};

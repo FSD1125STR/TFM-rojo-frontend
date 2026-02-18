@@ -1,16 +1,16 @@
-import { Icon } from '../Icon/Icon'
-import { IconButtonProps } from './IconButton.props'
+import { Icon } from '../Icon/Icon';
+import { IconButtonProps } from './IconButton.props';
 
 const variantClasses = {
   primary: 'btn-primary',
   ghost: 'btn-ghost',
   danger: 'btn-error',
-}
+};
 
 const sizeClasses = {
   sm: 'btn-sm',
   md: '',
-}
+};
 
 export function IconButton({
   icon,
@@ -25,7 +25,7 @@ export function IconButton({
     variantClasses[variant],
     sizeClasses[size],
     className,
-  ].filter(Boolean).join(' ')
+  ].filter(Boolean).join(' ');
 
   return (
     <button
@@ -36,7 +36,7 @@ export function IconButton({
     >
       <Icon name={icon} size={size === 'sm' ? 'sm' : 'md'} />
     </button>
-  )
+  );
 }
 
-IconButton.propTypes = IconButtonProps
+IconButton.propTypes = IconButtonProps;

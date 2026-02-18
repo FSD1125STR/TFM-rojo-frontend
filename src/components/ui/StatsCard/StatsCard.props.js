@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const StatsCardProps = {
   title: PropTypes.string.isRequired,
@@ -15,4 +15,4 @@ export const StatsCardProps = {
     'error',
   ]),
   className: PropTypes.string,
-}
+};

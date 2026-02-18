@@ -1,14 +1,14 @@
-import { IconButton } from '../../ui/IconButton/IconButton'
-import { HeaderBarProps } from './HeaderBar.props'
-import { ThemeToggle } from '../../ui/ThemeToggle/ThemeToggle'
-import { HeaderActions } from '../HeaderActions/HeaderActions'
-import { SearchBar } from '../SearchBar/SearchBar'
+import { IconButton } from '../../ui/IconButton/IconButton';
+import { HeaderBarProps } from './HeaderBar.props';
+import { ThemeToggle } from '../../ui/ThemeToggle/ThemeToggle';
+import { HeaderActions } from '../HeaderActions/HeaderActions';
+import { SearchBar } from '../SearchBar/SearchBar';
 
 const sidebarIcons = {
   drawer: { icon: 'menu', label: 'Abrir menú' },
   expanded: { icon: 'dock_to_right', label: 'Colapsar sidebar' },
   collapsed: { icon: 'left_panel_open', label: 'Expandir sidebar' },
-}
+};
 
 export function HeaderBar({
   actions,
@@ -16,7 +16,7 @@ export function HeaderBar({
   onToggleSidebar,
   className = '',
 }) {
-  const { icon, label } = sidebarIcons[sidebarMode] || sidebarIcons.drawer
+  const { icon, label } = sidebarIcons[sidebarMode] || sidebarIcons.drawer;
 
   return (
     <header test-id="el-m5n6o7p8" className={`navbar h-16 bg-base-100 border-b border-base-300 px-4 ${className}`}>
@@ -48,7 +48,7 @@ export function HeaderBar({
         </div>
       </div>
     </header>
-  )
+  );
 }
 
-HeaderBar.propTypes = HeaderBarProps
+HeaderBar.propTypes = HeaderBarProps;

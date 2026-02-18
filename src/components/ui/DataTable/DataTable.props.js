@@ -1,15 +1,15 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const NoDataComponentProps = {
   message: PropTypes.string,
-}
+};
 
 export const BulkActionsBarProps = {
   selectedCount: PropTypes.number.isRequired,
   bulkActions: PropTypes.array.isRequired,
   selectedRows: PropTypes.array.isRequired,
   onClearSelection: PropTypes.func.isRequired,
-}
+};
 
 export const DataTableProps = {
   columns: PropTypes.arrayOf(
@@ -69,4 +69,4 @@ export const DataTableProps = {
       multiple: PropTypes.bool,
     })
   ),
-}
+};

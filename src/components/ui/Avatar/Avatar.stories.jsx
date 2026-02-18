@@ -1,4 +1,4 @@
-import { Avatar } from './Avatar'
+import { Avatar } from './Avatar';
 
 export default {
   title: 'UI/Avatar',
@@ -9,7 +9,7 @@ export default {
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
-}
+};
 
 export const WithImage = {
   args: {
@@ -17,39 +17,39 @@ export const WithImage = {
     name: 'Dani Rodríguez',
     size: 'md',
   },
-}
+};
 
 export const WithInitials = {
   args: {
     name: 'Dani Rodríguez',
     size: 'md',
   },
-}
+};
 
 export const SingleName = {
   args: {
     name: 'Admin',
     size: 'md',
   },
-}
+};
 
 export const ExtraSmall = {
   args: {
     name: 'Dani Rodríguez',
     size: 'xs',
   },
-}
+};
 
 export const Small = {
   args: {
     name: 'Dani Rodríguez',
     size: 'sm',
   },
-}
+};
 
 export const Large = {
   args: {
     name: 'Dani Rodríguez',
     size: 'lg',
   },
-}
+};

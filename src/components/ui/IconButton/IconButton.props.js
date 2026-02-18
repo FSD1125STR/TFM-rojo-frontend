@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const IconButtonProps = {
   icon: PropTypes.string.isRequired,
@@ -6,4 +6,4 @@ export const IconButtonProps = {
   size: PropTypes.oneOf(['sm', 'md']),
   ariaLabel: PropTypes.string.isRequired,
   className: PropTypes.string,
-}
+};

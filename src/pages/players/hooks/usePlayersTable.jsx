@@ -1,17 +1,17 @@
-import { Badge } from '../../../components/ui/Badge'
-import { Avatar } from '../../../components/ui/Avatar/Avatar'
+import { Badge } from '../../../components/ui/Badge';
+import { Avatar } from '../../../components/ui/Avatar/Avatar';
 import {
   posicionOptions,
   estadoOptions,
   categoriaOptions,
   posicionConfig,
   estadoConfig,
-} from '../data/mockData'
+} from '../data/mockData';
 
 export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarRecuperado, isAdmin }) {
   const w = isAdmin
     ? { nombre: '26%', dorsal: '9%', catPos: '14%', edad: '8%', partidos: '9%', goles: '8%', estado: '14%' }
-    : { nombre: '28%', dorsal: '10%', catPos: '15%', edad: '9%', partidos: '10%', goles: '8%', estado: '12%' }
+    : { nombre: '28%', dorsal: '10%', catPos: '15%', edad: '9%', partidos: '10%', goles: '8%', estado: '12%' };
 
   const columns = [
     {
@@ -67,7 +67,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
           >
             {value}
           </Badge>
-        )
+        );
 
         if (row.sanction) {
           return (
@@ -77,20 +77,20 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
             >
               <div className="pointer-events-none">{badge}</div>
             </div>
-          )
+          );
         }
 
-        return <div className="pointer-events-none">{badge}</div>
+        return <div className="pointer-events-none">{badge}</div>;
       },
     },
-  ]
+  ];
 
   const actions = [
     { label: 'Ver detalle', icon: 'visibility', onClick: onVerDetalle },
     onEditar && { label: 'Editar', icon: 'edit', onClick: onEditar },
     onMarcarRecuperado && { label: 'Marcar recuperado', icon: 'health_and_safety', onClick: onMarcarRecuperado, show: (row) => row.estado === 'Lesionado' },
     onDarDeBaja && { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger' },
-  ].filter(Boolean)
+  ].filter(Boolean);
 
   const filters = [
     ...(isAdmin
@@ -98,13 +98,13 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
       : [{ key: 'posicion', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true }]
     ),
     { key: 'estado', placeholder: 'Todos los estados', options: estadoOptions },
-  ]
+  ];
 
   const searchConfig = {
     searchable: true,
     searchPlaceholder: 'Buscar por nombre o dorsal...',
     searchKeys: ['nombre', 'apellidos', 'dorsal'],
-  }
+  };
 
-  return { columns, actions, filters, searchConfig }
+  return { columns, actions, filters, searchConfig };
 }

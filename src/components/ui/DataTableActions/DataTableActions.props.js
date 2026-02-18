@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const DataTableActionsProps = {
   actions: PropTypes.arrayOf(
@@ -12,4 +12,4 @@ export const DataTableActionsProps = {
   ).isRequired,
   row: PropTypes.object.isRequired,
   title: PropTypes.string,
-}
+};

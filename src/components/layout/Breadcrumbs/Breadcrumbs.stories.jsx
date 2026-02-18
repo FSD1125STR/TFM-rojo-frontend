@@ -1,4 +1,4 @@
-import { Breadcrumbs } from './Breadcrumbs'
+import { Breadcrumbs } from './Breadcrumbs';
 
 export default {
   title: 'Layout/Breadcrumbs',
@@ -9,7 +9,7 @@ export default {
       options: ['default', 'compact'],
     },
   },
-}
+};
 
 export const Default = {
   args: {
@@ -20,7 +20,7 @@ export const Default = {
     ],
     variant: 'default',
   },
-}
+};
 
 export const Compact = {
   args: {
@@ -31,7 +31,7 @@ export const Compact = {
     ],
     variant: 'compact',
   },
-}
+};
 
 export const TwoLevels = {
   args: {
@@ -40,4 +40,4 @@ export const TwoLevels = {
       { label: 'Ajustes' },
     ],
   },
-}
+};

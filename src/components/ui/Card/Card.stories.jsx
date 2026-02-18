@@ -1,4 +1,4 @@
-import { Card } from './Card'
+import { Card } from './Card';
 
 export default {
   title: 'UI/Card',
@@ -31,7 +31,7 @@ export default {
       options: ['none', 'sm', 'md', 'lg'],
     },
   },
-}
+};
 
 export const Default = {
   args: {
@@ -39,7 +39,7 @@ export const Default = {
     icon: 'info',
     children: <p className="m-0">Contenido del card. Puedes incluir cualquier contenido aquí.</p>,
   },
-}
+};
 
 export const SinTitulo = {
   args: {
@@ -52,7 +52,7 @@ export const SinTitulo = {
       },
     },
   },
-}
+};
 
 export const TodasLasVariantes = {
   render: () => (
@@ -78,7 +78,7 @@ export const TodasLasVariantes = {
       },
     },
   },
-}
+};
 
 export const TodosLosPaddings = {
   render: () => (
@@ -104,4 +104,4 @@ export const TodosLosPaddings = {
       },
     },
   },
-}
+};

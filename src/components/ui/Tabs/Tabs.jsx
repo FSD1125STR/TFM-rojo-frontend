@@ -1,4 +1,4 @@
-import { TabsProps } from './Tabs.props'
+import { TabsProps } from './Tabs.props';
 
 export function Tabs({
   tabs,
@@ -24,4 +24,4 @@ export function Tabs({
   );
 }
 
-Tabs.propTypes = TabsProps
+Tabs.propTypes = TabsProps;

@@ -1,43 +1,43 @@
-import { Icon } from '../../../components/ui/Icon'
-import { PlayerFormProps } from './PlayerForm.props'
+import { Icon } from '../../../components/ui/Icon';
+import { PlayerFormProps } from './PlayerForm.props';
 
 const posiciones = [
   { value: 'Portero', label: 'Portero' },
   { value: 'Defensa', label: 'Defensa' },
   { value: 'Centrocampista', label: 'Centrocampista' },
   { value: 'Delantero', label: 'Delantero' },
-]
+];
 
 const estados = [
   { value: 'Disponible', label: 'Disponible' },
   { value: 'Lesionado', label: 'Lesionado' },
   { value: 'Sancionado', label: 'Sancionado' },
   { value: 'No disponible', label: 'No disponible' },
-]
+];
 
 const calcularEdad = (fechaNacimiento) => {
-  if (!fechaNacimiento) return null
-  const fecha = new Date(fechaNacimiento)
-  const hoy = new Date()
-  let edad = hoy.getFullYear() - fecha.getFullYear()
-  const mes = hoy.getMonth() - fecha.getMonth()
+  if (!fechaNacimiento) return null;
+  const fecha = new Date(fechaNacimiento);
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - fecha.getFullYear();
+  const mes = hoy.getMonth() - fecha.getMonth();
   if (mes < 0 || (mes === 0 && hoy.getDate() < fecha.getDate())) {
-    edad--
+    edad--;
   }
-  return edad
-}
+  return edad;
+};
 
-const LABEL_CLS = 'font-semibold text-[13px] text-base-content/70'
-const INPUT_CLS = 'input input-bordered input-sm w-full bg-base-200/50 border-base-300 text-sm transition-all placeholder:text-base-content/40 focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15'
-const INPUT_ICON_CLS = `${INPUT_CLS} pl-9`
-const SELECT_CLS = 'select select-bordered select-sm w-full bg-base-200/50 border-base-300 text-sm transition-all focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15'
-const ICON_CLS = 'absolute left-2.5 top-1/2 -translate-y-1/2 text-primary text-lg z-[1] pointer-events-none'
+const LABEL_CLS = 'font-semibold text-[13px] text-base-content/70';
+const INPUT_CLS = 'input input-bordered input-sm w-full bg-base-200/50 border-base-300 text-sm transition-all placeholder:text-base-content/40 focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15';
+const INPUT_ICON_CLS = `${INPUT_CLS} pl-9`;
+const SELECT_CLS = 'select select-bordered select-sm w-full bg-base-200/50 border-base-300 text-sm transition-all focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15';
+const ICON_CLS = 'absolute left-2.5 top-1/2 -translate-y-1/2 text-primary text-lg z-[1] pointer-events-none';
 
 export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
   const handleChange = (e) => {
-    const { name, value } = e.target
-    onChange(name, value)
-  }
+    const { name, value } = e.target;
+    onChange(name, value);
+  };
 
   return (
     <form id={formId} onSubmit={onSubmit}>
@@ -246,10 +246,10 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
         </div>
       </div>
     </form>
-  )
+  );
 }
 
-PlayerForm.calcularEdad = calcularEdad
+PlayerForm.calcularEdad = calcularEdad;
 
 PlayerForm.INITIAL_DATA = {
   nombre: '',
@@ -263,6 +263,6 @@ PlayerForm.INITIAL_DATA = {
   dorsal: '',
   posicion: '',
   estado: 'Disponible',
-}
+};
 
-PlayerForm.propTypes = PlayerFormProps
+PlayerForm.propTypes = PlayerFormProps;

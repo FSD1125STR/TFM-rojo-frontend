@@ -1,4 +1,4 @@
-import { StatBoxProps } from './StatBox.props'
+import { StatBoxProps } from './StatBox.props';
 
 export function StatBox({
   value,
@@ -22,4 +22,4 @@ export function StatBox({
   );
 }
 
-StatBox.propTypes = StatBoxProps
+StatBox.propTypes = StatBoxProps;

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const SidebarItemProps = {
   icon: PropTypes.string.isRequired,
@@ -6,4 +6,4 @@ export const SidebarItemProps = {
   to: PropTypes.string.isRequired,
   collapsed: PropTypes.bool,
   onClick: PropTypes.func,
-}
+};
