@@ -135,8 +135,8 @@ export function PlayersList() {
         <StatsCard
           title="Riesgo convocatoria"
           value={kpis?.convocationRisk ? 'Sí' : 'No'}
-          subtitle={kpis ? `Mínimo requerido: ${kpis.minimumRequired}` : ''}
-          icon="warning"
+          subtitle={kpis ? `Mínimo requerido: ${kpis.minimumRequired} jugadores disponibles` : ''}
+          icon={kpis?.convocationRisk ? 'warning' : 'check_circle'}
           variant={kpis?.convocationRisk ? 'error' : 'success'}
         />
       </div>}
