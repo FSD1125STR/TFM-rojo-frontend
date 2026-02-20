@@ -113,7 +113,7 @@ export function PlayersList() {
         })}
       />
 
-      {!isAdmin && <div className="grid grid-cols-4 gap-4 mt-6">
+      {!isAdmin && <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <StatsCard
           title="Disponibles"
           value={kpis?.available ?? '–'}

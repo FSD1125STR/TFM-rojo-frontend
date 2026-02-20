@@ -52,13 +52,13 @@ export function CardsList({
       {statsContent}
 
       {hasToolbar && (
-        <div className="flex items-center gap-3 mb-4 flex-wrap">
+        <div className="flex flex-wrap items-center gap-3 mb-4">
           {searchable && (
             <SearchInput
               value={searchValue}
               onChange={onSearchChange}
               placeholder={searchPlaceholder}
-              className="flex-1 min-w-40"
+              className="w-full sm:flex-1 sm:min-w-40"
             />
           )}
           {filterItems.map((filter) => (
@@ -80,13 +80,13 @@ export function CardsList({
           )}
           {sortOptions.length > 0 && (
             <>
-              <div className="h-6 border-l border-base-300" />
+              <div className="hidden sm:block h-6 border-l border-base-300" />
               <SelectFilter
                 value={sortValue}
                 onChange={onSortChange}
                 options={sortOptions}
                 placeholder="Ordenar por"
-                className="ml-auto"
+                className="sm:ml-auto"
               />
             </>
           )}
