@@ -29,12 +29,25 @@ export function Badge({
   outline = false,
   customColor = { bg: '#e0e0e0', text: '#333333' },
   minWidth,
+  shape = 'default',
   className = '',
 }) {
   const colors = variant === 'custom'
     ? customColor
     : (variantColors[variant] || variantColors.default);
   const sizes = sizeConfig[size] || sizeConfig.md;
+
+  const cardStyle = shape === 'card' ? {
+    width: '16px',
+    height: '22px',
+    padding: '2px',
+    minWidth: 'unset',
+    borderRadius: '3px',
+    fontSize: '10px',
+    fontWeight: 700,
+    gap: 0,
+    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+  } : {}
 
   const style = {
     display: 'inline-flex',
@@ -51,6 +64,7 @@ export function Badge({
     color: colors.text,
     border: outline ? `2px solid ${colors.text}` : 'none',
     whiteSpace: 'nowrap',
+    ...cardStyle,
   };
 
   return (

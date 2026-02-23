@@ -13,8 +13,11 @@ Frontend del proyecto FootMind - Gestión de equipos de fútbol base.
 | Preline UI | 2.x | Advanced Select (multi-select) sobre Tailwind |
 | Material Icons | - | Sistema de iconos |
 | React Router | 7.x | Enrutamiento SPA |
-| Storybook | 8.x | Documentación de componentes |
+| Storybook | 10.x | Documentación de componentes |
 | react-data-table-component | 7.x | Tablas de datos con sorting y paginación |
+| date-fns | 4.x | Utilidades de fechas |
+| sweetalert2 | 11.x | Diálogos y confirmaciones |
+| axios | 1.x | Cliente HTTP |
 
 ## Requisitos
 
@@ -188,12 +191,12 @@ const { theme, toggleTheme } = useTheme()
 
 ## Sistema de iconos
 
-El proyecto utiliza **Material Icons** como sistema de iconos unificado.
+El proyecto utiliza **Material Symbols** (outlined) a través del componente `<Icon>`:
 
 ```jsx
-<span className="material-icons">dashboard</span>
-<span className="material-icons">person</span>
-<span className="material-icons">sports_soccer</span>
+<Icon name="dashboard" size="sm" />  // sm | md | lg
+<Icon name="person" size="md" />
+<Icon name="sports_soccer" size="lg" />
 ```
 
 ### Iconos principales
@@ -234,6 +237,24 @@ Componente principal que estructura la aplicación:
 
 ---
 
+## Sistema de permisos
+
+El control de acceso se gestiona en `src/config/permissions.js`, que mapea 15 claves de permiso a los roles autorizados.
+
+**Roles disponibles:** `administrador`, `direccion`, `entrenador`, `delegado`
+
+El hook `usePermissions` expone `checkPermission(key): boolean`:
+
+```jsx
+const { checkPermission } = usePermissions();
+
+if (checkPermission('players.edit')) {
+  // mostrar botón de edición
+}
+```
+
+---
+
 ## Testing
 
 Todos los componentes incluyen atributo `test-id` para testing:
@@ -254,6 +275,9 @@ Todos los componentes incluyen atributo `test-id` para testing:
 | `npm run lint` | Ejecutar linter |
 | `npm run storybook` | Iniciar Storybook |
 | `npm run build-storybook` | Build de Storybook |
+| `npm run gen:component` | Genera un componente UI (Hygen) |
+| `npm run gen:page` | Genera una nueva página (Hygen) |
+| `npm run test` | Ejecuta tests con Vitest |
 
 ---
 

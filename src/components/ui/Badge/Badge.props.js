@@ -13,5 +13,6 @@ export const BadgeProps = {
     text: PropTypes.string,
   }),
   minWidth: PropTypes.string,
+  shape: PropTypes.oneOf(['default', 'card']),
   className: PropTypes.string,
 };

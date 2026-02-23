@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PageHeader } from '../../components/ui/PageHeader';
-import { StatsCard } from '../../components/ui/StatsCard';
-import { DataTable } from '../../components/ui/DataTable';
-import { ModalPlayer } from './components/ModalPlayer';
-import { usePlayersTable } from './hooks/usePlayersTable';
-import { usePlayersKpis } from './hooks/usePlayersKpis';
-import { usePermissions } from '../../hooks/usePermissions';
-import { useAuth } from '../../hooks/useAuth';
-import { jugadoresData as initialJugadores } from './data/mockData';
-import { showConfirm, showSuccess } from '../../utils/alerts';
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { PageHeader } from '../../components/ui/PageHeader'
+import { StatsCard } from '../../components/ui/StatsCard'
+import { DataTable } from '../../components/ui/DataTable'
+import { ModalPlayer } from './components/ModalPlayer'
+import { usePlayersTable } from './hooks/usePlayersTable'
+import { usePlayersKpis } from './hooks/usePlayersKpis'
+import { usePermissions } from '../../hooks/usePermissions'
+import { useAuth } from '../../hooks/useAuth'
+import { getPlayers } from '../../services/playersService'
+import { showConfirm, showSuccess } from '../../utils/alerts'
 
 export function PlayersList() {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export function PlayersList() {
   const categoryId = user?.categoryId?._id || user?.categoryId || null;
   const kpis = usePlayersKpis(isAdmin ? null : categoryId);
 
-  const [jugadores, setJugadores] = useState(initialJugadores);
+  const [jugadores, setJugadores] = useState([]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
@@ -37,6 +37,10 @@ export function PlayersList() {
     }
   }, []);
 
+  useEffect(() => {
+    getPlayers(isAdmin ? null : categoryId).then(setJugadores).catch(console.error)
+  }, [isAdmin, categoryId])
+
   const handleNuevoJugador = () => {
     setJugadorSeleccionado(null);
     setModalOpen(true);
@@ -52,7 +56,6 @@ export function PlayersList() {
   };
 
   const handleGuardarJugador = (datos) => {
-    // TODO: reemplazar por llamada al backend
     if (jugadorSeleccionado) {
       setJugadores(
         jugadores.map((j) => (j.id === jugadorSeleccionado.id ? { ...j, ...datos } : j))
@@ -75,9 +78,9 @@ export function PlayersList() {
     }
   };
 
-  const handleMarcarRecuperado = async (jugador) => {
+  const handleMarcarRecuperado = async (player) => {
     const confirmed = await showConfirm(
-      `${jugador.nombre} ${jugador.apellidos} pasará a estado "Disponible".`,
+      `${player.firstName} ${player.lastName} pasará a estado "Disponible".`,
       '¿Marcar como recuperado?'
     );
     if (confirmed) {
