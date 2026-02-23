@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { fn } from '@storybook/test';
 import { CardsList } from './CardsList';
 
 export default {
@@ -33,8 +34,8 @@ const statusConfig = {
 };
 
 const actions = [
-  { label: 'Ver', icon: 'visibility', onClick: (row) => console.log('Ver', row) },
-  { label: 'Editar', icon: 'edit', onClick: (row) => console.log('Editar', row) },
+  { label: 'Ver', icon: 'visibility', onClick: fn() },
+  { label: 'Editar', icon: 'edit', onClick: fn() },
 ];
 
 const emptyRenderContent = () => ({});
@@ -126,7 +127,7 @@ export const ErrorState = {
     data: [],
     renderContent: emptyRenderContent,
     error: 'No se pudo cargar los datos',
-    onRetry: () => console.log('Retry'),
+    onRetry: fn(),
   },
 };
 
@@ -145,7 +146,7 @@ export const EmptyWithFilters = {
     emptyMessage: 'No se encontraron resultados',
     filters: {
       hasActive: true,
-      onClear: () => console.log('Clear filters'),
+      onClear: fn(),
     },
   },
 };

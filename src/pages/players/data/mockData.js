@@ -493,13 +493,6 @@ export const categoriaOptions = [
   { value: 'Cadete A', label: 'Cadete A' },
 ];
 
-// Colores por posición (legacy - usar posicionConfig)
-export const positionColors = {
-  Portero: { bg: '#fef3c7', text: '#92400e' },
-  Defensa: { bg: '#dbeafe', text: '#1e40af' },
-  Centrocampista: { bg: '#dcfce7', text: '#166534' },
-  Delantero: { bg: '#fee2e2', text: '#991b1b' },
-};
 
 export const historialTabs = [
   { value: 'todos', label: 'Todos' },
@@ -517,23 +510,3 @@ export const formatFecha = (fechaStr) => {
   });
 };
 
-export const calcularEdad = (fechaNacimiento) => {
-  const hoy = new Date();
-  const nacimiento = new Date(fechaNacimiento);
-  let edad = hoy.getFullYear() - nacimiento.getFullYear();
-  const mes = hoy.getMonth() - nacimiento.getMonth();
-  if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
-    edad--;
-  }
-  return edad;
-};
-
-export const getStatsPorPosicion = (jugadores) => {
-  return {
-    total: jugadores.length,
-    porteros: jugadores.filter(j => j.posicion === 'Portero').length,
-    defensas: jugadores.filter(j => j.posicion === 'Defensa').length,
-    centrocampistas: jugadores.filter(j => j.posicion === 'Centrocampista').length,
-    delanteros: jugadores.filter(j => j.posicion === 'Delantero').length,
-  };
-};

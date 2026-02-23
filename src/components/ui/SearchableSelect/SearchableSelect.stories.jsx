@@ -32,7 +32,7 @@ Default.args = {
 };
 
 export const WithSelection = () => {
-  const [value, setValue] = useState('CD Ejemplo');
+  const [value, setValue] = useState('cd-ejemplo');
   return (
     <div className="w-72">
       <SearchableSelect

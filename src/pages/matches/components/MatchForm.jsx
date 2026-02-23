@@ -173,40 +173,6 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
         )}
       </div>
 
-      {formData.status === 'finished' && (
-        <div className="grid grid-cols-2 gap-3">
-          <div className="form-control">
-            <label htmlFor="homeScore" className="label py-1">
-              <span className={LABEL_CLS}>Goles local</span>
-            </label>
-            <input
-              id="homeScore"
-              type="number"
-              name="homeScore"
-              value={formData.homeScore}
-              onChange={handleChange}
-              className={INPUT_CLS}
-              placeholder="0"
-              min="0"
-            />
-          </div>
-          <div className="form-control">
-            <label htmlFor="awayScore" className="label py-1">
-              <span className={LABEL_CLS}>Goles visitante</span>
-            </label>
-            <input
-              id="awayScore"
-              type="number"
-              name="awayScore"
-              value={formData.awayScore}
-              onChange={handleChange}
-              className={INPUT_CLS}
-              placeholder="0"
-              min="0"
-            />
-          </div>
-        </div>
-      )}
     </form>
   );
 }
@@ -219,8 +185,6 @@ MatchForm.INITIAL_DATA = {
   journey: '',
   venue: null,
   status: 'scheduled',
-  homeScore: '',
-  awayScore: '',
 };
 
 MatchForm.propTypes = MatchFormProps;

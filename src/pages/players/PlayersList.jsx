@@ -60,10 +60,15 @@ export function PlayersList() {
     } else {
       setJugadores([datos, ...jugadores]);
     }
+    setModalOpen(false);
   };
 
-  const handleDarDeBaja = (jugador) => {
-    if (confirm(`¿Estás seguro de dar de baja a ${jugador.nombre} ${jugador.apellidos}?`)) {
+  const handleDarDeBaja = async (jugador) => {
+    const confirmed = await showConfirm(
+      `${jugador.nombre} ${jugador.apellidos} pasará a estado "No disponible".`,
+      '¿Dar de baja al jugador?'
+    );
+    if (confirmed) {
       setJugadores(
         jugadores.map((j) => (j.id === jugador.id ? { ...j, estado: 'No disponible' } : j))
       );
@@ -83,9 +88,13 @@ export function PlayersList() {
     }
   };
 
-  const handleEliminarSeleccionados = (selectedRows) => {
+  const handleEliminarSeleccionados = async (selectedRows) => {
     const nombres = selectedRows.map((j) => `${j.nombre} ${j.apellidos}`).join(', ');
-    if (confirm(`¿Estás seguro de eliminar a ${selectedRows.length} jugador(es)?\n${nombres}`)) {
+    const confirmed = await showConfirm(
+      `Se eliminarán ${selectedRows.length} jugador(es): ${nombres}`,
+      '¿Eliminar jugadores?'
+    );
+    if (confirmed) {
       const ids = selectedRows.map((j) => j.id);
       setJugadores((prev) => prev.filter((j) => !ids.includes(j.id)));
     }

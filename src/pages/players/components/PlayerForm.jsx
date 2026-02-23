@@ -40,7 +40,7 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
   };
 
   return (
-    <form id={formId} onSubmit={onSubmit}>
+    <form id={formId} onSubmit={onSubmit} test-id="el-p9l5y3r2">
       <div className="grid grid-cols-[1fr_1.3fr_0.7fr] gap-3 mb-3">
         <div className="form-control">
           <label htmlFor="nombre" className="label py-1">

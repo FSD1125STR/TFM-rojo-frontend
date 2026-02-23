@@ -1,7 +1,7 @@
-import { Icon } from '../Icon/Icon';
-import { Badge } from '../Badge/Badge';
-import { IconButton } from '../IconButton/IconButton';
-import { DataTableActions } from '../DataTableActions/DataTableActions';
+import { Icon } from '../Icon';
+import { Badge } from '../Badge';
+import { IconButton } from '../IconButton';
+import { DataTableActions } from '../DataTableActions';
 import { CardListRowProps } from './CardListRow.props';
 
 const variantClasses = {

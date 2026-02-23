@@ -1,54 +1,5 @@
-import { Icon } from '../Icon/Icon';
-
-const styles = {
-  wrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: '8px',
-    backgroundColor: 'var(--color-base-100)',
-    borderTop: '1px solid var(--color-base-300)',
-    color: 'color-mix(in oklch, var(--color-base-content) 60%, transparent)',
-    fontSize: '14px',
-    minHeight: '56px',
-    paddingRight: '8px',
-    paddingLeft: '8px',
-    borderRadius: '0 0 12px 12px',
-  },
-  selectWrapper: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  select: {
-    appearance: 'none',
-    border: 'none',
-    background: 'transparent',
-    color: 'inherit',
-    fontSize: '14px',
-    paddingRight: '24px',
-    cursor: 'pointer',
-    outline: 'none',
-  },
-  pageButton: {
-    borderRadius: '50%',
-    height: '32px',
-    width: '32px',
-    padding: '4px',
-    cursor: 'pointer',
-    transition: '0.2s',
-    background: 'none',
-    border: 'none',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'var(--color-base-content)',
-  },
-  pageButtonDisabled: {
-    opacity: 0.4,
-    cursor: 'not-allowed',
-  },
-};
+import { Icon } from '../Icon';
+import { CardsListPaginationProps } from './CardsListPagination.props';
 
 function PaginationButton({ onClick, disabled, ariaLabel, icon }) {
   return (
@@ -58,12 +9,10 @@ function PaginationButton({ onClick, disabled, ariaLabel, icon }) {
       aria-disabled={disabled}
       disabled={disabled}
       onClick={onClick}
-      style={{
-        ...styles.pageButton,
-        ...(disabled ? styles.pageButtonDisabled : {}),
-      }}
-      onMouseEnter={(e) => { if (!disabled) e.currentTarget.style.backgroundColor = 'color-mix(in oklch, var(--color-primary) 15%, transparent)'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+      className={[
+        'btn btn-ghost btn-sm btn-circle',
+        disabled ? 'opacity-40 cursor-not-allowed' : '',
+      ].filter(Boolean).join(' ')}
     >
       <Icon name={icon} size="sm" />
     </button>
@@ -83,14 +32,14 @@ export function CardsListPagination({
   const end = Math.min(page * itemsPerPage, totalItems);
 
   return (
-    <nav style={styles.wrapper}>
+    <nav test-id="el-pg1n2t3n" className="flex items-center justify-end gap-2 bg-base-100 border-t border-base-300 text-sm text-base-content/60 min-h-14 px-2 rounded-b-xl">
       {itemsPerPageOptions && onItemsPerPageChange && (
         <>
           <span>Filas por página:</span>
-          <div style={styles.selectWrapper}>
+          <div className="relative flex items-center">
             <select
               aria-label="Filas por página:"
-              style={styles.select}
+              className="appearance-none bg-transparent border-none text-inherit text-sm pr-6 cursor-pointer outline-none"
               value={itemsPerPage}
               onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
             >
@@ -105,7 +54,7 @@ export function CardsListPagination({
 
       <span>{start}-{end} de {totalItems}</span>
 
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="flex items-center">
         <PaginationButton onClick={() => onPageChange(1)} disabled={page <= 1} ariaLabel="Primera página" icon="first_page" />
         <PaginationButton onClick={() => onPageChange(page - 1)} disabled={page <= 1} ariaLabel="Página anterior" icon="chevron_left" />
         <PaginationButton onClick={() => onPageChange(page + 1)} disabled={page >= totalPages} ariaLabel="Página siguiente" icon="chevron_right" />
@@ -114,3 +63,5 @@ export function CardsListPagination({
     </nav>
   );
 }
+
+CardsListPagination.propTypes = CardsListPaginationProps;

@@ -1,3 +1,4 @@
+import { fn } from '@storybook/test';
 import { CardListRow } from './CardListRow';
 
 export default {
@@ -7,9 +8,9 @@ export default {
 };
 
 const sampleActions = [
-  { label: 'Ver', icon: 'visibility', onClick: (row) => console.log('Ver', row) },
-  { label: 'Editar', icon: 'edit', onClick: (row) => console.log('Editar', row) },
-  { label: 'Eliminar', icon: 'delete', onClick: (row) => console.log('Eliminar', row), variant: 'danger' },
+  { label: 'Ver', icon: 'visibility', onClick: fn() },
+  { label: 'Editar', icon: 'edit', onClick: fn() },
+  { label: 'Eliminar', icon: 'delete', onClick: fn(), variant: 'danger' },
 ];
 
 export const Default = {
@@ -63,7 +64,7 @@ export const WithScore = {
 export const Clickable = {
   args: {
     ...Default.args,
-    onClick: () => console.log('Card clicked'),
+    onClick: fn(),
   },
 };
 

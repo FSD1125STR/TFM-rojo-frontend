@@ -28,6 +28,10 @@ export function PlacesAutocomplete({
   }, [value]);
 
   useEffect(() => {
+    return () => clearTimeout(debounceRef.current);
+  }, []);
+
+  useEffect(() => {
     const handleClickOutside = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
         setInputValue(value?.name || '');

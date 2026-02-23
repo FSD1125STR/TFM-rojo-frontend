@@ -11,7 +11,7 @@ export function useMatchesKpis(categoryId) {
 
     getMatchesKpis(categoryId)
       .then((data) => { if (!cancelled) setKpis(data); })
-      .catch(() => {});
+      .catch((err) => { console.error('useMatchesKpis:', err); });
 
     return () => { cancelled = true; };
   }, [categoryId]);

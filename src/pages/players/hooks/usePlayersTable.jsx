@@ -1,5 +1,5 @@
 import { Badge } from '../../../components/ui/Badge';
-import { Avatar } from '../../../components/ui/Avatar/Avatar';
+import { Avatar } from '../../../components/ui/Avatar';
 import {
   posicionOptions,
   estadoOptions,

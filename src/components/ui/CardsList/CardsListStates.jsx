@@ -1,10 +1,10 @@
-import { Icon } from '../Icon/Icon';
-import { Button } from '../Button/Button';
-import PropTypes from 'prop-types';
+import { Icon } from '../Icon';
+import { Button } from '../Button';
+import { EmptyStateProps, ErrorStateProps } from './CardsListStates.props';
 
 export function SkeletonCard() {
   return (
-    <div className="rounded-xl bg-base-200 border border-base-300 p-4 animate-pulse">
+    <div test-id="el-sk3l3t0n" className="rounded-xl bg-base-200 border border-base-300 p-4 animate-pulse">
       <div className="flex items-center justify-between">
         <div className="space-y-2 flex-1">
           <div className="h-4 bg-base-300 rounded w-1/3"></div>
@@ -18,7 +18,7 @@ export function SkeletonCard() {
 
 export function EmptyState({ message, icon, hasActiveFilters, onClearFilters }) {
   return (
-    <div className="py-16 text-center text-base-content/60">
+    <div test-id="el-3mp7y5t8" className="py-16 text-center text-base-content/60">
       <Icon name={icon} size="lg" className="mb-3 opacity-40" />
       <p className="mb-4">{message}</p>
       {hasActiveFilters && onClearFilters && (
@@ -32,7 +32,7 @@ export function EmptyState({ message, icon, hasActiveFilters, onClearFilters }) 
 
 export function ErrorState({ error, onRetry }) {
   return (
-    <div className="py-16 text-center text-base-content/60">
+    <div test-id="el-3rr0r5t8" className="py-16 text-center text-base-content/60">
       <Icon name="error" size="lg" className="mb-3 text-error opacity-60" />
       <p className="mb-4">{error}</p>
       {onRetry && (
@@ -45,9 +45,5 @@ export function ErrorState({ error, onRetry }) {
   );
 }
 
-EmptyState.propTypes = {
-  message: PropTypes.node.isRequired,
-  icon: PropTypes.string.isRequired,
-  hasActiveFilters: PropTypes.bool,
-  onClearFilters: PropTypes.func,
-};
+EmptyState.propTypes = EmptyStateProps;
+ErrorState.propTypes = ErrorStateProps;

@@ -1,8 +1,8 @@
-import { Icon } from '../Icon/Icon';
-import { Button } from '../Button/Button';
-import { SearchInput } from '../SearchInput/SearchInput';
-import { SelectFilter } from '../SelectFilter/SelectFilter';
-import { CardListRow } from '../CardListRow/CardListRow';
+import { Icon } from '../Icon';
+import { Button } from '../Button';
+import { SearchInput } from '../SearchInput';
+import { SelectFilter } from '../SelectFilter';
+import { CardListRow } from '../CardListRow';
 import { CardsListPagination } from './CardsListPagination';
 import { SkeletonCard, EmptyState, ErrorState } from './CardsListStates';
 import { CardsListProps } from './CardsList.props';

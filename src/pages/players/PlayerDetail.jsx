@@ -25,7 +25,7 @@ export function PlayerDetail() {
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
 
-  const jugadorInicial = jugadoresData.find((j) => j.id === parseInt(id));
+  const jugadorInicial = jugadoresData.find((j) => j.id === parseInt(id, 10));
 
   const [jugador, setJugador] = useState(jugadorInicial);
   const [modalOpen, setModalOpen] = useState(false);
@@ -48,7 +48,7 @@ export function PlayerDetail() {
 
   if (!jugadorInicial) {
     return (
-      <div test-id="el-p7l8y9r0" className="p-6 text-center">
+      <div test-id="el-n0t4f0u5" className="p-6 text-center">
         <h2>Jugador no encontrado</h2>
         <Button variant="primary" className="mt-4" onClick={() => navigate('/jugadores')}>
           Volver a la lista

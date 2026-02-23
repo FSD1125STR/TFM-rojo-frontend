@@ -35,15 +35,12 @@ export function HeaderBar({
       <div className="flex-none flex items-center gap-2">
         {actions && <HeaderActions>{actions}</HeaderActions>}
         <div className="flex items-center gap-3 bg-base-200 [html[data-theme=dark]_&]:bg-base-300 rounded-lg px-3 py-1.5">
-          <div className="indicator">
-            <span className="indicator-item badge badge-error badge-xs text-white">1</span>
-            <IconButton
-              icon="notifications"
-              ariaLabel="Notificaciones"
-              variant="ghost"
-              size="sm"
-            />
-          </div>
+          <IconButton
+            icon="notifications"
+            ariaLabel="Notificaciones"
+            variant="ghost"
+            size="sm"
+          />
           <ThemeToggle />
         </div>
       </div>

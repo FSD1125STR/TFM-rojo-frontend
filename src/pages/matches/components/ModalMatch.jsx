@@ -10,6 +10,7 @@ import { toLocalDateTimeInput } from '../data/matchesConfig';
 import { ModalMatchProps } from './ModalMatch.props';
 
 const FORM_ID = 'match-form';
+const DATETIME_LOCAL_LENGTH = 16;
 
 export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null, categoryOptions = [] }) {
   const [formData, setFormData] = useState({ ...MatchForm.INITIAL_DATA });
@@ -33,8 +34,6 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
         journey: initialData.journey ?? '',
         venue: initialData.venue || null,
         status: initialData.status || 'scheduled',
-        homeScore: initialData.homeScore ?? '',
-        awayScore: initialData.awayScore ?? '',
       });
     } else {
       setFormData({ ...MatchForm.INITIAL_DATA });
@@ -81,7 +80,7 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
   }, [formData.categoryId, formData.opponentId, formData.isHome, isEditing]);
 
   useEffect(() => {
-    const isComplete = formData.dateTime.length === 16;
+    const isComplete = formData.dateTime.length === DATETIME_LOCAL_LENGTH;
     if (!formData.categoryId || !isComplete) {
       setDateError('');
       return;
@@ -128,16 +127,13 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
       ...(formData.journey !== '' && { journey: parseInt(formData.journey) }),
       ...(formData.venue && { venue: formData.venue }),
       ...(isEditing && { status: formData.status }),
-      ...(formData.status === 'finished' && {
-        homeScore: formData.homeScore !== '' ? parseInt(formData.homeScore) : 0,
-        awayScore: formData.awayScore !== '' ? parseInt(formData.awayScore) : 0,
-      }),
     };
     onSave?.(payload);
   };
 
   return (
     <Modal
+      test-id="el-m0d4l5t6"
       isOpen={isOpen}
       onClose={onClose}
       title={isEditing ? 'Editar Partido' : 'Nuevo Partido'}

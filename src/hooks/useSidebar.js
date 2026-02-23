@@ -66,17 +66,12 @@ export function useSidebar() {
     setDrawerOpen(false);
   }, []);
 
-  const openDrawer = useCallback(() => {
-    setDrawerOpen(true);
-  }, []);
-
   return {
     mode,
     breakpoint,
     drawerOpen,
     toggleSidebar,
     closeDrawer,
-    openDrawer,
     isCollapsed: mode === 'collapsed',
     isDrawer: mode === 'drawer',
     isExpanded: mode === 'expanded',

@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { PageHeaderProps } from './PageHeader.props';
-import { Icon } from "../Icon/Icon";
+import { Icon } from "../Icon";
+import { IconButton } from "../IconButton";
+import { Button } from "../Button";
 
 export function PageHeader({
   title,
@@ -27,12 +29,13 @@ export function PageHeader({
     <div test-id="el-p1g2h3d4" className="flex items-start justify-between gap-4">
       <div className="flex items-start gap-3">
         {showBack && (
-          <button
+          <IconButton
+            icon="arrow_back"
+            size="sm"
+            ariaLabel="Volver atrás"
             onClick={handleBack}
-            className="btn btn-ghost btn-sm btn-circle mt-1"
-          >
-            <Icon name="arrow_back" size="sm" />
-          </button>
+            className="mt-1"
+          />
         )}
         <div>
           <h1 className="text-2xl font-bold">{title}</h1>
@@ -42,10 +45,10 @@ export function PageHeader({
         </div>
       </div>
       {hasAction && (
-        <button className="btn btn-neutral btn-sm gap-2" onClick={onAction}>
+        <Button variant="secondary" size="sm" className="gap-2" onClick={onAction}>
           {actionIcon && <Icon name={actionIcon} size="sm" />}
           {actionLabel}
-        </button>
+        </Button>
       )}
     </div>
   );

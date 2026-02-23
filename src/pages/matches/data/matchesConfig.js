@@ -1,3 +1,6 @@
+import { formatDistance } from 'date-fns';
+import { es } from 'date-fns/locale';
+
 export const statusLabels = {
   scheduled: 'Programado',
   finished: 'Finalizado',
@@ -20,9 +23,6 @@ export const tipoOptions = [
   { label: 'Local', value: 'local' },
   { label: 'Visitante', value: 'visitante' },
 ];
-
-import { formatDistance } from 'date-fns';
-import { es } from 'date-fns/locale';
 
 export function toLocalDateTimeInput(iso) {
   if (!iso) return '';

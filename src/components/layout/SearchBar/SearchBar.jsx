@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Icon } from '../../ui/Icon/Icon';
+import { Icon } from '../../ui/Icon';
 import { searchGlobal } from '../../../services/searchService';
 
 const CATEGORY_CONFIG = {
@@ -33,6 +33,7 @@ export function SearchBar() {
         setIsOpen(true);
       } catch {
         setResults(null);
+        setIsOpen(false);
       } finally {
         setIsLoading(false);
       }

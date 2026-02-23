@@ -9,8 +9,8 @@ export function Breadcrumbs({ items = [], variant = 'default' }) {
   return (
     <div test-id="el-o1p2q3r4" className={`breadcrumbs ${textSize}`}>
       <ul>
-        {items.map((item, index) => (
-          <li key={index}>
+        {items.map((item) => (
+          <li key={item.to || item.label}>
             {item.to ? (
               <Link to={item.to}>{item.label}</Link>
             ) : (

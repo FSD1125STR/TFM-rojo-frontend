@@ -6,9 +6,9 @@ import { useMatchesList } from './hooks/useMatchesList';
 import { useMatchesKpis } from './hooks/useMatchesKpis';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { StatsCard } from '../../components/ui/StatsCard';
-import { CardsList } from '../../components/ui/CardsList/CardsList';
+import { CardsList } from '../../components/ui/CardsList';
 import { ModalMatch } from './components/ModalMatch';
-import { showToast, showErrorInModal, showConfirm, showInputPrompt } from '../../utils/alerts';
+import { showToast, showError, showErrorInModal, showConfirm, showInputPrompt } from '../../utils/alerts';
 import {
   estadoMatchConfig,
   statusLabels,
@@ -35,11 +35,12 @@ export function MatchesList() {
   const handleClose = () => { setModalOpen(false); setEditTarget(null); };
 
   const handleSave = async (payload) => {
+    const wasEditing = editTarget !== null;
     try {
-      if (editTarget) await editMatch(editTarget._id, payload);
+      if (wasEditing) await editMatch(editTarget._id, payload);
       else await addMatch(payload);
       handleClose();
-      showToast(editTarget ? 'Partido actualizado' : 'Partido creado');
+      showToast(wasEditing ? 'Partido actualizado' : 'Partido creado');
     } catch {
       showErrorInModal('No se pudo guardar el partido');
     }

@@ -11,7 +11,7 @@ export function usePlayersKpis(categoryId) {
 
     getPlayersKpis(categoryId)
       .then((data) => { if (!cancelled) setKpis(data); })
-      .catch(() => {});
+      .catch((err) => { console.error('usePlayersKpis:', err); });
 
     return () => { cancelled = true; };
   }, [categoryId]);

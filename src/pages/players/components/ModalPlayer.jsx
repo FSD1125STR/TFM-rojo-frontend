@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Modal } from '../../../components/ui/Modal';
 import { Button } from '../../../components/ui/Button';
 import { Icon } from '../../../components/ui/Icon';
 import { PlayerForm } from './PlayerForm';
+import { ModalPlayerProps } from './ModalPlayer.props';
 
 const FORM_ID = 'player-form';
 
@@ -73,9 +73,4 @@ export function ModalPlayer({ isOpen = false, onClose, onSave, initialData = nul
   );
 }
 
-ModalPlayer.propTypes = {
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func,
-  onSave: PropTypes.func,
-  initialData: PropTypes.object,
-};
+ModalPlayer.propTypes = ModalPlayerProps;

@@ -35,7 +35,7 @@ export function useMatchesList() {
 
   const activeCategoryId = isAdmin
     ? filterValues.categoryId || null
-    : user?.categoryId;
+    : user?.categoryId?._id || user?.categoryId || null;
 
   const fetchMatches = useCallback(async () => {
     setIsLoading(true);

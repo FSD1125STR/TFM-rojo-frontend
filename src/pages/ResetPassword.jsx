@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useSearchParams, Link, Navigate } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { Button } from '../components/ui/Button/Button';
-import { Card } from '../components/ui/Card/Card';
-import { Icon } from '../components/ui/Icon/Icon';
+import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
+import { Icon } from '../components/ui/Icon';
 import { showError } from '../utils/alerts';
 import logoHorizontal from '../assets/logo-horizontal.png';
 

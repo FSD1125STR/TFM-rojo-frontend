@@ -1,11 +1,13 @@
 import Swal from 'sweetalert2';
 
+const PRIMARY_BUTTON_COLOR = '#5C6F68';
+
 export const showError = (message) => {
   return Swal.fire({
     icon: 'error',
     title: 'Error',
     text: message,
-    confirmButtonColor: '#5C6F68',
+    confirmButtonColor: PRIMARY_BUTTON_COLOR,
   });
 };
 
@@ -14,7 +16,7 @@ export const showErrorInModal = (message, title = 'Error') => {
     icon: 'error',
     title,
     text: message,
-    confirmButtonColor: '#5C6F68',
+    confirmButtonColor: PRIMARY_BUTTON_COLOR,
     target: document.querySelector('dialog[open]'),
   });
 };
@@ -24,7 +26,7 @@ export const showWarning = (message) => {
     icon: 'warning',
     title: '¡Advertencia!',
     text: message,
-    confirmButtonColor: '#5C6F68',
+    confirmButtonColor: PRIMARY_BUTTON_COLOR,
   });
 };
 
@@ -33,7 +35,7 @@ export const showSuccess = (message) => {
     icon: 'success',
     title: '¡Éxito!',
     text: message,
-    confirmButtonColor: '#5C6F68',
+    confirmButtonColor: PRIMARY_BUTTON_COLOR,
   });
 };
 
@@ -58,7 +60,7 @@ export const showInputPrompt = ({ title, text, input = 'text', inputValue = '', 
     showCancelButton: true,
     confirmButtonText,
     cancelButtonText,
-    confirmButtonColor: '#5C6F68',
+    confirmButtonColor: PRIMARY_BUTTON_COLOR,
     cancelButtonColor: '#d33',
   }).then((result) => ({ isConfirmed: result.isConfirmed, value: result.value }));
 };
@@ -69,7 +71,7 @@ export const showConfirm = (message, title = '¿Estás seguro?') => {
     title,
     text: message,
     showCancelButton: true,
-    confirmButtonColor: '#5C6F68',
+    confirmButtonColor: PRIMARY_BUTTON_COLOR,
     cancelButtonColor: '#d33',
     confirmButtonText: 'Confirmar',
     cancelButtonText: 'Cancelar',

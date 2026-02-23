@@ -1,3 +1,4 @@
+import { Icon } from '../Icon';
 import { InfoItemProps } from './InfoItem.props';
 
 export function InfoItem({
@@ -8,9 +9,7 @@ export function InfoItem({
 }) {
   return (
     <div test-id="el-f1i2t3m4" className="flex items-start gap-3">
-      <span className="material-symbols-outlined text-base-content/50 text-xl mt-0.5">
-        {icon}
-      </span>
+      <Icon name={icon} size="sm" className="text-base-content/50 mt-0.5" />
       <div className="flex flex-col">
         <span className="text-sm text-base-content/60">{label}</span>
         {badge ? (
