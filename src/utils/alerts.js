@@ -9,6 +9,16 @@ export const showError = (message) => {
   });
 };
 
+export const showErrorInModal = (message, title = 'Error') => {
+  return Swal.fire({
+    icon: 'error',
+    title,
+    text: message,
+    confirmButtonColor: '#5C6F68',
+    target: document.querySelector('dialog[open]'),
+  });
+};
+
 export const showWarning = (message) => {
   return Swal.fire({
     icon: 'warning',
@@ -37,6 +47,20 @@ export const showToast = (message, icon = 'success') => {
     timer: 3000,
     timerProgressBar: true,
   });
+};
+
+export const showInputPrompt = ({ title, text, input = 'text', inputValue = '', confirmButtonText = 'Confirmar', cancelButtonText = 'Cancelar' }) => {
+  return Swal.fire({
+    title,
+    text,
+    input,
+    inputValue,
+    showCancelButton: true,
+    confirmButtonText,
+    cancelButtonText,
+    confirmButtonColor: '#5C6F68',
+    cancelButtonColor: '#d33',
+  }).then((result) => ({ isConfirmed: result.isConfirmed, value: result.value }));
 };
 
 export const showConfirm = (message, title = '¿Estás seguro?') => {
