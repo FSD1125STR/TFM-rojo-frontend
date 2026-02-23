@@ -24,6 +24,13 @@ export const tipoOptions = [
 import { formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+export function toLocalDateTimeInput(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 export function formatFechaRelativa(dateStr) {
   if (!dateStr) return '';
   return formatDistance(new Date(dateStr), new Date(), { addSuffix: true, locale: es });

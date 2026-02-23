@@ -6,6 +6,7 @@ import { MatchForm } from './MatchForm';
 import { getTeams } from '../../../services/teamsService';
 import { getNextJourney, validateJourney, checkDuplicate, checkDate } from '../../../services/matchesService';
 import { showErrorInModal } from '../../../utils/alerts';
+import { toLocalDateTimeInput } from '../data/matchesConfig';
 import { ModalMatchProps } from './ModalMatch.props';
 
 const FORM_ID = 'match-form';
@@ -28,7 +29,7 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
       setFormData({
         ...MatchForm.INITIAL_DATA,
         categoryId: initialData.categoryId?._id || initialData.categoryId || '',
-        dateTime: initialData.dateTime ? initialData.dateTime.slice(0, 16) : '',
+        dateTime: toLocalDateTimeInput(initialData.dateTime),
         journey: initialData.journey ?? '',
         venue: initialData.venue?.name || initialData.venue || '',
         status: initialData.status || 'scheduled',
@@ -48,17 +49,18 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
   }, [formData.categoryId, isEditing]);
 
   useEffect(() => {
-    if (isEditing || !formData.categoryId || !formData.journey) {
+    if (!formData.categoryId || !formData.journey) {
       setJourneyError('');
       return;
     }
+    const excludeId = isEditing ? initialData?._id : null;
     const timer = setTimeout(() => {
-      validateJourney(formData.categoryId, formData.journey)
+      validateJourney(formData.categoryId, formData.journey, excludeId)
         .then(({ valid }) => setJourneyError(valid ? '' : 'Esta jornada ya tiene un partido asignado'))
         .catch(() => setJourneyError(''));
     }, 500);
     return () => clearTimeout(timer);
-  }, [formData.journey, formData.categoryId, isEditing]);
+  }, [formData.journey, formData.categoryId, isEditing, initialData]);
 
   useEffect(() => {
     if (isEditing || !formData.categoryId || !formData.opponentId) {
@@ -80,17 +82,18 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
 
   useEffect(() => {
     const isComplete = formData.dateTime.length === 16;
-    if (isEditing || !formData.categoryId || !isComplete) {
+    if (!formData.categoryId || !isComplete) {
       setDateError('');
       return;
     }
+    const excludeId = isEditing ? initialData?._id : null;
     const timer = setTimeout(() => {
-      checkDate(formData.categoryId, formData.dateTime)
+      checkDate(formData.categoryId, formData.dateTime, excludeId)
         .then(({ available }) => setDateError(available ? '' : 'Ya hay un partido programado para esa fecha en esta categoría'))
         .catch(() => setDateError(''));
     }, 400);
     return () => clearTimeout(timer);
-  }, [formData.dateTime, formData.categoryId, isEditing]);
+  }, [formData.dateTime, formData.categoryId, isEditing, initialData]);
 
   useEffect(() => {
     const cid = formData.categoryId;
@@ -121,7 +124,7 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
         opponentId: formData.opponentId,
         isHome: formData.isHome,
       }),
-      dateTime: formData.dateTime,
+      dateTime: new Date(formData.dateTime).toISOString(),
       ...(formData.journey !== '' && { journey: parseInt(formData.journey) }),
       ...(formData.venue && { venue: formData.venue }),
       ...(isEditing && { status: formData.status }),

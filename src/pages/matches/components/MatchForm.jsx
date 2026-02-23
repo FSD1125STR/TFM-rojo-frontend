@@ -4,7 +4,6 @@ import { MatchFormProps } from './MatchForm.props';
 
 const statusOptions = [
   { value: 'scheduled', label: 'Programado' },
-  { value: 'finished', label: 'Finalizado' },
   { value: 'cancelled', label: 'Cancelado' },
 ];
 

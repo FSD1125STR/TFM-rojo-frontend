@@ -14,6 +14,7 @@ import {
   statusLabels,
   formatFechaRelativa,
   formatFechaAbsoluta,
+  toLocalDateTimeInput,
 } from './data/matchesConfig';
 
 export function MatchesList() {
@@ -63,12 +64,12 @@ export function MatchesList() {
       title: 'Posponer partido',
       text: 'Selecciona la nueva fecha y hora',
       input: 'datetime-local',
-      inputValue: row.dateTime ? row.dateTime.slice(0, 16) : '',
+      inputValue: toLocalDateTimeInput(row.dateTime),
       confirmButtonText: 'Posponer',
     });
-    if (!isConfirmed || !value) return;
+    if (!isConfirmed) return;
     try {
-      await editMatch(row._id, { dateTime: value });
+      await editMatch(row._id, { dateTime: new Date(value).toISOString() });
       showToast('Partido pospuesto');
     } catch {
       showError('No se pudo posponer el partido');
@@ -84,7 +85,7 @@ export function MatchesList() {
       },
     ];
 
-    if (checkPermission('matches.edit')) {
+    if (checkPermission('matches.edit') && match.status !== 'finished') {
       items.push({
         label: 'Editar',
         icon: 'edit',
@@ -102,6 +103,7 @@ export function MatchesList() {
       items.push({
         label: 'Eliminar',
         icon: 'delete',
+        variant: 'danger',
         onClick: (row) => handleDelete(row),
       });
     }

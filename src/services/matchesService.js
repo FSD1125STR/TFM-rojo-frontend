@@ -19,8 +19,8 @@ export async function getNextJourney(categoryId) {
   return data;
 }
 
-export async function validateJourney(categoryId, journey) {
-  const { data } = await api.post('/matches/validate-journey', { categoryId, journey });
+export async function validateJourney(categoryId, journey, excludeId = null) {
+  const { data } = await api.post('/matches/validate-journey', { categoryId, journey, ...(excludeId && { excludeId }) });
   return data;
 }
 
@@ -29,8 +29,8 @@ export async function checkDuplicate(categoryId, opponentId, isHome) {
   return data;
 }
 
-export async function checkDate(categoryId, dateTime) {
-  const { data } = await api.post('/matches/check-date', { categoryId, dateTime });
+export async function checkDate(categoryId, dateTime, excludeId = null) {
+  const { data } = await api.post('/matches/check-date', { categoryId, dateTime, ...(excludeId && { excludeId }) });
   return data;
 }
 

@@ -52,7 +52,8 @@ export function CardListRow({
               key={i}
               icon={action.icon}
               size="sm"
-              variant={action.variant === 'danger' ? 'danger' : 'ghost'}
+              variant="ghost"
+              className={action.variant === 'danger' ? 'text-error' : ''}
               ariaLabel={action.label}
               title={action.label}
               onClick={(e) => { e.stopPropagation(); action.onClick(row); }}
