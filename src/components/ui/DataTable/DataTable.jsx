@@ -1,5 +1,16 @@
 import { useState, useMemo } from 'react';
 import ReactDataTable from 'react-data-table-component';
+import { StyleSheetManager } from 'styled-components';
+
+const RDT_CUSTOM_PROPS = new Set([
+  'right', 'center', 'compact', 'striped', 'highlightOnHover',
+  'pointerOnHover', 'persistTableHead', 'noTableHead', 'fixedHeader',
+  'allowOverflow', 'button',
+]);
+
+function shouldForwardProp(prop) {
+  return !RDT_CUSTOM_PROPS.has(prop);
+}
 import { NoDataComponentProps, BulkActionsBarProps, DataTableProps } from './DataTable.props';
 import { Icon } from '../Icon/Icon';
 import { Button } from '../Button/Button';
@@ -232,25 +243,27 @@ export function DataTable({
         />
       )}
 
-      <ReactDataTable
-        columns={transformColumns(columns, actions, actionsTitle)}
-        data={filteredData}
-        keyField={keyField}
-        customStyles={tableStyles}
-        selectableRows={selectable}
-        onSelectedRowsChange={handleSelectionChange}
-        clearSelectedRows={toggleCleared}
-        pagination={pagination}
-        paginationPerPage={paginationPerPage}
-        paginationRowsPerPageOptions={paginationRowsPerPageOptions}
-        paginationComponentOptions={defaultPaginationOptions}
-        progressPending={isLoading}
-        progressComponent={<LoadingComponent />}
-        noDataComponent={<NoDataComponent message={emptyMessage} />}
-        pointerOnHover={!!onRowClick}
-        onRowClicked={onRowClick}
-        responsive
-      />
+      <StyleSheetManager shouldForwardProp={shouldForwardProp}>
+        <ReactDataTable
+          columns={transformColumns(columns, actions, actionsTitle)}
+          data={filteredData}
+          keyField={keyField}
+          customStyles={tableStyles}
+          selectableRows={selectable}
+          onSelectedRowsChange={handleSelectionChange}
+          clearSelectedRows={toggleCleared}
+          pagination={pagination}
+          paginationPerPage={paginationPerPage}
+          paginationRowsPerPageOptions={paginationRowsPerPageOptions}
+          paginationComponentOptions={defaultPaginationOptions}
+          progressPending={isLoading}
+          progressComponent={<LoadingComponent />}
+          noDataComponent={<NoDataComponent message={emptyMessage} />}
+          pointerOnHover={!!onRowClick}
+          onRowClicked={onRowClick}
+          responsive
+        />
+      </StyleSheetManager>
     </div>
   );
 }
