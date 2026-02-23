@@ -61,9 +61,9 @@ export function Modal({
       onClick={handleBackdropClick}
       aria-labelledby={title ? titleId : undefined}
     >
-      <div className={`modal-box ${sizeClasses[size] || sizeClasses.md} w-[95%] p-0 rounded-2xl overflow-hidden`}>
+      <div className={`modal-box ${sizeClasses[size] || sizeClasses.md} w-[95%] p-0 rounded-2xl overflow-visible`}>
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-base-300 bg-base-200/50">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-base-300 bg-base-200/50 rounded-t-2xl overflow-hidden">
             <div className="flex items-center gap-3">
               {icon && (
                 <div className="w-11 h-11 rounded-xl bg-primary flex items-center justify-center shadow-md">
@@ -84,7 +84,7 @@ export function Modal({
         </div>
 
         {actions && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-base-300 bg-base-200/30">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-base-300 bg-base-200/30 rounded-b-2xl overflow-hidden">
             {actions}
           </div>
         )}
