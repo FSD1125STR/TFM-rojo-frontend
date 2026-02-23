@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
-import { getMatches } from '../../../services/matchesService';
+import { getMatches, createMatch, updateMatch, deleteMatch } from '../../../services/matchesService';
 import { getCategories } from '../../../services/categoriesService';
 import { estadoOptions, tipoOptions } from '../data/matchesConfig';
 import { normalizeText } from '../../../utils/normalize';
@@ -52,6 +52,21 @@ export function useMatchesList() {
 
   useEffect(() => {
     fetchMatches();
+  }, [fetchMatches]);
+
+  const addMatch = useCallback(async (payload) => {
+    await createMatch(payload);
+    await fetchMatches();
+  }, [fetchMatches]);
+
+  const editMatch = useCallback(async (id, payload) => {
+    await updateMatch(id, payload);
+    await fetchMatches();
+  }, [fetchMatches]);
+
+  const removeMatch = useCallback(async (id) => {
+    await deleteMatch(id);
+    await fetchMatches();
   }, [fetchMatches]);
 
   const filteredData = useMemo(() => {
@@ -163,9 +178,13 @@ export function useMatchesList() {
 
   return {
     data: paginatedData,
+    categoryOptions,
     isLoading,
     error,
     onRetry: fetchMatches,
+    addMatch,
+    editMatch,
+    removeMatch,
     search: {
       enabled: true,
       value: searchValue,

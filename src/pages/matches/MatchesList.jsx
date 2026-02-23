@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
@@ -6,6 +7,8 @@ import { useMatchesKpis } from './hooks/useMatchesKpis';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { StatsCard } from '../../components/ui/StatsCard';
 import { CardsList } from '../../components/ui/CardsList/CardsList';
+import { ModalMatch } from './components/ModalMatch';
+import { showToast, showErrorInModal, showConfirm, showInputPrompt } from '../../utils/alerts';
 import {
   estadoMatchConfig,
   statusLabels,
@@ -21,7 +24,56 @@ export function MatchesList() {
   const kpis = useMatchesKpis(isAdmin ? null : categoryId);
 
   const canCreate = checkPermission('matches.create');
-  const { data, search, filters, sort, pagination, isLoading, error, onRetry } = useMatchesList();
+  const { data, categoryOptions, search, filters, sort, pagination, isLoading, error, onRetry, addMatch, editMatch, removeMatch } = useMatchesList();
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState(null);
+
+  const handleCreate = () => { setEditTarget(null); setModalOpen(true); };
+  const handleEdit = (row) => { setEditTarget(row); setModalOpen(true); };
+  const handleClose = () => { setModalOpen(false); setEditTarget(null); };
+
+  const handleSave = async (payload) => {
+    try {
+      if (editTarget) await editMatch(editTarget._id, payload);
+      else await addMatch(payload);
+      handleClose();
+      showToast(editTarget ? 'Partido actualizado' : 'Partido creado');
+    } catch {
+      showErrorInModal('No se pudo guardar el partido');
+    }
+  };
+
+  const handleDelete = async (row) => {
+    const ok = await showConfirm(
+      `¿Eliminar el partido "${row.homeTeamId?.name} vs ${row.awayTeamId?.name}"?`,
+      '¿Eliminar partido?'
+    );
+    if (!ok) return;
+    try {
+      await removeMatch(row._id);
+      showToast('Partido eliminado');
+    } catch {
+      showError('No se pudo eliminar el partido');
+    }
+  };
+
+  const handlePosponer = async (row) => {
+    const { isConfirmed, value } = await showInputPrompt({
+      title: 'Posponer partido',
+      text: 'Selecciona la nueva fecha y hora',
+      input: 'datetime-local',
+      inputValue: row.dateTime ? row.dateTime.slice(0, 16) : '',
+      confirmButtonText: 'Posponer',
+    });
+    if (!isConfirmed || !value) return;
+    try {
+      await editMatch(row._id, { dateTime: value });
+      showToast('Partido pospuesto');
+    } catch {
+      showError('No se pudo posponer el partido');
+    }
+  };
 
   const getActions = (match) => {
     const items = [
@@ -36,15 +88,21 @@ export function MatchesList() {
       items.push({
         label: 'Editar',
         icon: 'edit',
-        onClick: (row) => console.log('Editar', row._id),
+        onClick: (row) => handleEdit(row),
       });
-    }
 
-    if (match.status === 'finished') {
+      if (match.status === 'scheduled') {
+        items.push({
+          label: 'Posponer',
+          icon: 'schedule',
+          onClick: (row) => handlePosponer(row),
+        });
+      }
+
       items.push({
-        label: 'Informe',
-        icon: 'assessment',
-        onClick: (row) => console.log('Informe', row._id),
+        label: 'Eliminar',
+        icon: 'delete',
+        onClick: (row) => handleDelete(row),
       });
     }
 
@@ -71,6 +129,7 @@ export function MatchesList() {
       { icon: 'calendar_today', text: <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(match.dateTime)}>{formatFechaRelativa(match.dateTime)}</span> },
       ...(match.venue?.name ? [{ icon: 'location_on', text: match.venue.name }] : []),
       { icon: 'flag', text: `Jornada ${match.journey}` },
+      ...(isAdmin && match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
     ];
 
     const content = match.status === 'finished' ? (
@@ -106,7 +165,7 @@ export function MatchesList() {
         {...(canCreate && {
           actionLabel: "Crear partido",
           actionIcon: "add",
-          onAction: () => console.log('Crear partido'),
+          onAction: handleCreate,
         })}
       />
 
@@ -140,24 +199,32 @@ export function MatchesList() {
       </div>}
 
       <div className="mt-4">
-      <CardsList
-        data={data}
-        keyField="_id"
-        renderContent={renderContent}
-        actions={getActions}
-        actionsMode="buttons"
-        search={search}
-        filters={filters}
-        sort={sort}
-        pagination={pagination}
-        isLoading={isLoading}
-        error={error}
-        onRetry={onRetry}
-        emptyMessage="No se encontraron partidos"
-        emptyIcon="sports_soccer"
-        gap="sm"
-      />
+        <CardsList
+          data={data}
+          keyField="_id"
+          renderContent={renderContent}
+          actions={getActions}
+          actionsMode="buttons"
+          search={search}
+          filters={filters}
+          sort={sort}
+          pagination={pagination}
+          isLoading={isLoading}
+          error={error}
+          onRetry={onRetry}
+          emptyMessage="No se encontraron partidos"
+          emptyIcon="sports_soccer"
+          gap="sm"
+        />
       </div>
+
+      <ModalMatch
+        isOpen={modalOpen}
+        onClose={handleClose}
+        onSave={handleSave}
+        initialData={editTarget}
+        categoryOptions={categoryOptions}
+      />
     </div>
   );
 }
