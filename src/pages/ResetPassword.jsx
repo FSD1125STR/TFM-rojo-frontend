@@ -89,10 +89,11 @@ export function ResetPassword() {
               <>
                 <form onSubmit={handleSubmit}>
                   <div className="form-control mb-4">
-                    <label className="label">
+                    <label htmlFor="new-password" className="label">
                       <span className="label-text">Nueva contraseña</span>
                     </label>
                     <input
+                      id="new-password"
                       type="password"
                       placeholder="••••••••"
                       className="input input-bordered w-full"
@@ -104,10 +105,11 @@ export function ResetPassword() {
                   </div>
 
                   <div className="form-control mb-6">
-                    <label className="label">
+                    <label htmlFor="confirm-password" className="label">
                       <span className="label-text">Confirmar contraseña</span>
                     </label>
                     <input
+                      id="confirm-password"
                       type="password"
                       placeholder="••••••••"
                       className="input input-bordered w-full"

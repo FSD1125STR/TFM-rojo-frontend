@@ -97,20 +97,20 @@ Grande.args = {
   children: (
     <div className="grid grid-cols-2 gap-4">
       <div className="form-control">
-        <label className="label"><span>Nombre</span></label>
-        <input type="text" className="input input-bordered input-sm" placeholder="Nombre" />
+        <label htmlFor="story-nombre" className="label"><span>Nombre</span></label>
+        <input id="story-nombre" type="text" className="input input-bordered input-sm" placeholder="Nombre" />
       </div>
       <div className="form-control">
-        <label className="label"><span>Apellidos</span></label>
-        <input type="text" className="input input-bordered input-sm" placeholder="Apellidos" />
+        <label htmlFor="story-apellidos" className="label"><span>Apellidos</span></label>
+        <input id="story-apellidos" type="text" className="input input-bordered input-sm" placeholder="Apellidos" />
       </div>
       <div className="form-control">
-        <label className="label"><span>Email</span></label>
-        <input type="email" className="input input-bordered input-sm" placeholder="correo@ejemplo.com" />
+        <label htmlFor="story-email" className="label"><span>Email</span></label>
+        <input id="story-email" type="email" className="input input-bordered input-sm" placeholder="correo@ejemplo.com" />
       </div>
       <div className="form-control">
-        <label className="label"><span>Telefono</span></label>
-        <input type="tel" className="input input-bordered input-sm" placeholder="+34 600 000 000" />
+        <label htmlFor="story-telefono" className="label"><span>Telefono</span></label>
+        <input id="story-telefono" type="tel" className="input input-bordered input-sm" placeholder="+34 600 000 000" />
       </div>
     </div>
   ),

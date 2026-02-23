@@ -75,10 +75,11 @@ export function ForgotPassword() {
               <>
                 <form onSubmit={handleSubmit}>
                   <div className="form-control mb-6">
-                    <label className="label">
+                    <label htmlFor="forgot-email" className="label">
                       <span className="label-text">Email</span>
                     </label>
                     <input
+                      id="forgot-email"
                       type="email"
                       placeholder="tu@email.com"
                       className="input input-bordered w-full"

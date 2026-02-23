@@ -78,10 +78,11 @@ export function Login() {
         <Card title="Iniciar sesión" className="justify-center mb-4">
             <form onSubmit={handleSubmit}>
               <div className="form-control mb-4">
-                <label className="label">
+                <label htmlFor="login-email" className="label">
                   <span className="label-text">Email</span>
                 </label>
                 <input
+                  id="login-email"
                   type="email"
                   placeholder="tu@email.com"
                   className="input input-bordered w-full"
@@ -93,11 +94,12 @@ export function Login() {
               </div>
 
               <div className="form-control mb-6">
-                <label className="label">
+                <label htmlFor="login-password" className="label">
                   <span className="label-text">Contraseña</span>
                 </label>
                 <div className="relative">
                   <input
+                    id="login-password"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     className="input input-bordered w-full pr-10"

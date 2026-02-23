@@ -43,12 +43,13 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
     <form id={formId} onSubmit={onSubmit}>
       <div className="grid grid-cols-[1fr_1.3fr_0.7fr] gap-3 mb-3">
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="nombre" className="label py-1">
             <span className={LABEL_CLS}>Nombre <span className="text-error">*</span></span>
           </label>
           <div className="relative">
             <Icon name="person" className={ICON_CLS} />
             <input
+              id="nombre"
               type="text"
               name="nombre"
               value={formData.nombre}
@@ -60,10 +61,11 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
           </div>
         </div>
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="apellidos" className="label py-1">
             <span className={LABEL_CLS}>Apellidos <span className="text-error">*</span></span>
           </label>
           <input
+            id="apellidos"
             type="text"
             name="apellidos"
             value={formData.apellidos}
@@ -74,12 +76,13 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
           />
         </div>
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="dorsal" className="label py-1">
             <span className={LABEL_CLS}>Dorsal</span>
           </label>
           <div className="relative">
             <Icon name="tag" className={ICON_CLS} />
             <input
+              id="dorsal"
               type="number"
               name="dorsal"
               value={formData.dorsal}
@@ -95,12 +98,13 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="fechaNacimiento" className="label py-1">
             <span className={LABEL_CLS}>Fecha de nacimiento <span className="text-error">*</span></span>
           </label>
           <div className="relative">
             <Icon name="calendar_month" className={ICON_CLS} />
             <input
+              id="fechaNacimiento"
               type="date"
               name="fechaNacimiento"
               value={formData.fechaNacimiento}
@@ -111,9 +115,9 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
           </div>
         </div>
         <div className="form-control">
-          <label className="label py-1">
+          <div className="label py-1">
             <span className={LABEL_CLS}>Edad</span>
-          </label>
+          </div>
           <div className="input input-bordered input-sm w-full flex items-center justify-center gap-1.5 bg-success/15 font-semibold border-success/30">
             <Icon name="cake" className="text-primary text-lg" />
             <span>{edad !== null ? edad == 1 ? `${edad} año` : `${edad} años` : '-- años'}</span>
@@ -123,12 +127,13 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="email" className="label py-1">
             <span className={LABEL_CLS}>Email <span className="text-error">*</span></span>
           </label>
           <div className="relative">
             <Icon name="mail" className={ICON_CLS} />
             <input
+              id="email"
               type="email"
               name="email"
               value={formData.email}
@@ -140,12 +145,13 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
           </div>
         </div>
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="telefono" className="label py-1">
             <span className={LABEL_CLS}>Teléfono <span className="text-error">*</span></span>
           </label>
           <div className="relative">
             <Icon name="phone" className={ICON_CLS} />
             <input
+              id="telefono"
               type="tel"
               name="telefono"
               value={formData.telefono}
@@ -160,12 +166,13 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
 
       <div className="mb-3">
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="direccion" className="label py-1">
             <span className={LABEL_CLS}>Dirección <span className="text-error">*</span></span>
           </label>
           <div className="relative">
             <Icon name="location_on" className={ICON_CLS} />
             <input
+              id="direccion"
               type="text"
               name="direccion"
               value={formData.direccion}
@@ -180,10 +187,11 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="ciudad" className="label py-1">
             <span className={LABEL_CLS}>Ciudad <span className="text-error">*</span></span>
           </label>
           <input
+            id="ciudad"
             type="text"
             name="ciudad"
             value={formData.ciudad}
@@ -194,10 +202,11 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
           />
         </div>
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="provincia" className="label py-1">
             <span className={LABEL_CLS}>Provincia <span className="text-error">*</span></span>
           </label>
           <input
+            id="provincia"
             type="text"
             name="provincia"
             value={formData.provincia}
@@ -211,10 +220,11 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="posicion" className="label py-1">
             <span className={LABEL_CLS}>Posición <span className="text-error">*</span></span>
           </label>
           <select
+            id="posicion"
             name="posicion"
             value={formData.posicion}
             onChange={handleChange}
@@ -228,10 +238,11 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
           </select>
         </div>
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="estado" className="label py-1">
             <span className={LABEL_CLS}>Estado <span className="text-error">*</span></span>
           </label>
           <select
+            id="estado"
             name="estado"
             value={formData.estado}
             onChange={handleChange}

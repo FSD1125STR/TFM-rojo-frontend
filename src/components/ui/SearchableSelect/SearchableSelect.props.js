@@ -10,6 +10,7 @@ export const SearchableSelectProps = {
     })
   ),
   placeholder: PropTypes.string,
+  id: PropTypes.string,
   name: PropTypes.string,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
