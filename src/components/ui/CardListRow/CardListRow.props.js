@@ -10,7 +10,7 @@ const BadgeShape = PropTypes.shape({
 
 const MetaShape = PropTypes.shape({
   icon: PropTypes.string,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.node.isRequired,
 });
 
 export const CardListRowProps = {
