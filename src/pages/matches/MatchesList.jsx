@@ -85,6 +85,14 @@ export function MatchesList() {
       },
     ];
 
+    if (match.venue?.lat && match.venue?.lng) {
+      items.push({
+        label: 'Ver en mapa',
+        icon: 'map',
+        onClick: (row) => window.open(`https://www.google.com/maps?q=${row.venue.lat},${row.venue.lng}`, '_blank', 'noopener,noreferrer'),
+      });
+    }
+
     if (checkPermission('matches.edit') && match.status !== 'finished') {
       items.push({
         label: 'Editar',

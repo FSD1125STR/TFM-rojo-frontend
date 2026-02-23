@@ -31,7 +31,7 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
         categoryId: initialData.categoryId?._id || initialData.categoryId || '',
         dateTime: toLocalDateTimeInput(initialData.dateTime),
         journey: initialData.journey ?? '',
-        venue: initialData.venue?.name || initialData.venue || '',
+        venue: initialData.venue || null,
         status: initialData.status || 'scheduled',
         homeScore: initialData.homeScore ?? '',
         awayScore: initialData.awayScore ?? '',

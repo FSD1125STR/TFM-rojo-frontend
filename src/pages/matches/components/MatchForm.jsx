@@ -1,5 +1,6 @@
 import { Icon } from '../../../components/ui/Icon';
 import { SearchableSelect } from '../../../components/ui/SearchableSelect';
+import { PlacesAutocomplete } from '../../../components/ui/PlacesAutocomplete';
 import { MatchFormProps } from './MatchForm.props';
 
 const statusOptions = [
@@ -26,10 +27,11 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
       {!isEditing && (
         <>
           <div className="form-control mb-3">
-            <label className="label py-1">
+            <label htmlFor="categoryId" className="label py-1">
               <span className={LABEL_CLS}>Categoría <span className="text-error">*</span></span>
             </label>
             <select
+              id="categoryId"
               name="categoryId"
               value={formData.categoryId}
               onChange={handleChange}
@@ -45,12 +47,29 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
 
           <div className="grid grid-cols-2 gap-3 mb-3">
             <div className="form-control">
-              <label className="label py-1">
+              <label htmlFor="isHome" className="label py-1">
+                <span className={LABEL_CLS}>Tipo de partido <span className="text-error">*</span></span>
+              </label>
+              <select
+                id="isHome"
+                name="isHome"
+                value={formData.isHome ? 'local' : 'visitante'}
+                onChange={(e) => onChange('isHome', e.target.value === 'local')}
+                className={SELECT_CLS}
+                required
+              >
+                <option value="local">Local</option>
+                <option value="visitante">Visitante</option>
+              </select>
+            </div>
+            <div className="form-control">
+              <label htmlFor="opponentId" className="label py-1">
                 <span className={LABEL_CLS}>
                   Equipo rival <span className="text-error">*</span>
                 </span>
               </label>
               <SearchableSelect
+                id="opponentId"
                 name="opponentId"
                 value={formData.opponentId}
                 onChange={(val) => onChange('opponentId', val)}
@@ -67,33 +86,19 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
                 </span>
               )}
             </div>
-            <div className="form-control">
-              <label className="label py-1">
-                <span className={LABEL_CLS}>Tipo de partido <span className="text-error">*</span></span>
-              </label>
-              <select
-                name="isHome"
-                value={formData.isHome ? 'local' : 'visitante'}
-                onChange={(e) => onChange('isHome', e.target.value === 'local')}
-                className={SELECT_CLS}
-                required
-              >
-                <option value="local">Local</option>
-                <option value="visitante">Visitante</option>
-              </select>
-            </div>
           </div>
         </>
       )}
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="dateTime" className="label py-1">
             <span className={LABEL_CLS}>Fecha y hora <span className="text-error">*</span></span>
           </label>
           <div className="relative">
             <Icon name="calendar_today" className={ICON_CLS} />
             <input
+              id="dateTime"
               type="datetime-local"
               name="dateTime"
               value={formData.dateTime}
@@ -110,12 +115,13 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
           )}
         </div>
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="journey" className="label py-1">
             <span className={LABEL_CLS}>Jornada</span>
           </label>
           <div className="relative">
             <Icon name="flag" className={ICON_CLS} />
             <input
+              id="journey"
               type="number"
               name="journey"
               value={formData.journey}
@@ -136,27 +142,24 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
 
       <div className={`grid gap-3 mb-3 ${isEditing ? 'grid-cols-2' : 'grid-cols-1'}`}>
         <div className="form-control">
-          <label className="label py-1">
+          <label htmlFor="venue" className="label py-1">
             <span className={LABEL_CLS}>Sede</span>
           </label>
-          <div className="relative">
-            <Icon name="location_on" className={ICON_CLS} />
-            <input
-              type="text"
-              name="venue"
-              value={formData.venue}
-              onChange={handleChange}
-              className={INPUT_ICON_CLS}
-              placeholder="Nombre del estadio o campo"
-            />
-          </div>
+          <PlacesAutocomplete
+            id="venue"
+            name="venue"
+            value={formData.venue}
+            onChange={onChange}
+            placeholder="Buscar estadio o campo..."
+          />
         </div>
         {isEditing && (
           <div className="form-control">
-            <label className="label py-1">
+            <label htmlFor="status" className="label py-1">
               <span className={LABEL_CLS}>Estado</span>
             </label>
             <select
+              id="status"
               name="status"
               value={formData.status}
               onChange={handleChange}
@@ -173,10 +176,11 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
       {formData.status === 'finished' && (
         <div className="grid grid-cols-2 gap-3">
           <div className="form-control">
-            <label className="label py-1">
+            <label htmlFor="homeScore" className="label py-1">
               <span className={LABEL_CLS}>Goles local</span>
             </label>
             <input
+              id="homeScore"
               type="number"
               name="homeScore"
               value={formData.homeScore}
@@ -187,10 +191,11 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
             />
           </div>
           <div className="form-control">
-            <label className="label py-1">
+            <label htmlFor="awayScore" className="label py-1">
               <span className={LABEL_CLS}>Goles visitante</span>
             </label>
             <input
+              id="awayScore"
               type="number"
               name="awayScore"
               value={formData.awayScore}
@@ -212,7 +217,7 @@ MatchForm.INITIAL_DATA = {
   isHome: true,
   dateTime: '',
   journey: '',
-  venue: '',
+  venue: null,
   status: 'scheduled',
   homeScore: '',
   awayScore: '',
