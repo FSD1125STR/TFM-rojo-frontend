@@ -392,29 +392,31 @@ export const Tarjetas = {
   render: () => (
     <div className="flex flex-col gap-4">
       <p className="m-0 text-sm text-base-content/60">
-        Ejemplo de uso de badges xs para tarjetas en historial de partidos:
+        Tarjetas de fútbol con <code>shape=&quot;card&quot;</code> — rectángulo portrait como una tarjeta real:
       </p>
       <div className="flex gap-2 items-center">
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>1</Badge>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>0</Badge>
-        <span className="text-sm text-base-content/60 ml-2">&larr; Sin tarjetas rojas</span>
+        <Badge variant="custom" shape="card" customColor={{ bg: '#F59E0B', text: '#fff' }}>1</Badge>
+        <span className="text-sm text-base-content/60 ml-2">&larr; 1 amarilla</span>
       </div>
       <div className="flex gap-2 items-center">
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>2</Badge>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>1</Badge>
+        <Badge variant="custom" shape="card" customColor={{ bg: '#F59E0B', text: '#fff' }}>2</Badge>
+        <Badge variant="custom" shape="card" customColor={{ bg: '#EF4444', text: '#fff' }}>1</Badge>
         <span className="text-sm text-base-content/60 ml-2">&larr; 2 amarillas, 1 roja</span>
       </div>
       <div className="flex gap-2 items-center">
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>0</Badge>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>0</Badge>
-        <span className="text-sm text-base-content/60 ml-2">&larr; Sin tarjetas</span>
+        <Badge variant="custom" shape="card" customColor={{ bg: '#F59E0B', text: '#fff' }}>3</Badge>
+        <span className="text-sm text-base-content/60 ml-2">&larr; Solo amarillas</span>
+      </div>
+      <div className="flex gap-2 items-center">
+        <Badge variant="custom" shape="card" customColor={{ bg: '#EF4444', text: '#fff' }}>1</Badge>
+        <span className="text-sm text-base-content/60 ml-2">&larr; Solo roja</span>
       </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Ejemplo de badges en tamaño xs para mostrar tarjetas amarillas y rojas en tablas de historial.',
+        story: 'Tarjetas de fútbol usando shape="card" — rectángulo portrait (16×22px) que imita el aspecto de una tarjeta real. Se usa en el listado de jugadores.',
       },
     },
   },

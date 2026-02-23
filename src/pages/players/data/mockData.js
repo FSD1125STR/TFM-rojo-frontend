@@ -471,6 +471,30 @@ export const historialPartidosData = {
     { id: 1, fecha: '2026-01-15', rival: 'CD Móstoles', golesA: 3, golesB: 1, esLocal: true, minutos: 90, goles: 0, asistencias: 2, tarjetasAmarillas: 0, tarjetasRojas: 0 },
     { id: 2, fecha: '2026-01-12', rival: 'Rayo Vallecano B', golesA: 2, golesB: 2, esLocal: true, minutos: 90, goles: 1, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
     { id: 3, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 90, goles: 1, asistencias: 0, tarjetasAmarillas: 2, tarjetasRojas: 1 },
+    { id: 4, fecha: '2026-01-05', rival: 'Getafe B', golesA: 4, golesB: 0, esLocal: true, minutos: 85, goles: 0, asistencias: 3, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 5, fecha: '2025-12-29', rival: 'Leganés B', golesA: 2, golesB: 1, esLocal: false, minutos: 90, goles: 1, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+  ],
+  3: [
+    { id: 1, fecha: '2026-01-15', rival: 'CD Móstoles', golesA: 3, golesB: 1, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
+    { id: 2, fecha: '2026-01-12', rival: 'Rayo Vallecano B', golesA: 2, golesB: 2, esLocal: true, minutos: 80, goles: 0, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 3, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 70, goles: 1, asistencias: 0, tarjetasAmarillas: 2, tarjetasRojas: 0 },
+    { id: 4, fecha: '2026-01-05', rival: 'Getafe B', golesA: 4, golesB: 0, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 5, fecha: '2025-12-29', rival: 'Leganés B', golesA: 2, golesB: 1, esLocal: false, minutos: 55, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 6, fecha: '2025-12-22', rival: 'Alcorcón CF', golesA: 1, golesB: 1, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+  ],
+  4: [
+    { id: 1, fecha: '2026-01-15', rival: 'CD Móstoles', golesA: 3, golesB: 1, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 2, fecha: '2026-01-12', rival: 'Rayo Vallecano B', golesA: 2, golesB: 2, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
+    { id: 3, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 4, fecha: '2026-01-05', rival: 'Getafe B', golesA: 4, golesB: 0, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 5, fecha: '2025-12-29', rival: 'Leganés B', golesA: 2, golesB: 1, esLocal: false, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+  ],
+  5: [
+    { id: 1, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 90, goles: 2, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
+    { id: 2, fecha: '2026-01-05', rival: 'Getafe B', golesA: 4, golesB: 0, esLocal: true, minutos: 80, goles: 1, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 3, fecha: '2025-12-29', rival: 'Leganés B', golesA: 2, golesB: 1, esLocal: false, minutos: 75, goles: 1, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 1 },
+    { id: 4, fecha: '2025-12-22', rival: 'Alcorcón CF', golesA: 1, golesB: 1, esLocal: true, minutos: 90, goles: 1, asistencias: 1, tarjetasAmarillas: 2, tarjetasRojas: 0 },
+    { id: 5, fecha: '2025-12-15', rival: 'Fuenlabrada B', golesA: 3, golesB: 0, esLocal: false, minutos: 60, goles: 0, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
   ],
 }
 

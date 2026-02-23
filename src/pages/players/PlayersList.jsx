@@ -8,7 +8,7 @@ import { usePlayersTable } from './hooks/usePlayersTable'
 import { usePlayersKpis } from './hooks/usePlayersKpis'
 import { usePermissions } from '../../hooks/usePermissions'
 import { useAuth } from '../../hooks/useAuth'
-import { jugadoresData as initialJugadores } from './data/mockData'
+import { getPlayers } from '../../services/playersService'
 import { showConfirm, showSuccess } from '../../utils/alerts'
 
 export function PlayersList() {
@@ -18,76 +18,66 @@ export function PlayersList() {
   const categoryId = user?.categoryId?._id || user?.categoryId || null
   const kpis = usePlayersKpis(isAdmin ? null : categoryId)
 
-  const [jugadores, setJugadores] = useState(initialJugadores)
+  const [players, setPlayers] = useState([])
 
   const [modalOpen, setModalOpen] = useState(false)
-  const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null)
+  const [selectedPlayer, setSelectedPlayer] = useState(null)
 
   useEffect(() => {
-    const jugadorEditadoStr = localStorage.getItem('jugadorEditado')
-    if (jugadorEditadoStr) {
-      const jugadorEditado = JSON.parse(jugadorEditadoStr)
-
-      setJugadores((prev) => {
-        const sinEditado = prev.filter((j) => j.id !== jugadorEditado.id)
-        return [jugadorEditado, ...sinEditado]
-      })
-
-      localStorage.removeItem('jugadorEditado')
-    }
-  }, [])
+    getPlayers(isAdmin ? null : categoryId).then(setPlayers).catch(console.error)
+  }, [isAdmin, categoryId])
 
   const handleNuevoJugador = () => {
-    setJugadorSeleccionado(null)
+    setSelectedPlayer(null)
     setModalOpen(true)
   }
 
-  const handleEditarJugador = (jugador) => {
-    setJugadorSeleccionado(jugador)
+  const handleEditarJugador = (player) => {
+    setSelectedPlayer(player)
     setModalOpen(true)
   }
 
-  const handleVerDetalle = (jugador) => {
-    navigate(`/jugadores/${jugador.id}`)
+  const handleVerDetalle = (player) => {
+    navigate(`/jugadores/${player.id}`)
   }
 
   const handleGuardarJugador = (datos) => {
     // TODO: reemplazar por llamada al backend
-    if (jugadorSeleccionado) {
-      setJugadores(
-        jugadores.map((j) => (j.id === jugadorSeleccionado.id ? { ...j, ...datos } : j))
+    if (selectedPlayer) {
+      setPlayers(
+        players.map((p) => (p.id === selectedPlayer.id ? { ...p, ...datos } : p))
       )
     } else {
-      setJugadores([datos, ...jugadores])
+      setPlayers([datos, ...players])
     }
   }
 
-  const handleDarDeBaja = (jugador) => {
-    if (confirm(`¿Estás seguro de dar de baja a ${jugador.nombre} ${jugador.apellidos}?`)) {
-      setJugadores(
-        jugadores.map((j) => (j.id === jugador.id ? { ...j, estado: 'No disponible' } : j))
+  const handleDarDeBaja = (player) => {
+    if (confirm(`¿Estás seguro de dar de baja a ${player.firstName} ${player.lastName}?`)) {
+      setPlayers(
+        players.map((p) => (p.id === player.id ? { ...p, status: 'No disponible' } : p))
       )
     }
   }
 
-  const handleMarcarRecuperado = async (jugador) => {
+  const handleMarcarRecuperado = async (player) => {
     const confirmed = await showConfirm(
-      `${jugador.nombre} ${jugador.apellidos} pasará a estado "Disponible".`,
+      `${player.firstName} ${player.lastName} pasará a estado "Disponible".`,
       '¿Marcar como recuperado?'
     )
     if (confirmed) {
-      setJugadores((prev) =>
-        prev.map((j) => (j.id === jugador.id ? { ...j, estado: 'Disponible' } : j))
+      setPlayers((prev) =>
+        prev.map((p) => (p.id === player.id ? { ...p, status: 'Disponible' } : p))
       )
-      showSuccess(`${jugador.nombre} ${jugador.apellidos} está disponible.`)
+      showSuccess(`${player.firstName} ${player.lastName} está disponible.`)
     }
   }
 
   const handleEliminarSeleccionados = (selectedRows) => {
-    const nombres = selectedRows.map((j) => `${j.nombre} ${j.apellidos}`).join(', ')
+    const nombres = selectedRows.map((p) => `${p.firstName} ${p.lastName}`).join(', ')
     if (confirm(`¿Estás seguro de eliminar a ${selectedRows.length} jugador(es)?\n${nombres}`)) {
-      const ids = selectedRows.map((j) => j.id)
-      setJugadores((prev) => prev.filter((j) => !ids.includes(j.id)))
+      const ids = selectedRows.map((p) => p.id)
+      setPlayers((prev) => prev.filter((p) => !ids.includes(p.id)))
     }
   }
 
@@ -144,7 +134,7 @@ export function PlayersList() {
       <div className="mt-4">
         <DataTable
           columns={columns}
-          data={jugadores}
+          data={players}
           selectable={canCreate}
           {...(canCreate && {
             bulkActions: [
@@ -169,7 +159,7 @@ export function PlayersList() {
       <ModalPlayer
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        initialData={jugadorSeleccionado}
+        initialData={selectedPlayer}
         onSave={handleGuardarJugador}
       />
     </div>
