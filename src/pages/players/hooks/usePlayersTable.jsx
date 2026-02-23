@@ -10,27 +10,27 @@ import {
 
 export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarRecuperado, isAdmin }) {
   const w = isAdmin
-    ? { nombre: '26%', dorsal: '9%', catPos: '14%', edad: '8%', partidos: '9%', goles: '8%', estado: '14%' }
-    : { nombre: '28%', dorsal: '10%', catPos: '15%', edad: '9%', partidos: '10%', goles: '8%', estado: '12%' }
+    ? { name: '26%', dorsal: '9%', catPos: '15%', age: '8%', goals: '8%', cards: '10%', status: '15%' }
+    : { name: '28%', dorsal: '10%', catPos: '16%', age: '9%', goals: '8%', cards: '10%', status: '12%' }
 
   const columns = [
     {
-      key: 'nombre',
+      key: 'firstName',
       label: 'Jugador',
-      width: w.nombre,
+      width: w.name,
       sortable: true,
       render: (_, row) => (
         <div className="flex items-center gap-3 pointer-events-none">
-          <Avatar name={`${row.nombre} ${row.apellidos}`} size="sm" />
-          <span className="font-medium whitespace-nowrap">{row.nombre} {row.apellidos}</span>
+          <Avatar name={`${row.firstName} ${row.lastName}`} size="sm" />
+          <span className="font-medium whitespace-nowrap">{row.firstName} {row.lastName}</span>
         </div>
       ),
     },
     { key: 'dorsal', label: 'Dorsal', width: w.dorsal, align: 'center', sortable: true },
     ...(isAdmin
-      ? [{ key: 'categoria', label: 'Categoría', width: w.catPos, align: 'center', sortable: true }]
+      ? [{ key: 'category', label: 'Categoría', width: w.catPos, align: 'center', sortable: true }]
       : [{
-          key: 'posicion',
+          key: 'position',
           label: 'Posición',
           width: w.catPos,
           align: 'center',
@@ -49,13 +49,32 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
           ),
         }]
     ),
-    { key: 'edad', label: 'Edad', width: w.edad, align: 'center', sortable: true },
-    { key: 'partidos', label: 'Partidos', width: w.partidos, align: 'center', sortable: true },
-    { key: 'goles', label: 'Goles', width: w.goles, align: 'center', sortable: true },
+    { key: 'age', label: 'Edad', width: w.age, align: 'center', sortable: true },
+    { key: 'goals', label: 'Goles', width: w.goals, align: 'center', sortable: true },
     {
-      key: 'estado',
+      key: 'cards',
+      label: 'Tarjetas',
+      width: w.cards,
+      align: 'center',
+      render: (_, row) => {
+        if (!row.yellowCards && !row.redCards)
+          return <span className="pointer-events-none text-base-content/30">—</span>
+        return (
+          <div className="flex items-center justify-center gap-1 pointer-events-none">
+            {row.yellowCards > 0 && (
+              <Badge variant="custom" shape="card" customColor={{ bg: '#F59E0B', text: '#fff' }}>{row.yellowCards}</Badge>
+            )}
+            {row.redCards > 0 && (
+              <Badge variant="custom" shape="card" customColor={{ bg: '#EF4444', text: '#fff' }}>{row.redCards}</Badge>
+            )}
+          </div>
+        )
+      },
+    },
+    {
+      key: 'status',
       label: 'Estado',
-      width: w.estado,
+      width: w.status,
       align: 'center',
       sortable: true,
       render: (value, row) => {
@@ -88,22 +107,22 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
   const actions = [
     { label: 'Ver detalle', icon: 'visibility', onClick: onVerDetalle },
     onEditar && { label: 'Editar', icon: 'edit', onClick: onEditar },
-    onMarcarRecuperado && { label: 'Marcar recuperado', icon: 'health_and_safety', onClick: onMarcarRecuperado, show: (row) => row.estado === 'Lesionado' },
+    onMarcarRecuperado && { label: 'Marcar recuperado', icon: 'health_and_safety', onClick: onMarcarRecuperado, show: (row) => row.status === 'Lesionado' },
     onDarDeBaja && { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger' },
   ].filter(Boolean)
 
   const filters = [
     ...(isAdmin
-      ? [{ key: 'categoria', placeholder: 'Todas las categorías', options: categoriaOptions }]
-      : [{ key: 'posicion', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true }]
+      ? [{ key: 'category', placeholder: 'Todas las categorías', options: categoriaOptions }]
+      : [{ key: 'position', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true }]
     ),
-    { key: 'estado', placeholder: 'Todos los estados', options: estadoOptions },
+    { key: 'status', placeholder: 'Todos los estados', options: estadoOptions },
   ]
 
   const searchConfig = {
     searchable: true,
     searchPlaceholder: 'Buscar por nombre o dorsal...',
-    searchKeys: ['nombre', 'apellidos', 'dorsal'],
+    searchKeys: ['firstName', 'lastName', 'dorsal'],
   }
 
   return { columns, actions, filters, searchConfig }
