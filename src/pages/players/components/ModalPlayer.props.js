@@ -5,10 +5,11 @@ export const ModalPlayerProps = {
   onClose: PropTypes.func,
   onSave: PropTypes.func,
   initialData: PropTypes.shape({
-    id: PropTypes.number,
+    _id: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     nombre: PropTypes.string,
     apellidos: PropTypes.string,
-    dorsal: PropTypes.number,
+    dorsal: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     posicion: PropTypes.string,
     fechaNacimiento: PropTypes.string,
     email: PropTypes.string,
