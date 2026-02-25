@@ -1,6 +1,12 @@
-import { createContext, useState, useEffect, useCallback, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { authService } from '../services/authService';
+import {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
+import PropTypes from "prop-types";
+import { authService } from "../services/authService";
 
 export const AuthContext = createContext({
   user: null,
@@ -8,6 +14,7 @@ export const AuthContext = createContext({
   isAuthenticated: false,
   isLoading: true,
   login: async () => {},
+  register: async () => {},
   logout: () => {},
 });
 
@@ -29,9 +36,22 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = useCallback(async (email, password) => {
-    const { token: newToken, user: newUser } = await authService.login(email, password);
+    const { token: newToken, user: newUser } = await authService.login(
+      email,
+      password,
+    );
     setToken(newToken);
     setUser(newUser);
+    return { token: newToken, user: newUser };
+  }, []);
+
+  const register = useCallback(async (userData) => {
+    const { token: newToken, user: newUser } =
+      await authService.register(userData);
+
+    setToken(newToken);
+    setUser(newUser);
+
     return { token: newToken, user: newUser };
   }, []);
 
@@ -39,23 +59,23 @@ export function AuthProvider({ children }) {
     authService.logout();
     setToken(null);
     setUser(null);
-    window.location.href = '/login?logout=true';
+    window.location.href = "/login?logout=true";
   }, []);
 
-  const value = useMemo(() => ({
-    user,
-    token,
-    isAuthenticated: !!token,
-    isLoading,
-    login,
-    logout,
-  }), [user, token, isLoading, login, logout]);
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      token,
+      isAuthenticated: !!token,
+      isLoading,
+      login,
+      register,
+      logout,
+    }),
+    [user, token, isLoading, login, register, logout],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 AuthProvider.propTypes = {
