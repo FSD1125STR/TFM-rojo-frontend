@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   ResponsiveContainer,
   LineChart,
@@ -8,19 +8,19 @@ import {
   YAxis,
   Tooltip,
   ReferenceLine,
-} from 'recharts'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { Card } from '../../components/ui/Card'
-import { InfoItem } from '../../components/ui/InfoItem'
-import { StatBox } from '../../components/ui/StatBox'
-import { Badge } from '../../components/ui/Badge'
-import { Tabs } from '../../components/ui/Tabs'
-import { Button } from '../../components/ui/Button'
-import { DataTable } from '../../components/ui/DataTable'
-import { ModalPlayer } from './components/ModalPlayer'
-import { usePlayerDetailTable } from './hooks/usePlayerDetailTable'
-import { usePermissions } from '../../hooks/usePermissions'
-import { getPlayerById } from '../../services/playersService'
+} from 'recharts';
+import { PageHeader } from '../../components/ui/PageHeader';
+import { Card } from '../../components/ui/Card';
+import { InfoItem } from '../../components/ui/InfoItem';
+import { StatBox } from '../../components/ui/StatBox';
+import { Badge } from '../../components/ui/Badge';
+import { Tabs } from '../../components/ui/Tabs';
+import { Button } from '../../components/ui/Button';
+import { DataTable } from '../../components/ui/DataTable';
+import { ModalPlayer } from './components/ModalPlayer';
+import { usePlayerDetailTable } from './hooks/usePlayerDetailTable';
+import { usePermissions } from '../../hooks/usePermissions';
+import { getPlayerById } from '../../services/playersService';
 import {
   historialTabs,
   historialPartidosData,
@@ -34,22 +34,22 @@ export function PlayerDetail() {
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
 
-  const [jugador, setJugador] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('todos')
+  const [jugador, setJugador] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('todos');
 
   useEffect(() => {
     getPlayerById(id)
       .then(setJugador)
       .catch(console.error)
-      .finally(() => setLoading(false))
-  }, [id])
+      .finally(() => setLoading(false));
+  }, [id]);
 
   const historialCompleto = useMemo(
     () => (historialPartidosData[id] ?? []).slice().reverse(),
     [id]
-  )
+  );
 
   const historialFiltrado = useMemo(() => {
     switch (activeTab) {
@@ -64,8 +64,11 @@ export function PlayerDetail() {
     }
   }, [activeTab, historialCompleto]);
 
+  const { columns: historialColumns } = usePlayerDetailTable();
+  const canEdit = checkPermission('players.edit');
+
   if (loading) {
-    return <div className="p-6 text-center">Cargando...</div>
+    return <div className="p-6 text-center">Cargando...</div>;
   }
 
   if (!jugador) {
@@ -88,36 +91,34 @@ export function PlayerDetail() {
   };
 
   const handleGuardar = (datos) => {
-    const jugadorActualizado = { ...jugador, ...datos }
-    setJugador(jugadorActualizado)
-    localStorage.setItem('jugadorEditado', JSON.stringify(jugadorActualizado))
-    setModalOpen(false)
-  }
+    const jugadorActualizado = { ...jugador, ...datos };
+    setJugador(jugadorActualizado);
+    localStorage.setItem('jugadorEditado', JSON.stringify(jugadorActualizado));
+    setModalOpen(false);
+  };
 
-  const fechaNacimientoFormateada = formatFecha(jugador.birthDate)
+  const fechaNacimientoFormateada = formatFecha(jugador.birthDate);
 
-  const { columns: historialColumns } = usePlayerDetailTable();
-
-  const asistencias = jugador.assists ?? jugador.asistencias ?? 0
+  const asistencias = jugador.assists ?? jugador.asistencias ?? 0;
 
   const promedioMinutos = jugador.matchesPlayed > 0
     ? Math.round(jugador.minutesPlayed / jugador.matchesPlayed)
-    : 0
+    : 0;
 
-  const matchDuration = jugador.matchDuration ?? 90
+  const matchDuration = jugador.matchDuration ?? 90;
   const porcentajeParticipacion = jugador.matchesPlayed > 0
     ? Math.round((jugador.minutesPlayed / (jugador.matchesPlayed * matchDuration)) * 100)
-    : 0
+    : 0;
 
   const mediaGoles = jugador.matchesPlayed > 0
     ? (jugador.goals / jugador.matchesPlayed).toFixed(2)
-    : '0.00'
+    : '0.00';
 
   const badges = [
     jugador.goals >= 5 && { label: 'Goleador', icon: 'sports_soccer', tooltip: `${jugador.goals} goles marcados esta temporada` },
     porcentajeParticipacion >= 80 && { label: 'Resistente', icon: 'timer', tooltip: `${porcentajeParticipacion}% de participación · ${promedioMinutos} min/partido de media` },
     jugador.yellowCards === 0 && jugador.redCards === 0 && { label: 'Disciplinado', icon: 'shield', tooltip: 'Sin tarjetas esta temporada' },
-  ].filter(Boolean)
+  ].filter(Boolean);
 
   const chartData = historialCompleto.map((p, i) => ({
     jornada: `J${i + 1}`,
@@ -126,9 +127,7 @@ export function PlayerDetail() {
     goles: p.goles,
     tarjeta: p.tarjetasAmarillas > 0 || p.tarjetasRojas > 0,
     tarjetaRoja: p.tarjetasRojas > 0,
-  }))
-
-  const canEdit = checkPermission('players.edit');
+  }));
 
   return (
     <div test-id="el-p7l8y9r0">
@@ -264,8 +263,8 @@ export function PlayerDetail() {
                   <YAxis domain={[0, 95]} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                   <Tooltip
                     content={({ active, payload }) => {
-                      if (!active || !payload?.length) return null
-                      const d = payload[0].payload
+                      if (!active || !payload?.length) return null;
+                      const d = payload[0].payload;
                       return (
                         <div className="bg-base-100 border border-base-300 rounded px-2 py-1 text-xs shadow">
                           <p className="font-semibold">{d.rival}</p>
@@ -273,7 +272,7 @@ export function PlayerDetail() {
                           {d.tarjetaRoja && <p className="text-error">Tarjeta roja</p>}
                           {!d.tarjetaRoja && d.tarjeta && <p className="text-warning">Tarjeta amarilla</p>}
                         </div>
-                      )
+                      );
                     }}
                   />
                   <Line
@@ -288,8 +287,8 @@ export function PlayerDetail() {
                           ? '#f59e0b'
                           : payload.goles > 0
                             ? '#22c55e'
-                            : '#6366f1'
-                      return <circle key={`dot-${cx}-${cy}`} cx={cx} cy={cy} r={4} fill={fill} stroke="none" />
+                            : '#6366f1';
+                      return <circle key={`dot-${cx}-${cy}`} cx={cx} cy={cy} r={4} fill={fill} stroke="none" />;
                     }}
                     activeDot={{ r: 5, fill: '#6366f1' }}
                   />

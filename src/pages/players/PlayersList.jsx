@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { StatsCard } from '../../components/ui/StatsCard'
-import { DataTable } from '../../components/ui/DataTable'
-import { ModalPlayer } from './components/ModalPlayer'
-import { usePlayersTable } from './hooks/usePlayersTable'
-import { usePlayersKpis } from './hooks/usePlayersKpis'
-import { usePermissions } from '../../hooks/usePermissions'
-import { useAuth } from '../../hooks/useAuth'
-import { getPlayers } from '../../services/playersService'
-import { showConfirm, showSuccess } from '../../utils/alerts'
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PageHeader } from '../../components/ui/PageHeader';
+import { StatsCard } from '../../components/ui/StatsCard';
+import { DataTable } from '../../components/ui/DataTable';
+import { ModalPlayer } from './components/ModalPlayer';
+import { usePlayersTable } from './hooks/usePlayersTable';
+import { usePlayersKpis } from './hooks/usePlayersKpis';
+import { usePermissions } from '../../hooks/usePermissions';
+import { useAuth } from '../../hooks/useAuth';
+import { getPlayers } from '../../services/playersService';
+import { showConfirm, showSuccess } from '../../utils/alerts';
 
 export function PlayersList() {
   const navigate = useNavigate();
@@ -38,8 +38,8 @@ export function PlayersList() {
   }, []);
 
   useEffect(() => {
-    getPlayers(isAdmin ? null : categoryId).then(setJugadores).catch(console.error)
-  }, [isAdmin, categoryId])
+    getPlayers(isAdmin ? null : categoryId).then(setJugadores).catch(console.error);
+  }, [isAdmin, categoryId]);
 
   const handleNuevoJugador = () => {
     setJugadorSeleccionado(null);

@@ -47,7 +47,7 @@ export function Badge({
     fontWeight: 700,
     gap: 0,
     boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
-  } : {}
+  } : {};
 
   const style = {
     display: 'inline-flex',

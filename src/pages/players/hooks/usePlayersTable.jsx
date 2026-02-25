@@ -11,7 +11,7 @@ import {
 export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarRecuperado, isAdmin }) {
   const w = isAdmin
     ? { name: '24%', dorsal: '9%', catPos: '15%', age: '8%', goals: '8%', cards: '10%', status: '15%' }
-    : { name: '26%', dorsal: '10%', catPos: '16%', age: '9%', goals: '8%', cards: '10%', status: '12%' }
+    : { name: '26%', dorsal: '10%', catPos: '16%', age: '9%', goals: '8%', cards: '10%', status: '12%' };
 
   const columns = [
     {
@@ -58,7 +58,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
       align: 'center',
       render: (_, row) => {
         if (!row.yellowCards && !row.redCards)
-          return <span className="pointer-events-none text-base-content/30">—</span>
+          return <span className="pointer-events-none text-base-content/30">—</span>;
         return (
           <div className="flex items-center justify-center gap-1 pointer-events-none">
             {row.yellowCards > 0 && (
@@ -68,7 +68,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
               <Badge variant="custom" shape="card" customColor={{ bg: '#EF4444', text: '#fff' }}>{row.redCards}</Badge>
             )}
           </div>
-        )
+        );
       },
     },
     {
