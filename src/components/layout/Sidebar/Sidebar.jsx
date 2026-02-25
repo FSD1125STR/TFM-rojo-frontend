@@ -1,5 +1,5 @@
 import { AppLogo } from '../AppLogo/AppLogo';
-import { SidebarProps } from './Sidebar.props'
+import { SidebarProps } from './Sidebar.props';
 import { SidebarItem } from '../SidebarItem/SidebarItem';
 import { UserCard } from '../UserCard/UserCard';
 import { Divider } from '../../ui/Divider/Divider';
@@ -84,4 +84,4 @@ export function Sidebar({
   );
 }
 
-Sidebar.propTypes = SidebarProps
+Sidebar.propTypes = SidebarProps;

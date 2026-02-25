@@ -1,5 +1,5 @@
-import { HeaderBar } from './HeaderBar'
-import { Button } from '../../ui/Button/Button'
+import { HeaderBar } from './HeaderBar';
+import { Button } from '../../ui/Button/Button';
 
 export default {
   title: 'Layout/HeaderBar',
@@ -10,13 +10,13 @@ export default {
       options: ['drawer', 'expanded', 'collapsed'],
     },
   },
-}
+};
 
 export const Default = {
   args: {
     title: 'Dashboard',
   },
-}
+};
 
 export const WithBreadcrumbs = {
   args: {
@@ -27,7 +27,7 @@ export const WithBreadcrumbs = {
       { label: 'Juan García' },
     ],
   },
-}
+};
 
 export const WithActions = {
   args: {
@@ -39,7 +39,7 @@ export const WithActions = {
       </>
     ),
   },
-}
+};
 
 export const Complete = {
   args: {
@@ -50,25 +50,25 @@ export const Complete = {
     ],
     actions: <Button variant="primary" size="sm">Nuevo partido</Button>,
   },
-}
+};
 
 export const SidebarExpanded = {
   args: {
     title: 'Dashboard',
     sidebarMode: 'expanded',
   },
-}
+};
 
 export const SidebarCollapsed = {
   args: {
     title: 'Dashboard',
     sidebarMode: 'collapsed',
   },
-}
+};
 
 export const MobileDrawer = {
   args: {
     title: 'Dashboard',
     sidebarMode: 'drawer',
   },
-}
+};

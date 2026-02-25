@@ -4,6 +4,7 @@ import { Badge } from "../Badge";
 export default {
   title: "UI/InfoItem",
   component: InfoItem,
+  tags: ['autodocs'],
 };
 
 export const Default = {

@@ -3,14 +3,14 @@ export const posicionConfig = {
   Defensa: { icon: 'shield', color: { bg: '#dbeafe', text: '#1e40af' } },
   Centrocampista: { icon: 'target', color: { bg: '#dcfce7', text: '#166534' } },
   Delantero: { icon: 'sports_soccer', color: { bg: '#fee2e2', text: '#991b1b' } },
-}
+};
 
 export const estadoConfig = {
   Disponible: { icon: 'check_circle', variant: 'success' },
   Lesionado: { icon: 'healing', variant: 'error' },
   Sancionado: { icon: 'gavel', variant: 'warning' },
   'No disponible': { icon: 'block', variant: 'neutral' },
-}
+};
 
 export const jugadoresData = [
   {
@@ -116,6 +116,7 @@ export const jugadoresData = [
     provincia: 'Madrid',
     direccion: 'Calle Nueva 34, Alcorcón',
     estado: 'Sancionado',
+    sanction: { totalMatches: 3, remainingMatches: 2, startDate: '2026-02-10' },
     partidos: 8,
     minutos: 650,
     goles: 5,
@@ -424,6 +425,7 @@ export const jugadoresData = [
     provincia: 'Madrid',
     direccion: 'Av. de Madrid 34, Pinto',
     estado: 'Sancionado',
+    sanction: { totalMatches: 2, remainingMatches: 1, startDate: '2026-02-12' },
     partidos: 5,
     minutos: 380,
     goles: 2,
@@ -453,7 +455,7 @@ export const jugadoresData = [
     tarjetasAmarillas: 2,
     tarjetasRojas: 0,
   },
-]
+];
 
 export const historialPartidosData = {
   1: [
@@ -469,69 +471,66 @@ export const historialPartidosData = {
     { id: 1, fecha: '2026-01-15', rival: 'CD Móstoles', golesA: 3, golesB: 1, esLocal: true, minutos: 90, goles: 0, asistencias: 2, tarjetasAmarillas: 0, tarjetasRojas: 0 },
     { id: 2, fecha: '2026-01-12', rival: 'Rayo Vallecano B', golesA: 2, golesB: 2, esLocal: true, minutos: 90, goles: 1, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
     { id: 3, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 90, goles: 1, asistencias: 0, tarjetasAmarillas: 2, tarjetasRojas: 1 },
+    { id: 4, fecha: '2026-01-05', rival: 'Getafe B', golesA: 4, golesB: 0, esLocal: true, minutos: 85, goles: 0, asistencias: 3, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 5, fecha: '2025-12-29', rival: 'Leganés B', golesA: 2, golesB: 1, esLocal: false, minutos: 90, goles: 1, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
   ],
-}
+  3: [
+    { id: 1, fecha: '2026-01-15', rival: 'CD Móstoles', golesA: 3, golesB: 1, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
+    { id: 2, fecha: '2026-01-12', rival: 'Rayo Vallecano B', golesA: 2, golesB: 2, esLocal: true, minutos: 80, goles: 0, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 3, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 70, goles: 1, asistencias: 0, tarjetasAmarillas: 2, tarjetasRojas: 0 },
+    { id: 4, fecha: '2026-01-05', rival: 'Getafe B', golesA: 4, golesB: 0, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 5, fecha: '2025-12-29', rival: 'Leganés B', golesA: 2, golesB: 1, esLocal: false, minutos: 55, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 6, fecha: '2025-12-22', rival: 'Alcorcón CF', golesA: 1, golesB: 1, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+  ],
+  4: [
+    { id: 1, fecha: '2026-01-15', rival: 'CD Móstoles', golesA: 3, golesB: 1, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 2, fecha: '2026-01-12', rival: 'Rayo Vallecano B', golesA: 2, golesB: 2, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
+    { id: 3, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 4, fecha: '2026-01-05', rival: 'Getafe B', golesA: 4, golesB: 0, esLocal: true, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 5, fecha: '2025-12-29', rival: 'Leganés B', golesA: 2, golesB: 1, esLocal: false, minutos: 90, goles: 0, asistencias: 0, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+  ],
+  5: [
+    { id: 1, fecha: '2026-01-08', rival: 'Atlético Madrid C', golesA: 1, golesB: 2, esLocal: false, minutos: 90, goles: 2, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 0 },
+    { id: 2, fecha: '2026-01-05', rival: 'Getafe B', golesA: 4, golesB: 0, esLocal: true, minutos: 80, goles: 1, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+    { id: 3, fecha: '2025-12-29', rival: 'Leganés B', golesA: 2, golesB: 1, esLocal: false, minutos: 75, goles: 1, asistencias: 0, tarjetasAmarillas: 1, tarjetasRojas: 1 },
+    { id: 4, fecha: '2025-12-22', rival: 'Alcorcón CF', golesA: 1, golesB: 1, esLocal: true, minutos: 90, goles: 1, asistencias: 1, tarjetasAmarillas: 2, tarjetasRojas: 0 },
+    { id: 5, fecha: '2025-12-15', rival: 'Fuenlabrada B', golesA: 3, golesB: 0, esLocal: false, minutos: 60, goles: 0, asistencias: 1, tarjetasAmarillas: 0, tarjetasRojas: 0 },
+  ],
+};
 
 export const posicionOptions = [
   { value: 'Portero', label: 'Portero' },
   { value: 'Defensa', label: 'Defensa' },
   { value: 'Centrocampista', label: 'Centrocampista' },
   { value: 'Delantero', label: 'Delantero' },
-]
+];
 
 export const estadoOptions = [
   { value: 'Disponible', label: 'Disponible' },
   { value: 'Lesionado', label: 'Lesionado' },
   { value: 'Sancionado', label: 'Sancionado' },
   { value: 'No disponible', label: 'No disponible' },
-]
+];
 
 export const categoriaOptions = [
   { value: 'Infantil A', label: 'Infantil A' },
   { value: 'Cadete A', label: 'Cadete A' },
-]
+];
 
-// Colores por posición (legacy - usar posicionConfig)
-export const positionColors = {
-  Portero: { bg: '#fef3c7', text: '#92400e' },
-  Defensa: { bg: '#dbeafe', text: '#1e40af' },
-  Centrocampista: { bg: '#dcfce7', text: '#166534' },
-  Delantero: { bg: '#fee2e2', text: '#991b1b' },
-}
 
 export const historialTabs = [
   { value: 'todos', label: 'Todos' },
   { value: 'ultimos5', label: 'Últimos 5' },
   { value: 'casa', label: 'Casa' },
   { value: 'fuera', label: 'Fuera' },
-]
+];
 
 export const formatFecha = (fechaStr) => {
-  const fecha = new Date(fechaStr)
+  const fecha = new Date(fechaStr);
   return fecha.toLocaleDateString('es-ES', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
-  })
-}
+  });
+};
 
-export const calcularEdad = (fechaNacimiento) => {
-  const hoy = new Date()
-  const nacimiento = new Date(fechaNacimiento)
-  let edad = hoy.getFullYear() - nacimiento.getFullYear()
-  const mes = hoy.getMonth() - nacimiento.getMonth()
-  if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
-    edad--
-  }
-  return edad
-}
-
-export const getStatsPorPosicion = (jugadores) => {
-  return {
-    total: jugadores.length,
-    porteros: jugadores.filter(j => j.posicion === 'Portero').length,
-    defensas: jugadores.filter(j => j.posicion === 'Defensa').length,
-    centrocampistas: jugadores.filter(j => j.posicion === 'Centrocampista').length,
-    delanteros: jugadores.filter(j => j.posicion === 'Delantero').length,
-  }
-}

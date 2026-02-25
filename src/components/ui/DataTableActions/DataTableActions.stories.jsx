@@ -1,9 +1,9 @@
-import { DataTableActions } from './DataTableActions'
+import { DataTableActions } from './DataTableActions';
 
 const createAction = (name) => (row) => {
-  console.log(`${name} clicked:`, row)
-  alert(`${name}: ${row.nombre || row.id}`)
-}
+  console.log(`${name} clicked:`, row);
+  alert(`${name}: ${row.nombre || row.id}`);
+};
 
 export default {
   title: 'UI/DataTableActions',
@@ -42,12 +42,12 @@ export default {
   },
   decorators: [
     (Story) => (
-      <div style={{ minHeight: '250px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: '20px' }}>
+      <div className="min-h-[250px] flex items-start justify-center pt-5">
         <Story />
       </div>
     ),
   ],
-}
+};
 
 const sampleRow = {
   id: 1,
@@ -55,7 +55,7 @@ const sampleRow = {
   dorsal: 9,
   posicion: 'Delantero',
   estado: 'Activo',
-}
+};
 
 const defaultActions = [
   {
@@ -74,7 +74,7 @@ const defaultActions = [
     onClick: createAction('Dar de baja'),
     variant: 'danger',
   },
-]
+];
 
 export const Default = {
   args: {
@@ -82,7 +82,7 @@ export const Default = {
     row: sampleRow,
     title: 'Acciones',
   },
-}
+};
 
 export const SinTitulo = {
   args: {
@@ -97,7 +97,7 @@ export const SinTitulo = {
       },
     },
   },
-}
+};
 
 export const SoloAccionesNormales = {
   args: {
@@ -116,7 +116,7 @@ export const SoloAccionesNormales = {
       },
     },
   },
-}
+};
 
 export const SoloAccionDanger = {
   args: {
@@ -133,7 +133,7 @@ export const SoloAccionDanger = {
       },
     },
   },
-}
+};
 
 export const MultiplesAccionesDanger = {
   args: {
@@ -154,7 +154,7 @@ export const MultiplesAccionesDanger = {
       },
     },
   },
-}
+};
 
 export const SinIconos = {
   args: {
@@ -173,7 +173,7 @@ export const SinIconos = {
       },
     },
   },
-}
+};
 
 export const TituloPersonalizado = {
   args: {
@@ -188,7 +188,7 @@ export const TituloPersonalizado = {
       },
     },
   },
-}
+};
 
 export const MuchasAcciones = {
   args: {
@@ -211,7 +211,7 @@ export const MuchasAcciones = {
       },
     },
   },
-}
+};
 
 export const AccionesJugador = {
   args: {
@@ -236,4 +236,4 @@ export const AccionesJugador = {
       },
     },
   },
-}
+};

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const PlayerFormProps = {
   formId: PropTypes.string.isRequired,
@@ -6,4 +6,4 @@ export const PlayerFormProps = {
   edad: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-}
+};

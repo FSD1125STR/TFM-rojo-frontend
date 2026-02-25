@@ -1,4 +1,4 @@
-import { ThemeToggle } from './ThemeToggle'
+import { ThemeToggle } from './ThemeToggle';
 
 export default {
   title: 'UI/ThemeToggle',
@@ -13,24 +13,24 @@ export default {
       options: ['sm', 'md'],
     },
   },
-}
+};
 
 export const IconVariant = {
   args: {
     variant: 'icon',
     size: 'md',
   },
-}
+};
 
 export const SwitchVariant = {
   args: {
     variant: 'switch',
   },
-}
+};
 
 export const Small = {
   args: {
     variant: 'icon',
     size: 'sm',
   },
-}
+};

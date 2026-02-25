@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const ModalProps = {
   isOpen: PropTypes.bool,
@@ -10,4 +10,4 @@ export const ModalProps = {
   actions: PropTypes.node,
   children: PropTypes.node,
   className: PropTypes.string,
-}
+};

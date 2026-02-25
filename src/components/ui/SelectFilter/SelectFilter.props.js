@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const SelectFilterProps = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -12,4 +12,4 @@ export const SelectFilterProps = {
   placeholder: PropTypes.string,
   className: PropTypes.string,
   multiple: PropTypes.bool,
-}
+};

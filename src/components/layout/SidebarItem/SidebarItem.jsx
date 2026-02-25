@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom'
-import { SidebarItemProps } from './SidebarItem.props'
-import { Icon } from '../../ui/Icon/Icon'
+import { NavLink } from 'react-router-dom';
+import { SidebarItemProps } from './SidebarItem.props';
+import { Icon } from '../../ui/Icon/Icon';
 
 export function SidebarItem({ icon, label, to, collapsed = false, onClick }) {
   return (
@@ -17,7 +17,7 @@ export function SidebarItem({ icon, label, to, collapsed = false, onClick }) {
         {!collapsed && <span>{label}</span>}
       </NavLink>
     </li>
-  )
+  );
 }
 
-SidebarItem.propTypes = SidebarItemProps
+SidebarItem.propTypes = SidebarItemProps;

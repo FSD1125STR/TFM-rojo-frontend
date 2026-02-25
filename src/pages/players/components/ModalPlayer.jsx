@@ -1,46 +1,46 @@
-import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { Modal } from '../../../components/ui/Modal'
-import { Button } from '../../../components/ui/Button'
-import { Icon } from '../../../components/ui/Icon'
-import { PlayerForm } from './PlayerForm'
+import { useState, useEffect } from 'react';
+import { Modal } from '../../../components/ui/Modal';
+import { Button } from '../../../components/ui/Button';
+import { Icon } from '../../../components/ui/Icon';
+import { PlayerForm } from './PlayerForm';
+import { ModalPlayerProps } from './ModalPlayer.props';
 
-const FORM_ID = 'player-form'
+const FORM_ID = 'player-form';
 
 export function ModalPlayer({ isOpen = false, onClose, onSave, initialData = null }) {
-  const [formData, setFormData] = useState({ ...PlayerForm.INITIAL_DATA })
-  const [edad, setEdad] = useState(null)
+  const [formData, setFormData] = useState({ ...PlayerForm.INITIAL_DATA });
+  const [edad, setEdad] = useState(null);
 
-  const isEditing = initialData !== null
+  const isEditing = initialData !== null;
 
   useEffect(() => {
     if (isOpen) {
       if (initialData) {
-        setFormData({ ...PlayerForm.INITIAL_DATA, ...initialData })
-        setEdad(PlayerForm.calcularEdad(initialData.fechaNacimiento))
+        setFormData({ ...PlayerForm.INITIAL_DATA, ...initialData });
+        setEdad(PlayerForm.calcularEdad(initialData.fechaNacimiento));
       } else {
-        setFormData({ ...PlayerForm.INITIAL_DATA })
-        setEdad(null)
+        setFormData({ ...PlayerForm.INITIAL_DATA });
+        setEdad(null);
       }
     }
-  }, [isOpen, initialData])
+  }, [isOpen, initialData]);
 
   const handleChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (name === 'fechaNacimiento') {
-      setEdad(PlayerForm.calcularEdad(value))
+      setEdad(PlayerForm.calcularEdad(value));
     }
-  }
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     onSave?.({
       ...formData,
       edad,
       ...(formData.dorsal ? { dorsal: parseInt(formData.dorsal) } : {}),
-    })
-    onClose?.()
-  }
+    });
+    onClose?.();
+  };
 
   return (
     <Modal
@@ -70,12 +70,7 @@ export function ModalPlayer({ isOpen = false, onClose, onSave, initialData = nul
         onSubmit={handleSubmit}
       />
     </Modal>
-  )
+  );
 }
 
-ModalPlayer.propTypes = {
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func,
-  onSave: PropTypes.func,
-  initialData: PropTypes.object,
-}
+ModalPlayer.propTypes = ModalPlayerProps;

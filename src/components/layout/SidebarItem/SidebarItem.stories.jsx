@@ -1,9 +1,9 @@
-import { SidebarItem } from './SidebarItem'
+import { SidebarItem } from './SidebarItem';
 
 export default {
   title: 'Layout/SidebarItem',
   component: SidebarItem,
-}
+};
 
 export const Default = {
   args: {
@@ -11,7 +11,7 @@ export const Default = {
     label: 'Dashboard',
     to: '/',
   },
-}
+};
 
 export const Collapsed = {
   args: {
@@ -20,7 +20,7 @@ export const Collapsed = {
     to: '/jugadores',
     collapsed: true,
   },
-}
+};
 
 export const Active = {
   args: {
@@ -34,4 +34,4 @@ export const Active = {
       routing: { path: '/partidos' },
     },
   },
-}
+};

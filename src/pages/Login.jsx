@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Navigate, Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { Button } from "../components/ui/Button/Button";
-import { Icon } from "../components/ui/Icon/Icon";
-import { Card } from "../components/ui/Card/Card";
-import { showError, showToast } from "../utils/alerts";
-import logoHorizontal from "../assets/logo-horizontal.png";
+import { useState, useEffect } from 'react';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { Button } from '../components/ui/Button';
+import { Icon } from '../components/ui/Icon';
+import { Card } from '../components/ui/Card';
+import { showError, showToast } from '../utils/alerts';
+import logoHorizontal from '../assets/logo-horizontal.png';
 
 export function Login() {
   const navigate = useNavigate();
@@ -79,11 +79,12 @@ export function Login() {
 
         <Card title="Iniciar sesión" className="justify-center mb-4">
           <form onSubmit={handleSubmit}>
-            <div className="form-control mb-4 w-full">
-              <label className="label">
+            <div className="form-control mb-4">
+              <label htmlFor="login-email" className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
+                id="login-email"
                 type="email"
                 placeholder="tu@email.com"
                 className="input input-bordered w-full"
@@ -95,12 +96,13 @@ export function Login() {
             </div>
 
             <div className="form-control mb-6">
-              <label className="label">
+              <label htmlFor="login-password" className="label">
                 <span className="label-text">Contraseña</span>
               </label>
               <div className="relative">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  id="login-password"
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   className="input input-bordered w-full pr-10"
                   value={password}
@@ -110,14 +112,11 @@ export function Login() {
                 />
                 <button
                   type="button"
-                  className="absolute top-0 right-0 h-full px-3 flex items-center text-base-content/50 hover:text-base-content transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer text-base-content/50 hover:text-base-content"
                   onClick={() => setShowPassword(!showPassword)}
                   tabIndex={-1}
                 >
-                  <Icon
-                    name={showPassword ? "visibility_off" : "visibility"}
-                    size="sm"
-                  />
+                  <Icon name={showPassword ? 'visibility_off' : 'visibility'} size="sm" />
                 </button>
               </div>
             </div>
@@ -132,6 +131,15 @@ export function Login() {
               Entrar
             </Button>
           </form>
+
+          <div className="text-center mt-4">
+            <Link
+              to="/forgot-password"
+              className="link link-hover text-sm text-base-content/70"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
 
           <div className="divider text-sm opacity-60 my-6">O</div>
 

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const PageHeaderProps = {
   title: PropTypes.string.isRequired,
@@ -8,4 +8,4 @@ export const PageHeaderProps = {
   actionLabel: PropTypes.string,
   actionIcon: PropTypes.string,
   onAction: PropTypes.func,
-}
+};

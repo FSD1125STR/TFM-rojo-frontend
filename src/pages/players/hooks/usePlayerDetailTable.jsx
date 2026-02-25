@@ -1,5 +1,5 @@
-import { Badge } from '../../../components/ui/Badge'
-import { formatFecha } from '../data/mockData'
+import { Badge } from '../../../components/ui/Badge';
+import { formatFecha } from '../data/mockData';
 
 export function usePlayerDetailTable() {
   const columns = [
@@ -16,23 +16,23 @@ export function usePlayerDetailTable() {
       width: '12%',
       align: 'center',
       render: (_, row) => {
-        const golesNuestros = row.esLocal ? row.golesA : row.golesB
-        const golesRival = row.esLocal ? row.golesB : row.golesA
+        const golesNuestros = row.esLocal ? row.golesA : row.golesB;
+        const golesRival = row.esLocal ? row.golesB : row.golesA;
 
-        let colorConfig
+        let variant;
         if (golesNuestros > golesRival) {
-          colorConfig = { bg: '#86efac', text: '#166534' }
+          variant = 'success';
         } else if (golesNuestros < golesRival) {
-          colorConfig = { bg: '#fca5a5', text: '#991b1b' }
+          variant = 'error';
         } else {
-          colorConfig = { bg: '#d1d5db', text: '#374151' }
+          variant = 'neutral';
         }
 
         return (
-          <Badge variant="custom" size="sm" customColor={colorConfig}>
+          <Badge variant={variant} size="sm">
             {row.golesA}-{row.golesB}
           </Badge>
-        )
+        );
       },
     },
     {
@@ -62,35 +62,25 @@ export function usePlayerDetailTable() {
       width: '15%',
       align: 'center',
       render: (_, row) => {
-        const hayTarjetas = row.tarjetasAmarillas > 0 || row.tarjetasRojas > 0
-        if (!hayTarjetas) return <span style={{ color: '#9ca3af' }}>-</span>
+        const hayTarjetas = row.tarjetasAmarillas > 0 || row.tarjetasRojas > 0;
+        if (!hayTarjetas) return <span className="text-base-content/40">-</span>;
         return (
-          <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
+          <div className="flex gap-1.5 justify-center">
             {row.tarjetasAmarillas > 0 && (
-              <Badge
-                variant="custom"
-                size="xs"
-                customColor={{ bg: '#fde047', text: '#854d0e' }}
-                minWidth="28px"
-              >
+              <Badge variant="warning" size="xs" minWidth="28px">
                 {row.tarjetasAmarillas}
               </Badge>
             )}
             {row.tarjetasRojas > 0 && (
-              <Badge
-                variant="custom"
-                size="xs"
-                customColor={{ bg: '#fca5a5', text: '#991b1b' }}
-                minWidth="28px"
-              >
+              <Badge variant="error" size="xs" minWidth="28px">
                 {row.tarjetasRojas}
               </Badge>
             )}
           </div>
-        )
+        );
       },
     },
-  ]
+  ];
 
-  return { columns }
+  return { columns };
 }

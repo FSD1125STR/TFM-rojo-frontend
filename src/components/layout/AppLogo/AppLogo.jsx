@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom'
-import { AppLogoProps } from './AppLogo.props'
-import logoHorizontal from '../../../assets/logo-horizontal.png'
-import logo from '../../../assets/logo.png'
+import { Link } from 'react-router-dom';
+import { AppLogoProps } from './AppLogo.props';
+import logoHorizontal from '../../../assets/logo-horizontal.png';
+import logo from '../../../assets/logo.png';
 
 export function AppLogo({ collapsed = false }) {
   return (
@@ -12,7 +12,7 @@ export function AppLogo({ collapsed = false }) {
         <img src={logoHorizontal} alt="FootMind" className="h-10 w-auto [html[data-theme=dark]_&]:brightness-150" />
       )}
     </Link>
-  )
+  );
 }
 
-AppLogo.propTypes = AppLogoProps
+AppLogo.propTypes = AppLogoProps;

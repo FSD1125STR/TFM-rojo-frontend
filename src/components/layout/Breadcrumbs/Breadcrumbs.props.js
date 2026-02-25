@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const BreadcrumbsProps = {
   items: PropTypes.arrayOf(
@@ -8,4 +8,4 @@ export const BreadcrumbsProps = {
     })
   ),
   variant: PropTypes.oneOf(['default', 'compact']),
-}
+};

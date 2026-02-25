@@ -1,4 +1,4 @@
-import { SearchInputProps } from './SearchInput.props'
+import { SearchInputProps } from './SearchInput.props';
 
 export function SearchInput({
   value = "",
@@ -22,4 +22,4 @@ export function SearchInput({
   );
 }
 
-SearchInput.propTypes = SearchInputProps
+SearchInput.propTypes = SearchInputProps;

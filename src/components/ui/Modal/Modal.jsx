@@ -1,13 +1,13 @@
-import { useRef, useEffect, useId } from 'react'
-import { Icon } from '../Icon/Icon'
-import { IconButton } from '../IconButton/IconButton'
-import { ModalProps } from './Modal.props'
+import { useRef, useEffect, useId } from 'react';
+import { Icon } from '../Icon/Icon';
+import { IconButton } from '../IconButton/IconButton';
+import { ModalProps } from './Modal.props';
 
 const sizeClasses = {
   sm: 'max-w-md',
   md: 'max-w-lg',
   lg: 'max-w-3xl min-w-[600px] max-md:min-w-0',
-}
+};
 
 export function Modal({
   isOpen = false,
@@ -20,38 +20,38 @@ export function Modal({
   children,
   className = '',
 }) {
-  const modalRef = useRef(null)
-  const titleId = useId()
+  const modalRef = useRef(null);
+  const titleId = useId();
 
   useEffect(() => {
-    const dialog = modalRef.current
-    if (!dialog) return
+    const dialog = modalRef.current;
+    if (!dialog) return;
 
     if (isOpen) {
-      dialog.showModal()
+      dialog.showModal();
     } else {
-      dialog.close()
+      dialog.close();
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   useEffect(() => {
-    const dialog = modalRef.current
-    if (!dialog) return
+    const dialog = modalRef.current;
+    if (!dialog) return;
 
     const handleCancel = (e) => {
-      e.preventDefault()
-      onClose?.()
-    }
+      e.preventDefault();
+      onClose?.();
+    };
 
-    dialog.addEventListener('cancel', handleCancel)
-    return () => dialog.removeEventListener('cancel', handleCancel)
-  }, [onClose])
+    dialog.addEventListener('cancel', handleCancel);
+    return () => dialog.removeEventListener('cancel', handleCancel);
+  }, [onClose]);
 
   const handleBackdropClick = (e) => {
     if (e.target === modalRef.current) {
-      onClose?.()
+      onClose?.();
     }
-  }
+  };
 
   return (
     <dialog
@@ -61,9 +61,9 @@ export function Modal({
       onClick={handleBackdropClick}
       aria-labelledby={title ? titleId : undefined}
     >
-      <div className={`modal-box ${sizeClasses[size] || sizeClasses.md} w-[95%] p-0 rounded-2xl overflow-hidden`}>
+      <div className={`modal-box ${sizeClasses[size] || sizeClasses.md} w-[95%] p-0 rounded-2xl overflow-visible`}>
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-base-300 bg-base-200/50">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-base-300 bg-base-200/50 rounded-t-2xl overflow-hidden">
             <div className="flex items-center gap-3">
               {icon && (
                 <div className="w-11 h-11 rounded-xl bg-primary flex items-center justify-center shadow-md">
@@ -84,13 +84,13 @@ export function Modal({
         </div>
 
         {actions && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-base-300 bg-base-200/30">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-base-300 bg-base-200/30 rounded-b-2xl overflow-hidden">
             {actions}
           </div>
         )}
       </div>
     </dialog>
-  )
+  );
 }
 
-Modal.propTypes = ModalProps
+Modal.propTypes = ModalProps;

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Modal } from './Modal'
+import { useState } from 'react';
+import { Modal } from './Modal';
 
 export default {
   title: 'UI/Modal',
@@ -18,10 +18,10 @@ export default {
     subtitle: { control: 'text' },
     icon: { control: 'text' },
   },
-}
+};
 
 const Template = (args) => {
-  const [isOpen, setIsOpen] = useState(args.isOpen || false)
+  const [isOpen, setIsOpen] = useState(args.isOpen || false);
 
   return (
     <div className="min-h-screen p-8 bg-base-200">
@@ -33,15 +33,15 @@ const Template = (args) => {
         {...args}
         isOpen={isOpen}
         onClose={() => {
-          setIsOpen(false)
-          args.onClose?.()
+          setIsOpen(false);
+          args.onClose?.();
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   isOpen: false,
   title: 'Titulo del Modal',
@@ -51,9 +51,9 @@ Default.args = {
   children: (
     <p>Contenido del modal. Puedes colocar cualquier elemento aqui.</p>
   ),
-}
+};
 
-export const ConAcciones = Template.bind({})
+export const ConAcciones = Template.bind({});
 ConAcciones.args = {
   isOpen: false,
   title: 'Confirmar accion',
@@ -69,9 +69,9 @@ ConAcciones.args = {
       <button className="btn btn-primary btn-sm">Confirmar</button>
     </>
   ),
-}
+};
 
-export const SinHeader = Template.bind({})
+export const SinHeader = Template.bind({});
 SinHeader.args = {
   isOpen: false,
   size: 'sm',
@@ -85,9 +85,9 @@ SinHeader.args = {
   actions: (
     <button className="btn btn-primary btn-sm">Aceptar</button>
   ),
-}
+};
 
-export const Grande = Template.bind({})
+export const Grande = Template.bind({});
 Grande.args = {
   isOpen: false,
   title: 'Modal grande',
@@ -97,20 +97,20 @@ Grande.args = {
   children: (
     <div className="grid grid-cols-2 gap-4">
       <div className="form-control">
-        <label className="label"><span>Nombre</span></label>
-        <input type="text" className="input input-bordered input-sm" placeholder="Nombre" />
+        <label htmlFor="story-nombre" className="label"><span>Nombre</span></label>
+        <input id="story-nombre" type="text" className="input input-bordered input-sm" placeholder="Nombre" />
       </div>
       <div className="form-control">
-        <label className="label"><span>Apellidos</span></label>
-        <input type="text" className="input input-bordered input-sm" placeholder="Apellidos" />
+        <label htmlFor="story-apellidos" className="label"><span>Apellidos</span></label>
+        <input id="story-apellidos" type="text" className="input input-bordered input-sm" placeholder="Apellidos" />
       </div>
       <div className="form-control">
-        <label className="label"><span>Email</span></label>
-        <input type="email" className="input input-bordered input-sm" placeholder="correo@ejemplo.com" />
+        <label htmlFor="story-email" className="label"><span>Email</span></label>
+        <input id="story-email" type="email" className="input input-bordered input-sm" placeholder="correo@ejemplo.com" />
       </div>
       <div className="form-control">
-        <label className="label"><span>Telefono</span></label>
-        <input type="tel" className="input input-bordered input-sm" placeholder="+34 600 000 000" />
+        <label htmlFor="story-telefono" className="label"><span>Telefono</span></label>
+        <input id="story-telefono" type="tel" className="input input-bordered input-sm" placeholder="+34 600 000 000" />
       </div>
     </div>
   ),
@@ -120,4 +120,4 @@ Grande.args = {
       <button className="btn btn-primary btn-sm">Guardar</button>
     </>
   ),
-}
+};

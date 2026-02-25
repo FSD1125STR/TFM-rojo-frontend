@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { Button } from '../components/ui/Button/Button';
-import { Card } from '../components/ui/Card/Card';
-import { Icon } from '../components/ui/Icon/Icon';
+import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
+import { Icon } from '../components/ui/Icon';
 import { showError } from '../utils/alerts';
 import logoHorizontal from '../assets/logo-horizontal.png';
 
@@ -50,12 +50,9 @@ export function ForgotPassword() {
               className="h-16"
             />
           </div>
-          <h1 className="text-2xl font-bold text-base-content">FootMind</h1>
         </div>
 
-        <Card>
-          <Card.Body>
-            <Card.Title className="justify-center mb-2">Recuperar contraseña</Card.Title>
+        <Card title="Recuperar contraseña">
             <p className="text-center text-base-content/60 text-sm mb-4">
               Introduce tu email y te enviaremos un enlace para restablecer tu contraseña.
             </p>
@@ -78,10 +75,11 @@ export function ForgotPassword() {
               <>
                 <form onSubmit={handleSubmit}>
                   <div className="form-control mb-6">
-                    <label className="label">
+                    <label htmlFor="forgot-email" className="label">
                       <span className="label-text">Email</span>
                     </label>
                     <input
+                      id="forgot-email"
                       type="email"
                       placeholder="tu@email.com"
                       className="input input-bordered w-full"
@@ -113,7 +111,6 @@ export function ForgotPassword() {
                 </div>
               </>
             )}
-          </Card.Body>
         </Card>
       </div>
     </div>

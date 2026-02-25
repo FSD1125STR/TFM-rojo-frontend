@@ -1,4 +1,4 @@
-import { Badge } from './Badge'
+import { Badge } from './Badge';
 
 export default {
   title: 'UI/Badge',
@@ -80,7 +80,7 @@ export default {
       },
     },
   },
-}
+};
 
 export const Default = {
   args: {
@@ -96,7 +96,7 @@ export const Default = {
       "text": "#1d4ed8"
     },
   },
-}
+};
 
 export const ConIcono = {
   args: {
@@ -115,7 +115,7 @@ export const ConIcono = {
       },
     },
   },
-}
+};
 
 export const IconoDerecha = {
   args: {
@@ -134,7 +134,7 @@ export const IconoDerecha = {
       },
     },
   },
-}
+};
 
 export const EstiloPill = {
   args: {
@@ -153,7 +153,7 @@ export const EstiloPill = {
       },
     },
   },
-}
+};
 
 export const EstiloOutline = {
   args: {
@@ -172,7 +172,7 @@ export const EstiloOutline = {
       },
     },
   },
-}
+};
 
 export const PillOutline = {
   args: {
@@ -191,7 +191,7 @@ export const PillOutline = {
       },
     },
   },
-}
+};
 
 export const ColorPersonalizado = {
   args: {
@@ -211,7 +211,7 @@ export const ColorPersonalizado = {
       },
     },
   },
-}
+};
 
 export const ColorPersonalizadoOutline = {
   args: {
@@ -231,7 +231,7 @@ export const ColorPersonalizadoOutline = {
       },
     },
   },
-}
+};
 
 export const TamanoExtraPequeno = {
   args: {
@@ -250,7 +250,7 @@ export const TamanoExtraPequeno = {
       },
     },
   },
-}
+};
 
 export const TamanoPequeno = {
   args: {
@@ -269,7 +269,7 @@ export const TamanoPequeno = {
       },
     },
   },
-}
+};
 
 export const TamanoGrande = {
   args: {
@@ -288,11 +288,11 @@ export const TamanoGrande = {
       },
     },
   },
-}
+};
 
 export const TodasLasVariantes = {
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
+    <div className="flex flex-wrap gap-3 items-center">
       <Badge variant="default" icon="circle">Default</Badge>
       <Badge variant="primary" icon="star">Primary</Badge>
       <Badge variant="secondary" icon="favorite">Secondary</Badge>
@@ -311,11 +311,11 @@ export const TodasLasVariantes = {
       },
     },
   },
-}
+};
 
 export const TodosLosTamanos = {
   render: () => (
-    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+    <div className="flex gap-3 items-center">
       <Badge variant="primary" size="xs" icon="star">Extra Pequeño</Badge>
       <Badge variant="primary" size="sm" icon="star">Pequeño</Badge>
       <Badge variant="primary" size="md" icon="star">Mediano</Badge>
@@ -329,7 +329,7 @@ export const TodosLosTamanos = {
       },
     },
   },
-}
+};
 
 export const SinIcono = {
   args: {
@@ -348,31 +348,31 @@ export const SinIcono = {
       },
     },
   },
-}
+};
 
 export const CasosDeUso = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-        <span style={{ width: '100px', color: '#666' }}>Estados:</span>
+    <div className="flex flex-col gap-4">
+      <div className="flex gap-3 items-center">
+        <span className="w-[100px] text-base-content/60">Estados:</span>
         <Badge variant="success" icon="check_circle">Activo</Badge>
         <Badge variant="warning" icon="schedule">Pendiente</Badge>
         <Badge variant="error" icon="cancel">Cancelado</Badge>
       </div>
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-        <span style={{ width: '100px', color: '#666' }}>Roles:</span>
+      <div className="flex gap-3 items-center">
+        <span className="w-[100px] text-base-content/60">Roles:</span>
         <Badge variant="primary" icon="admin_panel_settings">Admin</Badge>
         <Badge variant="secondary" icon="edit">Editor</Badge>
         <Badge variant="neutral" icon="person">Usuario</Badge>
       </div>
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-        <span style={{ width: '100px', color: '#666' }}>Categorías:</span>
+      <div className="flex gap-3 items-center">
+        <span className="w-[100px] text-base-content/60">Categorías:</span>
         <Badge variant="info" icon="sports_soccer" pill>Fútbol</Badge>
         <Badge variant="info" icon="sports_basketball" pill>Baloncesto</Badge>
         <Badge variant="info" icon="sports_tennis" pill>Tenis</Badge>
       </div>
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-        <span style={{ width: '100px', color: '#666' }}>Custom:</span>
+      <div className="flex gap-3 items-center">
+        <span className="w-[100px] text-base-content/60">Custom:</span>
         <Badge variant="custom" icon="local_fire_department" customColor={{ bg: '#fee2e2', text: '#dc2626' }}>Urgente</Badge>
         <Badge variant="custom" icon="eco" customColor={{ bg: '#d1fae5', text: '#059669' }}>Eco</Badge>
         <Badge variant="custom" icon="diamond" customColor={{ bg: '#ede9fe', text: '#7c3aed' }}>Premium</Badge>
@@ -386,50 +386,52 @@ export const CasosDeUso = {
       },
     },
   },
-}
+};
 
 export const Tarjetas = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>
-        Ejemplo de uso de badges xs para tarjetas en historial de partidos:
+    <div className="flex flex-col gap-4">
+      <p className="m-0 text-sm text-base-content/60">
+        Tarjetas de fútbol con <code>shape=&quot;card&quot;</code> — rectángulo portrait como una tarjeta real:
       </p>
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>1</Badge>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>0</Badge>
-        <span style={{ color: '#666', fontSize: '14px', marginLeft: '8px' }}>← Sin tarjetas rojas</span>
+      <div className="flex gap-2 items-center">
+        <Badge variant="custom" shape="card" customColor={{ bg: '#F59E0B', text: '#fff' }}>1</Badge>
+        <span className="text-sm text-base-content/60 ml-2">&larr; 1 amarilla</span>
       </div>
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>2</Badge>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>1</Badge>
-        <span style={{ color: '#666', fontSize: '14px', marginLeft: '8px' }}>← 2 amarillas, 1 roja</span>
+      <div className="flex gap-2 items-center">
+        <Badge variant="custom" shape="card" customColor={{ bg: '#F59E0B', text: '#fff' }}>2</Badge>
+        <Badge variant="custom" shape="card" customColor={{ bg: '#EF4444', text: '#fff' }}>1</Badge>
+        <span className="text-sm text-base-content/60 ml-2">&larr; 2 amarillas, 1 roja</span>
       </div>
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fef9c3', text: '#ca8a04' }}>0</Badge>
-        <Badge variant="custom" size="xs" icon="square" customColor={{ bg: '#fecaca', text: '#dc2626' }}>0</Badge>
-        <span style={{ color: '#666', fontSize: '14px', marginLeft: '8px' }}>← Sin tarjetas</span>
+      <div className="flex gap-2 items-center">
+        <Badge variant="custom" shape="card" customColor={{ bg: '#F59E0B', text: '#fff' }}>3</Badge>
+        <span className="text-sm text-base-content/60 ml-2">&larr; Solo amarillas</span>
+      </div>
+      <div className="flex gap-2 items-center">
+        <Badge variant="custom" shape="card" customColor={{ bg: '#EF4444', text: '#fff' }}>1</Badge>
+        <span className="text-sm text-base-content/60 ml-2">&larr; Solo roja</span>
       </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Ejemplo de badges en tamaño xs para mostrar tarjetas amarillas y rojas en tablas de historial.',
+        story: 'Tarjetas de fútbol usando shape="card" — rectángulo portrait (16×22px) que imita el aspecto de una tarjeta real. Se usa en el listado de jugadores.',
       },
     },
   },
-}
+};
 
 export const IconosDisponibles = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>
+    <div className="flex flex-col gap-4">
+      <p className="m-0 text-sm text-base-content/60">
         Todos los iconos de Material Symbols utilizados en el proyecto:
       </p>
 
-      <div style={{ marginTop: '8px' }}>
-        <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Navegación / Menú</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      <div className="mt-2">
+        <p className="mb-2 text-[13px] font-semibold text-base-content/80">Navegación / Menú</p>
+        <div className="flex flex-wrap gap-2">
           {['home', 'menu', 'close', 'arrow_back', 'arrow_forward', 'group', 'groups', 'assignment', 'cell_tower', 'manage_accounts', 'notifications'].map((iconName) => (
             <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
@@ -437,8 +439,8 @@ export const IconosDisponibles = {
       </div>
 
       <div>
-        <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Contacto / Información</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <p className="mb-2 text-[13px] font-semibold text-base-content/80">Contacto / Información</p>
+        <div className="flex flex-wrap gap-2">
           {['calendar_month', 'calendar_today', 'mail', 'phone', 'location_on', 'bolt', 'cake', 'tag', 'info', 'help'].map((iconName) => (
             <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
@@ -446,8 +448,8 @@ export const IconosDisponibles = {
       </div>
 
       <div>
-        <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Acciones</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <p className="mb-2 text-[13px] font-semibold text-base-content/80">Acciones</p>
+        <div className="flex flex-wrap gap-2">
           {['edit', 'delete', 'add', 'remove', 'save', 'send', 'download', 'archive', 'visibility', 'content_copy', 'swap_horiz', 'search', 'settings'].map((iconName) => (
             <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
@@ -455,8 +457,8 @@ export const IconosDisponibles = {
       </div>
 
       <div>
-        <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Usuarios</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <p className="mb-2 text-[13px] font-semibold text-base-content/80">Usuarios</p>
+        <div className="flex flex-wrap gap-2">
           {['person', 'person_add', 'person_off', 'admin_panel_settings', 'logout', 'badge'].map((iconName) => (
             <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
@@ -464,8 +466,8 @@ export const IconosDisponibles = {
       </div>
 
       <div>
-        <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Estados</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <p className="mb-2 text-[13px] font-semibold text-base-content/80">Estados</p>
+        <div className="flex flex-wrap gap-2">
           {['check_circle', 'cancel', 'warning', 'error', 'schedule', 'pause_circle', 'block', 'healing', 'delete_forever', 'gavel'].map((iconName) => (
             <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
@@ -473,8 +475,8 @@ export const IconosDisponibles = {
       </div>
 
       <div>
-        <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Datos / Estadísticas</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <p className="mb-2 text-[13px] font-semibold text-base-content/80">Datos / Estadísticas</p>
+        <div className="flex flex-wrap gap-2">
           {['bar_chart', 'trending_up', 'history', 'emoji_events', 'target'].map((iconName) => (
             <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
@@ -482,8 +484,8 @@ export const IconosDisponibles = {
       </div>
 
       <div>
-        <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Deportes</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <p className="mb-2 text-[13px] font-semibold text-base-content/80">Deportes</p>
+        <div className="flex flex-wrap gap-2">
           {['sports_soccer', 'sports_handball', 'sports_basketball', 'sports_tennis', 'shield', 'sync_alt'].map((iconName) => (
             <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
@@ -491,15 +493,15 @@ export const IconosDisponibles = {
       </div>
 
       <div>
-        <p style={{ margin: '0 0 8px 0', color: '#333', fontSize: '13px', fontWeight: 600 }}>Formas / Decoración</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <p className="mb-2 text-[13px] font-semibold text-base-content/80">Formas / Decoración</p>
+        <div className="flex flex-wrap gap-2">
           {['star', 'favorite', 'circle', 'square', 'diamond', 'label', 'palette', 'brush', 'eco', 'local_fire_department'].map((iconName) => (
             <Badge key={iconName} variant="neutral" size="sm" icon={iconName}>{iconName}</Badge>
           ))}
         </div>
       </div>
 
-      <p style={{ margin: '8px 0 0 0', color: '#999', fontSize: '12px' }}>
+      <p className="mt-2 text-xs text-base-content/40">
         Ver más iconos en: <a href="https://fonts.google.com/icons" target="_blank" rel="noopener noreferrer">fonts.google.com/icons</a>
       </p>
     </div>
@@ -511,4 +513,4 @@ export const IconosDisponibles = {
       },
     },
   },
-}
+};

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const TabsProps = {
   tabs: PropTypes.arrayOf(
@@ -9,4 +9,4 @@ export const TabsProps = {
   ).isRequired,
   activeTab: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-}
+};

@@ -1,4 +1,4 @@
-import { BadgeProps } from './Badge.props'
+import { BadgeProps } from './Badge.props';
 
 const variantColors = {
   default: { bg: 'oklch(92% 0.02 260)', text: 'oklch(40% 0.02 260)' },
@@ -10,14 +10,14 @@ const variantColors = {
   info: { bg: 'oklch(88% 0.10 230)', text: 'oklch(45% 0.15 230)' },
   neutral: { bg: 'oklch(90% 0.02 260)', text: 'oklch(40% 0.02 260)' },
   custom: null,
-}
+};
 
 const sizeConfig = {
   xs: { padding: '2px 6px', fontSize: '11px', iconSize: '12px', minWidth: '36px' },
   sm: { padding: '4px 10px', fontSize: '12px', iconSize: '14px', minWidth: '90px' },
   md: { padding: '6px 14px', fontSize: '14px', iconSize: '18px', minWidth: '100px' },
   lg: { padding: '8px 18px', fontSize: '16px', iconSize: '22px', minWidth: '120px' },
-}
+};
 
 export function Badge({
   children,
@@ -29,12 +29,25 @@ export function Badge({
   outline = false,
   customColor = { bg: '#e0e0e0', text: '#333333' },
   minWidth,
+  shape = 'default',
   className = '',
 }) {
   const colors = variant === 'custom'
     ? customColor
-    : (variantColors[variant] || variantColors.default)
-  const sizes = sizeConfig[size] || sizeConfig.md
+    : (variantColors[variant] || variantColors.default);
+  const sizes = sizeConfig[size] || sizeConfig.md;
+
+  const cardStyle = shape === 'card' ? {
+    width: '16px',
+    height: '22px',
+    padding: '2px',
+    minWidth: 'unset',
+    borderRadius: '3px',
+    fontSize: '10px',
+    fontWeight: 700,
+    gap: 0,
+    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+  } : {};
 
   const style = {
     display: 'inline-flex',
@@ -51,7 +64,8 @@ export function Badge({
     color: colors.text,
     border: outline ? `2px solid ${colors.text}` : 'none',
     whiteSpace: 'nowrap',
-  }
+    ...cardStyle,
+  };
 
   return (
     <span test-id="el-b1a2d3g4" className={className} style={style}>
@@ -65,9 +79,9 @@ export function Badge({
       )}
       <span>{children}</span>
     </span>
-  )
+  );
 }
 
-Badge.propTypes = BadgeProps
+Badge.propTypes = BadgeProps;
 
-export default Badge
+export default Badge;

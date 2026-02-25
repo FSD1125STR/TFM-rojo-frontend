@@ -1,4 +1,4 @@
-import { Icon } from './Icon'
+import { Icon } from './Icon';
 
 export default {
   title: 'UI/Icon',
@@ -9,27 +9,27 @@ export default {
       options: ['sm', 'md', 'lg'],
     },
   },
-}
+};
 
 export const Default = {
   args: {
     name: 'home',
   },
-}
+};
 
 export const Small = {
   args: {
     name: 'settings',
     size: 'sm',
   },
-}
+};
 
 export const Large = {
   args: {
     name: 'sports_soccer',
     size: 'lg',
   },
-}
+};
 
 export const AllIcons = {
   render: () => (
@@ -57,4 +57,4 @@ export const AllIcons = {
       ))}
     </div>
   ),
-}
+};

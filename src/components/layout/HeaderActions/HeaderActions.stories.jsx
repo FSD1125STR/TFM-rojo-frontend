@@ -1,10 +1,10 @@
-import { HeaderActions } from './HeaderActions'
-import { Button } from '../../ui/Button/Button'
+import { HeaderActions } from './HeaderActions';
+import { Button } from '../../ui/Button/Button';
 
 export default {
   title: 'Layout/HeaderActions',
   component: HeaderActions,
-}
+};
 
 export const Default = {
   args: {
@@ -15,10 +15,10 @@ export const Default = {
       </>
     ),
   },
-}
+};
 
 export const SingleAction = {
   args: {
     children: <Button variant="primary" size="sm">Nueva convocatoria</Button>,
   },
-}
+};

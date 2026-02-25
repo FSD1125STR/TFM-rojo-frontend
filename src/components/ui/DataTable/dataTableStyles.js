@@ -79,10 +79,10 @@ export const tableStyles = {
       color: 'color-mix(in oklch, var(--color-base-content) 60%, transparent)',
     },
   },
-}
+};
 
 export const defaultPaginationOptions = {
   rowsPerPageText: 'Filas por página:',
   rangeSeparatorText: 'de',
   selectAllRowsItem: false,
-}
+};

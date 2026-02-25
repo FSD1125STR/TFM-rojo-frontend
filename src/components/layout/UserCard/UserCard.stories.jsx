@@ -1,4 +1,4 @@
-import { UserCard } from './UserCard'
+import { UserCard } from './UserCard';
 
 export default {
   title: 'Layout/UserCard',
@@ -9,34 +9,34 @@ export default {
       options: ['default', 'compact'],
     },
   },
-}
+};
 
 const user = {
   name: 'Dani Rodríguez',
   role: 'Entrenador',
   avatar: null,
-}
+};
 
 export const Default = {
   args: {
     user,
     variant: 'default',
   },
-}
+};
 
 export const Compact = {
   args: {
     user,
     variant: 'compact',
   },
-}
+};
 
 export const Collapsed = {
   args: {
     user,
     collapsed: true,
   },
-}
+};
 
 export const WithAvatar = {
   args: {
@@ -45,4 +45,4 @@ export const WithAvatar = {
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Dani',
     },
   },
-}
+};

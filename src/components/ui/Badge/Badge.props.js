@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export const BadgeProps = {
   children: PropTypes.node.isRequired,
@@ -13,5 +13,6 @@ export const BadgeProps = {
     text: PropTypes.string,
   }),
   minWidth: PropTypes.string,
+  shape: PropTypes.oneOf(['default', 'card']),
   className: PropTypes.string,
-}
+};

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useSearchParams, Link, Navigate } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { Button } from '../components/ui/Button/Button';
-import { Card } from '../components/ui/Card/Card';
-import { Icon } from '../components/ui/Icon/Icon';
+import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
+import { Icon } from '../components/ui/Icon';
 import { showError } from '../utils/alerts';
 import logoHorizontal from '../assets/logo-horizontal.png';
 
@@ -66,9 +66,7 @@ export function ResetPassword() {
           <h1 className="text-2xl font-bold text-base-content">FootMind</h1>
         </div>
 
-        <Card>
-          <Card.Body>
-            <Card.Title className="justify-center mb-2">Nueva contraseña</Card.Title>
+        <Card title="Nueva contraseña">
             <p className="text-center text-base-content/60 text-sm mb-4">
               Introduce tu nueva contraseña.
             </p>
@@ -91,10 +89,11 @@ export function ResetPassword() {
               <>
                 <form onSubmit={handleSubmit}>
                   <div className="form-control mb-4">
-                    <label className="label">
+                    <label htmlFor="new-password" className="label">
                       <span className="label-text">Nueva contraseña</span>
                     </label>
                     <input
+                      id="new-password"
                       type="password"
                       placeholder="••••••••"
                       className="input input-bordered w-full"
@@ -106,10 +105,11 @@ export function ResetPassword() {
                   </div>
 
                   <div className="form-control mb-6">
-                    <label className="label">
+                    <label htmlFor="confirm-password" className="label">
                       <span className="label-text">Confirmar contraseña</span>
                     </label>
                     <input
+                      id="confirm-password"
                       type="password"
                       placeholder="••••••••"
                       className="input input-bordered w-full"
@@ -141,7 +141,6 @@ export function ResetPassword() {
                 </div>
               </>
             )}
-          </Card.Body>
         </Card>
       </div>
     </div>
