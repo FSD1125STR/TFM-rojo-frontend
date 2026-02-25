@@ -10,7 +10,7 @@ import {
 
 export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarRecuperado, isAdmin }) {
   const w = isAdmin
-    ? { name: '24%', dorsal: '9%', catPos: '15%', age: '8%', goals: '8%', cards: '10%', status: '15%' }
+    ? { name: '22%', dorsal: '9%', catPos: '15%', age: '8%', goals: '8%', cards: '10%', status: '15%' }
     : { name: '26%', dorsal: '10%', catPos: '16%', age: '9%', goals: '8%', cards: '10%', status: '12%' };
 
   const columns = [
