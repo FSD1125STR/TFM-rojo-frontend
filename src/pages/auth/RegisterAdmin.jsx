@@ -8,14 +8,13 @@ import { showError } from "../../utils/alerts";
 import { StrengthIndicator } from "./components/StrengthIndicator";
 import logoHorizontal from "../../assets/logo-horizontal.png";
 
-export function RegisterDelegado() {
+export function RegisterAdmin() {
   const navigate = useNavigate();
   const { register, isAuthenticated, isLoading: authLoading } = useAuth();
 
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phone: "",
     password: "",
     confirmPassword: "",
     registrationCode: "",
@@ -40,17 +39,20 @@ export function RegisterDelegado() {
     }
 
     if (formData.password.length < 8) {
-      showError("La contraseña es demasiado débil");
+      showError("La contraseña debe tener al menos 8 caracteres");
       return;
     }
 
     setIsLoading(true);
     try {
-      const { confirmPassword, ...dataToSubmit } = formData;
-      await register(dataToSubmit);
+      const { confirmPassword, ...payload } = formData;
+
+      await register(payload);
       navigate("/");
     } catch (err) {
-      showError(err.response?.data?.error || "Error en el registro");
+      showError(
+        err.response?.data?.error || "Error al registrar Administrador",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +68,7 @@ export function RegisterDelegado() {
           <img src={logoHorizontal} alt="FootMind" className="h-16 mx-auto" />
         </div>
 
-        <Card title="Nuevo Delegado">
+        <Card title="Nuevo Administrador">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-control">
               <label className="label">
@@ -75,7 +77,7 @@ export function RegisterDelegado() {
               <input
                 name="fullName"
                 type="text"
-                className="input input-bordered"
+                className="input input-bordered w-full"
                 onChange={handleChange}
                 required
               />
@@ -83,12 +85,13 @@ export function RegisterDelegado() {
 
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Email</span>
+                <span className="label-text">Email profesional</span>
               </label>
               <input
                 name="email"
                 type="email"
-                className="input input-bordered"
+                placeholder="tu@email.com"
+                className="input input-bordered w-full"
                 onChange={handleChange}
                 required
               />
@@ -97,14 +100,14 @@ export function RegisterDelegado() {
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-bold text-primary">
-                  Código de Club
+                  Código de Registro Club
                 </span>
               </label>
               <input
                 name="registrationCode"
                 type="text"
                 placeholder="VCF-XXXX-XXXX"
-                className="input input-bordered border-primary"
+                className="input input-bordered border-primary w-full"
                 onChange={handleChange}
                 required
               />
@@ -118,13 +121,14 @@ export function RegisterDelegado() {
                 <input
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  className="input input-bordered w-full"
+                  placeholder="••••••••"
+                  className="input input-bordered w-full pr-10"
                   onChange={handleChange}
                   required
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  className="absolute top-0 right-0 h-full px-3 flex items-center text-base-content/50 hover:text-base-content transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   <Icon
@@ -145,7 +149,8 @@ export function RegisterDelegado() {
               <input
                 name="confirmPassword"
                 type="password"
-                className={`input input-bordered ${formData.confirmPassword && formData.password !== formData.confirmPassword ? "input-error" : ""}`}
+                placeholder="••••••••"
+                className={`input input-bordered w-full ${formData.confirmPassword && formData.password !== formData.confirmPassword ? "input-error" : ""}`}
                 onChange={handleChange}
                 required
               />
@@ -154,15 +159,15 @@ export function RegisterDelegado() {
             <Button
               type="submit"
               variant="primary"
-              className="w-full"
+              className="w-full mt-4"
               isLoading={isLoading}
             >
-              Registrarse
+              Registrar Administrador
             </Button>
           </form>
 
           <div className="text-center mt-6">
-            <Link to="/login" className="link link-hover text-sm opacity-70">
+            <Link to="/login" className="link link-hover text-sm opacity-60">
               ¿Ya tienes cuenta? Inicia sesión
             </Link>
           </div>
