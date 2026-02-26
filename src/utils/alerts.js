@@ -65,6 +65,20 @@ export const showInputPrompt = ({ title, text, input = 'text', inputValue = '', 
   }).then((result) => ({ isConfirmed: result.isConfirmed, value: result.value }));
 };
 
+export const showConfirmInModal = (message, title = '¿Estás seguro?') => {
+  return Swal.fire({
+    icon: 'warning',
+    title,
+    text: message,
+    showCancelButton: true,
+    confirmButtonColor: PRIMARY_BUTTON_COLOR,
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Confirmar',
+    cancelButtonText: 'Cancelar',
+    target: document.querySelector('dialog[open]'),
+  }).then((result) => result.isConfirmed);
+};
+
 export const showConfirm = (message, title = '¿Estás seguro?') => {
   return Swal.fire({
     icon: 'warning',

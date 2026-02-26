@@ -17,6 +17,7 @@ import { PlayersList, PlayerDetail } from './pages/players';
 import { MatchesList, MatchDetail } from './pages/matches';
 import { CallupsList, CallupDetail } from './pages/callups';
 import { UsersList, UserDetail } from './pages/users';
+import { TeamsList } from './pages/teams';
 import { LiveMatch } from './pages/LiveMatch';
 
 function AppRoutes() {
@@ -66,6 +67,11 @@ function AppRoutes() {
           <Route element={<ProtectedRoute permission="users.view" />}>
             <Route path="/usuarios" element={<UsersList />} />
             <Route path="/usuarios/:id" element={<UserDetail />} />
+          </Route>
+
+          {/* Rutas con permiso de equipos */}
+          <Route element={<ProtectedRoute permission="teams.create" />}>
+            <Route path="/equipos" element={<TeamsList />} />
           </Route>
 
           {/* Ruta con permiso de partido en directo */}

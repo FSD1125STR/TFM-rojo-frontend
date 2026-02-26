@@ -133,6 +133,7 @@ export function DataTable({
   paginationRowsPerPageOptions = [5, 10, 20, 50],
   onRowClick,
   className = '',
+  conditionalRowStyles = [],
   searchable = false,
   searchPlaceholder = 'Buscar...',
   searchKeys = [],
@@ -259,6 +260,7 @@ export function DataTable({
           progressPending={isLoading}
           progressComponent={<LoadingComponent />}
           noDataComponent={<NoDataComponent message={emptyMessage} />}
+          conditionalRowStyles={conditionalRowStyles}
           pointerOnHover={!!onRowClick}
           onRowClicked={onRowClick}
           responsive
