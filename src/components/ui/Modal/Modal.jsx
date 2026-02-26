@@ -22,6 +22,7 @@ export function Modal({
 }) {
   const modalRef = useRef(null);
   const titleId = useId();
+  const subtitleId = useId();
 
   useEffect(() => {
     const dialog = modalRef.current;
@@ -60,6 +61,7 @@ export function Modal({
       className={`modal ${className}`}
       onClick={handleBackdropClick}
       aria-labelledby={title ? titleId : undefined}
+      aria-describedby={subtitle ? subtitleId : undefined}
     >
       <div className={`modal-box ${sizeClasses[size] || sizeClasses.md} w-[95%] p-0 rounded-2xl overflow-visible`}>
         {title && (
@@ -72,7 +74,7 @@ export function Modal({
               )}
               <div>
                 <h3 id={titleId} className="text-lg font-bold">{title}</h3>
-                {subtitle && <p className="text-xs text-base-content/60">{subtitle}</p>}
+                {subtitle && <p id={subtitleId} className="text-xs text-base-content/60">{subtitle}</p>}
               </div>
             </div>
             <IconButton icon="close" size="sm" ariaLabel="Cerrar" onClick={() => onClose?.()} />
