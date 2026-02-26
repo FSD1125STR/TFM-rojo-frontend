@@ -152,15 +152,6 @@ export function Login() {
               Crear cuenta nueva
             </Button>
           </Link>
-
-          <div className="text-center mt-4">
-            <Link
-              to="/forgot-password"
-              className="link link-hover text-sm text-base-content/70"
-            >
-              ¿Olvidaste tu contraseña?
-            </Link>
-          </div>
         </Card>
       </div>
     </div>
