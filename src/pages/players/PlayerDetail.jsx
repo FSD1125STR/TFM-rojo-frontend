@@ -20,14 +20,19 @@ import { DataTable } from '../../components/ui/DataTable';
 import { ModalPlayer } from './components/ModalPlayer';
 import { usePlayerDetailTable } from './hooks/usePlayerDetailTable';
 import { usePermissions } from '../../hooks/usePermissions';
-import { getPlayerById } from '../../services/playersService';
+import { getPlayerById, getPlayerMatches } from '../../services/playersService';
 import {
-  historialTabs,
-  historialPartidosData,
   formatFecha,
   posicionConfig,
   estadoConfig,
 } from './data/mockData';
+
+const historialTabs = [
+  { value: 'todos', label: 'Todos' },
+  { value: 'ultimos5', label: 'Últimos 5' },
+  { value: 'casa', label: 'Casa' },
+  { value: 'fuera', label: 'Fuera' },
+];
 
 export function PlayerDetail() {
   const { id } = useParams();
@@ -36,6 +41,8 @@ export function PlayerDetail() {
 
   const [jugador, setJugador] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [historial, setHistorial] = useState([]);
+  const [loadingHistorial, setLoadingHistorial] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('todos');
 
@@ -44,11 +51,16 @@ export function PlayerDetail() {
       .then(setJugador)
       .catch(console.error)
       .finally(() => setLoading(false));
+
+    getPlayerMatches(id)
+      .then(setHistorial)
+      .catch(console.error)
+      .finally(() => setLoadingHistorial(false));
   }, [id]);
 
   const historialCompleto = useMemo(
-    () => (historialPartidosData[id] ?? []).slice().reverse(),
-    [id]
+    () => [...historial].reverse(),
+    [historial]
   );
 
   const historialFiltrado = useMemo(() => {
@@ -98,8 +110,6 @@ export function PlayerDetail() {
   };
 
   const fechaNacimientoFormateada = formatFecha(jugador.birthDate);
-
-  const asistencias = jugador.assists ?? jugador.asistencias ?? 0;
 
   const promedioMinutos = jugador.matchesPlayed > 0
     ? Math.round(jugador.minutesPlayed / jugador.matchesPlayed)
@@ -162,6 +172,7 @@ export function PlayerDetail() {
                 <Badge
                   variant="custom"
                   size="sm"
+                  minWidth="140px"
                   icon={posicionConfig[jugador.position]?.icon}
                   customColor={posicionConfig[jugador.position]?.color}
                 >
@@ -181,6 +192,7 @@ export function PlayerDetail() {
                     <Badge
                       variant={estadoConfig[jugador.status]?.variant || 'neutral'}
                       size="sm"
+                      minWidth="140px"
                       icon={estadoConfig[jugador.status]?.icon}
                     >
                       {jugador.status}
@@ -190,6 +202,7 @@ export function PlayerDetail() {
                   <Badge
                     variant={estadoConfig[jugador.status]?.variant || 'neutral'}
                     size="sm"
+                    minWidth="140px"
                     icon={estadoConfig[jugador.status]?.icon}
                   >
                     {jugador.status}
@@ -202,11 +215,10 @@ export function PlayerDetail() {
 
         <Card title="Estadísticas de la Temporada" icon="trending_up">
           {/* Fila de stats principales */}
-          <div className="grid grid-cols-6 gap-4 mb-5">
+          <div className="grid grid-cols-5 gap-4 mb-5">
             <StatBox value={jugador.matchesPlayed} label="Partidos" />
             <StatBox value={jugador.minutesPlayed} label="Minutos" />
             <StatBox value={jugador.goals} label="Goles" />
-            <StatBox value={asistencias} label="Asistencias" color="green" />
             <StatBox value={jugador.yellowCards} label="T. Amarillas" color="yellow" />
             <StatBox value={jugador.redCards} label="T. Rojas" color="red" />
           </div>
@@ -288,15 +300,44 @@ export function PlayerDetail() {
                           : payload.goles > 0
                             ? '#22c55e'
                             : '#6366f1';
-                      return <circle key={`dot-${cx}-${cy}`} cx={cx} cy={cy} r={4} fill={fill} stroke="none" />;
+                      const hasGoal = payload.goles > 0;
+                      const hasTarjeta = payload.tarjeta || payload.tarjetaRoja;
+                      const strokeColor = hasGoal && hasTarjeta ? '#22c55e' : 'none';
+                      const r = hasGoal && hasTarjeta ? 5 : 4;
+                      return <circle key={`dot-${cx}-${cy}`} cx={cx} cy={cy} r={r} fill={fill} stroke={strokeColor} strokeWidth={2} />;
                     }}
-                    activeDot={{ r: 5, fill: '#6366f1' }}
+                    activeDot={({ cx, cy, payload }) => {
+                      const fill = payload.tarjetaRoja
+                        ? '#ef4444'
+                        : payload.tarjeta
+                          ? '#f59e0b'
+                          : payload.goles > 0
+                            ? '#22c55e'
+                            : '#6366f1';
+                      const hasGoal = payload.goles > 0;
+                      const hasTarjeta = payload.tarjeta || payload.tarjetaRoja;
+                      const strokeColor = hasGoal && hasTarjeta ? '#22c55e' : 'none';
+                      return <circle key={`active-${cx}-${cy}`} cx={cx} cy={cy} r={6} fill={fill} stroke={strokeColor} strokeWidth={2} />;
+                    }}
                   />
                 </LineChart>
               </ResponsiveContainer>
-              <p className="text-xs text-base-content/40 mt-1 text-center">
-                Verde = gol · Amarillo = tarjeta · Rojo = expulsión
-              </p>
+              <div className="flex flex-wrap justify-center gap-3 mt-2">
+                {[
+                  { fill: '#22c55e', stroke: 'none', label: 'Gol' },
+                  { fill: '#f59e0b', stroke: 'none', label: 'Tarjeta' },
+                  { fill: '#ef4444', stroke: 'none', label: 'Expulsión' },
+                  { fill: '#f59e0b', stroke: '#22c55e', label: 'Tarjeta + Gol' },
+                  { fill: '#6366f1', stroke: 'none', label: 'Sin incidencias' },
+                ].map((item) => (
+                  <span key={item.label} className="inline-flex items-center gap-1 text-xs text-base-content/40">
+                    <svg width="10" height="10">
+                      <circle cx="5" cy="5" r={item.stroke !== 'none' ? 4 : 4} fill={item.fill} stroke={item.stroke} strokeWidth={item.stroke !== 'none' ? 1.5 : 0} />
+                    </svg>
+                    {item.label}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
         </Card>
@@ -307,7 +348,11 @@ export function PlayerDetail() {
           <div className="mb-4">
             <Tabs tabs={historialTabs} activeTab={activeTab} onChange={setActiveTab} />
           </div>
-          {historialFiltrado.length > 0 ? (
+          {loadingHistorial ? (
+            <div className="py-10 text-center text-base-content/50">
+              Cargando historial...
+            </div>
+          ) : historialFiltrado.length > 0 ? (
             <DataTable columns={historialColumns} data={historialFiltrado} />
           ) : (
             <div className="py-10 text-center text-base-content/50">

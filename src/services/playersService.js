@@ -12,6 +12,11 @@ export async function getPlayerById(id) {
   return data;
 }
 
+export async function getPlayerMatches(id) {
+  const { data } = await api.get(`/players/${id}/matches`);
+  return data;
+}
+
 export async function getPlayersKpis(categoryId) {
   const params = {};
   if (categoryId) params.categoryId = categoryId;

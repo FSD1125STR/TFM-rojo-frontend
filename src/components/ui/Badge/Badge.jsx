@@ -29,6 +29,7 @@ export function Badge({
   outline = false,
   customColor = { bg: '#e0e0e0', text: '#333333' },
   minWidth,
+  width,
   shape = 'default',
   className = '',
 }) {
@@ -57,7 +58,8 @@ export function Badge({
     fontWeight: 500,
     padding: sizes.padding,
     fontSize: sizes.fontSize,
-    minWidth: minWidth || sizes.minWidth,
+    minWidth: width ? undefined : (minWidth || sizes.minWidth),
+    ...(width && { width }),
     borderRadius: pill ? '9999px' : '6px',
     flexDirection: iconPosition === 'right' ? 'row-reverse' : 'row',
     backgroundColor: outline ? 'transparent' : colors.bg,
