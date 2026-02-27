@@ -7,25 +7,6 @@ import { usePermissions } from '../../hooks/usePermissions';
 import { getAdminTeams, createTeam, updateTeam, deleteTeam } from '../../services/teamsService';
 import { showConfirm, showToast, showError } from '../../utils/alerts';
 
-function groupTeamsByName(teams) {
-  const map = new Map();
-  teams.forEach((team) => {
-    const key = team.name;
-    if (!map.has(key)) {
-      map.set(key, {
-        ...team,
-        categories: team.categoryId ? [team.categoryId] : [],
-        _records: [team],
-      });
-    } else {
-      const group = map.get(key);
-      if (team.categoryId) group.categories.push(team.categoryId);
-      group._records.push(team);
-    }
-  });
-  return Array.from(map.values());
-}
-
 export function TeamsList() {
   const { checkPermission } = usePermissions();
   const canCreate = checkPermission('teams.create');
@@ -37,10 +18,10 @@ export function TeamsList() {
   const [modalOpen, setModalOpen] = useState(false);
   const [teamSeleccionado, setTeamSeleccionado] = useState(null);
 
-  const groupedTeams = useMemo(() => {
-    const grouped = groupTeamsByName(teams);
-    return grouped.sort((a, b) => (b.isOurTeam ? 1 : 0) - (a.isOurTeam ? 1 : 0));
-  }, [teams]);
+  const sortedTeams = useMemo(
+    () => [...teams].sort((a, b) => (b.isOurTeam ? 1 : 0) - (a.isOurTeam ? 1 : 0)),
+    [teams]
+  );
 
   const loadTeams = () => {
     setIsLoading(true);
@@ -59,42 +40,22 @@ export function TeamsList() {
     setModalOpen(true);
   };
 
-  const handleEditar = (group) => {
-    setTeamSeleccionado(group);
+  const handleEditar = (row) => {
+    setTeamSeleccionado(row);
     setModalOpen(true);
   };
 
   const handleGuardar = async (datos) => {
     try {
+      const fd = new FormData();
+      fd.append('name', datos.name);
+      (datos.categoryIds || []).forEach((id) => fd.append('categoryIds', id));
+      if (datos.logo) fd.append('logo', datos.logo);
+
       if (teamSeleccionado) {
-        const records = teamSeleccionado._records;
-
-        // Primer registro: actualización completa (logo incluido)
-        const firstFd = new FormData();
-        firstFd.append('name', datos.name);
-        if (datos.logo) firstFd.append('logo', datos.logo);
-        const firstUpdated = await updateTeam(records[0]._id, firstFd);
-
-        // Registros restantes: solo campos de texto
-        if (records.length > 1) {
-          await Promise.all(
-            records.slice(1).map((record) => {
-              const fd = new FormData();
-              fd.append('name', datos.name);
-              // Propaga logoUrl/logoPublicId del primero vía campo de texto (sin re-subir)
-              if (firstUpdated.logoUrl) fd.append('logoUrl', firstUpdated.logoUrl);
-              if (firstUpdated.logoPublicId) fd.append('logoPublicId', firstUpdated.logoPublicId);
-              return updateTeam(record._id, fd);
-            })
-          );
-        }
-
+        await updateTeam(teamSeleccionado._id, fd);
         showToast('Equipo actualizado correctamente');
       } else {
-        const fd = new FormData();
-        fd.append('name', datos.name);
-        fd.append('categoryId', datos.categoryId);
-        if (datos.logo) fd.append('logo', datos.logo);
         await createTeam(fd);
         showToast('Equipo creado correctamente');
       }
@@ -103,29 +64,23 @@ export function TeamsList() {
       loadTeams();
     } catch (error) {
       console.error('Error saving team:', error);
-      showError(error?.response?.data?.message || 'Error al guardar el equipo');
+      showError(error?.response?.data?.error || error?.response?.data?.message || 'Error al guardar el equipo');
     }
   };
 
-  const handleEliminar = async (group) => {
-    const categoriasList = group.categories.map((c) => c.name || '').filter(Boolean).join(', ');
-    const msg = group._records.length > 1
-      ? `Se eliminará "${group.name}" de todas sus categorías (${categoriasList}). Esta acción no se puede deshacer.`
-      : `Se eliminará el equipo "${group.name}". Esta acción no se puede deshacer.`;
-
-    const confirmed = await showConfirm(msg, '¿Eliminar equipo?');
+  const handleEliminar = async (row) => {
+    const confirmed = await showConfirm(
+      `Se eliminará el equipo "${row.name}". Esta acción no se puede deshacer.`,
+      '¿Eliminar equipo?'
+    );
     if (!confirmed) return;
 
-    const results = await Promise.allSettled(
-      group._records.map((r) => deleteTeam(r._id))
-    );
-
-    const failures = results.filter((r) => r.status === 'rejected');
-    if (failures.length > 0) {
-      const msg = failures[0].reason?.response?.data?.message || 'Algunos registros no pudieron eliminarse';
-      showError(msg);
-    } else {
+    try {
+      await deleteTeam(row._id);
       showToast('Equipo eliminado correctamente');
+    } catch (error) {
+      const msg = error?.response?.data?.message || error?.response?.data?.error || 'No se pudo eliminar el equipo';
+      showError(msg);
     }
 
     loadTeams();
@@ -151,7 +106,7 @@ export function TeamsList() {
       <div className="mt-4">
         <DataTable
           columns={columns}
-          data={groupedTeams}
+          data={sortedTeams}
           actions={actions}
           conditionalRowStyles={[
             {

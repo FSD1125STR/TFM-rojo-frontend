@@ -18,7 +18,7 @@ export function ModalTeam({ isOpen = false, onClose, onSave, initialData = null 
         setFormData({
           ...TeamForm.INITIAL_DATA,
           name: initialData.name || '',
-          categoryId: initialData.categoryId?._id || initialData.categoryId || '',
+          categoryIds: (initialData.categoryIds || []).map((c) => c._id || c),
           logo: null,
         });
       } else {

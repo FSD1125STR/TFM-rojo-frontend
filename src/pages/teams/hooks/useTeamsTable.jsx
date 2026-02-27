@@ -18,7 +18,7 @@ export function useTeamsTable({ onEditar, onEliminar }) {
       sortable: true,
     },
     {
-      key: 'categories',
+      key: 'categoryIds',
       label: 'Categorías',
       render: (cats) => {
         if (!cats?.length) return <span className="pointer-events-none text-base-content/30">—</span>;

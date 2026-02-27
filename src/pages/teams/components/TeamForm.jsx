@@ -9,7 +9,6 @@ const INPUT_CLS = 'input input-bordered input-sm w-full bg-base-200/50 border-ba
 
 export function TeamForm({ formId, formData, onChange, onSubmit, initialData }) {
   const [categories, setCategories] = useState([]);
-  const isEditing = initialData !== null;
 
   useEffect(() => {
     getCategories().then((cats) => {
@@ -41,21 +40,20 @@ export function TeamForm({ formId, formData, onChange, onSubmit, initialData }) 
           />
         </div>
 
-        {!isEditing && (
-          <div className="form-control">
-            <label htmlFor="team-category" className="label py-1">
-              <span className={LABEL_CLS}>Categoría <span className="text-error">*</span></span>
-            </label>
-            <SearchableSelect
-              id="team-category"
-              options={categories}
-              value={formData.categoryId}
-              onChange={(val) => onChange('categoryId', val)}
-              placeholder="Seleccionar categoría"
-              required
-            />
-          </div>
-        )}
+        <div className="form-control">
+          <label htmlFor="team-category" className="label py-1">
+            <span className={LABEL_CLS}>Categorías <span className="text-error">*</span></span>
+          </label>
+          <SearchableSelect
+            id="team-category"
+            options={categories}
+            value={formData.categoryIds}
+            onChange={(vals) => onChange('categoryIds', vals)}
+            placeholder="Seleccionar categorías"
+            multiple
+            required
+          />
+        </div>
 
         <div className="form-control">
           <p id="team-logo-label" className={`${LABEL_CLS} mb-1`}>Logo del equipo</p>
@@ -64,7 +62,7 @@ export function TeamForm({ formId, formData, onChange, onSubmit, initialData }) 
             value={formData.logo}
             onChange={(file) => onChange('logo', file)}
             currentImageUrl={initialData?.logoUrl || ''}
-            accept="image/jpg,image/jpeg,image/png,image/webp"
+            accept="image/jpg,image/jpeg,image/png,image/webp,image/svg+xml"
           />
         </div>
       </div>
@@ -74,7 +72,7 @@ export function TeamForm({ formId, formData, onChange, onSubmit, initialData }) 
 
 TeamForm.INITIAL_DATA = {
   name: '',
-  categoryId: '',
+  categoryIds: [],
   logo: null,
 };
 
