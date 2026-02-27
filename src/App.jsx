@@ -25,6 +25,7 @@ import { MatchesList, MatchDetail } from "./pages/matches";
 import { CallupsList, CallupDetail } from "./pages/callups";
 import { UsersList, UserDetail } from "./pages/users";
 import { LiveMatch } from "./pages/LiveMatch";
+import { TeamsList } from "./pages/teams";
 
 function AppRoutes() {
   const location = useLocation();
