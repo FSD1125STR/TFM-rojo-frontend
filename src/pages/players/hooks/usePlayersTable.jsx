@@ -118,7 +118,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
       ? [{ key: 'category', placeholder: 'Todas las categorías', options: categoriaOptions }]
       : [{ key: 'position', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true }]
     ),
-    { key: 'estado', placeholder: 'Todos los estados', options: estadoOptions },
+    { key: 'status', placeholder: 'Todos los estados', options: estadoOptions },
   ];
 
   const searchConfig = {
