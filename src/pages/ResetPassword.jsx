@@ -53,7 +53,7 @@ export function ResetPassword() {
   };
 
   return (
-    <div test-id="el-reset1a2" className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+    <div test-id="el-r5s9t4w1" className="min-h-screen flex items-center justify-center bg-base-200 px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">

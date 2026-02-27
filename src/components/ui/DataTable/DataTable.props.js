@@ -56,6 +56,11 @@ export const DataTableProps = {
   searchable: PropTypes.bool,
   searchPlaceholder: PropTypes.string,
   searchKeys: PropTypes.arrayOf(PropTypes.string),
+  conditionalRowStyles: PropTypes.arrayOf(PropTypes.shape({
+    when: PropTypes.func.isRequired,
+    style: PropTypes.object,
+    classNames: PropTypes.arrayOf(PropTypes.string),
+  })),
   filters: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,

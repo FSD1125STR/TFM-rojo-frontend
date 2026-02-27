@@ -40,7 +40,7 @@ export function ForgotPassword() {
   };
 
   return (
-    <div test-id="el-forgot1a2" className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+    <div test-id="el-f7r3g8t2" className="min-h-screen flex items-center justify-center bg-base-200 px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">

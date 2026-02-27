@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { Icon } from '../Icon';
 import { SearchableSelectProps } from './SearchableSelect.props';
 
@@ -14,6 +14,7 @@ export function SearchableSelect({
   error = false,
   className = '',
 }) {
+  const listboxId = useId();
   const selectedOption = options.find((opt) => opt.value === value) || null;
   const [inputValue, setInputValue] = useState(selectedOption?.label ?? '');
   const [isOpen, setIsOpen] = useState(false);
@@ -87,12 +88,18 @@ export function SearchableSelect({
           required={required && !value}
           disabled={disabled}
           autoComplete="off"
+          role="combobox"
+          aria-expanded={showDropdown}
+          aria-haspopup="listbox"
+          aria-controls={showDropdown ? listboxId : undefined}
+          aria-autocomplete="list"
           className={`input input-bordered input-sm w-full bg-base-200 text-sm transition-all placeholder:text-base-content/40 focus:outline-none pl-9 pr-8 ${error ? 'border-error focus:border-error focus:ring-3 focus:ring-error/15' : 'border-base-300 focus:border-primary focus:ring-3 focus:ring-primary/15'}`}
         />
         {value && !disabled && (
           <button
             type="button"
             onClick={handleClear}
+            aria-label="Limpiar selección"
             className="absolute right-2.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center text-base-content/40 hover:text-base-content transition-colors"
             tabIndex={-1}
           >
@@ -102,9 +109,13 @@ export function SearchableSelect({
       </div>
 
       {showDropdown && (
-        <ul className="absolute z-50 w-full mt-1 bg-base-100 border border-base-300 rounded-lg shadow-lg max-h-48 overflow-y-auto py-1">
+        <ul
+          id={listboxId}
+          role="listbox"
+          className="absolute z-50 w-full mt-1 bg-base-100 border border-base-300 rounded-lg shadow-lg max-h-48 overflow-y-auto py-1"
+        >
           {filtered.map((opt) => (
-            <li key={opt.value}>
+            <li key={opt.value} role="option" aria-selected={opt.value === value}>
               <button
                 type="button"
                 className="w-full text-left px-3 py-2 text-sm hover:bg-primary/10 hover:text-primary transition-colors"

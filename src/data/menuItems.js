@@ -4,5 +4,6 @@ export const menuItems = [
   { label: 'Convocatorias', to: '/convocatorias', icon: 'assignment', permission: 'callups.view' },
   { label: 'Partidos', to: '/partidos', icon: 'sports_soccer', permission: 'matches.view' },
   { label: 'Partido en directo', to: '/directo', icon: 'cell_tower', permission: 'live.update' },
+  { label: 'Equipos', to: '/equipos', icon: 'shield', permission: 'teams.create' },
   { label: 'Usuarios', to: '/usuarios', icon: 'manage_accounts', permission: 'users.view' },
 ];

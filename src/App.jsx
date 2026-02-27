@@ -76,6 +76,11 @@ function AppRoutes() {
             <Route path="/usuarios/:id" element={<UserDetail />} />
           </Route>
 
+          {/* Rutas con permiso de equipos */}
+          <Route element={<ProtectedRoute permission="teams.create" />}>
+            <Route path="/equipos" element={<TeamsList />} />
+          </Route>
+
           {/* Ruta con permiso de partido en directo */}
           <Route element={<ProtectedRoute permission="live.update" />}>
             <Route path="/directo" element={<LiveMatch />} />

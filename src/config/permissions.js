@@ -15,6 +15,10 @@ export const PERMISSIONS = {
   "live.update":      ["administrador", "delegado"],
   "stats.view":       ["administrador", "direccion", "entrenador", "delegado"],
   "categories.manage":["administrador"],
+  "teams.view":        ["administrador", "direccion", "entrenador", "delegado"],
+  "teams.create":      ["administrador"],
+  "teams.edit":        ["administrador"],
+  "teams.delete":      ["administrador"],
 };
 
 export function hasPermission(role, permission) {
