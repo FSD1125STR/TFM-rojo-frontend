@@ -5,18 +5,35 @@ import { FileUploadProps } from './FileUpload.props';
 export function FileUpload({ value = null, onChange, accept = 'image/*', currentImageUrl = '', disabled = false, 'aria-labelledby': ariaLabelledby }) {
   const inputRef = useRef(null);
   const [preview, setPreview] = useState(null);
+  const [isCleared, setIsCleared] = useState(false);
 
   useEffect(() => {
     if (value) {
       const url = URL.createObjectURL(value);
       setPreview(url);
+      setIsCleared(false);
       return () => URL.revokeObjectURL(url);
     } else {
       setPreview(null);
     }
   }, [value]);
 
-  const displayUrl = preview || currentImageUrl || null;
+  useEffect(() => {
+    setIsCleared(false);
+  }, [currentImageUrl]);
+
+  // Evita que el evento 'cancel' del file picker burbujee al <dialog> padre.
+  // onCancel de React no es suficiente porque el listener nativo del dialog
+  // se ejecuta antes de que React procese el evento sintético.
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    const stopCancel = (e) => e.stopPropagation();
+    input.addEventListener('cancel', stopCancel);
+    return () => input.removeEventListener('cancel', stopCancel);
+  }, []);
+
+  const displayUrl = isCleared ? null : (preview || currentImageUrl || null);
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
@@ -25,6 +42,7 @@ export function FileUpload({ value = null, onChange, accept = 'image/*', current
 
   const handleClear = (e) => {
     e.stopPropagation();
+    setIsCleared(true);
     onChange?.(null);
     if (inputRef.current) inputRef.current.value = '';
   };
@@ -65,14 +83,13 @@ export function FileUpload({ value = null, onChange, accept = 'image/*', current
           <Icon name="upload" className="text-[16px]" />
           {displayUrl ? 'Cambiar imagen' : 'Subir logo'}
         </button>
-        <span className="text-[11px] text-base-content/50">JPG, PNG o WebP. Max 5 MB.</span>
-        {/* sr-only en lugar de hidden: evita que el click programático dispare */}
-        {/* el evento cancel en el <dialog> padre al cerrarse el OS file picker  */}
+        <span className="text-[11px] text-base-content/50">JPG, PNG, WebP o SVG. Max 5 MB.</span>
         <input
           ref={inputRef}
           type="file"
           accept={accept}
           onChange={handleFileChange}
+          onCancel={(e) => e.stopPropagation()}
           disabled={disabled}
           aria-label="Seleccionar archivo de imagen"
           className="sr-only"

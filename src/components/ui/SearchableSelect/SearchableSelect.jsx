@@ -7,6 +7,7 @@ export function SearchableSelect({
   onChange,
   options = [],
   placeholder = 'Buscar...',
+  multiple = false,
   id,
   name,
   required = false,
@@ -15,62 +16,118 @@ export function SearchableSelect({
   className = '',
 }) {
   const listboxId = useId();
-  const selectedOption = options.find((opt) => opt.value === value) || null;
+
+  const selectedValues = multiple ? (Array.isArray(value) ? value : []) : [];
+  const selectedOption = !multiple ? (options.find((opt) => opt.value === value) || null) : null;
+
   const [inputValue, setInputValue] = useState(selectedOption?.label ?? '');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const opt = options.find((o) => o.value === value);
-    setInputValue(opt?.label ?? '');
-  }, [value, options]);
+    if (!multiple) {
+      const opt = options.find((o) => o.value === value);
+      setInputValue(opt?.label ?? '');
+    }
+  }, [value, options, multiple]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
-        const opt = options.find((o) => o.value === value);
-        setInputValue(opt?.label ?? '');
+        if (!multiple) {
+          const opt = options.find((o) => o.value === value);
+          setInputValue(opt?.label ?? '');
+        } else {
+          setInputValue('');
+        }
         setIsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [value, options]);
+  }, [value, options, multiple]);
 
-  const filtered = options.filter((opt) =>
-    opt.label.toLowerCase().includes(inputValue.toLowerCase())
-  );
+  const filtered = options.filter((opt) => {
+    const matchesSearch = opt.label.toLowerCase().includes(inputValue.toLowerCase());
+    const notSelected = !multiple || !selectedValues.includes(opt.value);
+    return matchesSearch && notSelected;
+  });
 
   const showDropdown = isOpen && filtered.length > 0;
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-    onChange('');
+    if (!multiple) onChange('');
     setIsOpen(true);
   };
 
   const handleSelect = (opt) => {
-    setInputValue(opt.label);
-    onChange(opt.value);
+    if (multiple) {
+      onChange([...selectedValues, opt.value]);
+      setInputValue('');
+    } else {
+      setInputValue(opt.label);
+      onChange(opt.value);
+    }
     setIsOpen(false);
+  };
+
+  const handleRemove = (val) => {
+    onChange(selectedValues.filter((v) => v !== val));
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
-      const opt = options.find((o) => o.value === value);
-      setInputValue(opt?.label ?? '');
+      if (!multiple) {
+        const opt = options.find((o) => o.value === value);
+        setInputValue(opt?.label ?? '');
+      } else {
+        setInputValue('');
+      }
       setIsOpen(false);
+    }
+    if (multiple && e.key === 'Backspace' && inputValue === '' && selectedValues.length > 0) {
+      onChange(selectedValues.slice(0, -1));
     }
   };
 
   const handleClear = () => {
     setInputValue('');
-    onChange('');
+    onChange(multiple ? [] : '');
     setIsOpen(false);
   };
 
+  const selectedOptions = multiple
+    ? selectedValues.map((v) => options.find((o) => o.value === v)).filter(Boolean)
+    : [];
+
+  const isRequired = required && (multiple ? selectedValues.length === 0 : !value);
+
   return (
     <div ref={containerRef} className={`relative ${className}`} test-id="el-s3a4b5c6">
+      {multiple && selectedOptions.length > 0 && (
+        <div className="flex flex-wrap gap-1 mb-1.5">
+          {selectedOptions.map((opt) => (
+            <span
+              key={opt.value}
+              className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-primary/15 text-primary rounded-full"
+            >
+              {opt.label}
+              {!disabled && (
+                <button
+                  type="button"
+                  onMouseDown={(e) => { e.preventDefault(); handleRemove(opt.value); }}
+                  aria-label={`Quitar ${opt.label}`}
+                  className="inline-flex items-center justify-center text-primary/70 hover:text-primary transition-colors"
+                >
+                  <Icon name="close" className="text-[12px]" />
+                </button>
+              )}
+            </span>
+          ))}
+        </div>
+      )}
+
       <div className="relative">
         <Icon
           name="search"
@@ -83,9 +140,10 @@ export function SearchableSelect({
           value={inputValue}
           onChange={handleInputChange}
           onFocus={() => setIsOpen(true)}
+          onClick={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          required={required && !value}
+          required={isRequired}
           disabled={disabled}
           autoComplete="off"
           role="combobox"
@@ -95,7 +153,7 @@ export function SearchableSelect({
           aria-autocomplete="list"
           className={`input input-bordered input-sm w-full bg-base-200 text-sm transition-all placeholder:text-base-content/40 focus:outline-none pl-9 pr-8 ${error ? 'border-error focus:border-error focus:ring-3 focus:ring-error/15' : 'border-base-300 focus:border-primary focus:ring-3 focus:ring-primary/15'}`}
         />
-        {value && !disabled && (
+        {!multiple && value && !disabled && (
           <button
             type="button"
             onClick={handleClear}
@@ -115,7 +173,7 @@ export function SearchableSelect({
           className="absolute z-50 w-full mt-1 bg-base-100 border border-base-300 rounded-lg shadow-lg max-h-48 overflow-y-auto py-1"
         >
           {filtered.map((opt) => (
-            <li key={opt.value} role="option" aria-selected={opt.value === value}>
+            <li key={opt.value} role="option" aria-selected={multiple ? selectedValues.includes(opt.value) : opt.value === value}>
               <button
                 type="button"
                 className="w-full text-left px-3 py-2 text-sm hover:bg-primary/10 hover:text-primary transition-colors"
