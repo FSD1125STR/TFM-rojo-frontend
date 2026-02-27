@@ -5,7 +5,7 @@ import { ModalTeam } from './components/ModalTeam';
 import { useTeamsTable } from './hooks/useTeamsTable';
 import { usePermissions } from '../../hooks/usePermissions';
 import { getAdminTeams, createTeam, updateTeam, deleteTeam } from '../../services/teamsService';
-import { showConfirm, showToast, showError } from '../../utils/alerts';
+import { showConfirm, showToast, showError, showErrorInModal } from '../../utils/alerts';
 
 function groupTeamsByName(teams) {
   const map = new Map();
@@ -68,34 +68,92 @@ export function TeamsList() {
     try {
       if (teamSeleccionado) {
         const records = teamSeleccionado._records;
+        const oldCategoryIds = records.map((r) => String(r.categoryId?._id || r.categoryId));
+        const newCategoryIds = datos.categoryIds;
 
-        // Primer registro: actualización completa (logo incluido)
-        const firstFd = new FormData();
-        firstFd.append('name', datos.name);
-        if (datos.logo) firstFd.append('logo', datos.logo);
-        const firstUpdated = await updateTeam(records[0]._id, firstFd);
+        const toUpdate = records.filter((r) => newCategoryIds.includes(String(r.categoryId?._id || r.categoryId)));
+        const toDelete = records.filter((r) => !newCategoryIds.includes(String(r.categoryId?._id || r.categoryId)));
+        const toCreate = newCategoryIds.filter((id) => !oldCategoryIds.includes(id));
 
-        // Registros restantes: solo campos de texto
-        if (records.length > 1) {
-          await Promise.all(
-            records.slice(1).map((record) => {
-              const fd = new FormData();
-              fd.append('name', datos.name);
-              // Propaga logoUrl/logoPublicId del primero vía campo de texto (sin re-subir)
-              if (firstUpdated.logoUrl) fd.append('logoUrl', firstUpdated.logoUrl);
-              if (firstUpdated.logoPublicId) fd.append('logoPublicId', firstUpdated.logoPublicId);
-              return updateTeam(record._id, fd);
-            })
-          );
+        let logoUrl = teamSeleccionado.logoUrl || '';
+        let logoPublicId = teamSeleccionado.logoPublicId || '';
+
+        const removeLogo = datos.logo === false;
+        const newLogoFile = datos.logo instanceof File ? datos.logo : null;
+
+        // Actualizar registros existentes que se mantienen
+        if (toUpdate.length > 0) {
+          const firstFd = new FormData();
+          firstFd.append('name', datos.name);
+          if (newLogoFile) firstFd.append('logo', newLogoFile);
+          if (removeLogo) firstFd.append('removeLogo', 'true');
+          const firstUpdated = await updateTeam(toUpdate[0]._id, firstFd);
+          logoUrl = firstUpdated.logoUrl || '';
+          logoPublicId = firstUpdated.logoPublicId || '';
+
+          await Promise.all(toUpdate.slice(1).map((r) => {
+            const fd = new FormData();
+            fd.append('name', datos.name);
+            if (removeLogo) {
+              fd.append('removeLogo', 'true');
+            } else {
+              if (logoUrl) fd.append('logoUrl', logoUrl);
+              if (logoPublicId) fd.append('logoPublicId', logoPublicId);
+            }
+            return updateTeam(r._id, fd);
+          }));
+        }
+
+        // Eliminar registros de categorías quitadas
+        await Promise.all(toDelete.map((r) => deleteTeam(r._id)));
+
+        // Crear registros para nuevas categorías
+        if (toCreate.length > 0) {
+          const firstNewFd = new FormData();
+          firstNewFd.append('name', datos.name);
+          firstNewFd.append('categoryId', toCreate[0]);
+          if (newLogoFile && toUpdate.length === 0) firstNewFd.append('logo', newLogoFile);
+          else if (!removeLogo && logoUrl) firstNewFd.append('logoUrl', logoUrl);
+          if (!removeLogo && logoPublicId) firstNewFd.append('logoPublicId', logoPublicId);
+          const firstNew = await createTeam(firstNewFd);
+          const newLogoUrl = firstNew.logoUrl || logoUrl;
+          const newLogoPublicId = firstNew.logoPublicId || logoPublicId;
+
+          await Promise.all(toCreate.slice(1).map((catId) => {
+            const fd = new FormData();
+            fd.append('name', datos.name);
+            fd.append('categoryId', catId);
+            if (newLogoUrl) fd.append('logoUrl', newLogoUrl);
+            if (newLogoPublicId) fd.append('logoPublicId', newLogoPublicId);
+            return createTeam(fd);
+          }));
         }
 
         showToast('Equipo actualizado correctamente');
       } else {
-        const fd = new FormData();
-        fd.append('name', datos.name);
-        fd.append('categoryId', datos.categoryId);
-        if (datos.logo) fd.append('logo', datos.logo);
-        await createTeam(fd);
+        const { categoryIds, name, logo } = datos;
+        if (!categoryIds || categoryIds.length === 0) {
+          showErrorInModal('Selecciona al menos una categoría');
+          return;
+        }
+
+        // Crear primer registro con logo
+        const firstFd = new FormData();
+        firstFd.append('name', name);
+        firstFd.append('categoryId', categoryIds[0]);
+        if (logo instanceof File) firstFd.append('logo', logo);
+        const firstCreated = await createTeam(firstFd);
+
+        // Crear el resto propagando logo
+        await Promise.all(categoryIds.slice(1).map((catId) => {
+          const fd = new FormData();
+          fd.append('name', name);
+          fd.append('categoryId', catId);
+          if (firstCreated.logoUrl) fd.append('logoUrl', firstCreated.logoUrl);
+          if (firstCreated.logoPublicId) fd.append('logoPublicId', firstCreated.logoPublicId);
+          return createTeam(fd);
+        }));
+
         showToast('Equipo creado correctamente');
       }
 
@@ -103,7 +161,7 @@ export function TeamsList() {
       loadTeams();
     } catch (error) {
       console.error('Error saving team:', error);
-      showError(error?.response?.data?.message || 'Error al guardar el equipo');
+      showErrorInModal(error?.response?.data?.message || 'Error al guardar el equipo');
     }
   };
 

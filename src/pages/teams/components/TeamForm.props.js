@@ -4,7 +4,7 @@ export const TeamFormProps = {
   formId: PropTypes.string.isRequired,
   formData: PropTypes.shape({
     name: PropTypes.string,
-    categoryId: PropTypes.string,
+    categoryIds: PropTypes.arrayOf(PropTypes.string),
     logo: PropTypes.instanceOf(File),
   }).isRequired,
   onChange: PropTypes.func.isRequired,

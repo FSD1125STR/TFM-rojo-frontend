@@ -5,9 +5,16 @@ import { FileUploadProps } from './FileUpload.props';
 export function FileUpload({ value = null, onChange, accept = 'image/*', currentImageUrl = '', disabled = false, 'aria-labelledby': ariaLabelledby }) {
   const inputRef = useRef(null);
   const [preview, setPreview] = useState(null);
+  // isCleared: el usuario pulsó X sobre la imagen existente
+  const [isCleared, setIsCleared] = useState(false);
+
+  // Resetear isCleared cuando cambia la imagen base (modal reabierto)
+  useEffect(() => {
+    setIsCleared(false);
+  }, [currentImageUrl]);
 
   useEffect(() => {
-    if (value) {
+    if (value instanceof File) {
       const url = URL.createObjectURL(value);
       setPreview(url);
       return () => URL.revokeObjectURL(url);
@@ -16,16 +23,27 @@ export function FileUpload({ value = null, onChange, accept = 'image/*', current
     }
   }, [value]);
 
-  const displayUrl = preview || currentImageUrl || null;
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    const stopCancel = (e) => e.stopPropagation();
+    input.addEventListener('cancel', stopCancel);
+    return () => input.removeEventListener('cancel', stopCancel);
+  }, []);
+
+  // false = usuario quitó el logo existente; File = nuevo archivo; null = sin cambios
+  const displayUrl = isCleared ? null : (preview || currentImageUrl || null);
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
+    if (file) setIsCleared(false);
     onChange?.(file);
   };
 
   const handleClear = (e) => {
     e.stopPropagation();
-    onChange?.(null);
+    setIsCleared(true);
+    onChange?.(false); // false = quitar logo existente
     if (inputRef.current) inputRef.current.value = '';
   };
 
@@ -66,8 +84,6 @@ export function FileUpload({ value = null, onChange, accept = 'image/*', current
           {displayUrl ? 'Cambiar imagen' : 'Subir logo'}
         </button>
         <span className="text-[11px] text-base-content/50">JPG, PNG o WebP. Max 5 MB.</span>
-        {/* sr-only en lugar de hidden: evita que el click programático dispare */}
-        {/* el evento cancel en el <dialog> padre al cerrarse el OS file picker  */}
         <input
           ref={inputRef}
           type="file"
