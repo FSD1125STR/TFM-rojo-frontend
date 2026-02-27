@@ -40,6 +40,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
               <Badge
                 variant="custom"
                 size="sm"
+                width="140px"
                 icon={posicionConfig[value]?.icon}
                 customColor={posicionConfig[value]?.color}
               >
@@ -82,6 +83,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
           <Badge
             variant={estadoConfig[value]?.variant || 'neutral'}
             size="sm"
+            width="140px"
             icon={estadoConfig[value]?.icon}
           >
             {value}

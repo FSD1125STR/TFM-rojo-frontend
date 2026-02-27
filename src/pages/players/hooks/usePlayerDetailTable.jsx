@@ -29,7 +29,7 @@ export function usePlayerDetailTable() {
         }
 
         return (
-          <Badge variant={variant} size="sm">
+          <Badge variant={variant} size="xs" minWidth="40px">
             {row.golesA}-{row.golesB}
           </Badge>
         );
@@ -46,13 +46,6 @@ export function usePlayerDetailTable() {
       key: 'goles',
       label: 'Goles',
       width: '10%',
-      align: 'center',
-      render: (value) => <strong>{value}</strong>,
-    },
-    {
-      key: 'asistencias',
-      label: 'Asistencias',
-      width: '13%',
       align: 'center',
       render: (value) => <strong>{value}</strong>,
     },
