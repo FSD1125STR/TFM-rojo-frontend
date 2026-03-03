@@ -21,7 +21,12 @@ function getInitials(name) {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
-export function Avatar({ src, name, size = 'md', className = '' }) {
+const variantClasses = {
+  neutral: 'bg-neutral text-neutral-content',
+  primary: 'bg-primary text-primary-content',
+};
+
+export function Avatar({ src, name, size = 'md', variant = 'neutral', className = '' }) {
   const sizeClass = sizeClasses[size];
   const textSize = textSizeClasses[size];
 
@@ -37,7 +42,7 @@ export function Avatar({ src, name, size = 'md', className = '' }) {
 
   return (
     <div test-id="el-a1b2c3d4" className={`avatar placeholder ${className}`}>
-      <div className={`bg-neutral text-neutral-content ${sizeClass} rounded-full flex items-center justify-center`}>
+      <div className={`${variantClasses[variant]} ${sizeClass} rounded-full flex items-center justify-center`}>
         <span className={textSize}>{getInitials(name)}</span>
       </div>
     </div>
