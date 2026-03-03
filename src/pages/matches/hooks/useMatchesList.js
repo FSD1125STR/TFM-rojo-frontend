@@ -4,6 +4,7 @@ import { getMatches, createMatch, updateMatch, deleteMatch } from '../../../serv
 import { getCategories } from '../../../services/categoriesService';
 import { estadoOptions, tipoOptions } from '../data/matchesConfig';
 import { normalizeText } from '../../../utils/normalize';
+import { showConfirm } from '../../../utils/alerts';
 
 const sortOptions = [
   { label: 'Fecha (más reciente)', value: 'dateTime_desc' },
@@ -65,7 +66,20 @@ export function useMatchesList() {
   }, [fetchMatches]);
 
   const removeMatch = useCallback(async (id) => {
-    await deleteMatch(id);
+    try {
+      await deleteMatch(id);
+    } catch (err) {
+      if (err.response?.status === 409 && err.response?.data?.error === 'MATCH_HAS_CALLUP') {
+        const confirmed = await showConfirm(
+          'Este partido tiene una convocatoria asociada. Si lo eliminas, también se eliminará la convocatoria y todos sus datos.',
+          '¿Eliminar partido con convocatoria?'
+        );
+        if (!confirmed) return;
+        await deleteMatch(id, true);
+      } else {
+        throw err;
+      }
+    }
     await fetchMatches();
   }, [fetchMatches]);
 

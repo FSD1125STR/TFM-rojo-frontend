@@ -44,6 +44,6 @@ export async function updateMatch(id, payload) {
   return data;
 }
 
-export async function deleteMatch(id) {
-  await api.delete(`/matches/${id}`);
+export async function deleteMatch(id, force = false) {
+  await api.delete(`/matches/${id}${force ? '?force=true' : ''}`);
 }
