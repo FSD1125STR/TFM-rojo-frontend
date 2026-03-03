@@ -15,8 +15,9 @@ export function PlayersList() {
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
   const { isAdmin, user } = useAuth();
+  const isDireccion = user?.role === 'direccion';
   const categoryId = user?.categoryId?._id || user?.categoryId || null;
-  const kpis = usePlayersKpis(isAdmin ? null : categoryId);
+  const kpis = usePlayersKpis(isAdmin || isDireccion ? null : categoryId);
 
   const [jugadores, setJugadores] = useState([]);
 
@@ -38,8 +39,8 @@ export function PlayersList() {
   }, []);
 
   useEffect(() => {
-    getPlayers(isAdmin ? null : categoryId).then(setJugadores).catch(console.error);
-  }, [isAdmin, categoryId]);
+    getPlayers(isAdmin || isDireccion ? null : categoryId).then(setJugadores).catch(console.error);
+  }, [isAdmin, isDireccion, categoryId]);
 
   const handleNuevoJugador = () => {
     setJugadorSeleccionado(null);
@@ -75,7 +76,7 @@ export function PlayersList() {
       } else {
         await createPlayer(fd);
       }
-      const fresh = await getPlayers(isAdmin ? null : categoryId);
+      const fresh = await getPlayers(isAdmin || isDireccion ? null : categoryId);
       setJugadores(fresh);
       closeLoading();
       setModalOpen(false);
@@ -147,11 +148,13 @@ export function PlayersList() {
     showLoadingInModal('Dando de baja jugadores...');
     try {
       await Promise.all(selectedRows.map((j) => archivePlayer(j.id)));
-      const fresh = await getPlayers(isAdmin ? null : categoryId);
+      const fresh = await getPlayers(isAdmin || isDireccion ? null : categoryId);
       setJugadores(fresh);
       closeLoading();
       showToast(`${selectedRows.length} jugador(es) dado(s) de baja correctamente`);
     } catch (err) {
+      const fresh = await getPlayers(isAdmin || isDireccion ? null : categoryId).catch(() => null);
+      if (fresh) setJugadores(fresh);
       closeLoading();
       showError(err?.response?.data?.error || 'Error al dar de baja los jugadores');
     }
@@ -164,6 +167,7 @@ export function PlayersList() {
     onActivar: checkPermission('players.edit') ? handleActivar : undefined,
     onMarcarRecuperado: checkPermission('players.edit') ? handleMarcarRecuperado : undefined,
     isAdmin,
+    isDireccion,
   });
 
   const canCreate = checkPermission('players.create');
@@ -180,7 +184,7 @@ export function PlayersList() {
         })}
       />
 
-      {!isAdmin && <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+      {!isAdmin && !isDireccion && <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <StatsCard
           title="Disponibles"
           value={kpis?.available ?? '–'}

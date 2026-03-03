@@ -21,8 +21,9 @@ export function MatchesList() {
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
   const { isAdmin, user } = useAuth();
+  const isDireccion = user?.role === 'direccion';
   const categoryId = user?.categoryId?._id || user?.categoryId || null;
-  const kpis = useMatchesKpis(isAdmin ? null : categoryId);
+  const kpis = useMatchesKpis(isAdmin || isDireccion ? null : categoryId);
 
   const canCreate = checkPermission('matches.create');
   const { data, categoryOptions, search, filters, sort, pagination, isLoading, error, onRetry, addMatch, editMatch, removeMatch } = useMatchesList();
@@ -189,7 +190,7 @@ export function MatchesList() {
         })}
       />
 
-      {!isAdmin && <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+      {!isAdmin && !isDireccion && <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <StatsCard
           title="Partidos jugados"
           value={kpis?.played ?? '–'}

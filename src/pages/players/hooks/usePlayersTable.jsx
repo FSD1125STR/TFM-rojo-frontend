@@ -8,8 +8,9 @@ import {
   estadoConfig,
 } from '../data/mockData';
 
-export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onActivar, onMarcarRecuperado, isAdmin }) {
-  const w = isAdmin
+export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onActivar, onMarcarRecuperado, isAdmin, isDireccion = false }) {
+  const showCategoryColumn = isAdmin || isDireccion;
+  const w = showCategoryColumn
     ? { name: '22%', dorsal: '9%', catPos: '15%', age: '8%', goals: '8%', cards: '10%', status: '15%' }
     : { name: '26%', dorsal: '10%', catPos: '16%', age: '9%', goals: '8%', cards: '10%', status: '12%' };
 
@@ -27,7 +28,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onActivar
       ),
     },
     { key: 'dorsal', label: 'Dorsal', width: w.dorsal, align: 'center', sortable: true },
-    ...(isAdmin
+    ...(showCategoryColumn
       ? [{ key: 'category', label: 'Categoría', width: w.catPos, align: 'center', sortable: true }]
       : [{
           key: 'position',
@@ -115,7 +116,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onActivar
   ].filter(Boolean);
 
   const filters = [
-    ...(isAdmin
+    ...(showCategoryColumn
       ? [{ key: 'category', placeholder: 'Todas las categorías', options: categoriaOptions }]
       : [{ key: 'position', placeholder: 'Todas las posiciones', options: posicionOptions, multiple: true }]
     ),
