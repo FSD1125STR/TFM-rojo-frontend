@@ -65,6 +65,19 @@ export const showInputPrompt = ({ title, text, input = 'text', inputValue = '', 
   }).then((result) => ({ isConfirmed: result.isConfirmed, value: result.value }));
 };
 
+export const showLoadingInModal = (message = 'Guardando...') => {
+  Swal.fire({
+    title: message,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showConfirmButton: false,
+    target: document.querySelector('dialog[open]'),
+    didOpen: () => Swal.showLoading(),
+  });
+};
+
+export const closeLoading = () => Swal.close();
+
 export const showConfirmInModal = (message, title = '¿Estás seguro?') => {
   return Swal.fire({
     icon: 'warning',
