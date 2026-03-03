@@ -5,7 +5,9 @@ const StatsCard = ({
   value,
   subtitle,
   icon,
+  iconElement,
   variant = "default",
+  layout = "horizontal",
   className = "",
 }) => {
   const variantClasses = {
@@ -17,6 +19,29 @@ const StatsCard = ({
     warning: "bg-warning/10 text-warning border border-warning/20",
     error: "bg-error/10 text-error border border-error/20",
   };
+
+  const verticalVariantClasses = {
+    default: "bg-base-200 text-base-content border-base-300",
+    primary: "bg-primary/10 text-primary border-primary/20",
+    secondary: "bg-secondary/10 text-secondary border-secondary/20",
+    accent: "bg-accent text-accent-content border-accent/30",
+    success: "bg-success/10 text-success border-success/20",
+    warning: "bg-warning/10 text-warning border-warning/50",
+    error: "bg-error/10 text-error border-error/40",
+  };
+
+  if (layout === "vertical") {
+    return (
+      <div
+        className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-3 shadow-sm ${verticalVariantClasses[variant]} ${className}`}
+        test-id="el-s1t2c3d4"
+      >
+        {iconElement ?? (icon && <span className="material-symbols-outlined text-base opacity-50">{icon}</span>)}
+        <span className="text-2xl font-bold leading-none">{value}</span>
+        <span className="text-[11px] opacity-60 text-center leading-tight">{title}</span>
+      </div>
+    );
+  }
 
   return (
     <div

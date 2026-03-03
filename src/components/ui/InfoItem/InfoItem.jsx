@@ -6,6 +6,7 @@ export function InfoItem({
   label,
   value,
   badge,
+  href,
 }) {
   return (
     <div test-id="el-f1i2t3m4" className="flex items-start gap-3">
@@ -14,6 +15,8 @@ export function InfoItem({
         <span className="text-sm text-base-content/60">{label}</span>
         {badge ? (
           <span className="mt-1">{badge}</span>
+        ) : href ? (
+          <a href={href} className="font-medium text-primary hover:underline leading-tight">{value}</a>
         ) : (
           <span className="font-medium">{value}</span>
         )}
