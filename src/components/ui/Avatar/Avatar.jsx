@@ -5,6 +5,7 @@ const sizeClasses = {
   sm: 'w-8',
   md: 'w-10',
   lg: 'w-12',
+  xl: 'w-20',
 };
 
 const textSizeClasses = {
@@ -12,6 +13,7 @@ const textSizeClasses = {
   sm: 'text-xs',
   md: 'text-sm',
   lg: 'text-base',
+  xl: 'text-xl',
 };
 
 function getInitials(name) {
