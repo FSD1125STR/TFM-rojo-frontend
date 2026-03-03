@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SearchableSelect } from '../../../components/ui/SearchableSelect';
 import { FileUpload } from '../../../components/ui/FileUpload';
+import { Avatar } from '../../../components/ui/Avatar';
 import { getCategories } from '../../../services/categoriesService';
 import { TeamFormProps } from './TeamForm.props';
 
@@ -9,12 +10,28 @@ const INPUT_CLS = 'input input-bordered input-sm w-full bg-base-200/50 border-ba
 
 export function TeamForm({ formId, formData, onChange, onSubmit, initialData }) {
   const [categories, setCategories] = useState([]);
+  const [logoPreviewUrl, setLogoPreviewUrl] = useState(null);
 
   useEffect(() => {
     getCategories().then((cats) => {
       setCategories(cats.map((c) => ({ value: c._id, label: `${c.name} — ${c.season}` })));
     }).catch(console.error);
   }, []);
+
+  useEffect(() => {
+    if (formData.logo instanceof File) {
+      const url = URL.createObjectURL(formData.logo);
+      setLogoPreviewUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+    setLogoPreviewUrl(null);
+  }, [formData.logo]);
+
+  const avatarSrc = formData.logo instanceof File
+    ? logoPreviewUrl
+    : formData.logo === false
+      ? null
+      : initialData?.logoUrl || null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,13 +74,22 @@ export function TeamForm({ formId, formData, onChange, onSubmit, initialData }) 
 
         <div className="form-control">
           <p id="team-logo-label" className={`${LABEL_CLS} mb-1`}>Logo del equipo</p>
-          <FileUpload
-            aria-labelledby="team-logo-label"
-            value={formData.logo}
-            onChange={(file) => onChange('logo', file)}
-            currentImageUrl={initialData?.logoUrl || ''}
-            accept="image/jpg,image/jpeg,image/png,image/webp"
-          />
+          <div className="flex items-center gap-4 w-full">
+            <FileUpload
+              aria-labelledby="team-logo-label"
+              value={formData.logo}
+              onChange={(file) => onChange('logo', file)}
+              currentImageUrl={initialData?.logoUrl || ''}
+              accept="image/jpg,image/jpeg,image/png,image/webp"
+            />
+            <div className="ml-auto ring-2 ring-base-300 ring-offset-2 ring-offset-base-100 rounded-full flex-shrink-0">
+              <Avatar
+                src={avatarSrc}
+                name={formData.name || '?'}
+                size="xl"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </form>

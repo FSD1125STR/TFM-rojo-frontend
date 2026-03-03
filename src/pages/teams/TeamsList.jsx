@@ -5,7 +5,7 @@ import { ModalTeam } from './components/ModalTeam';
 import { useTeamsTable } from './hooks/useTeamsTable';
 import { usePermissions } from '../../hooks/usePermissions';
 import { getAdminTeams, createTeam, updateTeam, deleteTeam } from '../../services/teamsService';
-import { showConfirm, showToast, showError, showErrorInModal } from '../../utils/alerts';
+import { showConfirm, showToast, showError, showErrorInModal, showLoadingInModal, closeLoading } from '../../utils/alerts';
 
 function groupTeamsByName(teams) {
   const map = new Map();
@@ -65,6 +65,7 @@ export function TeamsList() {
   };
 
   const handleGuardar = async (datos) => {
+    showLoadingInModal(teamSeleccionado ? 'Actualizando equipo...' : 'Creando equipo...');
     try {
       if (teamSeleccionado) {
         const records = teamSeleccionado._records;
@@ -129,6 +130,7 @@ export function TeamsList() {
           }));
         }
 
+        closeLoading();
         showToast('Equipo actualizado correctamente');
       } else {
         const { categoryIds, name, logo } = datos;
@@ -154,6 +156,7 @@ export function TeamsList() {
           return createTeam(fd);
         }));
 
+        closeLoading();
         showToast('Equipo creado correctamente');
       }
 
@@ -161,6 +164,7 @@ export function TeamsList() {
       loadTeams();
     } catch (error) {
       console.error('Error saving team:', error);
+      closeLoading();
       showErrorInModal(error?.response?.data?.message || 'Error al guardar el equipo');
     }
   };
@@ -174,9 +178,11 @@ export function TeamsList() {
     const confirmed = await showConfirm(msg, '¿Eliminar equipo?');
     if (!confirmed) return;
 
+    showLoadingInModal('Eliminando equipo...');
     const results = await Promise.allSettled(
       group._records.map((r) => deleteTeam(r._id))
     );
+    closeLoading();
 
     const failures = results.filter((r) => r.status === 'rejected');
     if (failures.length > 0) {
