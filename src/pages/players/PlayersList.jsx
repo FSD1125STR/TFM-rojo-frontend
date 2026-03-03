@@ -190,18 +190,21 @@ export function PlayersList() {
           value={kpis?.available ?? '–'}
           icon="check_circle"
           variant="success"
+          className="shadow-md"
         />
         <StatsCard
           title="Lesionados"
           value={kpis?.injured ?? '–'}
           icon="personal_injury"
           variant={kpis?.injured > 0 ? 'error' : 'success'}
+          className="shadow-md"
         />
         <StatsCard
           title="Sancionados"
           value={kpis?.sanctioned ?? '–'}
           icon="gavel"
           variant={kpis?.sanctioned > 0 ? 'warning' : 'success'}
+          className="shadow-md"
         />
         <StatsCard
           title="Riesgo convocatoria"
@@ -209,10 +212,11 @@ export function PlayersList() {
           subtitle={kpis ? `Mínimo requerido: ${kpis.minimumRequired} jugadores disponibles` : ''}
           icon={kpis?.convocationRisk ? 'warning' : 'check_circle'}
           variant={kpis?.convocationRisk ? 'error' : 'success'}
+          className="shadow-md"
         />
       </div>}
 
-      <div className="mt-4">
+      <div className="mt-4 rounded-xl border border-base-300 bg-base-200/50 shadow-md overflow-hidden">
         <DataTable
           columns={columns}
           data={jugadores}
