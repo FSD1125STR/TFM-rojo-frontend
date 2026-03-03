@@ -8,7 +8,7 @@ import { PageHeader } from '../../components/ui/PageHeader';
 import { StatsCard } from '../../components/ui/StatsCard';
 import { CardsList } from '../../components/ui/CardsList';
 import { ModalMatch } from './components/ModalMatch';
-import { showToast, showError, showErrorInModal, showConfirm, showInputPrompt } from '../../utils/alerts';
+import { showToast, showError, showErrorInModal, showConfirm, showInputPrompt, showLoadingInModal, closeLoading } from '../../utils/alerts';
 import {
   estadoMatchConfig,
   statusLabels,
@@ -36,12 +36,15 @@ export function MatchesList() {
 
   const handleSave = async (payload) => {
     const wasEditing = editTarget !== null;
+    showLoadingInModal(wasEditing ? 'Actualizando partido...' : 'Creando partido...');
     try {
       if (wasEditing) await editMatch(editTarget._id, payload);
       else await addMatch(payload);
+      closeLoading();
       handleClose();
       showToast(wasEditing ? 'Partido actualizado' : 'Partido creado');
     } catch {
+      closeLoading();
       showErrorInModal('No se pudo guardar el partido');
     }
   };
@@ -52,10 +55,13 @@ export function MatchesList() {
       '¿Eliminar partido?'
     );
     if (!ok) return;
+    showLoadingInModal('Eliminando partido...');
     try {
       await removeMatch(row._id);
+      closeLoading();
       showToast('Partido eliminado');
     } catch {
+      closeLoading();
       showError('No se pudo eliminar el partido');
     }
   };
@@ -69,10 +75,13 @@ export function MatchesList() {
       confirmButtonText: 'Posponer',
     });
     if (!isConfirmed) return;
+    showLoadingInModal('Posponiendo partido...');
     try {
       await editMatch(row._id, { dateTime: new Date(value).toISOString() });
+      closeLoading();
       showToast('Partido pospuesto');
     } catch {
+      closeLoading();
       showError('No se pudo posponer el partido');
     }
   };

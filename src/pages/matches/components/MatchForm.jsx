@@ -1,6 +1,7 @@
 import { Icon } from '../../../components/ui/Icon';
 import { SearchableSelect } from '../../../components/ui/SearchableSelect';
 import { PlacesAutocomplete } from '../../../components/ui/PlacesAutocomplete';
+import { DateTimePicker } from '../../../components/ui/DateTimePicker';
 import { MatchFormProps } from './MatchForm.props';
 
 const statusOptions = [
@@ -92,21 +93,16 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
-          <label htmlFor="dateTime" className="label py-1">
+          <label className="label py-1">
             <span className={LABEL_CLS}>Fecha y hora <span className="text-error">*</span></span>
           </label>
-          <div className="relative">
-            <Icon name="calendar_today" className={ICON_CLS} />
-            <input
-              id="dateTime"
-              type="datetime-local"
-              name="dateTime"
-              value={formData.dateTime}
-              onChange={handleChange}
-              className={`${INPUT_ICON_CLS} ${dateError ? 'border-error focus:border-error focus:ring-error/15' : ''}`}
-              required
-            />
-          </div>
+          <DateTimePicker
+            name="dateTime"
+            value={formData.dateTime}
+            onChange={(val) => onChange('dateTime', val)}
+            error={!!dateError}
+            required
+          />
           {dateError && (
             <span className="text-error text-[11px] mt-0.5 flex items-center gap-1">
               <Icon name="error" className="text-[13px]" />
