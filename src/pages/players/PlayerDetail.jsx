@@ -8,12 +8,16 @@ import { PlayerStatsCard } from './components/PlayerStatsCard';
 import { PlayerMatchHistory } from './components/PlayerMatchHistory';
 import { usePlayerDetailTable } from './hooks/usePlayerDetailTable';
 import { usePermissions } from '../../hooks/usePermissions';
-import { getPlayerById, getPlayerMatches } from '../../services/playersService';
+import { useAuth } from '../../hooks/useAuth';
+import { getPlayerById, getPlayerMatches, updatePlayer } from '../../services/playersService';
+import { showToast, showErrorInModal, showLoadingInModal, closeLoading } from '../../utils/alerts';
 
 export function PlayerDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
+  const { isAdmin, user } = useAuth();
+  const categoryId = user?.categoryId?._id || user?.categoryId || null;
 
   const [jugador, setJugador] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,11 +55,27 @@ export function PlayerDetail() {
     );
   }
 
-  const handleGuardar = (datos) => {
-    const jugadorActualizado = { ...jugador, ...datos };
-    setJugador(jugadorActualizado);
-    localStorage.setItem('jugadorEditado', JSON.stringify(jugadorActualizado));
-    setModalOpen(false);
+  const handleGuardar = async (datos) => {
+    const fd = new FormData();
+    Object.entries(datos).forEach(([k, v]) => {
+      if (k === 'foto' || k === 'photoUrl' || k === 'edad') return;
+      if (v !== undefined && v !== null) fd.append(k, v);
+    });
+    if (datos.foto instanceof File) fd.append('photo', datos.foto);
+    if (datos.foto === false) fd.append('removePhoto', 'true');
+
+    showLoadingInModal('Actualizando jugador...');
+    try {
+      await updatePlayer(jugador.id, fd);
+      const fresh = await getPlayerById(id);
+      setJugador(fresh);
+      closeLoading();
+      setModalOpen(false);
+      showToast('Jugador actualizado correctamente');
+    } catch (err) {
+      closeLoading();
+      showErrorInModal(err?.response?.data?.error || 'Error al guardar el jugador');
+    }
   };
 
   return (
@@ -87,6 +107,8 @@ export function PlayerDetail() {
           onClose={() => setModalOpen(false)}
           initialData={jugador}
           onSave={handleGuardar}
+          isAdmin={isAdmin}
+          categoryId={categoryId}
         />
       )}
     </div>

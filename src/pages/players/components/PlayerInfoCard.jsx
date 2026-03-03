@@ -13,6 +13,7 @@ export function PlayerInfoCard({ jugador }) {
     <Card padding="none">
       <div className="bg-base-300 px-5 py-4 flex items-center gap-3.5 border-b border-base-300 rounded-t-xl">
         <Avatar
+          src={jugador.photoUrl || undefined}
           name={`${jugador.firstName} ${jugador.lastName}`}
           size="lg"
           variant="primary"
