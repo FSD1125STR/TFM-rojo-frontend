@@ -8,8 +8,8 @@ import { usePlayersTable } from './hooks/usePlayersTable';
 import { usePlayersKpis } from './hooks/usePlayersKpis';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
-import { getPlayers } from '../../services/playersService';
-import { showConfirm, showSuccess } from '../../utils/alerts';
+import { getPlayers, createPlayer, updatePlayer, archivePlayer, updatePlayerStatus } from '../../services/playersService';
+import { showConfirm, showSuccess, showError, showErrorInModal, showToast, showLoadingInModal, closeLoading } from '../../utils/alerts';
 
 export function PlayersList() {
   const navigate = useNavigate();
@@ -55,26 +55,68 @@ export function PlayersList() {
     navigate(`/jugadores/${jugador.id}`);
   };
 
-  const handleGuardarJugador = (datos) => {
-    if (jugadorSeleccionado) {
-      setJugadores(
-        jugadores.map((j) => (j.id === jugadorSeleccionado.id ? { ...j, ...datos } : j))
-      );
-    } else {
-      setJugadores([datos, ...jugadores]);
+  const handleGuardarJugador = async (datos) => {
+    const fd = new FormData();
+    Object.entries(datos).forEach(([k, v]) => {
+      if (k === 'foto' || k === 'photoUrl' || k === 'edad') return;
+      if (v !== undefined && v !== null) fd.append(k, v);
+    });
+    if (datos.foto instanceof File) fd.append('photo', datos.foto);
+    if (datos.foto === false)       fd.append('removePhoto', 'true');
+    if (!jugadorSeleccionado) {
+      const catId = datos.categoryId || categoryId;
+      if (catId && !fd.has('categoryId')) fd.append('categoryId', catId);
     }
-    setModalOpen(false);
+
+    showLoadingInModal(jugadorSeleccionado ? 'Actualizando jugador...' : 'Creando jugador...');
+    try {
+      if (jugadorSeleccionado) {
+        await updatePlayer(jugadorSeleccionado.id, fd);
+      } else {
+        await createPlayer(fd);
+      }
+      const fresh = await getPlayers(isAdmin ? null : categoryId);
+      setJugadores(fresh);
+      closeLoading();
+      setModalOpen(false);
+      showToast(jugadorSeleccionado ? 'Jugador actualizado correctamente' : 'Jugador creado correctamente');
+    } catch (err) {
+      closeLoading();
+      showErrorInModal(err?.response?.data?.error || 'Error al guardar el jugador');
+    }
   };
 
   const handleDarDeBaja = async (jugador) => {
     const confirmed = await showConfirm(
-      `${jugador.nombre} ${jugador.apellidos} pasará a estado "No disponible".`,
+      `${jugador.firstName} ${jugador.lastName} pasará a estado "No disponible".`,
       '¿Dar de baja al jugador?'
     );
-    if (confirmed) {
-      setJugadores(
-        jugadores.map((j) => (j.id === jugador.id ? { ...j, estado: 'No disponible' } : j))
+    if (!confirmed) return;
+    try {
+      await updatePlayerStatus(jugador.id, { status: 'NO_DISPONIBLE' });
+      setJugadores((prev) =>
+        prev.map((j) => (j.id === jugador.id ? { ...j, status: 'No disponible' } : j))
       );
+      showSuccess(`${jugador.firstName} ${jugador.lastName} ha sido dado de baja.`);
+    } catch (err) {
+      showErrorInModal(err?.response?.data?.error || 'Error al dar de baja al jugador');
+    }
+  };
+
+  const handleActivar = async (jugador) => {
+    const confirmed = await showConfirm(
+      `${jugador.firstName} ${jugador.lastName} volverá a estar disponible.`,
+      '¿Activar jugador?'
+    );
+    if (!confirmed) return;
+    try {
+      await updatePlayerStatus(jugador.id, { status: 'DISPONIBLE' });
+      setJugadores((prev) =>
+        prev.map((j) => (j.id === jugador.id ? { ...j, status: 'Disponible' } : j))
+      );
+      showSuccess(`${jugador.firstName} ${jugador.lastName} está disponible.`);
+    } catch (err) {
+      showError(err?.response?.data?.error || 'Error al activar al jugador');
     }
   };
 
@@ -83,23 +125,35 @@ export function PlayersList() {
       `${player.firstName} ${player.lastName} pasará a estado "Disponible".`,
       '¿Marcar como recuperado?'
     );
-    if (confirmed) {
+    if (!confirmed) return;
+    try {
+      await updatePlayerStatus(player.id, { status: 'DISPONIBLE' });
       setJugadores((prev) =>
-        prev.map((j) => (j.id === jugador.id ? { ...j, estado: 'Disponible' } : j))
+        prev.map((j) => (j.id === player.id ? { ...j, status: 'Disponible' } : j))
       );
-      showSuccess(`${jugador.nombre} ${jugador.apellidos} está disponible.`);
+      showSuccess(`${player.firstName} ${player.lastName} está disponible.`);
+    } catch (err) {
+      showErrorInModal(err?.response?.data?.error || 'Error al marcar como recuperado');
     }
   };
 
   const handleEliminarSeleccionados = async (selectedRows) => {
-    const nombres = selectedRows.map((j) => `${j.nombre} ${j.apellidos}`).join(', ');
+    const nombres = selectedRows.map((j) => `${j.firstName} ${j.lastName}`).join(', ');
     const confirmed = await showConfirm(
-      `Se eliminarán ${selectedRows.length} jugador(es): ${nombres}`,
-      '¿Eliminar jugadores?'
+      `Se darán de baja ${selectedRows.length} jugador(es): ${nombres}`,
+      '¿Dar de baja los jugadores seleccionados?'
     );
-    if (confirmed) {
-      const ids = selectedRows.map((j) => j.id);
-      setJugadores((prev) => prev.filter((j) => !ids.includes(j.id)));
+    if (!confirmed) return;
+    showLoadingInModal('Dando de baja jugadores...');
+    try {
+      await Promise.all(selectedRows.map((j) => archivePlayer(j.id)));
+      const fresh = await getPlayers(isAdmin ? null : categoryId);
+      setJugadores(fresh);
+      closeLoading();
+      showToast(`${selectedRows.length} jugador(es) dado(s) de baja correctamente`);
+    } catch (err) {
+      closeLoading();
+      showError(err?.response?.data?.error || 'Error al dar de baja los jugadores');
     }
   };
 
@@ -107,6 +161,7 @@ export function PlayersList() {
     onVerDetalle: handleVerDetalle,
     onEditar: checkPermission('players.edit') ? handleEditarJugador : undefined,
     onDarDeBaja: checkPermission('players.edit') ? handleDarDeBaja : undefined,
+    onActivar: checkPermission('players.edit') ? handleActivar : undefined,
     onMarcarRecuperado: checkPermission('players.edit') ? handleMarcarRecuperado : undefined,
     isAdmin,
   });
@@ -183,6 +238,8 @@ export function PlayersList() {
         onClose={() => setModalOpen(false)}
         initialData={jugadorSeleccionado}
         onSave={handleGuardarJugador}
+        isAdmin={isAdmin}
+        categoryId={categoryId}
       />
     </div>
   );

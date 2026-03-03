@@ -6,4 +6,5 @@ export const PlayerFormProps = {
   edad: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool,
 };

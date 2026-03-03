@@ -8,7 +8,7 @@ import {
   estadoConfig,
 } from '../data/mockData';
 
-export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarRecuperado, isAdmin }) {
+export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onActivar, onMarcarRecuperado, isAdmin }) {
   const w = isAdmin
     ? { name: '22%', dorsal: '9%', catPos: '15%', age: '8%', goals: '8%', cards: '10%', status: '15%' }
     : { name: '26%', dorsal: '10%', catPos: '16%', age: '9%', goals: '8%', cards: '10%', status: '12%' };
@@ -21,7 +21,7 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
       sortable: true,
       render: (_, row) => (
         <div className="flex items-center gap-3 pointer-events-none">
-          <Avatar name={`${row.firstName} ${row.lastName}`} size="sm" />
+          <Avatar src={row.photoUrl || undefined} name={`${row.firstName} ${row.lastName}`} size="sm" />
           <span className="font-medium whitespace-nowrap">{row.firstName} {row.lastName}</span>
         </div>
       ),
@@ -110,7 +110,8 @@ export function usePlayersTable({ onVerDetalle, onEditar, onDarDeBaja, onMarcarR
     { label: 'Ver detalle', icon: 'visibility', onClick: onVerDetalle },
     onEditar && { label: 'Editar', icon: 'edit', onClick: onEditar },
     onMarcarRecuperado && { label: 'Marcar recuperado', icon: 'health_and_safety', onClick: onMarcarRecuperado, show: (row) => row.status === 'Lesionado' },
-    onDarDeBaja && { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger' },
+    onActivar && { label: 'Volver a activar', icon: 'person_check', onClick: onActivar, show: (row) => row.status === 'No disponible' },
+    onDarDeBaja && { label: 'Dar de baja', icon: 'person_off', onClick: onDarDeBaja, variant: 'danger', show: (row) => row.status !== 'No disponible' },
   ].filter(Boolean);
 
   const filters = [

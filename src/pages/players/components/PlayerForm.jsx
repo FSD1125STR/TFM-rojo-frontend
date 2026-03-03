@@ -1,4 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Icon } from '../../../components/ui/Icon';
+import { FileUpload } from '../../../components/ui/FileUpload';
+import { Avatar } from '../../../components/ui/Avatar';
+import { DatePicker } from '../../../components/ui/DatePicker';
+import { getCategories } from '../../../services/categoriesService';
 import { PlayerFormProps } from './PlayerForm.props';
 
 const posiciones = [
@@ -30,10 +35,38 @@ const calcularEdad = (fechaNacimiento) => {
 const LABEL_CLS = 'font-semibold text-[13px] text-base-content/70';
 const INPUT_CLS = 'input input-bordered input-sm w-full bg-base-200/50 border-base-300 text-sm transition-all placeholder:text-base-content/40 focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15';
 const INPUT_ICON_CLS = `${INPUT_CLS} pl-9`;
-const SELECT_CLS = 'select select-bordered select-sm w-full bg-base-200/50 border-base-300 text-sm transition-all focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15';
+const SELECT_CLS = 'select select-bordered select-sm w-full bg-base-200 border-base-300 text-sm transition-all focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/15';
 const ICON_CLS = 'absolute left-2.5 top-1/2 -translate-y-1/2 text-primary text-lg z-[1] pointer-events-none';
 
-export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
+export function PlayerForm({ formId, formData, edad, onChange, onSubmit, isAdmin = false }) {
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (isAdmin) {
+      getCategories().then((cats) => {
+        setCategories(cats.map((c) => ({ value: c._id, label: `${c.name} — ${c.season}` })));
+      }).catch(console.error);
+    }
+  }, [isAdmin]);
+
+  useEffect(() => {
+    if (formData.foto instanceof File) {
+      const url = URL.createObjectURL(formData.foto);
+      setPhotoPreviewUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+    setPhotoPreviewUrl(null);
+  }, [formData.foto]);
+
+  const avatarSrc = formData.foto instanceof File
+    ? photoPreviewUrl
+    : formData.foto === false
+      ? null
+      : formData.photoUrl || null;
+
+  const avatarName = `${formData.nombre} ${formData.apellidos}`.trim() || '?';
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange(name, value);
@@ -41,6 +74,28 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
 
   return (
     <form id={formId} onSubmit={onSubmit} test-id="el-p9l5y3r2">
+      {isAdmin && (
+        <div className="mb-3">
+          <div className="form-control">
+            <label htmlFor="categoriaId" className="label py-1">
+              <span className={LABEL_CLS}>Categoría <span className="text-error">*</span></span>
+            </label>
+            <select
+              id="categoriaId"
+              name="categoriaId"
+              value={formData.categoriaId}
+              onChange={handleChange}
+              className={SELECT_CLS}
+              required
+            >
+              <option value="">Seleccionar categoría</option>
+              {categories.map((cat) => (
+                <option key={cat.value} value={cat.value}>{cat.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-[1fr_1.3fr_0.7fr] gap-3 mb-3">
         <div className="form-control">
           <label htmlFor="nombre" className="label py-1">
@@ -98,21 +153,15 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
-          <label htmlFor="fechaNacimiento" className="label py-1">
+          <label className="label py-1">
             <span className={LABEL_CLS}>Fecha de nacimiento <span className="text-error">*</span></span>
           </label>
-          <div className="relative">
-            <Icon name="calendar_month" className={ICON_CLS} />
-            <input
-              id="fechaNacimiento"
-              type="date"
-              name="fechaNacimiento"
-              value={formData.fechaNacimiento}
-              onChange={handleChange}
-              className={INPUT_ICON_CLS}
-              required
-            />
-          </div>
+          <DatePicker
+            name="fechaNacimiento"
+            value={formData.fechaNacimiento}
+            onChange={(val) => onChange('fechaNacimiento', val)}
+            required
+          />
         </div>
         <div className="form-control">
           <div className="label py-1">
@@ -130,7 +179,7 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
           <label htmlFor="email" className="label py-1">
             <span className={LABEL_CLS}>Email <span className="text-error">*</span></span>
           </label>
-          <div className="relative">
+          <div className="relative validator">
             <Icon name="mail" className={ICON_CLS} />
             <input
               id="email"
@@ -140,9 +189,11 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
               onChange={handleChange}
               className={INPUT_ICON_CLS}
               placeholder="correo@ejemplo.com"
+              pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
               required
             />
           </div>
+          <p className="validator-hint hidden">Introduce un email válido</p>
         </div>
         <div className="form-control">
           <label htmlFor="telefono" className="label py-1">
@@ -218,7 +269,7 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">
           <label htmlFor="posicion" className="label py-1">
             <span className={LABEL_CLS}>Posición <span className="text-error">*</span></span>
@@ -256,6 +307,22 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit }) {
           </select>
         </div>
       </div>
+
+      <div className="form-control">
+        <p id="player-photo-label" className={LABEL_CLS}>Foto del jugador</p>
+        <div className="flex items-center gap-4 w-full">
+          <FileUpload
+            aria-labelledby="player-photo-label"
+            value={formData.foto}
+            onChange={(file) => onChange('foto', file)}
+            currentImageUrl={formData.photoUrl || ''}
+            accept="image/jpg,image/jpeg,image/png,image/webp"
+          />
+          <div className="ml-auto ring-2 ring-base-300 ring-offset-2 ring-offset-base-100 rounded-full flex-shrink-0">
+            <Avatar src={avatarSrc} name={avatarName} size="xl" />
+          </div>
+        </div>
+      </div>
     </form>
   );
 }
@@ -274,6 +341,9 @@ PlayerForm.INITIAL_DATA = {
   dorsal: '',
   posicion: '',
   estado: 'Disponible',
+  categoriaId: '',
+  foto: null,
+  photoUrl: '',
 };
 
 PlayerForm.propTypes = PlayerFormProps;

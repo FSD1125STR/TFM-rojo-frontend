@@ -4,6 +4,8 @@ export const ModalPlayerProps = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onSave: PropTypes.func,
+  isAdmin: PropTypes.bool,
+  categoryId: PropTypes.string,
   initialData: PropTypes.shape({
     _id: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
