@@ -1,4 +1,4 @@
-import StatsCard from "./StatsCard";
+import { StatsCard } from './StatsCard';
 
 export default {
   title: "UI/StatsCard",

@@ -6,7 +6,6 @@ import { ModalPlayer } from './components/ModalPlayer';
 import { PlayerInfoCard } from './components/PlayerInfoCard';
 import { PlayerStatsCard } from './components/PlayerStatsCard';
 import { PlayerMatchHistory } from './components/PlayerMatchHistory';
-import { usePlayerDetailTable } from './hooks/usePlayerDetailTable';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
 import { getPlayerById, getPlayerMatches, updatePlayer } from '../../services/playersService';
@@ -37,7 +36,6 @@ export function PlayerDetail() {
       .finally(() => setLoadingHistorial(false));
   }, [id]);
 
-  const { columns } = usePlayerDetailTable();
   const canEdit = checkPermission('players.edit');
 
   if (loading) {
@@ -98,7 +96,7 @@ export function PlayerDetail() {
       </div>
 
       <div className="mt-4">
-        <PlayerMatchHistory historial={historial} columns={columns} loading={loadingHistorial} />
+        <PlayerMatchHistory historial={historial} loading={loadingHistorial} />
       </div>
 
       {canEdit && (

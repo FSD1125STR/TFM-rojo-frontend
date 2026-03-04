@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Card } from '../../../components/ui/Card';
-import StatsCard from '../../../components/ui/StatsCard/StatsCard';
-import { ProgressBar } from '../../../components/ui/ProgressBar/ProgressBar';
-import { EventLineChart } from '../../../components/graphics/EventLineChart';
+import { StatsCard } from '../../../components/ui/StatsCard';
+import { ProgressBar } from '../../../components/graphics';
+import { EventLineChart } from '../../../components/graphics';
+import { Icon } from '../../../components/ui/Icon';
 
 const CHART_LEGEND = [
   { fill: '#22c55e', stroke: 'none', label: 'Gol' },
@@ -74,14 +75,14 @@ export function PlayerStatsCard({ jugador, historial }) {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-xl text-primary">trending_up</span>
+            <Icon name="trending_up" size="md" className="text-primary" />
             <h3 className="text-base font-semibold text-base-content m-0">Estadísticas de la Temporada</h3>
           </div>
           <div className="flex items-center gap-2">
             {allBadges.map((b) => (
               <div key={b.label} className="tooltip tooltip-bottom" data-tip={b.tooltip}>
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border shadow-md ${b.earned ? 'bg-[#1e6b3c] text-white border-[#1e6b3c]' : 'bg-base-200 text-base-content/50 border-base-300'}`}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>{b.icon}</span>
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border shadow-md ${b.earned ? 'bg-success text-success-content border-success' : 'bg-base-200 text-base-content/50 border-base-300'}`}>
+                  <Icon name={b.icon} size="sm" />
                   {b.label}
                 </span>
               </div>
@@ -102,14 +103,14 @@ export function PlayerStatsCard({ jugador, historial }) {
             label="Participación"
             value={barsAnimated ? porcentajeParticipacion : 0}
             subtitle={`${promedioMinutos} min/partido de media`}
-            color="#1e6b3c"
+            color="var(--color-success)"
             animated
           />
           <ProgressBar
             label="Media de goles/partido"
             value={barsAnimated ? Math.min(parseFloat(mediaGoles) * 100, 100) : 0}
             subtitle={`${jugador.goals} goles en ${jugador.matchesPlayed} partidos`}
-            color="#4ade80"
+            color="var(--color-primary)"
             animated
           />
         </div>

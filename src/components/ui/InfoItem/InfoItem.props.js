@@ -5,4 +5,5 @@ export const InfoItemProps = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string,
   badge: PropTypes.node,
+  href: PropTypes.string,
 };

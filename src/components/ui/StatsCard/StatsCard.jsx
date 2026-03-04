@@ -1,6 +1,7 @@
 import { StatsCardProps } from './StatsCard.props';
+import { Icon } from '../Icon';
 
-const StatsCard = ({
+export function StatsCard({
   title,
   value,
   subtitle,
@@ -9,7 +10,7 @@ const StatsCard = ({
   variant = "default",
   layout = "horizontal",
   className = "",
-}) => {
+}) {
   const variantClasses = {
     default: "bg-base-200 text-base-content",
     primary: "bg-primary/10 text-primary border border-primary/20",
@@ -36,7 +37,7 @@ const StatsCard = ({
         className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-3 shadow-sm ${verticalVariantClasses[variant]} ${className}`}
         test-id="el-s1t2c3d4"
       >
-        {iconElement ?? (icon && <span className="material-symbols-outlined text-base opacity-50">{icon}</span>)}
+        {iconElement ?? (icon && <Icon name={icon} size="sm" className="opacity-50" />)}
         <span className="text-2xl font-bold leading-none">{value}</span>
         <span className="text-[11px] opacity-60 text-center leading-tight">{title}</span>
       </div>
@@ -58,14 +59,12 @@ const StatsCard = ({
         </div>
         {icon && (
           <div className="text-3xl opacity-60">
-            <span className="material-symbols-outlined">{icon}</span>
+            <Icon name={icon} size="lg" className="opacity-60" />
           </div>
         )}
       </div>
     </div>
   );
-};
+}
 
 StatsCard.propTypes = StatsCardProps;
-
-export default StatsCard;

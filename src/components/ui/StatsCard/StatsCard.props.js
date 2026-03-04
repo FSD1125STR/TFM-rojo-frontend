@@ -5,6 +5,8 @@ export const StatsCardProps = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   subtitle: PropTypes.node,
   icon: PropTypes.string,
+  layout: PropTypes.oneOf(['horizontal', 'vertical']),
+  iconElement: PropTypes.node,
   variant: PropTypes.oneOf([
     'default',
     'primary',

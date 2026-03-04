@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Card } from '../../../components/ui/Card';
 import { Tabs } from '../../../components/ui/Tabs';
 import { DataTable } from '../../../components/ui/DataTable';
+import { usePlayerDetailTable } from '../hooks/usePlayerDetailTable';
 
 const HISTORIAL_TABS = [
   { value: 'todos', label: 'Todos' },
@@ -10,8 +11,9 @@ const HISTORIAL_TABS = [
   { value: 'fuera', label: 'Fuera' },
 ];
 
-export function PlayerMatchHistory({ historial, columns, loading }) {
+export function PlayerMatchHistory({ historial, loading }) {
   const [activeTab, setActiveTab] = useState('todos');
+  const { columns } = usePlayerDetailTable();
 
   const historialCompleto = useMemo(() => [...historial].reverse(), [historial]);
 
