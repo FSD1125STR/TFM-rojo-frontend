@@ -96,6 +96,14 @@ export function MatchesList() {
       },
     ];
 
+    if (checkPermission('callups.view')) {
+      items.push({
+        label: 'Convocatoria',
+        icon: 'assignment_turned_in',
+        onClick: (row) => navigate(`/convocatorias/${row._id}`),
+      });
+    }
+
     if (match.venue?.lat && match.venue?.lng) {
       items.push({
         label: 'Ver en mapa',
