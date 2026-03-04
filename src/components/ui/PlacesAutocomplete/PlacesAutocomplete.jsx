@@ -119,6 +119,7 @@ export function PlacesAutocomplete({
           <button
             type="button"
             onClick={handleClear}
+            aria-label="Limpiar ubicación"
             className="absolute right-2.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center text-base-content/40 hover:text-base-content transition-colors"
             tabIndex={-1}
           >

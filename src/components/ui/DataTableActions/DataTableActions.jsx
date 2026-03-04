@@ -72,6 +72,7 @@ export function DataTableActions({ actions, row, title = 'Acciones' }) {
         ref={buttonRef}
         test-id="el-dta7f8g9"
         className="btn btn-ghost btn-sm btn-square"
+        aria-label="Abrir menú de acciones"
         onClick={handleButtonClick}
       >
         <Icon name="more_vert" size="sm" />
