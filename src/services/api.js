@@ -21,15 +21,27 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+let serverDownRedirecting = false;
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     const isAuthEndpoint = error.config?.url?.startsWith('/auth/');
+
     if (error.response?.status === 401 && !isAuthEndpoint) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';
+      return Promise.reject(error);
     }
+
+    if (!error.response && error.request && !serverDownRedirecting) {
+      serverDownRedirecting = true;
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login?reason=server_down';
+    }
+
     return Promise.reject(error);
   }
 );

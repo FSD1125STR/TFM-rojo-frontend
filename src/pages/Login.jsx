@@ -17,9 +17,13 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
+    const reason = new URLSearchParams(window.location.search).get("reason");
     if (new URLSearchParams(window.location.search).get("logout") === "true") {
       window.history.replaceState({}, "", "/login");
       showToast("Sesión terminada", "success");
+    } else if (reason === "server_down") {
+      window.history.replaceState({}, "", "/login");
+      showError("No se puede conectar con el servidor. Inténtalo más tarde.");
     }
   }, []);
 

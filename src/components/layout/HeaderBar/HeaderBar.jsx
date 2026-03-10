@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { IconButton } from '../../ui/IconButton/IconButton';
 import { HeaderBarProps } from './HeaderBar.props';
 import { ThemeToggle } from '../../ui/ThemeToggle/ThemeToggle';
 import { HeaderActions } from '../HeaderActions/HeaderActions';
 import { SearchBar } from '../SearchBar/SearchBar';
+import { NotificationBell } from '../../ui/NotificationBell/NotificationBell';
+import { useNotifications } from '../../../hooks/useNotifications';
 
 const sidebarIcons = {
   drawer: { icon: 'menu', label: 'Abrir menú' },
@@ -17,6 +20,13 @@ export function HeaderBar({
   className = '',
 }) {
   const { icon, label } = sidebarIcons[sidebarMode] || sidebarIcons.drawer;
+  const navigate = useNavigate();
+  const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
+
+  const handleNotificationClick = (n) => {
+    markRead(n._id);
+    if (n.matchId) navigate(`/convocatorias/${n.matchId}`);
+  };
 
   return (
     <header test-id="el-m5n6o7p8" className={`navbar h-16 bg-base-100 border-b border-base-300 px-4 ${className}`}>
@@ -35,11 +45,11 @@ export function HeaderBar({
       <div className="flex-none flex items-center gap-2">
         {actions && <HeaderActions>{actions}</HeaderActions>}
         <div className="flex items-center gap-3 bg-base-200 [html[data-theme=dark]_&]:bg-base-300 rounded-lg px-3 py-1.5">
-          <IconButton
-            icon="notifications"
-            ariaLabel="Notificaciones"
-            variant="ghost"
-            size="sm"
+          <NotificationBell
+            notifications={notifications}
+            unreadCount={unreadCount}
+            onNotificationClick={handleNotificationClick}
+            onMarkAllRead={markAllRead}
           />
           <ThemeToggle />
         </div>

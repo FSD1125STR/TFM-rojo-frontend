@@ -11,6 +11,16 @@ export const showError = (message) => {
   });
 };
 
+export const showErrorList = (title, items) => {
+  const html = `<ul class="text-left text-sm space-y-1 mt-1">${items.map((i) => `<li>• ${i}</li>`).join('')}</ul>`;
+  return Swal.fire({
+    icon: 'error',
+    title,
+    html,
+    confirmButtonColor: PRIMARY_BUTTON_COLOR,
+  });
+};
+
 export const showErrorInModal = (message, title = 'Error') => {
   return Swal.fire({
     icon: 'error',
@@ -36,6 +46,31 @@ export const showSuccess = (message) => {
     title: '¡Éxito!',
     text: message,
     confirmButtonColor: PRIMARY_BUTTON_COLOR,
+  });
+};
+
+export const showNotification = (message, { categoryName, onClick } = {}) => {
+  return Swal.fire({
+    toast: true,
+    position: 'bottom-end',
+    icon: 'info',
+    title: message,
+    html: categoryName
+      ? `<span style="font-size:0.75rem;opacity:0.65;">${categoryName}</span>`
+      : undefined,
+    showConfirmButton: false,
+    timer: 10000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      if (onClick) {
+        toast.style.cursor = 'pointer';
+        toast.querySelectorAll('*').forEach((el) => { el.style.cursor = 'pointer'; });
+        toast.addEventListener('click', () => {
+          onClick();
+          Swal.close();
+        });
+      }
+    },
   });
 };
 
@@ -77,6 +112,9 @@ export const showLoadingInModal = (message = 'Guardando...') => {
 };
 
 export const closeLoading = () => Swal.close();
+
+export const getApiErrorMsg = (err, fallback = 'Ha ocurrido un error') =>
+  err?.response?.data?.message || err?.response?.data?.error || fallback;
 
 export const showConfirmInModal = (message, title = '¿Estás seguro?') => {
   return Swal.fire({
