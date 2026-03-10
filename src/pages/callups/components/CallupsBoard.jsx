@@ -15,6 +15,7 @@ import { Badge } from '../../../components/ui/Badge';
 import { NoCallupReasonModal } from './NoCallupReasonModal';
 import { CallusBoardProps } from './CallupsBoard.props';
 import { COLUMN_IDS, REASON_CONFIG } from '../data/callupsConfig';
+import { showToast } from '../../../utils/alerts';
 
 function ReasonBadge({ player }) {
   const { reasonCode, playerStatus, isBlocked, sanctionRemaining } = player;
@@ -132,6 +133,13 @@ export function CallupsBoard({
     if (!player) return;
 
     const toColumn = over.id === 'available' ? null : over.id;
+
+    if (toColumn === COLUMN_IDS.CALLED && player.callupStatus !== COLUMN_IDS.CALLED) {
+      if (calledCount >= maxPlayers) {
+        showToast(`Límite de ${maxPlayers} convocados alcanzado`, 'error');
+        return;
+      }
+    }
 
     if (toColumn === COLUMN_IDS.NOT_CALLED) {
       if (player.isBlocked) return;

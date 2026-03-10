@@ -4,10 +4,9 @@ import {
   saveCallupPlayers as saveCallupPlayersService,
   createCallup as createCallupService,
 } from '../../../services/callupsService';
-import { showToast } from '../../../utils/alerts';
+import { showToast, showErrorList } from '../../../utils/alerts';
 
 const ERROR_MESSAGES = {
-  PLAYER_NOT_AVAILABLE: 'Hay un jugador lesionado o sancionado entre los convocados',
   REASON_REQUIRED: 'Hay jugadores no convocados sin motivo indicado',
   CALLUP_MIN_NOT_REACHED: 'Se necesitan al menos 11 jugadores convocados',
   CALLUP_LIMIT_EXCEEDED: 'Se ha superado el límite de 18 convocados',
@@ -38,7 +37,8 @@ export function useCallupDetail(matchId) {
       setMaxPlayers(data.maxPlayers);
       setMinPlayers(data.minPlayers ?? 11);
     } catch (err) {
-      setError(err.message || 'Error al cargar la convocatoria');
+      const code = err.response?.data?.error;
+      setError(code || err.message || 'Error al cargar la convocatoria');
     } finally {
       setLoading(false);
     }
@@ -87,8 +87,18 @@ export function useCallupDetail(matchId) {
       showToast('Convocatoria guardada correctamente');
     } catch (err) {
       const errorCode = err.response?.data?.error;
-      const msg = ERROR_MESSAGES[errorCode] || 'Error al guardar la convocatoria';
-      showToast(msg, 'error');
+      if (errorCode === 'PLAYER_NOT_AVAILABLE') {
+        const problematic = players.filter(
+          (p) => p.callupStatus === 'called' && (p.playerStatus === 'LESIONADO' || p.playerStatus === 'SANCIONADO')
+        );
+        const items = problematic.map(
+          (p) => `${p.fullName} — ${p.playerStatus === 'LESIONADO' ? 'lesionado' : 'sancionado'}`
+        );
+        showErrorList('Jugadores no disponibles', items.length ? items : ['Hay un jugador no disponible entre los convocados']);
+      } else {
+        const msg = ERROR_MESSAGES[errorCode] || 'Error al guardar la convocatoria';
+        showToast(msg, 'error');
+      }
     } finally {
       setSaving(false);
     }

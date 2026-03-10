@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { showError } from '../../utils/alerts';
 import { useCallupDetail } from './hooks/useCallupDetail';
 import { usePermissions } from '../../hooks/usePermissions';
 import { CallupsBoard } from './components/CallupsBoard';
@@ -30,6 +31,7 @@ function MapsLink({ name, lat, lng }) {
 
 export function CallupDetail() {
   const { id: matchId } = useParams();
+  const navigate = useNavigate();
   const { checkPermission } = usePermissions();
   const {
     match,
@@ -50,6 +52,13 @@ export function CallupDetail() {
     createCallup,
   } = useCallupDetail(matchId);
   const [createModalOpen, setCreateModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (error === 'MATCH_CANCELLED') {
+      showError('Este partido está cancelado y no tiene convocatoria.');
+      navigate('/convocatorias', { replace: true });
+    }
+  }, [error, navigate]);
 
   const isMatchScheduled = match?.status === 'scheduled';
   const isMatchFuture = match?.dateTime ? new Date(match.dateTime) > new Date() : false;
@@ -75,7 +84,7 @@ export function CallupDetail() {
 
   const homeTeamName = match?.homeTeam?.name || '—';
   const awayTeamName = match?.awayTeam?.name || '—';
-  const matchLabel = `J${match?.journey ?? ''}: ${homeTeamName} vs ${awayTeamName}`;
+  const matchLabel = `Jornada ${match?.journey ?? ''}: ${homeTeamName} vs ${awayTeamName}`;
 
   return (
     <div test-id="el-c4l2u8p6" className="flex flex-col gap-6 h-full">

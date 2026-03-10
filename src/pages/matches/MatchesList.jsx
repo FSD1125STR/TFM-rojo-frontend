@@ -96,7 +96,7 @@ export function MatchesList() {
       },
     ];
 
-    if (checkPermission('callups.view')) {
+    if (checkPermission('callups.view') && match.status !== 'cancelled') {
       items.push({
         label: 'Convocatoria',
         icon: 'assignment_turned_in',
