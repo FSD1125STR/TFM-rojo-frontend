@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { CardsList } from './CardsList';
 
 export default {

@@ -9,7 +9,7 @@ import { usePlayersKpis } from './hooks/usePlayersKpis';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
 import { getPlayers, createPlayer, updatePlayer, archivePlayer, updatePlayerStatus } from '../../services/playersService';
-import { showConfirm, showSuccess, showError, showErrorInModal, showToast, showLoadingInModal, closeLoading } from '../../utils/alerts';
+import { showConfirm, showSuccess, showError, showErrorInModal, showToast, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
 
 export function PlayersList() {
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ export function PlayersList() {
       showToast(jugadorSeleccionado ? 'Jugador actualizado correctamente' : 'Jugador creado correctamente');
     } catch (err) {
       closeLoading();
-      showErrorInModal(err?.response?.data?.error || 'Error al guardar el jugador');
+      showErrorInModal(getApiErrorMsg(err, 'Error al guardar el jugador'));
     }
   };
 
@@ -100,7 +100,7 @@ export function PlayersList() {
       );
       showSuccess(`${jugador.firstName} ${jugador.lastName} ha sido dado de baja.`);
     } catch (err) {
-      showErrorInModal(err?.response?.data?.error || 'Error al dar de baja al jugador');
+      showErrorInModal(getApiErrorMsg(err, 'Error al dar de baja al jugador'));
     }
   };
 
@@ -117,7 +117,7 @@ export function PlayersList() {
       );
       showSuccess(`${jugador.firstName} ${jugador.lastName} está disponible.`);
     } catch (err) {
-      showError(err?.response?.data?.error || 'Error al activar al jugador');
+      showError(getApiErrorMsg(err, 'Error al activar al jugador'));
     }
   };
 
@@ -134,7 +134,7 @@ export function PlayersList() {
       );
       showSuccess(`${player.firstName} ${player.lastName} está disponible.`);
     } catch (err) {
-      showErrorInModal(err?.response?.data?.error || 'Error al marcar como recuperado');
+      showErrorInModal(getApiErrorMsg(err, 'Error al marcar como recuperado'));
     }
   };
 
@@ -156,7 +156,7 @@ export function PlayersList() {
       const fresh = await getPlayers(isAdmin || isDireccion ? null : categoryId).catch(() => null);
       if (fresh) setJugadores(fresh);
       closeLoading();
-      showError(err?.response?.data?.error || 'Error al dar de baja los jugadores');
+      showError(getApiErrorMsg(err, 'Error al dar de baja los jugadores'));
     }
   };
 

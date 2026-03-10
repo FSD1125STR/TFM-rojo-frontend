@@ -5,7 +5,7 @@ import { ModalTeam } from './components/ModalTeam';
 import { useTeamsTable } from './hooks/useTeamsTable';
 import { usePermissions } from '../../hooks/usePermissions';
 import { getAdminTeams, createTeam, updateTeam, deleteTeam } from '../../services/teamsService';
-import { showConfirm, showToast, showError, showErrorInModal, showLoadingInModal, closeLoading } from '../../utils/alerts';
+import { showConfirm, showToast, showError, showErrorInModal, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
 
 function groupTeamsByName(teams) {
   const map = new Map();
@@ -165,7 +165,7 @@ export function TeamsList() {
     } catch (error) {
       console.error('Error saving team:', error);
       closeLoading();
-      showErrorInModal(error?.response?.data?.message || 'Error al guardar el equipo');
+      showErrorInModal(getApiErrorMsg(error, 'Error al guardar el equipo'));
     }
   };
 
@@ -186,7 +186,7 @@ export function TeamsList() {
 
     const failures = results.filter((r) => r.status === 'rejected');
     if (failures.length > 0) {
-      const msg = failures[0].reason?.response?.data?.message || 'Algunos registros no pudieron eliminarse';
+      const msg = getApiErrorMsg(failures[0].reason, 'Algunos registros no pudieron eliminarse');
       showError(msg);
     } else {
       showToast('Equipo eliminado correctamente');

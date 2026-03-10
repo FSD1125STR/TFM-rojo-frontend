@@ -9,7 +9,7 @@ import { PlayerMatchHistory } from './components/PlayerMatchHistory';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
 import { getPlayerById, getPlayerMatches, updatePlayer } from '../../services/playersService';
-import { showToast, showErrorInModal, showLoadingInModal, closeLoading } from '../../utils/alerts';
+import { showToast, showErrorInModal, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
 
 export function PlayerDetail() {
   const { id } = useParams();
@@ -72,7 +72,7 @@ export function PlayerDetail() {
       showToast('Jugador actualizado correctamente');
     } catch (err) {
       closeLoading();
-      showErrorInModal(err?.response?.data?.error || 'Error al guardar el jugador');
+      showErrorInModal(getApiErrorMsg(err, 'Error al guardar el jugador'));
     }
   };
 

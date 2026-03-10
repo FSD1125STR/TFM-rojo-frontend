@@ -55,8 +55,8 @@ export function PlayerStatsCard({ jugador, historial }) {
   const mediaGoles = jugador.matchesPlayed > 0 ? (jugador.goals / jugador.matchesPlayed).toFixed(2) : '0.00';
 
   const chartData = useMemo(() =>
-    [...historial].reverse().map((p, i) => ({
-      x: `J${i + 1}`,
+    [...historial].reverse().map((p) => ({
+      x: `Jornada ${p.jornada}`,
       y: p.minutos,
       rival: p.rival,
       minutos: p.minutos,
