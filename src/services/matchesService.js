@@ -44,6 +44,11 @@ export async function updateMatch(id, payload) {
   return data;
 }
 
+export async function getMatchById(id) {
+  const { data } = await api.get(`/matches/${id}`);
+  return data;
+}
+
 export async function deleteMatch(id) {
   await api.delete(`/matches/${id}`);
 }

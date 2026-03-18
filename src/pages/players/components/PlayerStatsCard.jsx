@@ -15,7 +15,7 @@ const CHART_LEGEND = [
 const ACHIEVEMENT_BADGES = (jugador, porcentajeParticipacion, promedioMinutos) => [
   { label: 'Goleador', icon: 'sports_soccer', tooltip: `${jugador.goals} goles marcados esta temporada`, earned: jugador.goals >= 5 },
   { label: 'Resistente', icon: 'timer', tooltip: `${porcentajeParticipacion}% de participación · ${promedioMinutos} min/partido de media`, earned: porcentajeParticipacion >= 80 },
-  { label: 'Disciplinado', icon: 'shield', tooltip: jugador.yellowCards === 0 && jugador.redCards === 0 ? 'Sin tarjetas esta temporada' : 'Tiene tarjetas esta temporada', earned: jugador.yellowCards === 0 && jugador.redCards === 0 },
+  { label: 'Disciplinado', icon: 'shield', tooltip: jugador.yellowCards === 0 && jugador.redCards === 0 ? 'Sin tarjetas esta temporada' : 'Tiene tarjetas esta temporada', earned: jugador.matchesPlayed > 0 && jugador.yellowCards === 0 && jugador.redCards === 0 },
 ];
 
 function getDotColor(point) {

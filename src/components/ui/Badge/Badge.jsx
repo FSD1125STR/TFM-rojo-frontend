@@ -13,10 +13,10 @@ const variantColors = {
 };
 
 const sizeConfig = {
-  xs: { padding: '2px 6px', fontSize: '11px', iconSize: '12px', minWidth: '36px' },
-  sm: { padding: '4px 10px', fontSize: '12px', iconSize: '14px', minWidth: '90px' },
-  md: { padding: '6px 14px', fontSize: '14px', iconSize: '18px', minWidth: '100px' },
-  lg: { padding: '8px 18px', fontSize: '16px', iconSize: '22px', minWidth: '120px' },
+  xs: { padding: '2px 6px',  fontSize: '10px', iconSize: '11px', minWidth: '28px' },
+  sm: { padding: '6px 12px', fontSize: '12px', iconSize: '13px', minWidth: '60px' },
+  md: { padding: '4px 12px', fontSize: '11px', iconSize: '13px', minWidth: '80px' },
+  lg: { padding: '6px 16px', fontSize: '13px', iconSize: '16px', minWidth: '100px' },
 };
 
 export function Badge({
@@ -54,8 +54,10 @@ export function Badge({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '6px',
+    gap: '4px',
     fontWeight: 500,
+    textTransform: 'none',
+    letterSpacing: '0.01em',
     padding: sizes.padding,
     fontSize: sizes.fontSize,
     minWidth: width ? undefined : (minWidth || sizes.minWidth),

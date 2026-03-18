@@ -26,6 +26,7 @@ function getInitials(name) {
 const variantClasses = {
   neutral: 'bg-neutral text-neutral-content',
   primary: 'bg-primary text-primary-content',
+  error:   'bg-error text-error-content',
 };
 
 export function Avatar({ src, name, size = 'md', variant = 'neutral', className = '' }) {

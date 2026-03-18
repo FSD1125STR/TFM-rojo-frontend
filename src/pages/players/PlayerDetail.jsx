@@ -81,8 +81,6 @@ export function PlayerDetail() {
   return (
     <div test-id="el-p7l8y9r0">
       <PageHeader
-        title={`${jugador.firstName} ${jugador.lastName}`}
-        subtitle={`Dorsal ${jugador.dorsal} · ${jugador.position}`}
         showBack
         onBack={() => navigate('/jugadores')}
         {...(canEdit && {
