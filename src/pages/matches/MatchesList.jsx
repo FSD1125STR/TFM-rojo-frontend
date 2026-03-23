@@ -20,7 +20,7 @@ import {
 export function MatchesList() {
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
-  const { isAdmin, user } = useAuth();
+  const { isAdmin, canViewAll, user } = useAuth();
   const categoryId = user?.categoryId?._id || user?.categoryId || null;
   const kpis = useMatchesKpis(isAdmin ? null : categoryId);
 
@@ -142,14 +142,14 @@ export function MatchesList() {
     const awayName = match.awayTeamId?.name || 'Equipo visitante';
 
     const badges = [
-      { label, variant: cfg.variant, icon: cfg.icon },
+      { label, variant: cfg.variant, icon: cfg.icon, width: cfg.width },
     ];
 
     const metaItems = [
       { icon: 'calendar_today', text: <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(match.dateTime)}>{formatFechaRelativa(match.dateTime)}</span> },
       ...(match.venue?.name ? [{ icon: 'location_on', text: match.venue.name }] : []),
       { icon: 'flag', text: `Jornada ${match.journey}` },
-      ...(isAdmin && match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
+      ...(canViewAll && match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
     ];
 
     const content = match.status === 'finished' ? (

@@ -103,6 +103,9 @@ export function CardListRow({
                   size={badge.size || 'sm'}
                   icon={badge.icon}
                   outline={badge.outline}
+                  minWidth={badge.minWidth}
+                  width={badge.width}
+                  customColor={badge.customColor}
                 >
                   {badge.label}
                 </Badge>

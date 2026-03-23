@@ -8,9 +8,9 @@ export const statusLabels = {
 };
 
 export const estadoMatchConfig = {
-  scheduled: { icon: 'schedule', variant: 'info' },
-  finished: { icon: 'check_circle', variant: 'success' },
-  cancelled: { icon: 'cancel', variant: 'error' },
+  scheduled: { icon: 'schedule',     variant: 'info',    width: '108px' },
+  finished:  { icon: 'check_circle', variant: 'success', width: '108px' },
+  cancelled: { icon: 'cancel',       variant: 'error',   width: '108px' },
 };
 
 export const estadoOptions = [

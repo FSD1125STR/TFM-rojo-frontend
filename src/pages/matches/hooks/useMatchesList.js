@@ -13,7 +13,7 @@ const sortOptions = [
 ];
 
 export function useMatchesList() {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, canViewAll } = useAuth();
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -25,15 +25,15 @@ export function useMatchesList() {
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   useEffect(() => {
-    if (!isAdmin) return;
+    if (!canViewAll) return;
     getCategories()
       .then((cats) => {
         setCategoryOptions(cats.map((c) => ({ label: c.name, value: c._id })));
       })
       .catch(() => {});
-  }, [isAdmin]);
+  }, [canViewAll]);
 
-  const activeCategoryId = isAdmin
+  const activeCategoryId = canViewAll
     ? filterValues.categoryId || null
     : user?.categoryId?._id || user?.categoryId || null;
 
@@ -153,7 +153,7 @@ export function useMatchesList() {
   const compact = 'w-36';
 
   const filterItems = [
-    ...(isAdmin ? [{
+    ...(canViewAll ? [{
       key: 'categoryId',
       placeholder: 'Categoría',
       options: categoryOptions,
