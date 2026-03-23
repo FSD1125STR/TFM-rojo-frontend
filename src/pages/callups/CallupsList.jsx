@@ -9,6 +9,7 @@ import { showToast, showError, showConfirm, showLoadingInModal, closeLoading } f
 import { estadoMatchConfig, statusLabels, formatFechaRelativa, formatFechaAbsoluta } from '../matches/data/matchesConfig';
 import { callupStatusConfig } from './data/callupsConfig';
 import { getCallupByMatch, deleteCallup } from '../../services/callupsService';
+import { Avatar } from '../../components/ui/Avatar';
 
 export function CallupsList() {
   const navigate = useNavigate();
@@ -66,9 +67,19 @@ export function CallupsList() {
         { icon: 'flag', text: `Jornada ${match.journey}` },
         ...(canViewAll && match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
       ],
-      content: st?.hasCallup
-        ? <p className="text-sm text-success m-0">{st.calledCount} convocados · <span className="text-error">{st.notCalledCount} no convocados</span></p>
-        : <p className="text-sm text-warning m-0">Sin convocatoria registrada</p>,
+      content: (
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <Avatar src={match.homeTeamId?.logoUrl || undefined} name={match.homeTeamId?.name || 'Local'} size="sm" variant="primary" />
+            <span className="text-sm font-bold text-base-content/30">vs</span>
+            <Avatar src={match.awayTeamId?.logoUrl || undefined} name={match.awayTeamId?.name || 'Visitante'} size="sm" variant="error" />
+          </div>
+          {st?.hasCallup
+            ? <p className="text-sm text-success m-0">{st.calledCount} convocados · <span className="text-error">{st.notCalledCount} no convocados</span></p>
+            : <p className="text-sm text-warning m-0">Sin convocatoria registrada</p>
+          }
+        </div>
+      ),
     };
   };
 

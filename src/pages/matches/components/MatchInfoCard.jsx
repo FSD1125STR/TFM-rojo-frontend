@@ -32,7 +32,7 @@ export function MatchInfoCard({ match }) {
           {/* Teams + VS */}
           <div className="flex items-start justify-between gap-4">
             <div className="flex flex-1 flex-col items-center gap-2 text-center">
-              <Avatar name={match.homeTeam.name} size="xl" variant="primary" />
+              <Avatar src={match.homeTeam.logoUrl || undefined} name={match.homeTeam.name} size="xl" variant="primary" />
               <p className="font-bold text-base-content text-sm leading-tight">{match.homeTeam.name}</p>
               <span className="text-[11px] font-semibold text-base-content/50 uppercase tracking-wider">Local</span>
             </div>
@@ -43,7 +43,7 @@ export function MatchInfoCard({ match }) {
             </div>
 
             <div className="flex flex-1 flex-col items-center gap-2 text-center">
-              <Avatar name={match.awayTeam.name} size="xl" variant="error" />
+              <Avatar src={match.awayTeam.logoUrl || undefined} name={match.awayTeam.name} size="xl" variant="error" />
               <p className="font-bold text-base-content text-sm leading-tight">{match.awayTeam.name}</p>
               <span className="text-[11px] font-semibold text-base-content/50 uppercase tracking-wider">Visitante</span>
             </div>

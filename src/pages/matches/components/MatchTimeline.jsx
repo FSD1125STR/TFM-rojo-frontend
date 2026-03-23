@@ -1,4 +1,4 @@
-import { Card } from '../../../components/ui/Card';
+import { Timeline } from '../../../components/ui/Timeline';
 
 const EVENT_LABELS = {
   goal:         'Gol',
@@ -45,7 +45,7 @@ function EventIcon({ type }) {
   );
 }
 
-function EventContent({ event, align = 'left' }) {
+function EventContent({ event, align }) {
   const label = EVENT_LABELS[event.type] ?? event.type;
   const isRight = align === 'right';
 
@@ -70,75 +70,42 @@ function EventContent({ event, align = 'left' }) {
 }
 
 export function MatchTimeline({ timeline, match }) {
-  if (!timeline?.length) {
-    return (
-      <Card test-id="el-b5c6d7e8" title="Timeline" className="shadow-md">
-        <p className="text-sm text-base-content/50 text-center py-6">Sin eventos registrados</p>
-      </Card>
-    );
-  }
-
   return (
-    <Card test-id="el-b5c6d7e8" title="Timeline" className="shadow-md">
-      <div className="relative flex flex-col gap-1">
-        {/* Línea vertical central */}
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-base-300 z-0 pointer-events-none" />
-
-        {timeline.map((event, i) => {
-          const isSystem = event.type === 'half_time' || event.type === 'full_time';
-          const isLocal = event.teamId && event.teamId === match.homeTeam.id;
-
-          if (isSystem) {
-            return (
-              <div key={i} className="relative z-10 flex items-center gap-3 py-2">
-                <div className="flex-1 h-px bg-base-300" />
-                <div className="flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1">
-                  <EventIcon type={event.type} />
-                  <span className="text-xs font-bold text-base-content/40 uppercase tracking-wide">
-                    {event.type === 'half_time' ? 'Descanso' : `Final · ${event.minute}'`}
-                  </span>
-                </div>
-                <div className="flex-1 h-px bg-base-300" />
-              </div>
-            );
-          }
-
-          return (
-            <div
-              key={i}
-              className="grid grid-cols-[1fr_2rem_1fr] items-center gap-x-2 px-1 py-1.5 rounded-xl hover:bg-base-200/50 transition-colors"
-            >
-              {/* Columna izquierda — equipo local */}
-              <div className="flex items-center justify-end gap-2 min-w-0">
-                {isLocal && (
-                  <>
-                    <EventContent event={event} align="right" />
-                    <EventIcon type={event.type} />
-                  </>
-                )}
-              </div>
-
-              {/* Centro — minuto (fondo para tapar la línea vertical) */}
-              <div className="relative z-10 flex items-center justify-center">
-                <span className="relative text-xs font-black text-base-content/40 bg-base-200 px-2">
-                  {event.minute}
-                  <span className="absolute left-full text-xs font-black text-base-content/40">&apos;</span>
-                </span>
-              </div>
-
-              {/* Columna derecha — equipo visitante */}
-              <div className="flex items-center justify-start gap-2 min-w-0">
-                {!isLocal && event.teamId && (
-                  <>
-                    <EventIcon type={event.type} />
-                    <EventContent event={event} align="left" />
-                  </>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </Card>
+    <Timeline
+      title="Timeline"
+      className="shadow-md"
+      items={timeline ?? []}
+      getKey={(_, i) => i}
+      isSystem={(e) => e.type === 'half_time' || e.type === 'full_time'}
+      isLeft={(e) => !!(e.teamId && e.teamId === match.homeTeam.id)}
+      renderMarker={(e) => (
+        <span className="relative text-xs font-black text-base-content/40 bg-base-200 px-2">
+          {e.minute}
+          <span className="absolute left-full text-xs font-black text-base-content/40">&apos;</span>
+        </span>
+      )}
+      renderSlot={(e, align) =>
+        align === 'left' ? (
+          <>
+            <EventContent event={e} align="right" />
+            <EventIcon type={e.type} />
+          </>
+        ) : (
+          <>
+            <EventIcon type={e.type} />
+            <EventContent event={e} align="left" />
+          </>
+        )
+      }
+      renderSystem={(e) => (
+        <div className="flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1">
+          <EventIcon type={e.type} />
+          <span className="text-xs font-bold text-base-content/40 uppercase tracking-wide">
+            {e.type === 'half_time' ? 'Descanso' : `Final · ${e.minute}'`}
+          </span>
+        </div>
+      )}
+      emptyMessage="Sin eventos registrados"
+    />
   );
 }

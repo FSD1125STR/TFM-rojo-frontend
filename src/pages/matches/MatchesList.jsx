@@ -7,6 +7,7 @@ import { useMatchesKpis } from './hooks/useMatchesKpis';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { StatsCard } from '../../components/ui/StatsCard';
 import { CardsList } from '../../components/ui/CardsList';
+import { Avatar } from '../../components/ui/Avatar';
 import { ModalMatch } from './components/ModalMatch';
 import { showToast, showError, showErrorInModal, showConfirm, showInputPrompt, showLoadingInModal, closeLoading } from '../../utils/alerts';
 import {
@@ -173,19 +174,21 @@ export function MatchesList() {
     ];
 
     const content = match.status === 'finished' ? (
-      <div className="flex items-center gap-4">
-        <div className="text-center">
-          <p className="text-sm text-base-content/50 m-0">{homeName}</p>
-          <p className="text-3xl font-bold text-base-content m-0">{match.homeScore ?? '-'}</p>
+      <div className="flex items-center gap-3">
+        <Avatar src={match.homeTeamId?.logoUrl || undefined} name={homeName} size="sm" variant="primary" />
+        <div className="flex items-center gap-1.5">
+          <span className="text-2xl font-black tabular-nums text-base-content">{match.homeScore ?? '-'}</span>
+          <span className="text-lg font-bold text-base-content/30">-</span>
+          <span className="text-2xl font-black tabular-nums text-base-content">{match.awayScore ?? '-'}</span>
         </div>
-        <span className="text-2xl font-bold text-base-content/30">-</span>
-        <div className="text-center">
-          <p className="text-sm text-base-content/50 m-0">{awayName}</p>
-          <p className="text-3xl font-bold text-base-content m-0">{match.awayScore ?? '-'}</p>
-        </div>
+        <Avatar src={match.awayTeamId?.logoUrl || undefined} name={awayName} size="sm" variant="error" />
       </div>
     ) : (
-      <p className="text-sm text-base-content/40 m-0">Partido no disputado</p>
+      <div className="flex items-center gap-2">
+        <Avatar src={match.homeTeamId?.logoUrl || undefined} name={homeName} size="sm" variant="primary" />
+        <span className="text-sm font-bold text-base-content/30">vs</span>
+        <Avatar src={match.awayTeamId?.logoUrl || undefined} name={awayName} size="sm" variant="error" />
+      </div>
     );
 
     return {
