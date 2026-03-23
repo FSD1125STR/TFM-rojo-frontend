@@ -1,13 +1,7 @@
 import { useRef } from 'react';
 import { Card } from '../../../components/ui/Card';
+import { Avatar } from '../../../components/ui/Avatar';
 import { statusLabels, formatMatchDate, formatMatchTime } from '../data/matchesConfig';
-
-function getShort(name) {
-  if (!name) return '?';
-  const words = name.trim().split(/\s+/);
-  if (words.length === 1) return name.slice(0, 2).toUpperCase();
-  return words.map((w) => w[0]).join('').slice(0, 3).toUpperCase();
-}
 
 const STATUS_CONFIG = {
   scheduled: { icon: 'schedule'     },
@@ -20,24 +14,6 @@ const RESULT_CONFIG = {
   draw: { badge: 'bg-[var(--result-draw)] text-[var(--result-draw-text)]', label: 'Empate',   icon: 'equal'           },
   loss: { badge: 'bg-[var(--result-loss)] text-[var(--result-loss-text)]', label: 'Derrota',  icon: 'close'           },
 };
-
-function TeamShield({ logoUrl, name, variant }) {
-  if (logoUrl) {
-    return (
-      <img
-        src={logoUrl}
-        alt={name}
-        className="h-14 w-14 object-contain shrink-0"
-        onError={(e) => { e.currentTarget.style.display = 'none'; }}
-      />
-    );
-  }
-  return (
-    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-${variant} text-${variant}-content text-sm font-black shadow-md`}>
-      {getShort(name)}
-    </div>
-  );
-}
 
 function InfoItem({ icon, label, value }) {
   return (
@@ -150,7 +126,7 @@ export function MatchScoreHeader({ match }) {
               <p className="text-base font-bold text-base-content leading-tight truncate">{match.homeTeam.name}</p>
               <p className="text-[10px] text-base-content/40 uppercase tracking-wider">(Local)</p>
             </div>
-            <TeamShield logoUrl={match.homeTeam.logoUrl} name={match.homeTeam.name} variant="primary" />
+            <Avatar src={match.homeTeam.logoUrl || undefined} name={match.homeTeam.name} size="xl" variant="primary" />
           </div>
 
           {/* Marcador */}
@@ -166,7 +142,7 @@ export function MatchScoreHeader({ match }) {
 
           {/* Equipo visitante */}
           <div className="flex items-center gap-3 flex-1 min-w-0 justify-start">
-            <TeamShield logoUrl={match.awayTeam.logoUrl} name={match.awayTeam.name} variant="error" />
+            <Avatar src={match.awayTeam.logoUrl || undefined} name={match.awayTeam.name} size="xl" variant="error" />
             <div className="text-left min-w-0">
               <p className="text-base font-bold text-base-content leading-tight truncate">{match.awayTeam.name}</p>
               <p className="text-[10px] text-base-content/40 uppercase tracking-wider">(Visitante)</p>
