@@ -12,7 +12,7 @@ const mockNotifs = [
 
 const allUnread = Array.from({ length: 10 }, (_, i) => ({
   _id: String(i + 1),
-  message: `Convocatoria guardada — J${12 - i}: Barça B vs Rival ${i + 1}`,
+  message: `Convocatoria guardada — Jornada ${12 - i}: Barça B vs Rival ${i + 1}`,
   type: 'CALLUP_SAVED',
   read: false,
   createdAt: new Date(now - i * 600000).toISOString(),

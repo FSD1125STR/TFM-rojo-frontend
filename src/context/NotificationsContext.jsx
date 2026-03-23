@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 import { getMyNotifications, markAsRead, markAllAsRead as markAllAsReadApi } from '../services/notificationsService';
@@ -10,6 +10,7 @@ const NotificationsContext = createContext(null);
 export function NotificationsProvider({ children }) {
   const { user, token } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const socketRef = useRef(null);
@@ -66,6 +67,52 @@ export function NotificationsProvider({ children }) {
       showNotification(payload.message, {
         categoryName: payload.categoryName,
         onClick: () => { if (payload.matchId) navigate(`/convocatorias/${payload.matchId}`); },
+      });
+    });
+
+    socket.on('match:live', (payload) => {
+      if (payload.triggeredBy?.id === user.id) return;
+      if (location.pathname === `/partidos/${payload.matchId}/live`) return;
+
+      const newNotif = {
+        _id: `temp-${Date.now()}`,
+        message: payload.message,
+        type: payload.type,
+        read: false,
+        createdAt: payload.createdAt,
+        matchId: payload.matchId,
+        categoryName: payload.categoryName,
+      };
+
+      setNotifications((prev) => [newNotif, ...prev].slice(0, 10));
+      setUnreadCount((prev) => prev + 1);
+
+      showNotification(payload.message, {
+        categoryName: payload.categoryName,
+        onClick: () => { if (payload.matchId) navigate(`/partidos/${payload.matchId}/live`); },
+      });
+    });
+
+    socket.on('match:event', (payload) => {
+      // No mostrar toast si el usuario está viendo ese partido en directo
+      if (location.pathname === `/partidos/${payload.matchId}/live`) return;
+
+      const newNotif = {
+        _id: `temp-${Date.now()}`,
+        message: payload.message,
+        type: payload.type,
+        read: false,
+        createdAt: payload.createdAt,
+        matchId: payload.matchId,
+        categoryName: payload.categoryName,
+      };
+
+      setNotifications((prev) => [newNotif, ...prev].slice(0, 10));
+      setUnreadCount((prev) => prev + 1);
+
+      showNotification(payload.message, {
+        categoryName: payload.categoryName,
+        onClick: () => { if (payload.matchId) navigate(`/partidos/${payload.matchId}/live`); },
       });
     });
 
