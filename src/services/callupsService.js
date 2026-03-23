@@ -15,6 +15,7 @@ export async function getCallupByMatch(matchId) {
     return {
       id: player._id,
       fullName: player.fullName,
+      photoUrl: player.photoUrl,
       position: player.position,
       dorsal: player.dorsal,
       playerStatus: player.status,
