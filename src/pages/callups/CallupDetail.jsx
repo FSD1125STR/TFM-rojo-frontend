@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { showError } from '../../utils/alerts';
 import { useCallupDetail } from './hooks/useCallupDetail';
 import { usePermissions } from '../../hooks/usePermissions';
 import { CallupsBoard } from './components/CallupsBoard';
-import { ModalCreateCallup } from './components/ModalCreateCallup';
 import { Button } from '../../components/ui/Button';
 import { Icon } from '../../components/ui/Icon';
 import { Badge } from '../../components/ui/Badge';
@@ -49,9 +48,7 @@ export function CallupDetail() {
     movePlayer,
     saveAllPlayers,
     discardChanges,
-    createCallup,
   } = useCallupDetail(matchId);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
 
   useEffect(() => {
     if (error === 'MATCH_CANCELLED') {
@@ -136,20 +133,30 @@ export function CallupDetail() {
               {calledCount}/{maxPlayers} convocados
             </Badge>
           )}
-          {!callup && canCreate && (
-            <Button
-              variant="primary"
-              size="sm"
-              className="gap-2"
-              onClick={() => setCreateModalOpen(true)}
-            >
-              <Icon name="assignment_turned_in" className="text-[18px]" />
-              Crear convocatoria
-            </Button>
-          )}
         </div>
       </div>
 
+      {/* Modo creación: botón guardar siempre visible */}
+      {!callup && canCreate && (
+        <div className="flex items-center justify-between gap-4 px-4 py-2.5 bg-primary/10 border border-primary/30 rounded-xl text-sm">
+          <span className="flex items-center gap-2 text-base-content/70">
+            <Icon name="assignment_turned_in" className="text-[16px] text-primary" />
+            Nueva convocatoria · {calledCount}/{maxPlayers} convocados
+          </span>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={saveAllPlayers}
+            isLoading={saving}
+            isDisabled={calledCount < minPlayers}
+            title={calledCount < minPlayers ? `Mínimo ${minPlayers} jugadores convocados` : undefined}
+          >
+            Guardar convocatoria
+          </Button>
+        </div>
+      )}
+
+      {/* Modo edición: banner de cambios sin guardar */}
       {callup && isDirty && (
         <div className="flex items-center justify-between gap-4 px-4 py-2.5 bg-warning/10 border border-warning/30 rounded-xl text-sm">
           <span className="flex items-center gap-2 text-base-content/70">
@@ -174,46 +181,27 @@ export function CallupDetail() {
         </div>
       )}
 
-      {callup ? (
-        <div className="flex-1 min-h-0 flex flex-col gap-3">
-          {!isMatchScheduled && (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-base-200 text-base-content/60 text-sm">
-              <Icon name="lock" className="text-[16px]" />
-              <span>
-                {match?.status === 'finished' ? 'Partido finalizado' : 'Partido cancelado'} — la convocatoria es de solo lectura
-              </span>
-            </div>
-          )}
-          <div className="flex-1 min-h-0">
-            <CallupsBoard
-              availablePlayers={availablePlayers}
-              calledPlayers={calledPlayers}
-              notCalledPlayers={notCalledPlayers}
-              calledCount={calledCount}
-              maxPlayers={maxPlayers}
-              editable={canEdit}
-              movePlayer={movePlayer}
-            />
+      <div className="flex-1 min-h-0 flex flex-col gap-3">
+        {callup && !isMatchScheduled && (
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-base-200 text-base-content/60 text-sm">
+            <Icon name="lock" className="text-[16px]" />
+            <span>
+              {match?.status === 'finished' ? 'Partido finalizado' : 'Partido cancelado'} — la convocatoria es de solo lectura
+            </span>
           </div>
+        )}
+        <div className="flex-1 min-h-0">
+          <CallupsBoard
+            availablePlayers={availablePlayers}
+            calledPlayers={calledPlayers}
+            notCalledPlayers={notCalledPlayers}
+            calledCount={calledCount}
+            maxPlayers={maxPlayers}
+            editable={callup ? canEdit : canCreate}
+            movePlayer={movePlayer}
+          />
         </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center flex-1 gap-3 text-base-content/50 py-16">
-          <Icon name="assignment" className="text-6xl" />
-          <p className="text-lg font-medium">No existe convocatoria para este partido</p>
-          {canCreate ? (
-            <p className="text-sm">Haz clic en &ldquo;Crear convocatoria&rdquo; para empezar</p>
-          ) : (
-            <p className="text-sm">No tienes permiso para crear convocatorias</p>
-          )}
-        </div>
-      )}
-
-      <ModalCreateCallup
-        isOpen={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-        onSave={createCallup}
-        match={match}
-      />
+      </div>
     </div>
   );
 }

@@ -26,7 +26,7 @@ export async function getCallupByMatch(matchId) {
   });
   return {
     match,
-    callup: data,
+    callup: data._id ? data : null,
     players,
     maxPlayers: 18,
     minPlayers: 11,

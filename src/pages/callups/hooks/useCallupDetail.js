@@ -73,16 +73,25 @@ export function useCallupDetail(matchId) {
 
   const saveAllPlayers = useCallback(async () => {
     const toSave = players
-      .filter((p) => p.callupStatus !== null && !p.isBlocked)
+      .filter((p) => p.callupStatus !== null)
       .map((p) => ({
         playerId: p.id,
         status: p.callupStatus,
-        ...(p.callupStatus === 'notCalled' && { reasonCode: p.reasonCode }),
+        ...(p.callupStatus === 'notCalled' && p.reasonCode && { reasonCode: p.reasonCode }),
       }));
 
     setSaving(true);
     try {
-      await saveCallupPlayersService(callup._id, toSave);
+      let targetId = callup?._id;
+      if (!targetId) {
+        const created = await createCallupService({
+          matchId,
+          callupDateTime: new Date(match.dateTime).toISOString(),
+        });
+        targetId = created._id;
+        setCallup(created);
+      }
+      await saveCallupPlayersService(targetId, toSave);
       setSavedPlayers(players);
       showToast('Convocatoria guardada correctamente');
     } catch (err) {
@@ -102,21 +111,11 @@ export function useCallupDetail(matchId) {
     } finally {
       setSaving(false);
     }
-  }, [matchId, players]);
+  }, [matchId, match, callup, players]);
 
   const discardChanges = useCallback(() => {
     setPlayers(savedPlayers);
   }, [savedPlayers]);
-
-  const createCallup = useCallback(
-    async (payload) => {
-      const created = await createCallupService({ matchId, ...payload });
-      setCallup(created);
-      await load();
-      return true;
-    },
-    [matchId, load]
-  );
 
   const availablePlayers = players.filter((p) => p.callupStatus === null);
   const calledPlayers = players.filter((p) => p.callupStatus === 'called');
@@ -139,7 +138,6 @@ export function useCallupDetail(matchId) {
     movePlayer,
     saveAllPlayers,
     discardChanges,
-    createCallup,
     reload: load,
   };
 }
