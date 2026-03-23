@@ -8,9 +8,9 @@ export const statusLabels = {
 };
 
 export const estadoMatchConfig = {
-  scheduled: { icon: 'schedule', variant: 'info' },
-  finished: { icon: 'check_circle', variant: 'success' },
-  cancelled: { icon: 'cancel', variant: 'error' },
+  scheduled: { icon: 'schedule',     variant: 'info',    width: '108px' },
+  finished:  { icon: 'check_circle', variant: 'success', width: '108px' },
+  cancelled: { icon: 'cancel',       variant: 'error',   width: '108px' },
 };
 
 export const estadoOptions = [
@@ -47,4 +47,16 @@ export function formatFechaAbsoluta(dateStr) {
   });
   const hora = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
   return `${fecha} - ${hora}`;
+}
+
+export function formatMatchDate(dateStr) {
+  if (!dateStr) return '';
+  return new Date(dateStr).toLocaleDateString('es-ES', {
+    weekday: 'short', day: 'numeric', month: 'short', year: 'numeric',
+  });
+}
+
+export function formatMatchTime(dateStr) {
+  if (!dateStr) return '';
+  return new Date(dateStr).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 }

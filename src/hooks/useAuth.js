@@ -25,6 +25,7 @@ export function useAuth() {
   }
 
   const isAdmin = context.user?.role === 'administrador';
+  const canViewAll = isAdmin || context.user?.role === 'direccion';
 
-  return { ...context, isAdmin };
+  return { ...context, isAdmin, canViewAll };
 }

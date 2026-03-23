@@ -1,25 +1,30 @@
+// Servicio de convocatorias — llamadas a la API REST
 import api from './api';
 
-export async function getMatchCallup(matchId) {
-  const { data } = await api.get(`/matches/${matchId}/callup`);
+export async function getCallupByMatch(matchId) {
+  const { data } = await api.get(`/callups/match/${matchId}`);
   return data;
 }
 
-export async function createCallup(matchId, payload) {
-  const { data } = await api.post(`/matches/${matchId}/callup`, payload);
+// Devuelve { [matchId]: { hasCallup, calledCount, notCalledCount } }
+export async function getCallupsStatus(matchIds) {
+  if (!matchIds?.length) return {};
+  const { data } = await api.get('/callups/status', {
+    params: { matchIds: matchIds.join(',') },
+  });
   return data;
 }
 
-export async function updatePlayerStatus(matchId, payload) {
-  const { data } = await api.patch(`/matches/${matchId}/callup/players`, payload);
+export async function createCallup(payload) {
+  const { data } = await api.post('/callups', payload);
   return data;
 }
 
-export async function removePlayer(matchId, playerId) {
-  await api.delete(`/matches/${matchId}/callup/players/${playerId}`);
+export async function updateCallup(id, payload) {
+  const { data } = await api.patch(`/callups/${id}`, payload);
+  return data;
 }
 
-export async function saveCallupPlayers(matchId, players) {
-  const { data } = await api.put(`/matches/${matchId}/callup/players`, { players });
-  return data;
+export async function deleteCallup(id) {
+  await api.delete(`/callups/${id}`);
 }

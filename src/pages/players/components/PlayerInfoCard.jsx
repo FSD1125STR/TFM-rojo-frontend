@@ -24,33 +24,30 @@ export function PlayerInfoCard({ jugador }) {
           </p>
           <p className="text-xs text-base-content/50 mt-0.5">Dorsal #{jugador.dorsal}</p>
         </div>
-        <div className={jugador.status !== 'Disponible' ? 'animate-pulse' : ''}>
-          {jugador.sanction ? (
-            <div
-              className="tooltip tooltip-bottom"
-              data-tip={`Cumplidos: ${jugador.sanction.totalMatches - jugador.sanction.remainingMatches} de ${jugador.sanction.totalMatches} · Restantes: ${jugador.sanction.remainingMatches}`}
-            >
+        <div className="flex items-center gap-2">
+          <Badge variant="custom" size="sm" icon={posicion?.icon} customColor={posicion?.color}>
+            {jugador.position}
+          </Badge>
+          <div className={jugador.status !== 'Disponible' ? 'animate-pulse' : ''}>
+            {jugador.sanction ? (
+              <div
+                className="tooltip tooltip-bottom"
+                data-tip={`Cumplidos: ${jugador.sanction.totalMatches - jugador.sanction.remainingMatches} de ${jugador.sanction.totalMatches} · Restantes: ${jugador.sanction.remainingMatches}`}
+              >
+                <Badge variant={estado?.variant || 'neutral'} size="sm" icon={estado?.icon}>
+                  {jugador.status}
+                </Badge>
+              </div>
+            ) : (
               <Badge variant={estado?.variant || 'neutral'} size="sm" icon={estado?.icon}>
                 {jugador.status}
               </Badge>
-            </div>
-          ) : (
-            <Badge variant={estado?.variant || 'neutral'} size="sm" icon={estado?.icon}>
-              {jugador.status}
-            </Badge>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
       <div className="px-5 py-4">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1 h-px bg-base-300" />
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-base-content/40">
-            Información Personal
-          </span>
-          <div className="flex-1 h-px bg-base-300" />
-        </div>
-
         <div className="flex flex-col gap-3">
           <InfoItem
             icon="calendar_month"
@@ -60,18 +57,6 @@ export function PlayerInfoCard({ jugador }) {
           <InfoItem icon="mail" label="Email" value={jugador.email} href={`mailto:${jugador.email}`} />
           <InfoItem icon="phone" label="Teléfono" value={jugador.phone} href={`tel:${jugador.phone}`} />
           <InfoItem icon="location_on" label="Dirección" value={jugador.address} />
-        </div>
-
-        <div className="border-t border-base-300 mt-4 pt-4">
-          <InfoItem
-            icon="sports_soccer"
-            label="Posición"
-            badge={
-              <Badge variant="custom" size="sm" minWidth="140px" icon={posicion?.icon} customColor={posicion?.color}>
-                {jugador.position}
-              </Badge>
-            }
-          />
         </div>
       </div>
     </Card>

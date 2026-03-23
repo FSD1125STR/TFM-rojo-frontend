@@ -29,6 +29,12 @@
   --color-warning-content: oklch(20% 0.02 260) !important;
   --color-error: oklch(60% 0.22 25) !important;
   --color-error-content: oklch(100% 0 0) !important;
+  --result-win:       oklch(48% 0.18 145);
+  --result-win-text:  oklch(100% 0 0);
+  --result-loss:      oklch(52% 0.22 25);
+  --result-loss-text: oklch(100% 0 0);
+  --result-draw:      oklch(42% 0.07 55);
+  --result-draw-text: oklch(100% 0 0);
 }
 
 :root[data-theme="dark"],
@@ -53,6 +59,12 @@
   --color-warning-content: oklch(15% 0.03 160) !important;
   --color-error: oklch(60% 0.22 25) !important;
   --color-error-content: oklch(100% 0 0) !important;
+  --result-win:       oklch(48% 0.18 145);
+  --result-win-text:  oklch(100% 0 0);
+  --result-loss:      oklch(52% 0.22 25);
+  --result-loss-text: oklch(100% 0 0);
+  --result-draw:      oklch(42% 0.07 55);
+  --result-draw-text: oklch(100% 0 0);
 }
 
 /* Datatable Custom Styles */
