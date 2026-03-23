@@ -24,7 +24,7 @@ export function CallupsList() {
     if (!ok) return;
     showLoadingInModal('Eliminando...');
     try {
-      const callup = await getCallupByMatch(matchId);
+      const { callup } = await getCallupByMatch(matchId);
       await deleteCallup(callup._id);
       closeLoading();
       showToast('Convocatoria eliminada');
