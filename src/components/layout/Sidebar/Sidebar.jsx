@@ -6,6 +6,7 @@ import { Divider } from '../../ui/Divider/Divider';
 import { menuItems } from '../../../data/menuItems';
 import { useAuth } from '../../../hooks/useAuth';
 import { usePermissions } from '../../../hooks/usePermissions';
+import { useLiveMatch } from '../../../hooks/useLiveMatchContext';
 
 export function Sidebar({
   mode = 'expanded',
@@ -17,6 +18,7 @@ export function Sidebar({
 }) {
   const { user: authUser, logout } = useAuth();
   const { checkPermission } = usePermissions();
+  const { hasLiveMatch } = useLiveMatch();
   const user = userProp || authUser;
   const handleLogout = onLogoutProp || logout;
   const isCollapsed = mode === 'collapsed';
@@ -40,6 +42,7 @@ export function Sidebar({
               to={item.to}
               collapsed={isCollapsed}
               onClick={isDrawer ? onNavigate : undefined}
+              showLiveDot={item.to === '/directo' && hasLiveMatch}
             />
           ))}
         </ul>

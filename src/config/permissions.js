@@ -12,7 +12,7 @@ export const PERMISSIONS = {
   "callups.create":   ["administrador", "entrenador", "delegado"],
   "callups.edit":     ["administrador", "entrenador", "delegado"],
   "callups.view":     ["administrador", "direccion", "entrenador", "delegado"],
-  "live.update":      ["administrador", "delegado"],
+  "live.update":      ["administrador", "direccion", "delegado"],
   "stats.view":       ["administrador", "direccion", "entrenador", "delegado"],
   "categories.manage":["administrador"],
   "teams.view":        ["administrador", "direccion", "entrenador", "delegado"],

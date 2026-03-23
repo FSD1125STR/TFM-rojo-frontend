@@ -6,4 +6,5 @@ export const SidebarItemProps = {
   to: PropTypes.string.isRequired,
   collapsed: PropTypes.bool,
   onClick: PropTypes.func,
+  showLiveDot: PropTypes.bool,
 };

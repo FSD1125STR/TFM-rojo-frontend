@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { HeaderProvider } from "./context/HeaderContext";
+import { NotificationsProvider } from "./context/NotificationsContext";
+import { LiveMatchProvider } from "./context/LiveMatchContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AppShell } from "./components/layout/AppShell/AppShell";
 import { PublicLayout } from "./components/layout/PublicLayout/PublicLayout";
@@ -22,6 +24,7 @@ import { RegisterAdmin } from "./pages/auth/RegisterAdmin";
 import { Dashboard } from "./pages/Dashboard";
 import { PlayersList, PlayerDetail } from "./pages/players";
 import { MatchesList, MatchDetail } from "./pages/matches";
+import { LiveMatchPage } from "./pages/matches/live/LiveMatchPage";
 import { CallupsList, CallupDetail } from "./pages/callups";
 import { UsersList, UserDetail } from "./pages/users";
 import { LiveMatch } from "./pages/LiveMatch";
@@ -63,6 +66,7 @@ function AppRoutes() {
           <Route element={<ProtectedRoute permission="matches.view" />}>
             <Route path="/partidos" element={<MatchesList />} />
             <Route path="/partidos/:id" element={<MatchDetail />} />
+            <Route path="/partidos/:id/live" element={<LiveMatchPage />} />
           </Route>
 
           {/* Rutas con permiso de convocatorias */}
@@ -100,7 +104,11 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <HeaderProvider>
-          <AppRoutes />
+          <NotificationsProvider>
+            <LiveMatchProvider>
+              <AppRoutes />
+            </LiveMatchProvider>
+          </NotificationsProvider>
         </HeaderProvider>
       </AuthProvider>
     </BrowserRouter>

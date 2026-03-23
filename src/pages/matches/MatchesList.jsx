@@ -96,6 +96,17 @@ export function MatchesList() {
       },
     ];
 
+    if (
+      match.status === 'scheduled' &&
+      ['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF'].includes(match.liveStatus)
+    ) {
+      items.push({
+        label: 'En directo',
+        icon: 'cell_tower',
+        onClick: (row) => navigate(`/partidos/${row._id}/live`),
+      });
+    }
+
     if (checkPermission('callups.view') && match.status !== 'cancelled') {
       items.push({
         label: 'Convocatoria',
