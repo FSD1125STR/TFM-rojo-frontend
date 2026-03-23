@@ -72,7 +72,7 @@ export function NotificationsProvider({ children }) {
 
     socket.on('match:live', (payload) => {
       if (payload.triggeredBy?.id === user.id) return;
-      if (location.pathname === `/partidos/${payload.matchId}/live`) return;
+      if (location.pathname === `/directo/${payload.matchId}`) return;
 
       const newNotif = {
         _id: `temp-${Date.now()}`,
@@ -89,13 +89,13 @@ export function NotificationsProvider({ children }) {
 
       showNotification(payload.message, {
         categoryName: payload.categoryName,
-        onClick: () => { if (payload.matchId) navigate(`/partidos/${payload.matchId}/live`); },
+        onClick: () => { if (payload.matchId) navigate(`/directo/${payload.matchId}`); },
       });
     });
 
     socket.on('match:event', (payload) => {
       // No mostrar toast si el usuario está viendo ese partido en directo
-      if (location.pathname === `/partidos/${payload.matchId}/live`) return;
+      if (location.pathname === `/directo/${payload.matchId}`) return;
 
       const newNotif = {
         _id: `temp-${Date.now()}`,
@@ -112,7 +112,7 @@ export function NotificationsProvider({ children }) {
 
       showNotification(payload.message, {
         categoryName: payload.categoryName,
-        onClick: () => { if (payload.matchId) navigate(`/partidos/${payload.matchId}/live`); },
+        onClick: () => { if (payload.matchId) navigate(`/directo/${payload.matchId}`); },
       });
     });
 

@@ -44,7 +44,7 @@ export function LiveMatch() {
         const list = Array.isArray(data) ? data : data?.matches || [];
         setMatches(list);
         if (isFieldView && list.length > 0) {
-          navigate(`/partidos/${list[0]._id}/live`, { replace: true });
+          navigate(`/directo/${list[0]._id}`, { replace: true });
         }
       })
       .catch(setError)
@@ -55,7 +55,7 @@ export function LiveMatch() {
     {
       label: 'Ver en directo',
       icon: 'cell_tower',
-      onClick: (row) => navigate(`/partidos/${row._id}/live`),
+      onClick: (row) => navigate(`/directo/${row._id}`),
     },
   ];
 

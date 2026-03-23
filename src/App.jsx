@@ -66,7 +66,7 @@ function AppRoutes() {
           <Route element={<ProtectedRoute permission="matches.view" />}>
             <Route path="/partidos" element={<MatchesList />} />
             <Route path="/partidos/:id" element={<MatchDetail />} />
-            <Route path="/partidos/:id/live" element={<LiveMatchPage />} />
+            <Route path="/directo/:id" element={<LiveMatchPage />} />
           </Route>
 
           {/* Rutas con permiso de convocatorias */}

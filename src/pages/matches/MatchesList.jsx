@@ -103,7 +103,7 @@ export function MatchesList() {
       items.push({
         label: 'En directo',
         icon: 'cell_tower',
-        onClick: (row) => navigate(`/partidos/${row._id}/live`),
+        onClick: (row) => navigate(`/directo/${row._id}`),
       });
     }
 
