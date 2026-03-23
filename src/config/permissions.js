@@ -1,6 +1,8 @@
 export const PERMISSIONS = {
   "users.create":     ["administrador"],
   "users.view":       ["administrador", "direccion"],
+  "users.edit":       ["administrador"],
+  "users.delete":     ["administrador"],
   "players.create":   ["administrador"],
   "players.edit":     ["administrador"],
   "players.view":     ["administrador", "direccion", "entrenador", "delegado"],

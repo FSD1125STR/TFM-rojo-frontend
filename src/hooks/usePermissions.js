@@ -7,8 +7,6 @@ export function usePermissions() {
   const checkPermission = (permission) => {
     if (!user) return false;
 
-    if (user.role?.toLowerCase() === "administrador") return true;
-
     return hasPermission(user.role, permission);
   };
 

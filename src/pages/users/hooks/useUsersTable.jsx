@@ -1,6 +1,13 @@
 import { Avatar } from "../../../components/ui/Avatar/Avatar";
 import { Badge } from "../../../components/ui/Badge/Badge";
 
+const ROLE_CONFIGS = {
+  administrador: { variant: "primary", icon: "admin_panel_settings" },
+  entrenador:    { variant: "info",    icon: "sports" },
+  delegado:      { variant: "warning", icon: "assignment_ind" },
+  direccion:     { variant: "secondary", icon: "visibility" },
+};
+
 export function useUsersTable({ onEditar, onEliminar }) {
   const columns = [
     {
@@ -28,19 +35,7 @@ export function useUsersTable({ onEditar, onEliminar }) {
       width: "20%",
       align: "center",
       render: (value) => {
-        const roleConfigs = {
-          administrador: { variant: "primary", icon: "admin_panel_settings" },
-          entrenador: { variant: "info", icon: "sports" },
-          delegado: { variant: "warning", icon: "assignment_ind" },
-          "fisio/medico": { variant: "success", icon: "medical_services" },
-          direccion: { variant: "secondary", icon: "visibility" },
-        };
-
-        const config = roleConfigs[value?.toLowerCase()] || {
-          variant: "neutral",
-          icon: "person",
-        };
-
+        const config = ROLE_CONFIGS[value?.toLowerCase()] || { variant: "neutral", icon: "person" };
         return (
           <div className="pointer-events-none flex justify-center">
             <Badge

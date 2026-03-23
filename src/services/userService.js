@@ -1,39 +1,21 @@
-import api from "./api";
+import api from './api';
 
-export const userService = {
-  async getUsers() {
-    try {
-      const response = await api.get("/users");
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+export async function getUsers() {
+  const { data } = await api.get('/users');
+  return data;
+}
 
-  async createUser(userData) {
-    try {
-      const response = await api.post("/users", userData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+export async function createUser(userData) {
+  const { data } = await api.post('/users', userData);
+  return data;
+}
 
-  async updateUser(id, userData) {
-    try {
-      const response = await api.patch(`/users/${id}`, userData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+export async function updateUser(id, userData) {
+  const { data } = await api.patch(`/users/${id}`, userData);
+  return data;
+}
 
-  async deleteUser(id) {
-    try {
-      const response = await api.delete(`/users/${id}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-};
+export async function deleteUser(id) {
+  const { data } = await api.delete(`/users/${id}`);
+  return data;
+}

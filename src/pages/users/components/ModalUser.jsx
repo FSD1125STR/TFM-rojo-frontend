@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-import { Modal } from "../../../components/ui/Modal";
-import { Button } from "../../../components/ui/Button";
-import { Icon } from "../../../components/ui/Icon";
-import { UserForm } from "./UserForm";
+import { useState, useEffect } from 'react';
+import { Modal } from '../../../components/ui/Modal';
+import { Button } from '../../../components/ui/Button';
+import { Icon } from '../../../components/ui/Icon';
+import { UserForm } from './UserForm';
+import { ModalUserProps } from './ModalUser.props';
 
 const FORM_ID = "user-form";
 
@@ -86,3 +87,5 @@ export function ModalUser({
     </Modal>
   );
 }
+
+ModalUser.propTypes = ModalUserProps;
