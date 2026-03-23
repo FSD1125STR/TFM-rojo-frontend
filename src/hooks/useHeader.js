@@ -1,5 +1,5 @@
-import { useContext, useEffect } from 'react';
-import { HeaderContext } from '../context/HeaderContext';
+import { useContext, useEffect } from "react";
+import { HeaderContext } from "../context/HeaderContext";
 
 export function useHeader({ title, breadcrumbs = [], actions = null } = {}) {
   const context = useContext(HeaderContext);
