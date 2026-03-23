@@ -45,7 +45,7 @@ export function useUsersTable({ onEditar, onEliminar }) {
               width="150px"
               pill={false}
             >
-              {value}
+              <span className="capitalize">{value}</span>
             </Badge>
           </div>
         );

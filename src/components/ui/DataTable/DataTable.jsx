@@ -198,7 +198,7 @@ export function DataTable({
   const hasToolbar = searchable || filters.length > 0;
 
   const containerClasses = [
-    'datatable-root overflow-visible',
+    'datatable-root rounded-xl border border-base-300 bg-base-200/50 shadow-md overflow-hidden',
     hasToolbar ? '' : 'no-toolbar',
     pagination ? '' : 'no-pagination',
     className,

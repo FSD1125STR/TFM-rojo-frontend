@@ -216,30 +216,29 @@ export function PlayersList() {
         />
       </div>}
 
-      <div className="mt-4 rounded-xl border border-base-300 bg-base-200/50 shadow-md overflow-hidden">
-        <DataTable
-          columns={columns}
-          data={jugadores}
-          selectable={canCreate}
-          {...(canCreate && {
-            bulkActions: [
-              {
-                label: 'Eliminar',
-                icon: 'delete',
-                variant: 'danger',
-                onClick: handleEliminarSeleccionados,
-              },
-            ],
-          })}
-          actions={actions}
-          filters={filters}
-          {...searchConfig}
-          pagination
-          paginationPerPage={8}
-          paginationRowsPerPageOptions={[8, 15, 20]}
-          onRowClick={handleVerDetalle}
-        />
-      </div>
+      <DataTable
+        columns={columns}
+        data={jugadores}
+        selectable={canCreate}
+        {...(canCreate && {
+          bulkActions: [
+            {
+              label: 'Eliminar',
+              icon: 'delete',
+              variant: 'danger',
+              onClick: handleEliminarSeleccionados,
+            },
+          ],
+        })}
+        actions={actions}
+        filters={filters}
+        {...searchConfig}
+        pagination
+        paginationPerPage={8}
+        paginationRowsPerPageOptions={[8, 15, 20]}
+        onRowClick={handleVerDetalle}
+        className="mt-4"
+      />
 
       <ModalPlayer
         isOpen={modalOpen}

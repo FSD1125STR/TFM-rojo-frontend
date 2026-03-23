@@ -106,17 +106,16 @@ export function UsersList() {
         })}
       />
 
-      <div className="mt-4 rounded-xl border border-base-300 bg-base-200/50 shadow-md overflow-hidden">
-        <DataTable
-          columns={columns}
-          data={users}
-          actions={actions}
-          isLoading={isLoading}
-          {...searchConfig}
-          pagination
-          paginationPerPage={8}
-        />
-      </div>
+      <DataTable
+        columns={columns}
+        data={users}
+        actions={actions}
+        isLoading={isLoading}
+        {...searchConfig}
+        pagination
+        paginationPerPage={8}
+        className="mt-4"
+      />
 
       <ModalUser
         key={userSeleccionado?._id || "nuevo-usuario"}
