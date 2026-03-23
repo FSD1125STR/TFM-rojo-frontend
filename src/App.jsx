@@ -72,7 +72,6 @@ function AppRoutes() {
           {/* Rutas con permiso de convocatorias */}
           <Route element={<ProtectedRoute permission="callups.view" />}>
             <Route path="/convocatorias" element={<CallupsList />} />
-            <Route path="/convocatorias/match/:matchId" element={<CallupDetail />} />
             <Route path="/convocatorias/:id" element={<CallupDetail />} />
           </Route>
 

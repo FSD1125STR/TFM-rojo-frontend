@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
-  getMatchCallup,
+  getCallupByMatch as getMatchCallup,
   saveCallupPlayers as saveCallupPlayersService,
   createCallup as createCallupService,
 } from '../../../services/callupsService';
@@ -82,7 +82,7 @@ export function useCallupDetail(matchId) {
 
     setSaving(true);
     try {
-      await saveCallupPlayersService(matchId, toSave);
+      await saveCallupPlayersService(callup._id, toSave);
       setSavedPlayers(players);
       showToast('Convocatoria guardada correctamente');
     } catch (err) {
@@ -110,7 +110,7 @@ export function useCallupDetail(matchId) {
 
   const createCallup = useCallback(
     async (payload) => {
-      const created = await createCallupService(matchId, payload);
+      const created = await createCallupService({ matchId, ...payload });
       setCallup(created);
       await load();
       return true;

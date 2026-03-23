@@ -39,9 +39,9 @@ export function CallupsList() {
     const st = statusMap[match._id];
     const items = [];
     if (st?.hasCallup)
-      items.push({ label: canManage ? 'Ver / Editar' : 'Ver convocatoria', icon: canManage ? 'edit_note' : 'groups', onClick: (m) => navigate(`/convocatorias/match/${m._id}`) });
+      items.push({ label: canManage ? 'Ver / Editar' : 'Ver convocatoria', icon: canManage ? 'edit_note' : 'groups', onClick: (m) => navigate(`/convocatorias/${m._id}`) });
     if (!st?.hasCallup && canManage)
-      items.push({ label: 'Crear convocatoria', icon: 'add', onClick: (m) => navigate(`/convocatorias/match/${m._id}`) });
+      items.push({ label: 'Crear convocatoria', icon: 'add', onClick: (m) => navigate(`/convocatorias/${m._id}`) });
     items.push({ label: 'Ver partido', icon: 'sports_soccer', onClick: (m) => navigate(`/partidos/${m._id}`) });
     if (match.venue?.lat && match.venue?.lng)
       items.push({ label: 'Ver en mapa', icon: 'map', onClick: (m) => window.open(`https://www.google.com/maps?q=${m.venue.lat},${m.venue.lng}`, '_blank', 'noopener,noreferrer') });
