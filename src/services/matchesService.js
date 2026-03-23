@@ -47,3 +47,13 @@ export async function updateMatch(id, payload) {
 export async function deleteMatch(id, force = false) {
   await api.delete(`/matches/${id}${force ? '?force=true' : ''}`);
 }
+
+// Live Match endpoints
+export const getMatchEvents = (matchId) =>
+  api.get(`/matches/${matchId}/events`).then((r) => r.data);
+
+export const createMatchEvent = (matchId, payload) =>
+  api.post(`/matches/${matchId}/events`, payload).then((r) => r.data);
+
+export const updateLiveStatus = (matchId, payload) =>
+  api.patch(`/matches/${matchId}/live-status`, payload).then((r) => r.data);
