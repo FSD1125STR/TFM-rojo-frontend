@@ -46,8 +46,8 @@ export function CallupsList() {
     if (!st?.hasCallup && canManage && match.status === 'scheduled' && new Date(match.dateTime) > new Date())
       items.push({ label: 'Crear convocatoria', icon: 'add', onClick: (m) => setCreateModal({ isOpen: true, match: m }) });
     items.push({ label: 'Ver partido', icon: 'sports_soccer', onClick: (m) => navigate(`/partidos/${m._id}`) });
-    if (match.venue?.lat && match.venue?.lng)
-      items.push({ label: 'Ver en mapa', icon: 'map', onClick: (m) => window.open(`https://www.google.com/maps?q=${m.venue.lat},${m.venue.lng}`, '_blank', 'noopener,noreferrer') });
+    if (st?.meetingPoint?.lat && st?.meetingPoint?.lng)
+      items.push({ label: 'Ver en mapa', icon: 'map', onClick: () => window.open(`https://www.google.com/maps?q=${st.meetingPoint.lat},${st.meetingPoint.lng}`, '_blank', 'noopener,noreferrer') });
     if (st?.hasCallup && canManage)
       items.push({ label: 'Eliminar convocatoria', icon: 'delete', variant: 'danger', onClick: (m) => handleDelete(m._id) });
     return items;
