@@ -6,10 +6,10 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
-import { HeaderProvider } from "./context/HeaderContext";
-import { NotificationsProvider } from "./context/NotificationsContext";
-import { LiveMatchProvider } from "./context/LiveMatchContext";
+import { AuthProvider } from "./context/AuthContext.jsx";
+import { HeaderProvider } from "./context/HeaderContext.jsx";
+import { NotificationsProvider } from "./context/NotificationsContext.jsx";
+import { LiveMatchProvider } from "./context/LiveMatchContext.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AppShell } from "./components/layout/AppShell/AppShell";
 import { PublicLayout } from "./components/layout/PublicLayout/PublicLayout";
