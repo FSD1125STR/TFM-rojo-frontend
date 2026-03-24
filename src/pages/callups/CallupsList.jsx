@@ -10,6 +10,7 @@ import { showToast, showError, showConfirm, showLoadingInModal, closeLoading } f
 import { estadoMatchConfig, statusLabels, formatFechaRelativa, formatFechaAbsoluta } from '../matches/data/matchesConfig';
 import { callupStatusConfig } from './data/callupsConfig';
 import { getCallupByMatch, deleteCallup, createCallup } from '../../services/callupsService';
+import { Icon } from '../../components/ui/Icon';
 import { ModalCreateCallup } from './components/ModalCreateCallup';
 
 export function CallupsList() {
@@ -68,12 +69,28 @@ export function CallupsList() {
         ...(match.venue?.name ? [{ icon: 'stadium', text: match.venue.name }] : []),
         { icon: 'flag', text: `Jornada ${match.journey}` },
         ...(canViewAll && match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
-        ...(st?.hasCallup && st.callupDateTime ? [{ icon: 'schedule', text: <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(st.callupDateTime)}>Concentración: {formatFechaRelativa(st.callupDateTime)}</span> }] : []),
-        ...(st?.hasCallup && st.meetingPoint?.place ? [{ icon: 'location_on', text: st.meetingPoint.place }] : []),
       ],
-      content: st?.hasCallup
-        ? <p className="text-sm text-success m-0">{st.calledCount} convocados · <span className="text-error">{st.notCalledCount} no convocados</span></p>
-        : <p className="text-sm text-warning m-0">Sin convocatoria registrada</p>,
+      content: st?.hasCallup ? (
+        <div className="flex flex-col gap-1">
+          {(st.callupDateTime || st.meetingPoint?.place) && (
+            <p className="text-sm text-base-content/60 m-0 flex items-center gap-3">
+              {st.callupDateTime && (
+                <span className="flex items-center gap-1">
+                  <Icon name="schedule" className="text-[14px]" />
+                  <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(st.callupDateTime)}>{formatFechaRelativa(st.callupDateTime)}</span>
+                </span>
+              )}
+              {st.meetingPoint?.place && (
+                <span className="flex items-center gap-1">
+                  <Icon name="location_on" className="text-[14px]" />
+                  {st.meetingPoint.place}
+                </span>
+              )}
+            </p>
+          )}
+          <p className="text-sm text-success m-0">{st.calledCount} convocados · <span className="text-error">{st.notCalledCount} no convocados</span></p>
+        </div>
+      ) : <p className="text-sm text-warning m-0">Sin convocatoria registrada</p>,
     };
   };
 
