@@ -40,7 +40,7 @@ export function CallupsList() {
     const items = [];
     if (st?.hasCallup)
       items.push({ label: canManage ? 'Ver / Editar' : 'Ver convocatoria', icon: canManage ? 'edit_note' : 'groups', onClick: (m) => navigate(`/convocatorias/${m._id}`) });
-    if (!st?.hasCallup && canManage && match.status === 'scheduled')
+    if (!st?.hasCallup && canManage && match.status === 'scheduled' && new Date(match.dateTime) > new Date())
       items.push({ label: 'Crear convocatoria', icon: 'add', onClick: (m) => navigate(`/convocatorias/${m._id}`) });
     items.push({ label: 'Ver partido', icon: 'sports_soccer', onClick: (m) => navigate(`/partidos/${m._id}`) });
     if (match.venue?.lat && match.venue?.lng)

@@ -58,7 +58,8 @@ export function CallupDetail() {
   }, [error, navigate]);
 
   const isMatchScheduled = match?.status === 'scheduled';
-  const canCreate = checkPermission('callups.create') && isMatchScheduled;
+  const isMatchFuture = match?.dateTime ? new Date(match.dateTime) > new Date() : false;
+  const canCreate = checkPermission('callups.create') && isMatchScheduled && isMatchFuture;
   const canEdit = checkPermission('callups.edit') && isMatchScheduled;
 
   if (loading) {
