@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   getCallupByMatch as getMatchCallup,
   saveCallupPlayers as saveCallupPlayersService,
-  createCallup as createCallupService,
 } from '../../../services/callupsService';
 import { showToast, showErrorList } from '../../../utils/alerts';
 
@@ -82,16 +81,7 @@ export function useCallupDetail(matchId) {
 
     setSaving(true);
     try {
-      let targetId = callup?._id;
-      if (!targetId) {
-        const created = await createCallupService({
-          matchId,
-          callupDateTime: new Date(match.dateTime).toISOString(),
-        });
-        targetId = created._id;
-        setCallup(created);
-      }
-      await saveCallupPlayersService(targetId, toSave);
+      await saveCallupPlayersService(callup._id, toSave);
       setSavedPlayers(players);
       showToast('Convocatoria guardada correctamente');
     } catch (err) {
@@ -111,7 +101,7 @@ export function useCallupDetail(matchId) {
     } finally {
       setSaving(false);
     }
-  }, [matchId, match, callup, players]);
+  }, [callup, players]);
 
   const discardChanges = useCallback(() => {
     setPlayers(savedPlayers);

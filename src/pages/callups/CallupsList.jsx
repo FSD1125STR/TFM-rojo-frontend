@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
@@ -8,13 +9,15 @@ import { CardsList } from '../../components/ui/CardsList';
 import { showToast, showError, showConfirm, showLoadingInModal, closeLoading } from '../../utils/alerts';
 import { estadoMatchConfig, statusLabels, formatFechaRelativa, formatFechaAbsoluta } from '../matches/data/matchesConfig';
 import { callupStatusConfig } from './data/callupsConfig';
-import { getCallupByMatch, deleteCallup } from '../../services/callupsService';
+import { getCallupByMatch, deleteCallup, createCallup } from '../../services/callupsService';
+import { ModalCreateCallup } from './components/ModalCreateCallup';
 
 export function CallupsList() {
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
   const { canViewAll } = useAuth();
   const canManage = checkPermission('callups.create');
+  const [createModal, setCreateModal] = useState({ isOpen: false, match: null });
 
   const { data, search, filters, sort, pagination, isLoading, error, onRetry } = useMatchesList();
   const { statusMap, isLoading: statusLoading } = useCallupsStatus(data);
@@ -41,7 +44,7 @@ export function CallupsList() {
     if (st?.hasCallup)
       items.push({ label: canManage ? 'Ver / Editar' : 'Ver convocatoria', icon: canManage ? 'edit_note' : 'groups', onClick: (m) => navigate(`/convocatorias/${m._id}`) });
     if (!st?.hasCallup && canManage && match.status === 'scheduled' && new Date(match.dateTime) > new Date())
-      items.push({ label: 'Crear convocatoria', icon: 'add', onClick: (m) => navigate(`/convocatorias/${m._id}`) });
+      items.push({ label: 'Crear convocatoria', icon: 'add', onClick: (m) => setCreateModal({ isOpen: true, match: m }) });
     items.push({ label: 'Ver partido', icon: 'sports_soccer', onClick: (m) => navigate(`/partidos/${m._id}`) });
     if (match.venue?.lat && match.venue?.lng)
       items.push({ label: 'Ver en mapa', icon: 'map', onClick: (m) => window.open(`https://www.google.com/maps?q=${m.venue.lat},${m.venue.lng}`, '_blank', 'noopener,noreferrer') });
@@ -72,6 +75,11 @@ export function CallupsList() {
     };
   };
 
+  const handleCreateSave = async (payload) => {
+    await createCallup({ matchId: createModal.match._id, ...payload });
+    navigate(`/convocatorias/${createModal.match._id}`);
+  };
+
   return (
     <div test-id="el-c3d4e5f6">
       <PageHeader title="Convocatorias" subtitle="Gestiona las convocatorias del equipo" />
@@ -84,6 +92,12 @@ export function CallupsList() {
           emptyMessage="No se encontraron partidos" emptyIcon="how_to_reg" gap="sm"
         />
       </div>
+      <ModalCreateCallup
+        isOpen={createModal.isOpen}
+        match={createModal.match}
+        onClose={() => setCreateModal({ isOpen: false, match: null })}
+        onSave={handleCreateSave}
+      />
     </div>
   );
 }

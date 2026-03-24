@@ -58,9 +58,12 @@ export function CallupDetail() {
   }, [error, navigate]);
 
   const isMatchScheduled = match?.status === 'scheduled';
-  const isMatchFuture = match?.dateTime ? new Date(match.dateTime) > new Date() : false;
-  const canCreate = checkPermission('callups.create') && isMatchScheduled && isMatchFuture;
   const canEdit = checkPermission('callups.edit') && isMatchScheduled;
+
+  if (!loading && !error && !callup) {
+    navigate('/convocatorias', { replace: true });
+    return null;
+  }
 
   if (loading) {
     return (
@@ -136,27 +139,7 @@ export function CallupDetail() {
         </div>
       </div>
 
-      {/* Modo creación: botón guardar siempre visible */}
-      {!callup && canCreate && (
-        <div className="flex items-center justify-between gap-4 px-4 py-2.5 bg-primary/10 border border-primary/30 rounded-xl text-sm">
-          <span className="flex items-center gap-2 text-base-content/70">
-            <Icon name="assignment_turned_in" className="text-[16px] text-primary" />
-            Nueva convocatoria · {calledCount}/{maxPlayers} convocados
-          </span>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={saveAllPlayers}
-            isLoading={saving}
-            isDisabled={calledCount < minPlayers}
-            title={calledCount < minPlayers ? `Mínimo ${minPlayers} jugadores convocados` : undefined}
-          >
-            Guardar convocatoria
-          </Button>
-        </div>
-      )}
-
-      {/* Modo edición: banner de cambios sin guardar */}
+      {/* Banner de cambios sin guardar */}
       {callup && isDirty && (
         <div className="flex items-center justify-between gap-4 px-4 py-2.5 bg-warning/10 border border-warning/30 rounded-xl text-sm">
           <span className="flex items-center gap-2 text-base-content/70">
@@ -197,7 +180,7 @@ export function CallupDetail() {
             notCalledPlayers={notCalledPlayers}
             calledCount={calledCount}
             maxPlayers={maxPlayers}
-            editable={callup ? canEdit : canCreate}
+            editable={canEdit}
             movePlayer={movePlayer}
           />
         </div>
