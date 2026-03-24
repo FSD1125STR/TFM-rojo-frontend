@@ -1,13 +1,6 @@
-import { createContext, useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-
-export const HeaderContext = createContext({
-  title: '',
-  breadcrumbs: [],
-  actions: null,
-  setHeader: () => {},
-  resetHeader: () => {},
-});
+import { HeaderContext } from './HeaderContext.js';
 
 export function HeaderProvider({ children }) {
   const [header, setHeaderState] = useState({

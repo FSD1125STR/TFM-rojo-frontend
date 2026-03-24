@@ -1,19 +1,23 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 import { getMyNotifications, markAsRead, markAllAsRead as markAllAsReadApi } from '../services/notificationsService';
 import { showNotification } from '../utils/alerts';
-
-const NotificationsContext = createContext(null);
+import { NotificationsContext } from './NotificationsContext.js';
 
 export function NotificationsProvider({ children }) {
   const { user, token } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const navigateRef = useRef(navigate);
+  const pathnameRef = useRef(location.pathname);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const socketRef = useRef(null);
+
+  useEffect(() => { navigateRef.current = navigate; }, [navigate]);
+  useEffect(() => { pathnameRef.current = location.pathname; }, [location.pathname]);
 
   const loadNotifications = useCallback(async () => {
     try {
@@ -66,13 +70,13 @@ export function NotificationsProvider({ children }) {
 
       showNotification(payload.message, {
         categoryName: payload.categoryName,
-        onClick: () => { if (payload.matchId) navigate(`/convocatorias/${payload.matchId}`); },
+        onClick: () => { if (payload.matchId) navigateRef.current(`/convocatorias/${payload.matchId}`); },
       });
     });
 
     socket.on('match:live', (payload) => {
       if (payload.triggeredBy?.id === user.id) return;
-      if (location.pathname === `/directo/${payload.matchId}`) return;
+      if (pathnameRef.current === `/directo/${payload.matchId}`) return;
 
       const newNotif = {
         _id: `temp-${Date.now()}`,
@@ -89,13 +93,13 @@ export function NotificationsProvider({ children }) {
 
       showNotification(payload.message, {
         categoryName: payload.categoryName,
-        onClick: () => { if (payload.matchId) navigate(`/directo/${payload.matchId}`); },
+        onClick: () => { if (payload.matchId) navigateRef.current(`/directo/${payload.matchId}`); },
       });
     });
 
     socket.on('match:event', (payload) => {
       // No mostrar toast si el usuario está viendo ese partido en directo
-      if (location.pathname === `/directo/${payload.matchId}`) return;
+      if (pathnameRef.current === `/directo/${payload.matchId}`) return;
 
       const newNotif = {
         _id: `temp-${Date.now()}`,
@@ -112,7 +116,7 @@ export function NotificationsProvider({ children }) {
 
       showNotification(payload.message, {
         categoryName: payload.categoryName,
-        onClick: () => { if (payload.matchId) navigate(`/directo/${payload.matchId}`); },
+        onClick: () => { if (payload.matchId) navigateRef.current(`/directo/${payload.matchId}`); },
       });
     });
 
@@ -161,8 +165,3 @@ export function NotificationsProvider({ children }) {
   );
 }
 
-export function useNotifications() {
-  const context = useContext(NotificationsContext);
-  if (!context) throw new Error('useNotifications debe usarse dentro de un NotificationsProvider');
-  return context;
-}

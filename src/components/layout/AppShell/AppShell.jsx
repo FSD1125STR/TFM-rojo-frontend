@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { HeaderBar } from '../HeaderBar/HeaderBar';
 import { useSidebar } from '../../../hooks/useSidebar';
-import { HeaderContext } from '../../../context/HeaderContext';
+import { HeaderContext } from '../../../context/HeaderContext.js';
 import { NotificationsProvider } from '../../../context/NotificationsContext';
 
 export function AppShell() {

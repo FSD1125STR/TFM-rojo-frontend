@@ -53,7 +53,7 @@ export function ModalPlayer({ isOpen = false, onClose, onSave, initialData = nul
         setEdad(null);
       }
     }
-  }, [isOpen, initialData]);
+  }, [isOpen, initialData, isAdmin, categoryId]);
 
   useEffect(() => {
     if (isEditing || !formData.categoriaId) return;

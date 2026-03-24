@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext.js';
 
 // Detectar si estamos en Storybook
 const isStorybook = typeof window !== 'undefined' && window.location.href.includes('localhost:6006');

@@ -28,7 +28,7 @@ export function ModalCreateCallup({ isOpen = false, onClose, onSave, match }) {
       meetingPoint: match?.venue ?? null,
     });
     setSaving(false);
-  }, [isOpen]);
+  }, [isOpen, match]);
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
