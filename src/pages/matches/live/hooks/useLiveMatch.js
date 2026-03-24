@@ -18,5 +18,10 @@ export function useLiveMatch(matchId) {
     return () => leaveMatch();
   }, [matchId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (!lastEvent || lastEvent.homeScore === null || lastEvent.homeScore === undefined) return;
+    setMatch((prev) => prev ? { ...prev, homeScore: lastEvent.homeScore, awayScore: lastEvent.awayScore } : prev);
+  }, [lastEvent]);
+
   return { match, liveStatus, lastEvent, isLoading, error };
 }

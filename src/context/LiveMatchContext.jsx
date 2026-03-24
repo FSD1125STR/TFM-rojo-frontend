@@ -10,6 +10,7 @@ export const LiveMatchContext = createContext(null);
 export function LiveMatchProvider({ children }) {
   const { user, token } = useAuth();
   const socketRef = useRef(null);
+  const activeMatchIdRef = useRef(null);
 
   const [activeMatchId, setActiveMatchId] = useState(null);
   const [liveStatus, setLiveStatus] = useState('');
@@ -46,6 +47,9 @@ export function LiveMatchProvider({ children }) {
 
     socket.on('connect', () => {
       console.log('[LiveMatch Socket] Connected:', socket.id);
+      if (activeMatchIdRef.current) {
+        socket.emit('join:match', activeMatchIdRef.current);
+      }
     });
 
     socket.on('connect_error', (err) => {
@@ -78,9 +82,14 @@ export function LiveMatchProvider({ children }) {
   }, [user, token]);
 
   const joinMatch = useCallback((matchId) => {
+    activeMatchIdRef.current = matchId;
     setActiveMatchId(matchId);
     if (socketRef.current?.connected) {
       socketRef.current.emit('join:match', matchId);
+    } else if (socketRef.current) {
+      socketRef.current.once('connect', () => {
+        socketRef.current?.emit('join:match', matchId);
+      });
     }
   }, []);
 
@@ -88,6 +97,7 @@ export function LiveMatchProvider({ children }) {
     if (socketRef.current?.connected && activeMatchId) {
       socketRef.current.emit('leave:match', activeMatchId);
     }
+    activeMatchIdRef.current = null;
     setActiveMatchId(null);
     setLastEvent(null);
     // No reseteamos hasLiveMatch: el partido sigue en directo aunque el usuario salga de la vista

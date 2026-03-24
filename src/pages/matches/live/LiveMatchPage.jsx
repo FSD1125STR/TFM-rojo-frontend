@@ -15,10 +15,10 @@ const TICKER_ROLES = ['administrador', 'delegado'];
 
 const FILTER_TYPES = {
   ALL: null,
-  GOAL: 'GOAL',
-  YELLOW: 'YELLOW',
-  RED: 'RED',
-  SUB: 'SUB',
+  GOAL: 'goal',
+  YELLOW: 'yellow_card',
+  RED: 'red_card',
+  SUB: 'substitution',
 };
 
 export function LiveMatchPage() {
@@ -73,7 +73,7 @@ export function LiveMatchPage() {
 
   return (
     <div test-id="el-lp3x7q9m" className="max-w-2xl mx-auto px-4 py-4">
-      {import.meta.env.DEV && <LiveMatchTestPanel matchId={matchId} />}
+      {import.meta.env.DEV && <LiveMatchTestPanel matchId={matchId} match={match} />}
 
       <LiveMatchHeader match={match} liveStatus={currentStatus || match?.liveStatus} />
 

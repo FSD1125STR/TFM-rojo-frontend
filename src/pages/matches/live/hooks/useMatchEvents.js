@@ -17,8 +17,9 @@ export function useMatchEvents(matchId) {
   }, [matchId]);
 
   useEffect(() => {
-    if (lastEvent && lastEvent.matchId === matchId) {
-      setEvents((prev) => [...prev, lastEvent]);
+    const event = lastEvent?.event;
+    if (event && String(event.matchId) === String(matchId)) {
+      setEvents((prev) => [...prev, event]);
     }
   }, [lastEvent, matchId]);
 

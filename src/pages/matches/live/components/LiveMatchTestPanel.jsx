@@ -4,7 +4,7 @@ import { createMatchEvent, updateLiveStatus } from '../../../../services/matches
 import { Button } from '../../../../components/ui/Button';
 import { Icon } from '../../../../components/ui/Icon';
 
-export function LiveMatchTestPanel({ matchId }) {
+export function LiveMatchTestPanel({ matchId, match }) {
   const [players, setPlayers] = useState([]);
   const [playerOut, setPlayerOut] = useState('');
   const [playerIn, setPlayerIn] = useState('');
@@ -12,6 +12,7 @@ export function LiveMatchTestPanel({ matchId }) {
   const [minute, setMinute] = useState(1);
   const [loading, setLoading] = useState(null);
   const [log, setLog] = useState([]);
+
 
   useEffect(() => {
     getPlayers()
@@ -101,10 +102,11 @@ export function LiveMatchTestPanel({ matchId }) {
       {/* Botones */}
       <div className="flex flex-wrap gap-2 mb-3">
         {btn('MATCH_LIVE', () => updateLiveStatus(matchId, { liveStatus: 'FIRST_HALF' }), 'cell_tower')}
-        {btn('GOAL', () => createMatchEvent(matchId, { type: 'GOAL', minute, playerId: selectedPlayerId }), 'sports_soccer')}
-        {btn('YELLOW', () => createMatchEvent(matchId, { type: 'YELLOW', minute, playerId: selectedPlayerId }), 'square')}
-        {btn('RED', () => createMatchEvent(matchId, { type: 'RED', minute, playerId: selectedPlayerId }), 'square')}
-        {btn('SUB', () => createMatchEvent(matchId, { type: 'SUB', minute, playerOutId: playerOut, playerInId: playerIn }), 'swap_horiz')}
+        {btn('GOAL', () => createMatchEvent(matchId, { type: 'goal', minute, playerId: selectedPlayerId }), 'sports_soccer')}
+        {btn('GOAL VISIT.', () => createMatchEvent(matchId, { type: 'goal', minute, isOpponentGoal: true }), 'sports_soccer')}
+        {btn('YELLOW', () => createMatchEvent(matchId, { type: 'yellow_card', minute, playerId: selectedPlayerId }), 'square')}
+        {btn('RED', () => createMatchEvent(matchId, { type: 'red_card', minute, playerId: selectedPlayerId }), 'square')}
+        {btn('SUB', () => createMatchEvent(matchId, { type: 'substitution', minute, playerOutId: playerOut, playerInId: playerIn }), 'swap_horiz')}
       </div>
 
       {/* Log */}

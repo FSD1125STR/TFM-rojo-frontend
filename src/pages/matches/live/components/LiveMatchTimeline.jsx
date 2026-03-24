@@ -4,14 +4,16 @@ import { Button } from '../../../../components/ui/Button';
 import { LiveMatchTimelineProps } from './LiveMatchTimeline.props';
 
 const EVENT_ICON = {
-  GOAL: { name: 'sports_soccer', className: 'text-success' },
-  YELLOW: { name: 'square', className: 'text-yellow-400' },
-  RED: { name: 'square', className: 'text-red-500' },
-  SUB: { name: 'swap_horiz', className: 'text-info' },
+  goal: { name: 'sports_soccer', className: 'text-success' },
+  yellow_card: { name: 'square', className: 'text-yellow-400' },
+  red_card: { name: 'square', className: 'text-red-500' },
+  substitution: { name: 'swap_horiz', className: 'text-info' },
+  half_time: { name: 'timer_pause', className: 'text-base-content' },
+  full_time: { name: 'flag', className: 'text-base-content' },
 };
 
 function EventDescription({ event }) {
-  if (event.type === 'SUB') {
+  if (event.type === 'substitution') {
     const outName = event.playerOutId?.fullName || event.playerOut || 'Desconocido';
     const inName = event.playerInId?.fullName || event.playerIn || 'Desconocido';
     return (
