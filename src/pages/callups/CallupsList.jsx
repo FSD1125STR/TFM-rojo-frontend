@@ -64,10 +64,12 @@ export function CallupsList() {
         { label: statusLabels[match.status] || match.status, variant: matchCfg.variant, icon: matchCfg.icon, width: matchCfg.width },
       ],
       meta: [
-        { icon: 'calendar_today', text: <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(match.dateTime)}>{formatFechaRelativa(match.dateTime)}</span> },
-        ...(match.venue?.name ? [{ icon: 'location_on', text: match.venue.name }] : []),
+        { icon: 'sports_soccer', text: <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(match.dateTime)}>{formatFechaRelativa(match.dateTime)}</span> },
+        ...(match.venue?.name ? [{ icon: 'stadium', text: match.venue.name }] : []),
         { icon: 'flag', text: `Jornada ${match.journey}` },
         ...(canViewAll && match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
+        ...(st?.hasCallup && st.callupDateTime ? [{ icon: 'schedule', text: <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(st.callupDateTime)}>Concentración: {formatFechaRelativa(st.callupDateTime)}</span> }] : []),
+        ...(st?.hasCallup && st.meetingPoint?.place ? [{ icon: 'location_on', text: st.meetingPoint.place }] : []),
       ],
       content: st?.hasCallup
         ? <p className="text-sm text-success m-0">{st.calledCount} convocados · <span className="text-error">{st.notCalledCount} no convocados</span></p>
