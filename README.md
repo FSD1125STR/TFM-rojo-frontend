@@ -10,7 +10,7 @@ Frontend del proyecto FootMind - Gestión de equipos de fútbol base.
 | Vite | 6.x | Bundler y dev server |
 | TailwindCSS | 4.x | Framework CSS utility-first |
 | DaisyUI | 5.x | Componentes UI sobre Tailwind |
-| Preline UI | 2.x | Advanced Select (multi-select) sobre Tailwind |
+| Preline UI | 4.x | Advanced Select (multi-select) sobre Tailwind |
 | Material Icons | - | Sistema de iconos |
 | React Router | 7.x | Enrutamiento SPA |
 | Storybook | 10.x | Documentación de componentes |
@@ -18,6 +18,9 @@ Frontend del proyecto FootMind - Gestión de equipos de fútbol base.
 | date-fns | 4.x | Utilidades de fechas |
 | sweetalert2 | 11.x | Diálogos y confirmaciones |
 | axios | 1.x | Cliente HTTP |
+| socket.io-client | 4.x | Comunicación en tiempo real (LiveMatch) |
+| recharts | 3.x | Gráficas y visualización de datos |
+| @dnd-kit | 6.x / 10.x | Drag & drop (convocatorias) |
 
 ## Requisitos
 
@@ -66,6 +69,7 @@ Storybook arranca en `http://localhost:6006`.
 src/
 ├── assets/              # Logos, favicon, imágenes
 ├── components/
+│   ├── graphics/        # Componentes de gráficas (Recharts)
 │   ├── ui/              # Componentes atómicos reutilizables
 │   │   ├── Avatar/
 │   │   ├── Badge/
@@ -89,27 +93,37 @@ src/
 │       ├── Sidebar/
 │       ├── SidebarItem/
 │       └── UserCard/
+├── config/              # Configuración de permisos, constantes
 ├── context/             # Context providers (AuthContext)
 ├── data/                # Datos mock y constantes
-├── hooks/               # Custom hooks (useTheme, useSidebar, useAuth)
+├── hooks/               # Custom hooks (useTheme, useSidebar, useAuth, useHeader, usePermissions)
 ├── pages/               # Vistas asociadas a rutas
+│   ├── auth/            # Login, ForgotPassword, ResetPassword
 │   ├── players/         # Módulo jugadores
+│   │   ├── components/  # Modales y formularios específicos
+│   │   ├── hooks/
+│   │   ├── data/
 │   │   ├── PlayersList.jsx
 │   │   └── PlayerDetail.jsx
 │   ├── matches/         # Módulo partidos
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── data/
 │   │   ├── MatchesList.jsx
 │   │   └── MatchDetail.jsx
 │   ├── callups/         # Módulo convocatorias
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── data/
 │   │   ├── CallupsList.jsx
 │   │   └── CallupDetail.jsx
 │   ├── users/           # Módulo usuarios
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── data/
 │   │   ├── UsersList.jsx
 │   │   └── UserDetail.jsx
-│   ├── Dashboard.jsx
-│   ├── LiveMatch.jsx
-│   ├── Login.jsx
-│   ├── ForgotPassword.jsx
-│   └── ResetPassword.jsx
+│   └── teams/           # Módulo equipos rivales
 ├── services/            # Servicios API (authService, api)
 ├── utils/               # Utilidades (alerts)
 ├── App.jsx              # Router y rutas
