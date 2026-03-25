@@ -2,15 +2,15 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { Button } from '../../../../components/ui/Button';
 import { Icon } from '../../../../components/ui/Icon';
-import { updateLiveStatus } from '../../../../services/matchesService';
+import { updateLiveStatus, createMatchEvent } from '../../../../services/matchesService';
 import { showError, showToast } from '../../../../utils/alerts';
 import { LiveMatchTickerProps } from './LiveMatchTicker.props';
 
 const TRANSITIONS = {
-  NOT_STARTED: { next: 'FIRST_HALF', label: 'Iniciar 1ª Parte', icon: 'play_arrow' },
-  FIRST_HALF: { next: 'HALF_TIME', label: 'Descanso', icon: 'pause' },
-  HALF_TIME: { next: 'SECOND_HALF', label: 'Iniciar 2ª Parte', icon: 'play_arrow' },
-  SECOND_HALF: { next: 'FINISHED', label: 'Finalizar Partido', icon: 'stop' },
+  NOT_STARTED: { next: 'FIRST_HALF',  label: 'Iniciar 1ª Parte',  icon: 'play_arrow', systemEvent: { type: 'match_start', minute: 0  } },
+  FIRST_HALF:  { next: 'HALF_TIME',   label: 'Descanso',          icon: 'pause',      systemEvent: { type: 'half_time',   minute: 45 } },
+  HALF_TIME:   { next: 'SECOND_HALF', label: 'Iniciar 2ª Parte',  icon: 'play_arrow', systemEvent: null },
+  SECOND_HALF: { next: 'FINISHED',    label: 'Finalizar Partido', icon: 'stop',       systemEvent: { type: 'full_time',   minute: 90 } },
 };
 
 export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange }) {
@@ -38,6 +38,7 @@ export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange }) 
 
       setIsLoading(true);
       try {
+        if (transition.systemEvent) await createMatchEvent(matchId, transition.systemEvent);
         await updateLiveStatus(matchId, { liveStatus: next, comments: value || '' });
         onStatusChange(next);
         showToast('Partido finalizado');
@@ -51,6 +52,7 @@ export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange }) 
 
     setIsLoading(true);
     try {
+      if (transition.systemEvent) await createMatchEvent(matchId, transition.systemEvent);
       await updateLiveStatus(matchId, { liveStatus: next });
       onStatusChange(next);
     } catch {

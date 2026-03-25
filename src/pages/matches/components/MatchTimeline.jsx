@@ -76,7 +76,7 @@ export function MatchTimeline({ timeline, match }) {
       className="shadow-md"
       items={timeline ?? []}
       getKey={(_, i) => i}
-      isSystem={(e) => e.type === 'half_time' || e.type === 'full_time'}
+      isSystem={(e) => e.type === 'half_time' || e.type === 'full_time' || e.type === 'match_start'}
       isLeft={(e) => !!(e.teamId && e.teamId === match.homeTeam.id)}
       renderMarker={(e) => (
         <span className="relative text-xs font-black text-base-content/40 bg-base-200 px-2">
@@ -101,7 +101,7 @@ export function MatchTimeline({ timeline, match }) {
         <div className="flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1">
           <EventIcon type={e.type} />
           <span className="text-xs font-bold text-base-content/40 uppercase tracking-wide">
-            {e.type === 'half_time' ? 'Descanso' : `Final · ${e.minute}'`}
+            {e.type === 'match_start' ? 'Inicio' : e.type === 'half_time' ? 'Descanso' : `Final · ${e.minute}'`}
           </span>
         </div>
       )}
