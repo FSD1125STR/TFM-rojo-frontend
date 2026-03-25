@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { showError } from '../../utils/alerts';
+import { PageHeader } from '../../components/ui/PageHeader';
 import { useCallupDetail } from './hooks/useCallupDetail';
 import { usePermissions } from '../../hooks/usePermissions';
 import { CallupsBoard } from './components/CallupsBoard';
@@ -31,6 +32,7 @@ function MapsLink({ name, lat, lng }) {
 export function CallupDetail() {
   const { id: matchId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { checkPermission } = usePermissions();
   const {
     match,
@@ -48,7 +50,7 @@ export function CallupDetail() {
     movePlayer,
     saveAllPlayers,
     discardChanges,
-  } = useCallupDetail(matchId);
+  } = useCallupDetail(matchId, location.key);
 
   useEffect(() => {
     if (error === 'MATCH_CANCELLED') {
@@ -88,10 +90,13 @@ export function CallupDetail() {
 
   return (
     <div test-id="el-c4l2u8p6" className="flex flex-col gap-6 h-full">
+      <PageHeader
+        title={matchLabel}
+        showBack
+        onBack={() => navigate('/convocatorias')}
+      />
       <div className="flex items-start justify-between gap-4">
-        <div className="flex flex-col gap-3">
-          <h2 className="text-xl font-bold">{matchLabel}</h2>
-          <div className="flex gap-3 flex-wrap">
+        <div className="flex gap-3 flex-wrap">
             <div className="bg-base-200 rounded-xl px-4 py-3 flex flex-col gap-1.5">
               <p className="text-[10px] font-semibold text-base-content/40 uppercase tracking-widest">Partido</p>
               <span className="flex items-center gap-1.5 text-sm text-base-content/70">
@@ -125,7 +130,6 @@ export function CallupDetail() {
               </div>
             )}
           </div>
-        </div>
         <div className="flex items-center gap-3 shrink-0">
           {callup && (
             <Badge

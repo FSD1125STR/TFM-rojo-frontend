@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { Button } from '../../components/ui/Button';
 import { ModalPlayer } from './components/ModalPlayer';
@@ -14,6 +14,7 @@ import { showToast, showErrorInModal, showLoadingInModal, closeLoading, getApiEr
 export function PlayerDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { checkPermission } = usePermissions();
   const { isAdmin, user } = useAuth();
   const categoryId = user?.categoryId?._id || user?.categoryId || null;
@@ -34,7 +35,7 @@ export function PlayerDetail() {
       .then(setHistorial)
       .catch(console.error)
       .finally(() => setLoadingHistorial(false));
-  }, [id]);
+  }, [id, location.key]);
 
   const canEdit = checkPermission('players.edit');
 

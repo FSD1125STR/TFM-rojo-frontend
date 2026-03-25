@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { Button } from '../../components/ui/Button';
 import { MatchInfoCard } from './components/MatchInfoCard';
@@ -12,6 +12,7 @@ import { statusLabels } from './data/matchesConfig';
 export function MatchDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [match, setMatch] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,7 @@ export function MatchDetail() {
       })
       .catch(() => setError('error'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, location.key]);
 
   if (loading) {
     return <div className="p-6 text-center">Cargando...</div>;
@@ -63,7 +64,7 @@ export function MatchDetail() {
         title={title}
         subtitle={subtitle}
         showBack
-        onBack={() => navigate('/partidos')}
+        onBack={() => navigate(location.state?.from ?? '/partidos')}
       />
 
       {!isFinished && (
