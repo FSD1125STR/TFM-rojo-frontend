@@ -12,7 +12,7 @@ const ERROR_MESSAGES = {
   FORBIDDEN: 'No tienes permiso para modificar esta convocatoria',
 };
 
-export function useCallupDetail(matchId) {
+export function useCallupDetail(matchId, locationKey) {
   const [match, setMatch] = useState(null);
   const [callup, setCallup] = useState(null);
   const [players, setPlayers] = useState([]);
@@ -41,7 +41,7 @@ export function useCallupDetail(matchId) {
     } finally {
       setLoading(false);
     }
-  }, [matchId]);
+  }, [matchId, locationKey]);
 
   useEffect(() => {
     load();
