@@ -121,12 +121,13 @@ export function MatchPanels({ panels, match }) {
   const homeTeamId = match.homeTeam.id;
   const homeShort = getShort(match.homeTeam.name);
   const awayShort = getShort(match.awayTeam.name);
+  const p = panels ?? {};
 
   return (
     <div test-id="el-f7a8b9c0" className="flex flex-col gap-4">
       <Card title="Goleadores" className="shadow-md">
         <ScorersSection
-          scorers={panels.scorers}
+          scorers={p.scorers}
           homeTeamId={homeTeamId}
           homeShort={homeShort}
           awayShort={awayShort}
@@ -135,7 +136,7 @@ export function MatchPanels({ panels, match }) {
 
       <Card title="Tarjetas" className="shadow-md">
         <CardsSection
-          cards={panels.cards}
+          cards={p.cards}
           homeTeamId={homeTeamId}
           homeShort={homeShort}
           awayShort={awayShort}
@@ -144,7 +145,7 @@ export function MatchPanels({ panels, match }) {
 
       <Card title="Cambios" className="shadow-md">
         <SubstitutionsSection
-          substitutions={panels.substitutions}
+          substitutions={p.substitutions}
           homeTeamId={homeTeamId}
           homeShort={homeShort}
           awayShort={awayShort}

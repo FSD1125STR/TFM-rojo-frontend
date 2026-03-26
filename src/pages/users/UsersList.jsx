@@ -53,24 +53,29 @@ export function UsersList() {
   };
 
   const handleGuardar = async (formData) => {
+    const fd = new FormData();
+    Object.entries(formData).forEach(([k, v]) => {
+      if (k === 'foto' || k === 'photoUrl') return;
+      if (v !== undefined && v !== null && v !== '') fd.append(k, v);
+    });
+    if (formData.foto instanceof File) fd.append('photo', formData.foto);
+    if (formData.foto === false) fd.append('removePhoto', 'true');
+
     showLoadingInModal(userSeleccionado ? "Actualizando..." : "Registrando...");
     try {
       if (userSeleccionado) {
-        await updateUser(userSeleccionado._id, formData);
-        showToast('Personal actualizado correctamente');
+        await updateUser(userSeleccionado._id, fd);
       } else {
-        await createUser(formData);
-        showToast('Nuevo miembro registrado con éxito');
+        await createUser(fd);
       }
+      closeLoading();
+      showToast(userSeleccionado ? 'Personal actualizado correctamente' : 'Nuevo miembro registrado con éxito');
       setIsModalOpen(false);
       setUserSeleccionado(null);
       loadUsers();
     } catch (error) {
-      showError(
-        error?.response?.data?.error || "Error al procesar la solicitud",
-      );
-    } finally {
       closeLoading();
+      showError(error?.response?.data?.error || "Error al procesar la solicitud");
     }
   };
 

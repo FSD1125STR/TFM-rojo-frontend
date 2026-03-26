@@ -6,7 +6,7 @@ export function UserCard({ user, variant = 'default', collapsed = false, onLogou
   if (collapsed) {
     return (
       <div test-id="el-e7f8g9h0" className="flex flex-col items-center gap-2 py-2">
-        <Avatar name={user.fullName} src={user.avatar} size="sm" />
+        <Avatar name={user.fullName} src={user.photoUrl || user.avatar} size="sm" />
         {onLogout && (
           <IconButton
             icon="logout"
@@ -23,7 +23,7 @@ export function UserCard({ user, variant = 'default', collapsed = false, onLogou
   if (variant === 'compact') {
     return (
       <div test-id="el-e7f8g9h0" className="flex items-center gap-2 px-4 py-2">
-        <Avatar name={user.fullName} src={user.avatar} size="sm" />
+        <Avatar name={user.fullName} src={user.photoUrl || user.avatar} size="sm" />
         <span className="text-sm font-medium truncate flex-1">{user.fullName}</span>
         {onLogout && (
           <IconButton
@@ -39,7 +39,7 @@ export function UserCard({ user, variant = 'default', collapsed = false, onLogou
   }
   return (
     <div test-id="el-e7f8g9h0" className="flex items-center gap-3 px-4 py-3">
-      <Avatar name={user.fullName} src={user.avatar} size="md" />
+      <Avatar name={user.fullName} src={user.photoUrl || user.avatar} size="md" />
       <div className="flex flex-col min-w-0 flex-1">
         <span className="font-medium truncate">{user.fullName}</span>
         {user.club?.name && (
