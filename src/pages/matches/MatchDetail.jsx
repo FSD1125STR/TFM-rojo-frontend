@@ -53,6 +53,11 @@ export function MatchDetail() {
   }
 
 
+  const homeName = match.homeTeamId?.name || 'Equipo local';
+  const awayName = match.awayTeamId?.name || 'Equipo visitante';
+  const title = `${homeName} vs ${awayName}`;
+  const subtitle = `Jornada ${match.journey ?? ''}`;
+
   return (
     <div test-id="el-m8t5c3h1">
       <PageHeader
