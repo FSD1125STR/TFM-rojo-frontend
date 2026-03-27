@@ -59,7 +59,8 @@ export function CallupDetail() {
     }
   }, [error, navigate]);
 
-  const isMatchScheduled = match?.status === 'scheduled';
+  const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
+  const isMatchScheduled = match?.status === 'scheduled' && !LIVE_STATUSES.has(match?.liveStatus);
   const canEdit = checkPermission('callups.edit') && isMatchScheduled;
 
   if (!loading && !error && !callup) {
