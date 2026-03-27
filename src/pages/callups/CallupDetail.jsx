@@ -94,7 +94,7 @@ export function CallupDetail() {
       <PageHeader
         title={matchLabel}
         showBack
-        onBack={() => navigate('/convocatorias')}
+        onBack={() => navigate(-1)}
       />
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-3 flex-wrap">
