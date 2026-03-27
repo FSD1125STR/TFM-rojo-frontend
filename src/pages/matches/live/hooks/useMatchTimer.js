@@ -7,12 +7,6 @@ function getStoredTs(key) {
   return v ? parseInt(v, 10) : null;
 }
 
-function setStoredTs(key) {
-  if (!localStorage.getItem(key)) {
-    localStorage.setItem(key, Date.now().toString());
-  }
-}
-
 function calcMinute(liveStatus, halfDuration, key1, key2) {
   if (!liveStatus || liveStatus === 'NOT_STARTED') return null;
   if (liveStatus === 'HALF_TIME') return halfDuration;
@@ -45,16 +39,26 @@ export function getHalfDuration(categoryName) {
 export function useMatchTimer(matchId, liveStatus, halfDuration) {
   const key1 = `match:${matchId}:firstHalfStart`;
   const key2 = `match:${matchId}:secondHalfStart`;
+  const prevKey = `match:${matchId}:prevLiveStatus`;
 
   const [minute, setMinute] = useState(() =>
     calcMinute(liveStatus, halfDuration, key1, key2)
   );
 
-  // Guarda el timestamp cuando arranca cada parte
+  // Resetea el timestamp al detectar una transición real hacia cada parte.
+  // Persiste el estado anterior en localStorage para sobrevivir recargas.
   useEffect(() => {
-    if (liveStatus === 'FIRST_HALF') setStoredTs(key1);
-    if (liveStatus === 'SECOND_HALF') setStoredTs(key2);
-  }, [liveStatus, key1, key2]);
+    if (!liveStatus) return;
+    const prev = localStorage.getItem(prevKey) || '';
+    localStorage.setItem(prevKey, liveStatus);
+
+    if (liveStatus === 'FIRST_HALF' && prev !== 'FIRST_HALF') {
+      localStorage.setItem(key1, Date.now().toString());
+    }
+    if (liveStatus === 'SECOND_HALF' && prev !== 'SECOND_HALF') {
+      localStorage.setItem(key2, Date.now().toString());
+    }
+  }, [liveStatus, key1, key2, prevKey]);
 
   // Recalcula cada 10s durante partes activas; en los demás estados solo una vez
   useEffect(() => {
