@@ -17,6 +17,8 @@ import {
   toLocalDateTimeInput,
 } from './data/matchesConfig';
 
+const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
+
 export function MatchesList() {
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
@@ -124,7 +126,7 @@ export function MatchesList() {
       });
     }
 
-    if (checkPermission('matches.edit') && match.status !== 'finished') {
+    if (checkPermission('matches.edit') && match.status !== 'finished' && !LIVE_STATUSES.has(match.liveStatus)) {
       items.push({
         label: 'Editar',
         icon: 'edit',
@@ -149,8 +151,6 @@ export function MatchesList() {
 
     return items;
   };
-
-  const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
 
   const statusCardClasses = {
     scheduled: '!bg-info/5 border-info/20',
