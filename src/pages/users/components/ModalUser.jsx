@@ -28,8 +28,9 @@ export function ModalUser({
           role: initialData.role || "entrenador",
           registrationCode: "",
           password: "",
-          categoryId:
-            initialData.categoryId?._id || initialData.categoryId || "",
+          categoryId: initialData.categoryId?._id || initialData.categoryId || "",
+          foto: null,
+          photoUrl: initialData.photoUrl || "",
         });
       } else {
         setFormData({ ...UserForm.INITIAL_DATA });
@@ -60,7 +61,7 @@ export function ModalUser({
       size="lg"
       actions={
         <>
-          <Button variant="ghost" size="sm" onClick={onClose}>
+          <Button variant="danger" size="sm" className="btn-outline" onClick={onClose}>
             Cancelar
           </Button>
 
@@ -71,8 +72,8 @@ export function ModalUser({
             size="sm"
             className="gap-2"
           >
-            <Icon name="save" size="sm" />
-            {isEditing ? "Guardar Cambios" : "Crear Usuario"}
+            <Icon name="save" className="text-[18px]" />
+            {isEditing ? "Guardar Cambios" : "Guardar Usuario"}
           </Button>
         </>
       }
