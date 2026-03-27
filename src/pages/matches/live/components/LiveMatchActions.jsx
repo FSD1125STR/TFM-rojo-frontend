@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '../../../../components/ui/Button';
 import { Icon } from '../../../../components/ui/Icon';
 import { getCallupByMatch } from '../../../../services/callupsService';
+import { useMatchTimer, getHalfDuration } from '../hooks/useMatchTimer';
 import { ModalLiveGoal } from './ModalLiveGoal';
 import { ModalLiveCard } from './ModalLiveCard';
 import { ModalLiveSub } from './ModalLiveSub';
@@ -11,6 +12,7 @@ const ACTIVE_STATUSES = ['FIRST_HALF', 'SECOND_HALF'];
 export function LiveMatchActions({ matchId, match, liveStatus }) {
   const [players, setPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(null);
+  const currentMinute = useMatchTimer(matchId, liveStatus, getHalfDuration(match?.categoryId?.name));
 
   useEffect(() => {
     if (!matchId) return;
@@ -25,47 +27,47 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
 
   return (
     <>
-      <div test-id="el-la7x3k9m" className="flex gap-2 flex-wrap mb-4">
-        <Button
-          size="sm"
-          variant="ghost"
-          className="border border-base-300 gap-1"
-          onClick={() => setOpenModal('goal')}
-        >
-          <Icon name="sports_soccer" size="sm" />
-          Gol
-        </Button>
+      <span test-id="el-la7x3k9m" className="w-px h-6 bg-base-300 shrink-0 self-center" />
 
-        <Button
-          size="sm"
-          variant="ghost"
-          className="border border-warning/50 text-warning gap-1"
-          onClick={() => setOpenModal('yellow')}
-        >
-          <span className="w-3 h-4 rounded-sm bg-warning inline-block shrink-0" />
-          Amarilla
-        </Button>
+      <Button
+        size="sm"
+        variant="ghost"
+        className="border border-base-300 gap-1"
+        onClick={() => setOpenModal('goal')}
+      >
+        <Icon name="sports_soccer" size="sm" />
+        Gol
+      </Button>
 
-        <Button
-          size="sm"
-          variant="ghost"
-          className="border border-error/50 text-error gap-1"
-          onClick={() => setOpenModal('red')}
-        >
-          <span className="w-3 h-4 rounded-sm bg-error inline-block shrink-0" />
-          Roja
-        </Button>
+      <Button
+        size="sm"
+        variant="ghost"
+        className="border border-warning/50 text-warning gap-1"
+        onClick={() => setOpenModal('yellow')}
+      >
+        <span className="w-3 h-4 rounded-sm bg-warning inline-block shrink-0" />
+        Amarilla
+      </Button>
 
-        <Button
-          size="sm"
-          variant="ghost"
-          className="border border-info/50 text-info gap-1"
-          onClick={() => setOpenModal('sub')}
-        >
-          <Icon name="swap_horiz" size="sm" />
-          Cambio
-        </Button>
-      </div>
+      <Button
+        size="sm"
+        variant="ghost"
+        className="border border-error/50 text-error gap-1"
+        onClick={() => setOpenModal('red')}
+      >
+        <span className="w-3 h-4 rounded-sm bg-error inline-block shrink-0" />
+        Roja
+      </Button>
+
+      <Button
+        size="sm"
+        variant="ghost"
+        className="border border-info/50 text-info gap-1"
+        onClick={() => setOpenModal('sub')}
+      >
+        <Icon name="swap_horiz" size="sm" />
+        Cambio
+      </Button>
 
       <ModalLiveGoal
         isOpen={openModal === 'goal'}
@@ -73,6 +75,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
         matchId={matchId}
         match={match}
         players={players}
+        currentMinute={currentMinute}
       />
       <ModalLiveCard
         isOpen={openModal === 'yellow'}
@@ -81,6 +84,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
         match={match}
         players={players}
         cardType="yellow_card"
+        currentMinute={currentMinute}
       />
       <ModalLiveCard
         isOpen={openModal === 'red'}
@@ -89,6 +93,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
         match={match}
         players={players}
         cardType="red_card"
+        currentMinute={currentMinute}
       />
       <ModalLiveSub
         isOpen={openModal === 'sub'}
@@ -96,6 +101,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
         matchId={matchId}
         match={match}
         players={players}
+        currentMinute={currentMinute}
       />
     </>
   );

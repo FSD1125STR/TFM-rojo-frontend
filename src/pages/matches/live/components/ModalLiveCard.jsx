@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { SearchableSelect } from '../../../../components/ui/SearchableSelect';
 import { createMatchEvent } from '../../../../services/matchesService';
 
-export function ModalLiveCard({ isOpen, onClose, matchId, match, players, cardType }) {
+export function ModalLiveCard({ isOpen, onClose, matchId, match, players, cardType, currentMinute }) {
   const [playerId, setPlayerId] = useState('');
   const [minute, setMinute] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) setMinute(currentMinute != null ? String(currentMinute) : '');
+  }, [isOpen, currentMinute]);
 
   const isYellow = cardType === 'yellow_card';
   const title = isYellow ? 'Tarjeta amarilla' : 'Tarjeta roja';

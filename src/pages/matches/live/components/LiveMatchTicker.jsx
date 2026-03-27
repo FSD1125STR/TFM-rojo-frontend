@@ -63,18 +63,17 @@ export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange }) 
   };
 
   return (
-    <div test-id="el-tk7m3n5r" className="flex justify-center mb-4">
-      <Button
-        variant={transition.next === 'FINISHED' ? 'danger' : 'primary'}
-        size="md"
-        isLoading={isLoading}
-        onClick={handleClick}
-        className="gap-2"
-      >
-        <Icon name={transition.icon} size="sm" />
-        {transition.label}
-      </Button>
-    </div>
+    <Button
+      test-id="el-tk7m3n5r"
+      variant={transition.next === 'FINISHED' ? 'danger' : 'primary'}
+      size="sm"
+      isLoading={isLoading}
+      onClick={handleClick}
+      className="gap-1 shrink-0"
+    >
+      <Icon name={transition.icon} size="sm" />
+      {transition.label}
+    </Button>
   );
 }
 

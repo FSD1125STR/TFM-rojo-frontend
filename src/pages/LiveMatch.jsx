@@ -1,14 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useHeader } from '../hooks/useHeader';
-import { getLiveMatches } from '../services/liveMatchService';
+import { useTodayMatches } from './matches/live/hooks/useTodayMatches';
+import { updateLiveStatus } from '../services/matchesService';
+import { showError } from '../utils/alerts';
+import { formatFechaRelativa, formatFechaAbsoluta } from './matches/data/matchesConfig';
+import { useMatchTimer, getHalfDuration } from './matches/live/hooks/useMatchTimer';
 import { PageHeader } from '../components/ui/PageHeader';
 import { CardsList } from '../components/ui/CardsList';
-import { Icon } from '../components/ui/Icon';
 
-const ADMIN_ROLES = ['administrador', 'direccion'];
 const FIELD_ROLES = ['delegado', 'entrenador'];
+
+function MatchMinute({ match }) {
+  const minute = useMatchTimer(match._id, match.liveStatus, getHalfDuration(match.categoryId?.name));
+  if (minute === null) return null;
+  return <span className="text-sm font-mono font-bold text-success">{minute}&apos;</span>;
+}
+const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
 
 const LIVE_STATUS_LABELS = {
   FIRST_HALF: '1ª Parte',
@@ -16,18 +25,11 @@ const LIVE_STATUS_LABELS = {
   SECOND_HALF: '2ª Parte',
 };
 
-const LIVE_STATUS_BADGE = {
-  FIRST_HALF: 'success',
-  HALF_TIME: 'warning',
-  SECOND_HALF: 'success',
-};
-
 export function LiveMatch() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [matches, setMatches] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { notStarted, active, isLoading, error, reload } = useTodayMatches();
+  const [startingId, setStartingId] = useState(null);
 
   const role = user?.role;
   const isFieldView = FIELD_ROLES.includes(role);
@@ -39,91 +41,117 @@ export function LiveMatch() {
   });
 
   useEffect(() => {
-    getLiveMatches()
-      .then((data) => {
-        const list = Array.isArray(data) ? data : data?.matches || [];
-        setMatches(list);
-        if (isFieldView && list.length > 0) {
-          navigate(`/directo/${list[0]._id}`, { replace: true });
-        }
-      })
-      .catch(setError)
-      .finally(() => setIsLoading(false));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!isFieldView || isLoading) return;
+    if (active.length > 0) {
+      navigate(`/directo/${active[0]._id}`, { replace: true });
+    } else if (notStarted.length > 0) {
+      navigate(`/directo/${notStarted[0]._id}`, { replace: true });
+    }
+  }, [isFieldView, isLoading, active, notStarted, navigate]);
 
-  const getActions = (match) => [
-    {
-      label: 'Ver en directo',
-      icon: 'cell_tower',
-      onClick: (row) => navigate(`/directo/${row._id}`),
-    },
-  ];
+  const handleStart = async (row) => {
+    setStartingId(row._id);
+    try {
+      await updateLiveStatus(row._id, { liveStatus: 'FIRST_HALF' });
+      navigate(`/directo/${row._id}`);
+    } catch {
+      showError('No se pudo iniciar el partido. Inténtalo de nuevo.');
+      setStartingId(null);
+    }
+  };
+
+  const getActions = (match) => {
+    if (ACTIVE_STATUSES.has(match.liveStatus)) {
+      return [
+        {
+          label: 'Ver en directo',
+          icon: 'cell_tower',
+          onClick: (row) => navigate(`/directo/${row._id}`),
+        },
+      ];
+    }
+    return [
+      {
+        label: startingId === match._id ? 'Iniciando...' : 'Iniciar partido',
+        icon: 'play_arrow',
+        onClick: (row) => handleStart(row),
+        show: () => startingId !== match._id,
+      },
+    ];
+  };
 
   const renderContent = (match) => {
-    const homeName = match.homeTeamId?.name || 'Local';
-    const awayName = match.awayTeamId?.name || 'Visitante';
-    const statusLabel = LIVE_STATUS_LABELS[match.liveStatus] || match.liveStatus;
-    const badgeVariant = LIVE_STATUS_BADGE[match.liveStatus] || 'ghost';
-    const isPulse = match.liveStatus === 'FIRST_HALF' || match.liveStatus === 'SECOND_HALF';
+    const isActive = ACTIVE_STATUSES.has(match.liveStatus);
+    const homeName = match.homeTeamId?.name || 'Equipo local';
+    const awayName = match.awayTeamId?.name || 'Equipo visitante';
+
+    const badges = isActive
+      ? [{ label: LIVE_STATUS_LABELS[match.liveStatus] || 'En directo', variant: 'success', icon: 'cell_tower', className: 'animate-pulse' }]
+      : [{ label: 'Programado', variant: 'info', icon: 'schedule' }];
+
+    const meta = [
+      {
+        icon: 'calendar_today',
+        text: (
+          <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(match.dateTime)}>
+            {formatFechaRelativa(match.dateTime)}
+          </span>
+        ),
+      },
+      ...(match.venue?.name ? [{ icon: 'location_on', text: match.venue.name }] : []),
+      { icon: 'flag', text: `Jornada ${match.journey}` },
+      ...(match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
+    ];
+
+    const content = isActive ? (
+      <div className="flex items-center gap-4">
+        <div className="text-center">
+          <p className="text-sm text-base-content/50 m-0">{homeName}</p>
+          <p className="text-3xl font-bold text-base-content m-0">{match.homeScore ?? '-'}</p>
+        </div>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-2xl font-bold text-base-content/30">-</span>
+          <MatchMinute match={match} />
+        </div>
+        <div className="text-center">
+          <p className="text-sm text-base-content/50 m-0">{awayName}</p>
+          <p className="text-3xl font-bold text-base-content m-0">{match.awayScore ?? '-'}</p>
+        </div>
+      </div>
+    ) : (
+      <p className="text-sm text-base-content/40 m-0">Partido no disputado</p>
+    );
 
     return {
       title: `${homeName} vs ${awayName}`,
-      badges: [
-        {
-          label: statusLabel,
-          variant: badgeVariant,
-          icon: 'cell_tower',
-          className: isPulse ? 'animate-pulse' : undefined,
-        },
-      ],
-      meta: [
-        ...(match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
-        { icon: 'flag', text: `Jornada ${match.journey}` },
-      ],
+      badges,
+      meta,
+      content,
+      className: isActive ? '!bg-success/5 border-success/20' : '!bg-info/5 border-info/20',
     };
   };
 
-  if (isLoading) {
-    return (
-      <div test-id="el-lv3d1r3c" className="flex justify-center py-20">
-        <span className="loading loading-spinner loading-lg text-primary" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div test-id="el-lv3d1r3c" className="flex flex-col items-center gap-3 py-20 text-error">
-        <Icon name="error" size="lg" />
-        <p className="text-sm">No se pudo cargar la información</p>
-      </div>
-    );
-  }
-
-  if (isFieldView) {
-    return (
-      <div test-id="el-lv3d1r3c" className="flex flex-col items-center gap-4 py-20 text-base-content/50">
-        <Icon name="cell_tower" size="lg" />
-        <p className="text-base">No hay partido en directo para tu categoría</p>
-      </div>
-    );
-  }
+  const allMatches = [...active, ...notStarted];
 
   return (
     <div test-id="el-lv3d1r3c">
       <PageHeader
-        title="Partidos en Directo"
-        subtitle="Partidos en juego ahora mismo"
+        title="Partido en Directo"
+        subtitle="Partidos del día"
       />
       <div className="mt-4">
         <CardsList
-          data={matches}
+          data={allMatches}
           keyField="_id"
           renderContent={renderContent}
           actions={getActions}
           actionsMode="buttons"
-          emptyMessage="No hay partidos en directo"
-          isLoading={false}
+          isLoading={isLoading}
+          error={error}
+          onRetry={reload}
+          emptyMessage="No hay partidos programados para hoy"
+          emptyIcon="sports_soccer"
+          gap="sm"
         />
       </div>
     </div>

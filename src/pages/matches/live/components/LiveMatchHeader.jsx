@@ -1,8 +1,8 @@
 import { Avatar } from '../../../../components/ui/Avatar';
 import { Badge } from '../../../../components/ui/Badge';
 import { Card } from '../../../../components/ui/Card';
-import { Icon } from '../../../../components/ui/Icon';
 import { formatMatchDate, formatMatchTime } from '../../data/matchesConfig';
+import { useMatchTimer, getHalfDuration } from '../hooks/useMatchTimer';
 import { LiveMatchHeaderProps } from './LiveMatchHeader.props';
 
 const STATUS_CONFIG = {
@@ -32,15 +32,26 @@ export function LiveMatchHeader({ match, liveStatus }) {
   const awayScore = match?.awayScore ?? 0;
   const statusCfg = STATUS_CONFIG[liveStatus] ?? STATUS_CONFIG.NOT_STARTED;
 
+  const halfDuration = getHalfDuration(match?.categoryId?.name);
+  const minute = useMatchTimer(match?._id, liveStatus, halfDuration);
+
   return (
     <div test-id="el-lh4x9p2q" className="mb-4">
       <Card padding="none" className="shadow-md">
-        {/* Status badge */}
-        <div className="px-5 pt-4 pb-2 flex justify-center">
-          <Badge variant={statusCfg.variant} className={statusCfg.pulse ? 'animate-pulse' : ''}>
-            {statusCfg.pulse && <Icon name="radio_button_checked" size="sm" className="mr-1" />}
+        {/* Status badge + cronómetro */}
+        <div className="px-5 pt-4 pb-2 flex flex-col items-center gap-1">
+          <Badge
+            variant={statusCfg.variant}
+            icon={statusCfg.pulse ? 'radio_button_checked' : undefined}
+            className={statusCfg.pulse ? 'animate-pulse' : ''}
+          >
             {statusCfg.label}
           </Badge>
+          {minute !== null && (
+            <span className="text-2xl font-mono font-bold text-base-content/80 leading-none">
+              {minute}&apos;
+            </span>
+          )}
         </div>
 
         {/* Teams + score */}

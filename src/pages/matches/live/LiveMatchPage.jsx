@@ -143,21 +143,21 @@ export function LiveMatchPage() {
   }
 
   return (
-    <div test-id="el-lp3x7q9m" className="max-w-4xl mx-auto px-4 py-4">
+    <div test-id="el-lp3x7q9m" className="px-4 py-4">
       <LiveMatchHeader match={match} liveStatus={currentStatus || match?.liveStatus} />
 
-      {/* Ticker: Iniciar / Descanso / Reanudar / Finalizar partido */}
-      {canControlTicker && currentStatus !== 'FINISHED' && (
-        <LiveMatchTicker
-          currentLiveStatus={currentStatus}
-          matchId={matchId}
-          onStatusChange={setCurrentStatus}
-        />
-      )}
-
-      {/* Botones de evento: Gol / Amarilla / Roja / Cambio */}
+      {/* Fila unificada: control de estado + eventos */}
       {canControlTicker && (
-        <LiveMatchActions matchId={matchId} match={match} liveStatus={currentStatus} />
+        <div className="flex gap-2 flex-wrap items-center mb-4">
+          {currentStatus !== 'FINISHED' && (
+            <LiveMatchTicker
+              currentLiveStatus={currentStatus}
+              matchId={matchId}
+              onStatusChange={setCurrentStatus}
+            />
+          )}
+          <LiveMatchActions matchId={matchId} match={match} liveStatus={currentStatus} />
+        </div>
       )}
 
       {/* Grid 2 columnas: timeline + paneles */}

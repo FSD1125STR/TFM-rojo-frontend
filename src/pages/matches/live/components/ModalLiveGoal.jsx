@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { SearchableSelect } from '../../../../components/ui/SearchableSelect';
 import { createMatchEvent } from '../../../../services/matchesService';
 
-export function ModalLiveGoal({ isOpen, onClose, matchId, match, players }) {
+export function ModalLiveGoal({ isOpen, onClose, matchId, match, players, currentMinute }) {
   const [team, setTeam] = useState('home');
   const [playerId, setPlayerId] = useState('');
   const [minute, setMinute] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) setMinute(currentMinute != null ? String(currentMinute) : '');
+  }, [isOpen, currentMinute]);
 
   const homeName = match?.homeTeamId?.name || 'Local';
   const awayName = match?.awayTeamId?.name || 'Visitante';

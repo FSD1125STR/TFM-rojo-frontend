@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { SearchableSelect } from '../../../../components/ui/SearchableSelect';
 import { createMatchEvent } from '../../../../services/matchesService';
 
-export function ModalLiveSub({ isOpen, onClose, matchId, match, players }) {
+export function ModalLiveSub({ isOpen, onClose, matchId, match, players, currentMinute }) {
   const [playerOutId, setPlayerOutId] = useState('');
   const [playerInId, setPlayerInId] = useState('');
   const [minute, setMinute] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) setMinute(currentMinute != null ? String(currentMinute) : '');
+  }, [isOpen, currentMinute]);
 
   const playerOptions = players.map((p) => ({ value: p.id, label: p.fullName }));
 
