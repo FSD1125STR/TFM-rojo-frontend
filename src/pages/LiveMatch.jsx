@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useHeader } from '../hooks/useHeader';
 import { useTodayMatches } from './matches/live/hooks/useTodayMatches';
+import { useLiveMatch } from '../hooks/useLiveMatchContext';
 import { updateLiveStatus } from '../services/matchesService';
 import { showError } from '../utils/alerts';
 import { formatFechaRelativa, formatFechaAbsoluta } from './matches/data/matchesConfig';
@@ -29,7 +30,12 @@ export function LiveMatch() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { notStarted, active, isLoading, error, reload } = useTodayMatches();
+  const { liveStatus: globalLiveStatus } = useLiveMatch();
   const [startingId, setStartingId] = useState(null);
+
+  useEffect(() => {
+    reload();
+  }, [globalLiveStatus, reload]);
 
   const role = user?.role;
   const isFieldView = FIELD_ROLES.includes(role);

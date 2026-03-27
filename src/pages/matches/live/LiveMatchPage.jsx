@@ -103,15 +103,15 @@ export function LiveMatchPage() {
     actions: null,
   });
 
+  // Inicializa desde la DB al cargar el partido
+  useEffect(() => {
+    if (match?.liveStatus) setCurrentStatus(match.liveStatus);
+  }, [match?.liveStatus]);
+
+  // Actualizaciones en tiempo real via socket
   useEffect(() => {
     if (liveStatus) setCurrentStatus(liveStatus);
   }, [liveStatus]);
-
-  useEffect(() => {
-    if (match?.liveStatus && !currentStatus) {
-      setCurrentStatus(match.liveStatus);
-    }
-  }, [match]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const canControlTicker = TICKER_ROLES.includes(user?.role);
 
