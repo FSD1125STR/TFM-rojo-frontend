@@ -7,17 +7,11 @@ import { useLiveMatch } from '../hooks/useLiveMatchContext';
 import { updateLiveStatus } from '../services/matchesService';
 import { showError } from '../utils/alerts';
 import { formatFechaRelativa, formatFechaAbsoluta } from './matches/data/matchesConfig';
-import { useMatchTimer, getHalfDuration } from './matches/live/hooks/useMatchTimer';
+import { MatchMinute } from './matches/live/components/MatchMinute';
 import { PageHeader } from '../components/ui/PageHeader';
 import { CardsList } from '../components/ui/CardsList';
 
 const FIELD_ROLES = ['delegado', 'entrenador'];
-
-function MatchMinute({ match }) {
-  const minute = useMatchTimer(match._id, match.liveStatus, getHalfDuration(match.categoryId?.name));
-  if (minute === null) return null;
-  return <span className="text-sm font-mono font-bold text-success">{minute}&apos;</span>;
-}
 const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
 
 const LIVE_STATUS_LABELS = {

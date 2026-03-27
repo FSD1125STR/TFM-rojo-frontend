@@ -8,6 +8,7 @@ import { PageHeader } from '../../components/ui/PageHeader';
 import { StatsCard } from '../../components/ui/StatsCard';
 import { CardsList } from '../../components/ui/CardsList';
 import { ModalMatch } from './components/ModalMatch';
+import { MatchMinute } from './live/components/MatchMinute';
 import { showToast, showError, showErrorInModal, showConfirm, showInputPrompt, showLoadingInModal, closeLoading } from '../../utils/alerts';
 import {
   estadoMatchConfig,
@@ -176,13 +177,17 @@ export function MatchesList() {
       ...(canViewAll && match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
     ];
 
-    const content = match.status === 'finished' ? (
+    const showScore = match.status === 'finished' || isLive;
+    const content = showScore ? (
       <div className="flex items-center gap-4">
         <div className="text-center">
           <p className="text-sm text-base-content/50 m-0">{homeName}</p>
           <p className="text-3xl font-bold text-base-content m-0">{match.homeScore ?? '-'}</p>
         </div>
-        <span className="text-2xl font-bold text-base-content/30">-</span>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-2xl font-bold text-base-content/30">-</span>
+          {isLive && <MatchMinute match={match} />}
+        </div>
         <div className="text-center">
           <p className="text-sm text-base-content/50 m-0">{awayName}</p>
           <p className="text-3xl font-bold text-base-content m-0">{match.awayScore ?? '-'}</p>
