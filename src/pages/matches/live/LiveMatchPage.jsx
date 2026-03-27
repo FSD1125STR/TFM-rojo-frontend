@@ -53,19 +53,22 @@ function computeLivePanels(events) {
   const substitutions = [];
 
   for (const event of events) {
+    // playerId puede ser objeto {_id} (API) o string (socket); normalizamos a string
+    const pid = event.playerId ? String(event.playerId._id ?? event.playerId) : null;
+
     if (event.type === 'goal') {
-      const key = event.playerId || event.playerName;
+      const key = pid || event.playerName;
       if (key) {
         if (!scorersMap[key]) {
-          scorersMap[key] = { playerId: event.playerId, playerName: event.playerName, teamId: event.teamId, goals: 0 };
+          scorersMap[key] = { playerId: pid, playerName: event.playerName, teamId: event.teamId, goals: 0 };
         }
         scorersMap[key].goals++;
       }
     } else if (event.type === 'yellow_card' || event.type === 'red_card') {
-      const key = event.playerId || event.playerName;
+      const key = pid || event.playerName;
       if (key) {
         if (!cardsMap[key]) {
-          cardsMap[key] = { playerId: event.playerId, playerName: event.playerName, teamId: event.teamId, yellowCards: 0, redCards: 0 };
+          cardsMap[key] = { playerId: pid, playerName: event.playerName, teamId: event.teamId, yellowCards: 0, redCards: 0 };
         }
         if (event.type === 'yellow_card') cardsMap[key].yellowCards++;
         else cardsMap[key].redCards++;
@@ -82,9 +85,29 @@ function computeLivePanels(events) {
 
   return {
     scorers: Object.values(scorersMap),
-    cards: Object.values(cardsMap),
+    // 2 amarillas = expulsión automática: se muestra como 2A + 1R
+    cards: Object.values(cardsMap).map((c) => ({
+      ...c,
+      redCards: c.yellowCards >= 2 ? Math.max(c.redCards, 1) : c.redCards,
+    })),
     substitutions,
   };
+}
+
+function getExpelledIds(events) {
+  const yellowCount = {};
+  const expelled = new Set();
+  for (const e of events) {
+    const id = e.playerId ? String(e.playerId._id ?? e.playerId) : null;
+    if (!id) continue;
+    if (e.type === 'red_card') {
+      expelled.add(id);
+    } else if (e.type === 'yellow_card') {
+      yellowCount[id] = (yellowCount[id] || 0) + 1;
+      if (yellowCount[id] >= 2) expelled.add(id);
+    }
+  }
+  return expelled;
 }
 
 export function LiveMatchPage() {
@@ -124,6 +147,7 @@ export function LiveMatchPage() {
 
   const normalizedEvents = events.map((e) => normalizeEvent(e, match));
   const livePanels = computeLivePanels(normalizedEvents);
+  const expelledIds = getExpelledIds(normalizedEvents);
 
   if (isLoading) {
     return (
@@ -156,7 +180,7 @@ export function LiveMatchPage() {
               onStatusChange={setCurrentStatus}
             />
           )}
-          <LiveMatchActions matchId={matchId} match={match} liveStatus={currentStatus} />
+          <LiveMatchActions matchId={matchId} match={match} liveStatus={currentStatus} expelledIds={expelledIds} />
         </div>
       )}
 

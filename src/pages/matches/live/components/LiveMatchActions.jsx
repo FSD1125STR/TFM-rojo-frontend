@@ -9,11 +9,12 @@ import { ModalLiveSub } from './ModalLiveSub';
 
 const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'SECOND_HALF', 'HALF_TIME']);
 
-export function LiveMatchActions({ matchId, match, liveStatus }) {
+export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new Set() }) {
   const [players, setPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(null);
   const currentMinute = useMatchTimer(matchId, liveStatus, getHalfDuration(match?.categoryId?.name));
   const isHalfTime = liveStatus === 'HALF_TIME';
+  const activePlayers = players.filter((p) => !expelledIds.has(String(p.id)));
 
   useEffect(() => {
     if (!matchId) return;
@@ -79,7 +80,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
         onClose={close}
         matchId={matchId}
         match={match}
-        players={players}
+        players={activePlayers}
         currentMinute={currentMinute}
       />
       <ModalLiveCard
@@ -87,7 +88,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
         onClose={close}
         matchId={matchId}
         match={match}
-        players={players}
+        players={activePlayers}
         cardType="yellow_card"
         currentMinute={currentMinute}
       />
@@ -96,7 +97,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
         onClose={close}
         matchId={matchId}
         match={match}
-        players={players}
+        players={activePlayers}
         cardType="red_card"
         currentMinute={currentMinute}
       />
@@ -105,7 +106,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
         onClose={close}
         matchId={matchId}
         match={match}
-        players={players}
+        players={activePlayers}
         currentMinute={currentMinute}
       />
     </>

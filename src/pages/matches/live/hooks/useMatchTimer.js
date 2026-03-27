@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const ACTIVE_HALVES = new Set(['FIRST_HALF', 'SECOND_HALF']);
 
@@ -39,26 +39,38 @@ export function getHalfDuration(categoryName) {
 export function useMatchTimer(matchId, liveStatus, halfDuration) {
   const key1 = `match:${matchId}:firstHalfStart`;
   const key2 = `match:${matchId}:secondHalfStart`;
-  const prevKey = `match:${matchId}:prevLiveStatus`;
+
+  // null = primer render (montaje). Solo usamos ref en memoria para detectar
+  // transiciones reales durante la sesión, no cambios de estado inicial al cargar.
+  const prevStatusRef = useRef(null);
 
   const [minute, setMinute] = useState(() =>
     calcMinute(liveStatus, halfDuration, key1, key2)
   );
 
-  // Resetea el timestamp al detectar una transición real hacia cada parte.
-  // Persiste el estado anterior en localStorage para sobrevivir recargas.
   useEffect(() => {
-    if (!liveStatus) return;
-    const prev = localStorage.getItem(prevKey) || '';
-    localStorage.setItem(prevKey, liveStatus);
+    const prev = prevStatusRef.current;
+    prevStatusRef.current = liveStatus;
 
+    if (prev === null) {
+      // Montaje inicial: solo establece timestamp si aún no existe (partido nuevo)
+      if (liveStatus === 'FIRST_HALF' && !getStoredTs(key1)) {
+        localStorage.setItem(key1, Date.now().toString());
+      }
+      if (liveStatus === 'SECOND_HALF' && !getStoredTs(key2)) {
+        localStorage.setItem(key2, Date.now().toString());
+      }
+      return;
+    }
+
+    // Transición real durante la sesión: siempre resetea el timestamp
     if (liveStatus === 'FIRST_HALF' && prev !== 'FIRST_HALF') {
       localStorage.setItem(key1, Date.now().toString());
     }
     if (liveStatus === 'SECOND_HALF' && prev !== 'SECOND_HALF') {
       localStorage.setItem(key2, Date.now().toString());
     }
-  }, [liveStatus, key1, key2, prevKey]);
+  }, [liveStatus, key1, key2]);
 
   // Recalcula cada 10s durante partes activas; en los demás estados solo una vez
   useEffect(() => {
