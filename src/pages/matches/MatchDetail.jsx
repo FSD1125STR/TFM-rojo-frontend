@@ -53,16 +53,14 @@ export function MatchDetail() {
   }
 
 
-  const homeName = match.homeTeamId?.name || 'Equipo local';
-  const awayName = match.awayTeamId?.name || 'Equipo visitante';
-  const title = `${homeName} vs ${awayName}`;
-  const subtitle = `Jornada ${match.journey ?? ''}`;
+  const homeName = match.homeTeam?.name || 'Equipo local';
+  const awayName = match.awayTeam?.name || 'Equipo visitante';
+  const title = `Jornada ${match.journey ?? ''}: ${homeName} vs ${awayName}`;
 
   return (
     <div test-id="el-m8t5c3h1">
       <PageHeader
         title={title}
-        subtitle={subtitle}
         showBack
         onBack={() => navigate(location.state?.from ?? '/partidos')}
       />
