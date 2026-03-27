@@ -7,12 +7,13 @@ import { ModalLiveGoal } from './ModalLiveGoal';
 import { ModalLiveCard } from './ModalLiveCard';
 import { ModalLiveSub } from './ModalLiveSub';
 
-const ACTIVE_STATUSES = ['FIRST_HALF', 'SECOND_HALF'];
+const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'SECOND_HALF', 'HALF_TIME']);
 
 export function LiveMatchActions({ matchId, match, liveStatus }) {
   const [players, setPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(null);
   const currentMinute = useMatchTimer(matchId, liveStatus, getHalfDuration(match?.categoryId?.name));
+  const isHalfTime = liveStatus === 'HALF_TIME';
 
   useEffect(() => {
     if (!matchId) return;
@@ -21,7 +22,7 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
       .catch(() => setPlayers([]));
   }, [matchId]);
 
-  if (!ACTIVE_STATUSES.includes(liveStatus)) return null;
+  if (!ACTIVE_STATUSES.has(liveStatus)) return null;
 
   const close = () => setOpenModal(null);
 
@@ -29,35 +30,39 @@ export function LiveMatchActions({ matchId, match, liveStatus }) {
     <>
       <span test-id="el-la7x3k9m" className="w-px h-6 bg-base-300 shrink-0 self-center" />
 
-      <Button
-        size="sm"
-        variant="ghost"
-        className="border border-base-300 gap-1"
-        onClick={() => setOpenModal('goal')}
-      >
-        <Icon name="sports_soccer" size="sm" />
-        Gol
-      </Button>
+      {!isHalfTime && (
+        <>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="border border-base-300 gap-1"
+            onClick={() => setOpenModal('goal')}
+          >
+            <Icon name="sports_soccer" size="sm" />
+            Gol
+          </Button>
 
-      <Button
-        size="sm"
-        variant="ghost"
-        className="border border-warning/50 text-warning gap-1"
-        onClick={() => setOpenModal('yellow')}
-      >
-        <span className="w-3 h-4 rounded-sm bg-warning inline-block shrink-0" />
-        Amarilla
-      </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="border border-warning/50 text-warning gap-1"
+            onClick={() => setOpenModal('yellow')}
+          >
+            <span className="w-3 h-4 rounded-sm bg-warning inline-block shrink-0" />
+            Amarilla
+          </Button>
 
-      <Button
-        size="sm"
-        variant="ghost"
-        className="border border-error/50 text-error gap-1"
-        onClick={() => setOpenModal('red')}
-      >
-        <span className="w-3 h-4 rounded-sm bg-error inline-block shrink-0" />
-        Roja
-      </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="border border-error/50 text-error gap-1"
+            onClick={() => setOpenModal('red')}
+          >
+            <span className="w-3 h-4 rounded-sm bg-error inline-block shrink-0" />
+            Roja
+          </Button>
+        </>
+      )}
 
       <Button
         size="sm"
