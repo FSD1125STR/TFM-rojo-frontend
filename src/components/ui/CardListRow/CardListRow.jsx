@@ -47,18 +47,25 @@ export function CardListRow({
     if (actions.length > 0 && actionsMode === 'buttons') {
       return (
         <div className="flex items-center gap-1">
-          {actions.filter(a => !a.show || a.show(row)).map((action, i) => (
-            <IconButton
-              key={i}
-              icon={action.icon}
-              size="sm"
-              variant="ghost"
-              className={action.variant === 'danger' ? 'text-error' : ''}
-              ariaLabel={action.label}
-              title={action.label}
-              onClick={(e) => { e.stopPropagation(); action.onClick(row); }}
-            />
-          ))}
+          {actions.filter(a => !a.show || a.show(row)).map((action, i) => {
+            const btn = (
+              <IconButton
+                icon={action.icon}
+                size="sm"
+                variant="ghost"
+                className={`${action.variant === 'danger' ? 'text-error' : ''} ${action.className || ''}`.trim()}
+                ariaLabel={action.label}
+                title={action.label}
+                onClick={(e) => { e.stopPropagation(); action.onClick(row); }}
+              />
+            );
+            return action.indicator ? (
+              <div key={i} className="indicator">
+                <span className="indicator-item badge badge-xs badge-error p-0" />
+                {btn}
+              </div>
+            ) : <span key={i}>{btn}</span>;
+          })}
         </div>
       );
     }

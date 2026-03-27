@@ -103,6 +103,7 @@ export function MatchesList() {
       items.push({
         label: 'En directo',
         icon: 'cell_tower',
+        indicator: true,
         onClick: (row) => navigate(`/directo/${row._id}`),
       });
     }
@@ -149,6 +150,8 @@ export function MatchesList() {
     return items;
   };
 
+  const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
+
   const statusCardClasses = {
     scheduled: '!bg-info/5 border-info/20',
     finished: '!bg-success/5 border-success/20',
@@ -156,14 +159,15 @@ export function MatchesList() {
   };
 
   const renderContent = (match) => {
+    const isLive = LIVE_STATUSES.has(match.liveStatus);
     const cfg = estadoMatchConfig[match.status] || estadoMatchConfig.scheduled;
     const label = statusLabels[match.status] || match.status;
     const homeName = match.homeTeamId?.name || 'Equipo local';
     const awayName = match.awayTeamId?.name || 'Equipo visitante';
 
-    const badges = [
-      { label, variant: cfg.variant, icon: cfg.icon, width: cfg.width },
-    ];
+    const badges = isLive
+      ? [{ label: 'En curso', variant: 'warning', icon: 'cell_tower' }]
+      : [{ label, variant: cfg.variant, icon: cfg.icon, width: cfg.width }];
 
     const metaItems = [
       { icon: 'calendar_today', text: <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(match.dateTime)}>{formatFechaRelativa(match.dateTime)}</span> },
@@ -193,7 +197,7 @@ export function MatchesList() {
       badges,
       meta: metaItems,
       content,
-      className: statusCardClasses[match.status] || '',
+      className: isLive ? '!bg-warning/5 border-warning/20' : (statusCardClasses[match.status] || ''),
     };
   };
 
