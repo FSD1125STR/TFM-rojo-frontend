@@ -9,7 +9,7 @@ import { ModalLiveSub } from './ModalLiveSub';
 
 const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'SECOND_HALF', 'HALF_TIME']);
 
-export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new Set() }) {
+export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new Set(), subWindowsFull = false }) {
   const [players, setPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(null);
   const currentMinute = useMatchTimer(matchId, liveStatus, getHalfDuration(match?.categoryId?.name));
@@ -65,15 +65,21 @@ export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new
         </>
       )}
 
-      <Button
-        size="sm"
-        variant="ghost"
-        className="border border-info/50 text-info gap-1"
-        onClick={() => setOpenModal('sub')}
+      <span
+        className={!isHalfTime && subWindowsFull ? 'tooltip tooltip-top' : undefined}
+        data-tip={!isHalfTime && subWindowsFull ? 'Máximo de 3 ventanas alcanzado' : undefined}
       >
-        <Icon name="swap_horiz" size="sm" />
-        Cambio
-      </Button>
+        <Button
+          size="sm"
+          variant="ghost"
+          className={`border gap-1 ${!isHalfTime && subWindowsFull ? 'border-base-300 text-base-content/30 opacity-40' : 'border-info/50 text-info'}`}
+          onClick={() => setOpenModal('sub')}
+          isDisabled={!isHalfTime && subWindowsFull}
+        >
+          <Icon name="swap_horiz" size="sm" />
+          Cambio
+        </Button>
+      </span>
 
       <ModalLiveGoal
         isOpen={openModal === 'goal'}

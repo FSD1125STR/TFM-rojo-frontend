@@ -149,6 +149,11 @@ export function LiveMatchPage() {
   const livePanels = computeLivePanels(normalizedEvents);
   const expelledIds = getExpelledIds(normalizedEvents);
 
+  const subWindowMinutes = new Set(
+    normalizedEvents.filter((e) => e.type === 'substitution' && !e.atHalfTime).map((e) => e.minute)
+  );
+  const subWindowsFull = subWindowMinutes.size >= 3;
+
   if (isLoading) {
     return (
       <div test-id="el-lp3x7q9m" className="flex justify-center py-20">
@@ -180,7 +185,7 @@ export function LiveMatchPage() {
               onStatusChange={setCurrentStatus}
             />
           )}
-          <LiveMatchActions matchId={matchId} match={match} liveStatus={currentStatus} expelledIds={expelledIds} />
+          <LiveMatchActions matchId={matchId} match={match} liveStatus={currentStatus} expelledIds={expelledIds} subWindowsFull={subWindowsFull} />
         </div>
       )}
 
