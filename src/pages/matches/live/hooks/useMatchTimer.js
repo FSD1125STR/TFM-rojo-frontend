@@ -40,8 +40,6 @@ export function useMatchTimer(matchId, liveStatus, halfDuration) {
   const key1 = `match:${matchId}:firstHalfStart`;
   const key2 = `match:${matchId}:secondHalfStart`;
 
-  // null = primer render (montaje). Solo usamos ref en memoria para detectar
-  // transiciones reales durante la sesión, no cambios de estado inicial al cargar.
   const prevStatusRef = useRef(null);
 
   const [minute, setMinute] = useState(() =>
@@ -52,8 +50,14 @@ export function useMatchTimer(matchId, liveStatus, halfDuration) {
     const prev = prevStatusRef.current;
     prevStatusRef.current = liveStatus;
 
-    if (prev === null) {
-      // Montaje inicial: solo establece timestamp si aún no existe (partido nuevo)
+    // Solo actuar cuando liveStatus es un estado real del partido
+    if (!liveStatus) return;
+
+    // "Transición real" = el estado anterior era también un estado válido (no el vacío inicial)
+    const prevIsValidStatus = !!prev;
+
+    if (!prevIsValidStatus) {
+      // Primera vez que recibimos un estado real: solo escribir si no existe (no machacar)
       if (liveStatus === 'FIRST_HALF' && !getStoredTs(key1)) {
         localStorage.setItem(key1, Date.now().toString());
       }
@@ -63,7 +67,7 @@ export function useMatchTimer(matchId, liveStatus, halfDuration) {
       return;
     }
 
-    // Transición real durante la sesión: siempre resetea el timestamp
+    // Transición real durante la sesión: siempre resetea
     if (liveStatus === 'FIRST_HALF' && prev !== 'FIRST_HALF') {
       localStorage.setItem(key1, Date.now().toString());
     }
