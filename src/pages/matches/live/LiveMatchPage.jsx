@@ -177,7 +177,7 @@ export function LiveMatchPage() {
 
       {/* Fila unificada: control de estado + eventos */}
       {canControlTicker && (
-        <div className="flex gap-2 flex-wrap items-center mb-4">
+        <div className="flex gap-2 flex-wrap items-center justify-center mb-4">
           {currentStatus !== 'FINISHED' && (
             <LiveMatchTicker
               currentLiveStatus={currentStatus}
