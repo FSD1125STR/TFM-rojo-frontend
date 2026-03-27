@@ -17,7 +17,7 @@ export function useUsersTable({ onEditar, onEliminar }) {
       width: "30%",
       render: (value, row) => (
         <div className="flex items-center gap-3 pointer-events-none">
-          <Avatar name={value} src={row.image} size="sm" />
+          <Avatar name={value} src={row.photoUrl || undefined} size="sm" />
           <span className="font-medium text-base-content">{value}</span>
         </div>
       ),

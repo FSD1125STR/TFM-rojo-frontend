@@ -77,15 +77,17 @@ export function MatchScoreHeader({ match }) {
 
   const statusCfg = STATUS_CONFIG[match.status] ?? STATUS_CONFIG.finished;
 
-  const isWin  = match.homeTeam.isOurTeam
-    ? match.score.home > match.score.away
-    : match.score.away > match.score.home;
-  const isDraw = match.score.home === match.score.away;
-  const result = isDraw ? 'draw' : isWin ? 'win' : 'loss';
-  const cfg    = RESULT_CONFIG[result];
+  const hasScore = match.status === 'finished' && match.score != null;
 
-  const homeWins = match.score.home > match.score.away;
-  const awayWins = match.score.away > match.score.home;
+  const isWin  = hasScore && (match.homeTeam.isOurTeam
+    ? match.score.home > match.score.away
+    : match.score.away > match.score.home);
+  const isDraw = hasScore && match.score.home === match.score.away;
+  const result = !hasScore ? null : isDraw ? 'draw' : isWin ? 'win' : 'loss';
+  const cfg    = result ? RESULT_CONFIG[result] : null;
+
+  const homeWins = hasScore && match.score.home > match.score.away;
+  const awayWins = hasScore && match.score.away > match.score.home;
 
   const hasMap   = match.venue?.lat && match.venue?.lng;
   const hasVenue = match.venue?.displayName;
@@ -109,11 +111,15 @@ export function MatchScoreHeader({ match }) {
               <span className="material-symbols-outlined text-[11px]" style={{ fontVariationSettings: "'wght' 200" }}>{statusCfg.icon}</span>
               {statusLabels[match.status]}
             </span>
-            <span className="w-px self-stretch bg-base-300" />
-            <span className={`flex items-center justify-center gap-0.5 px-2.5 py-0.5 w-24 ${cfg.badge}`}>
-              <span className="material-symbols-outlined text-[11px]" style={{ fontVariationSettings: "'wght' 200" }}>{cfg.icon}</span>
-              {cfg.label}
-            </span>
+            {cfg && (
+              <>
+                <span className="w-px self-stretch bg-base-300" />
+                <span className={`flex items-center justify-center gap-0.5 px-2.5 py-0.5 w-24 ${cfg.badge}`}>
+                  <span className="material-symbols-outlined text-[11px]" style={{ fontVariationSettings: "'wght' 200" }}>{cfg.icon}</span>
+                  {cfg.label}
+                </span>
+              </>
+            )}
           </span>
         </div>
 
@@ -131,13 +137,19 @@ export function MatchScoreHeader({ match }) {
 
           {/* Marcador */}
           <div className="flex items-center gap-2 shrink-0">
-            <span className={`text-5xl font-black tabular-nums leading-none ${homeWins || isDraw ? 'text-base-content' : 'text-base-content/25'}`}>
-              {match.score.home}
-            </span>
-            <span className="text-2xl font-bold text-base-content/30 leading-none">-</span>
-            <span className={`text-5xl font-black tabular-nums leading-none ${awayWins || isDraw ? 'text-base-content' : 'text-base-content/25'}`}>
-              {match.score.away}
-            </span>
+            {hasScore ? (
+              <>
+                <span className={`text-5xl font-black tabular-nums leading-none ${homeWins || isDraw ? 'text-base-content' : 'text-base-content/25'}`}>
+                  {match.score.home}
+                </span>
+                <span className="text-2xl font-bold text-base-content/30 leading-none">-</span>
+                <span className={`text-5xl font-black tabular-nums leading-none ${awayWins || isDraw ? 'text-base-content' : 'text-base-content/25'}`}>
+                  {match.score.away}
+                </span>
+              </>
+            ) : (
+              <span className="text-4xl font-black text-base-content/20 tracking-tight">VS</span>
+            )}
           </div>
 
           {/* Equipo visitante */}

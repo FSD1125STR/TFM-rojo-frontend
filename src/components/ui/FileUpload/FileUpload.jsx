@@ -81,7 +81,7 @@ export function FileUpload({ value = null, onChange, accept = 'image/*', current
           className="btn btn-sm btn-outline gap-1.5"
         >
           <Icon name="upload" className="text-[16px]" />
-          {displayUrl ? 'Cambiar imagen' : 'Subir logo'}
+          {displayUrl ? 'Cambiar imagen' : 'Subir imagen'}
         </button>
         <span className="text-[11px] text-base-content/50">JPG, PNG o WebP. Max 5 MB.</span>
         <input
