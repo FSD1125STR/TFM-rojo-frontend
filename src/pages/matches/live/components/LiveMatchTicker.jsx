@@ -5,6 +5,7 @@ import { Icon } from '../../../../components/ui/Icon';
 import { updateLiveStatus, createMatchEvent } from '../../../../services/matchesService';
 import { showError, showToast } from '../../../../utils/alerts';
 import { useMatchTimer, getHalfDuration } from '../hooks/useMatchTimer';
+import { useLiveMatch } from '../../../../hooks/useLiveMatchContext';
 import { LiveMatchTickerProps } from './LiveMatchTicker.props';
 
 const TRANSITIONS = {
@@ -25,7 +26,8 @@ function buildSystemEvent(transition, halfDuration) {
 export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange, isLineupReady, categoryName }) {
   const [isLoading, setIsLoading] = useState(false);
   const halfDuration = getHalfDuration(categoryName);
-  const currentMinute = useMatchTimer(matchId, currentLiveStatus, halfDuration);
+  const { matchStartTimestamps } = useLiveMatch();
+  const currentMinute = useMatchTimer(matchId, currentLiveStatus, halfDuration, matchStartTimestamps.firstHalfStartAt, matchStartTimestamps.secondHalfStartAt);
   const transition = TRANSITIONS[currentLiveStatus];
 
   if (!transition) return null;

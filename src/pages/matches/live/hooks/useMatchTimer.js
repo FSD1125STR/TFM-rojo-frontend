@@ -36,7 +36,12 @@ export function getHalfDuration(categoryName) {
   return 45;
 }
 
-export function useMatchTimer(matchId, liveStatus, halfDuration) {
+function resolveTs(serverIso) {
+  if (serverIso) return new Date(serverIso).getTime();
+  return Date.now();
+}
+
+export function useMatchTimer(matchId, liveStatus, halfDuration, serverTs1 = null, serverTs2 = null) {
   const key1 = `match:${matchId}:firstHalfStart`;
   const key2 = `match:${matchId}:secondHalfStart`;
 
@@ -57,24 +62,38 @@ export function useMatchTimer(matchId, liveStatus, halfDuration) {
     const prevIsValidStatus = !!prev;
 
     if (!prevIsValidStatus) {
-      // Primera vez que recibimos un estado real: solo escribir si no existe (no machacar)
-      if (liveStatus === 'FIRST_HALF' && !getStoredTs(key1)) {
-        localStorage.setItem(key1, Date.now().toString());
+      // Primera vez que recibimos un estado real
+      if (liveStatus === 'FIRST_HALF') {
+        const storedTs = getStoredTs(key1);
+        // Si el timestamp rancio implica un minuto >= halfDuration, está obsoleto → machacar
+        const isStale = storedTs && Math.floor((Date.now() - storedTs) / 60_000) >= halfDuration;
+        if (!storedTs || isStale) {
+          localStorage.setItem(key1, resolveTs(serverTs1).toString());
+        }
       }
-      if (liveStatus === 'SECOND_HALF' && !getStoredTs(key2)) {
-        localStorage.setItem(key2, Date.now().toString());
+      if (liveStatus === 'SECOND_HALF') {
+        const storedTs = getStoredTs(key2);
+        const isStale = storedTs && Math.floor((Date.now() - storedTs) / 60_000) >= halfDuration;
+        if (!storedTs || isStale) {
+          localStorage.setItem(key2, resolveTs(serverTs2).toString());
+        }
       }
       return;
     }
 
     // Transición real durante la sesión: siempre resetea
     if (liveStatus === 'FIRST_HALF' && prev !== 'FIRST_HALF') {
-      localStorage.setItem(key1, Date.now().toString());
+      localStorage.setItem(key1, resolveTs(serverTs1).toString());
     }
     if (liveStatus === 'SECOND_HALF' && prev !== 'SECOND_HALF') {
-      localStorage.setItem(key2, Date.now().toString());
+      localStorage.setItem(key2, resolveTs(serverTs2).toString());
     }
-  }, [liveStatus, key1, key2]);
+    // Al terminar el partido, limpiar claves para evitar timestamps rancios en sesiones futuras
+    if (liveStatus === 'FINISHED' || liveStatus === 'NOT_STARTED') {
+      localStorage.removeItem(key1);
+      localStorage.removeItem(key2);
+    }
+  }, [liveStatus, halfDuration, key1, key2, serverTs1, serverTs2]);
 
   // Recalcula cada 10s durante partes activas; en los demás estados solo una vez
   useEffect(() => {

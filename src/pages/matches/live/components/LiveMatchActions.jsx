@@ -3,6 +3,7 @@ import { Button } from '../../../../components/ui/Button';
 import { Icon } from '../../../../components/ui/Icon';
 import { getCallupByMatch } from '../../../../services/callupsService';
 import { useMatchTimer, getHalfDuration } from '../hooks/useMatchTimer';
+import { useLiveMatch } from '../../../../hooks/useLiveMatchContext';
 import { ModalLiveGoal } from './ModalLiveGoal';
 import { ModalLiveCard } from './ModalLiveCard';
 import { ModalLiveSub } from './ModalLiveSub';
@@ -12,7 +13,8 @@ const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'SECOND_HALF', 'HALF_TIME']);
 export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new Set(), subWindowsFull = false, subEvents = [] }) {
   const [players, setPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(null);
-  const currentMinute = useMatchTimer(matchId, liveStatus, getHalfDuration(match?.categoryId?.name));
+  const { matchStartTimestamps } = useLiveMatch();
+  const currentMinute = useMatchTimer(matchId, liveStatus, getHalfDuration(match?.categoryId?.name), matchStartTimestamps.firstHalfStartAt, matchStartTimestamps.secondHalfStartAt);
   const isHalfTime = liveStatus === 'HALF_TIME';
   const activePlayers = players.filter((p) => !expelledIds.has(String(p.id)));
 

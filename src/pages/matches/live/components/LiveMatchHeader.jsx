@@ -3,6 +3,7 @@ import { Badge } from '../../../../components/ui/Badge';
 import { Card } from '../../../../components/ui/Card';
 import { formatMatchDate, formatMatchTime } from '../../data/matchesConfig';
 import { useMatchTimer, getHalfDuration } from '../hooks/useMatchTimer';
+import { useLiveMatch } from '../../../../hooks/useLiveMatchContext';
 import { LiveMatchHeaderProps } from './LiveMatchHeader.props';
 
 const STATUS_CONFIG = {
@@ -33,7 +34,8 @@ export function LiveMatchHeader({ match, liveStatus }) {
   const statusCfg = STATUS_CONFIG[liveStatus] ?? STATUS_CONFIG.NOT_STARTED;
 
   const halfDuration = getHalfDuration(match?.categoryId?.name);
-  const minute = useMatchTimer(match?._id, liveStatus, halfDuration);
+  const { matchStartTimestamps } = useLiveMatch();
+  const minute = useMatchTimer(match?._id, liveStatus, halfDuration, matchStartTimestamps.firstHalfStartAt, matchStartTimestamps.secondHalfStartAt);
 
   return (
     <div test-id="el-lh4x9p2q" className="mb-4">

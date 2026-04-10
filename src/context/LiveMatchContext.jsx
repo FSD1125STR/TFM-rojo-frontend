@@ -15,6 +15,8 @@ export function LiveMatchProvider({ children }) {
   const [liveStatus, setLiveStatus] = useState('');
   const [hasLiveMatch, setHasLiveMatch] = useState(false);
   const [lastEvent, setLastEvent] = useState(null);
+  const [isLoadingLive, setIsLoadingLive] = useState(true);
+  const [matchStartTimestamps, setMatchStartTimestamps] = useState({ firstHalfStartAt: null, secondHalfStartAt: null });
 
   // Fetch inicial para saber si hay partido en directo al cargar la app
   useEffect(() => {
@@ -25,9 +27,14 @@ export function LiveMatchProvider({ children }) {
           setHasLiveMatch(true);
           setActiveMatchId(list[0]._id);
           setLiveStatus(list[0].liveStatus);
+          setMatchStartTimestamps({
+            firstHalfStartAt:  list[0].firstHalfStartAt  ?? null,
+            secondHalfStartAt: list[0].secondHalfStartAt ?? null,
+          });
         }
       })
-      .catch(() => {}); // silencioso — el dot es cosmético
+      .catch(() => {})
+      .finally(() => setIsLoadingLive(false));
   }, [user, token]);
 
   useEffect(() => {
@@ -61,6 +68,10 @@ export function LiveMatchProvider({ children }) {
     socket.on('match:liveStatusUpdated', (payload) => {
       const status = payload.liveStatus ?? payload.status ?? '';
       setLiveStatus(status);
+      setMatchStartTimestamps({
+        firstHalfStartAt:  payload.firstHalfStartAt  ?? null,
+        secondHalfStartAt: payload.secondHalfStartAt ?? null,
+      });
       if (status === 'FINISHED' || status === 'NOT_STARTED') {
         setHasLiveMatch(false);
       } else if (LIVE_STATUSES.includes(status)) {
@@ -118,7 +129,9 @@ export function LiveMatchProvider({ children }) {
         activeMatchId,
         liveStatus,
         hasLiveMatch,
+        isLoadingLive,
         lastEvent,
+        matchStartTimestamps,
         isMatchLive,
         joinMatch,
         leaveMatch,
