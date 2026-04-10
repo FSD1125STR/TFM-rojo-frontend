@@ -21,6 +21,7 @@ export async function getCallupByMatch(matchId) {
       playerStatus: player.status,
       callupStatus: p.status,
       reasonCode: p.reasonCode ?? null,
+      lineupRole: p.lineupRole ?? null,
       isBlocked,
     };
   });

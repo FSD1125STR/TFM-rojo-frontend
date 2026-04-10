@@ -53,9 +53,37 @@ export function useCallupDetail(matchId, locationKey) {
       if (p.isBlocked) return false;
       const saved = savedPlayers.find((sp) => sp.id === p.id);
       if (!saved) return false;
-      return p.callupStatus !== saved.callupStatus || p.reasonCode !== saved.reasonCode;
+      return p.callupStatus !== saved.callupStatus || p.reasonCode !== saved.reasonCode || p.lineupRole !== saved.lineupRole;
     });
   }, [players, savedPlayers]);
+
+  const toggleLineupRole = useCallback((playerId) => {
+    setPlayers((curr) => {
+      const called = curr.filter((p) => p.callupStatus === 'called');
+      const player = called.find((p) => p.id === playerId);
+      if (!player) return curr;
+      const starterCount = called.filter((p) => p.lineupRole === 'starter').length;
+      let newRole;
+      if (player.lineupRole) newRole = null;
+      else newRole = starterCount < 11 ? 'starter' : 'substitute';
+      const updated = curr.map((p) => p.id !== playerId ? p : { ...p, lineupRole: newRole });
+      if (!newRole) return updated;
+      const updatedCalled = updated.filter((p) => p.callupStatus === 'called');
+      const newStarters = updatedCalled.filter((p) => p.lineupRole === 'starter').length;
+      const newSubs = updatedCalled.filter((p) => p.lineupRole === 'substitute').length;
+      const unassigned = updatedCalled.filter((p) => !p.lineupRole);
+      if (unassigned.length === 0) return updated;
+      const unassignedIds = new Set(unassigned.map((p) => p.id));
+      if (newStarters === 11) {
+        return updated.map((p) => unassignedIds.has(p.id) ? { ...p, lineupRole: 'substitute' } : p);
+      }
+      const subsNeeded = updatedCalled.length - 11;
+      if (subsNeeded > 0 && newSubs === subsNeeded) {
+        return updated.map((p) => unassignedIds.has(p.id) ? { ...p, lineupRole: 'starter' } : p);
+      }
+      return updated;
+    });
+  }, []);
 
   const movePlayer = useCallback((playerId, toColumn, reasonCode) => {
     setPlayers((curr) =>
@@ -77,6 +105,7 @@ export function useCallupDetail(matchId, locationKey) {
         playerId: p.id,
         status: p.callupStatus,
         ...(p.callupStatus === 'notCalled' && p.reasonCode && { reasonCode: p.reasonCode }),
+        ...(p.callupStatus === 'called' && { lineupRole: p.lineupRole ?? null }),
       }));
 
     setSaving(true);
@@ -107,9 +136,9 @@ export function useCallupDetail(matchId, locationKey) {
     setPlayers(savedPlayers);
   }, [savedPlayers]);
 
-  const availablePlayers = players.filter((p) => p.callupStatus === null);
-  const calledPlayers = players.filter((p) => p.callupStatus === 'called');
-  const notCalledPlayers = players.filter((p) => p.callupStatus === 'notCalled');
+  const availablePlayers = useMemo(() => players.filter((p) => p.callupStatus === null), [players]);
+  const calledPlayers = useMemo(() => players.filter((p) => p.callupStatus === 'called'), [players]);
+  const notCalledPlayers = useMemo(() => players.filter((p) => p.callupStatus === 'notCalled'), [players]);
   const calledCount = calledPlayers.length;
 
   return {
@@ -125,6 +154,7 @@ export function useCallupDetail(matchId, locationKey) {
     saving,
     error,
     isDirty,
+    toggleLineupRole,
     movePlayer,
     saveAllPlayers,
     discardChanges,

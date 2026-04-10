@@ -1,13 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { showError } from '../../utils/alerts';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { useCallupDetail } from './hooks/useCallupDetail';
 import { usePermissions } from '../../hooks/usePermissions';
 import { CallupsBoard } from './components/CallupsBoard';
+import { LineupEditor } from './components/LineupEditor';
 import { Button } from '../../components/ui/Button';
 import { Icon } from '../../components/ui/Icon';
 import { Badge } from '../../components/ui/Badge';
+import { Tabs } from '../../components/ui/Tabs';
+
+const LINEUP_TABS = [
+  { value: 'convocatoria', label: 'Convocatoria' },
+  { value: 'alineacion', label: 'Alineación' },
+];
+
+const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
 
 function formatMatchDateTime(dt) {
   if (!dt) return '';
@@ -29,11 +38,20 @@ function MapsLink({ name, lat, lng }) {
   );
 }
 
+function lockBannerText(match) {
+  const isLive = LIVE_STATUSES.has(match?.liveStatus);
+  if (isLive) return 'Partido en directo — la convocatoria es de solo lectura';
+  if (match?.status === 'finished') return 'Partido finalizado — la convocatoria es de solo lectura';
+  return 'Partido cancelado — la convocatoria es de solo lectura';
+}
+
 export function CallupDetail() {
   const { id: matchId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { checkPermission } = usePermissions();
+  const [activeTab, setActiveTab] = useState('convocatoria');
+
   const {
     match,
     callup,
@@ -47,6 +65,7 @@ export function CallupDetail() {
     saving,
     error,
     isDirty,
+    toggleLineupRole,
     movePlayer,
     saveAllPlayers,
     discardChanges,
@@ -59,9 +78,11 @@ export function CallupDetail() {
     }
   }, [error, navigate]);
 
-  const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
   const isMatchScheduled = match?.status === 'scheduled' && !LIVE_STATUSES.has(match?.liveStatus);
   const canEdit = checkPermission('callups.edit') && isMatchScheduled;
+
+  const starterCount = calledPlayers.filter((p) => p.lineupRole === 'starter').length;
+  const isLineupValid = starterCount === 11;
 
   if (!loading && !error && !callup) {
     navigate('/convocatorias', { replace: true });
@@ -169,25 +190,49 @@ export function CallupDetail() {
         </div>
       )}
 
+      {callup && (
+        <Tabs tabs={LINEUP_TABS} activeTab={activeTab} onChange={setActiveTab} />
+      )}
+
       <div className="flex-1 min-h-0 flex flex-col gap-3">
         {callup && !isMatchScheduled && (
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-base-200 text-base-content/60 text-sm">
             <Icon name="lock" className="text-[16px]" />
-            <span>
-              {match?.status === 'finished' ? 'Partido finalizado' : 'Partido cancelado'} — la convocatoria es de solo lectura
-            </span>
+            <span>{lockBannerText(match)}</span>
           </div>
         )}
+
         <div className="flex-1 min-h-0">
-          <CallupsBoard
-            availablePlayers={availablePlayers}
-            calledPlayers={calledPlayers}
-            notCalledPlayers={notCalledPlayers}
-            calledCount={calledCount}
-            maxPlayers={maxPlayers}
-            editable={canEdit}
-            movePlayer={movePlayer}
-          />
+          {activeTab === 'convocatoria' && (
+            <CallupsBoard
+              availablePlayers={availablePlayers}
+              calledPlayers={calledPlayers}
+              notCalledPlayers={notCalledPlayers}
+              calledCount={calledCount}
+              maxPlayers={maxPlayers}
+              editable={canEdit}
+              movePlayer={movePlayer}
+            />
+          )}
+          {activeTab === 'alineacion' && callup && (
+            calledCount < minPlayers
+              ? (
+                <p className="text-sm text-base-content/60 mt-2">
+                  Convoca al menos {minPlayers} jugadores para configurar la alineación.
+                </p>
+              )
+              : (
+                <LineupEditor
+                  calledPlayers={calledPlayers}
+                  onToggle={toggleLineupRole}
+                  onSave={saveAllPlayers}
+                  starterCount={starterCount}
+                  isValid={isLineupValid}
+                  saving={saving}
+                  editable={canEdit}
+                />
+              )
+          )}
         </div>
       </div>
     </div>
