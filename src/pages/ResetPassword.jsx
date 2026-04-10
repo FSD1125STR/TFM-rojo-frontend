@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Icon } from '../components/ui/Icon';
 import { showError } from '../utils/alerts';
-import logoHorizontal from '../assets/logo-horizontal.png';
+import { LOGO_HORIZONTAL_URL as logoHorizontal } from '../assets/brand.js';
 
 export function ResetPassword() {
   const [searchParams] = useSearchParams();
