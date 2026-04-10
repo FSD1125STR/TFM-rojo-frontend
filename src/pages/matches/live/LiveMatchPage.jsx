@@ -1,15 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useHeader } from '../../../hooks/useHeader';
 import { useLiveMatch } from './hooks/useLiveMatch';
 import { useMatchEvents } from './hooks/useMatchEvents';
+import { useMatchLineup } from './hooks/useMatchLineup';
 import { LiveMatchHeader } from './components/LiveMatchHeader';
 import { LiveMatchTicker } from './components/LiveMatchTicker';
 import { LiveMatchActions } from './components/LiveMatchActions';
 import { MatchTimeline } from '../components/MatchTimeline';
 import { MatchPanels } from '../components/MatchPanels';
+import { LineupEditor } from '../../callups/components/LineupEditor';
 import { Icon } from '../../../components/ui/Icon';
+import { Badge } from '../../../components/ui/Badge';
 
 const TICKER_ROLES = ['administrador', 'delegado'];
 
@@ -57,10 +60,16 @@ function computeLivePanels(events) {
     const pid = event.playerId ? String(event.playerId._id ?? event.playerId) : null;
 
     if (event.type === 'goal') {
-      const key = pid || event.playerName;
+      const isAnonymousRival = event.isOpponentGoal && !pid && !event.playerName;
+      const key = isAnonymousRival ? '__rival__' : (pid || event.playerName);
       if (key) {
         if (!scorersMap[key]) {
-          scorersMap[key] = { playerId: pid, playerName: event.playerName, teamId: event.teamId, goals: 0 };
+          scorersMap[key] = {
+            playerId: pid,
+            playerName: isAnonymousRival ? 'Gol del rival' : event.playerName,
+            teamId: event.teamId,
+            goals: 0,
+          };
         }
         scorersMap[key].goals++;
       }
@@ -115,7 +124,9 @@ export function LiveMatchPage() {
   const { user } = useAuth();
   const { match, liveStatus, isLoading, error } = useLiveMatch(matchId);
   const { events } = useMatchEvents(matchId);
-  const [currentStatus, setCurrentStatus] = useState('');
+  const { callupId, calledPlayers, starterCount, isValid, saving: savingLineup, toggleStarter, confirmLineup } = useMatchLineup(matchId);
+  const [currentStatus, setCurrentStatus] = useState(null);
+  const [lineupOpen, setLineupOpen] = useState(false);
 
   useHeader({
     title: 'Partido en Directo',
@@ -145,14 +156,15 @@ export function LiveMatchPage() {
       }
     : null;
 
-  const normalizedEvents = events.map((e) => normalizeEvent(e, match));
-  const livePanels = computeLivePanels(normalizedEvents);
-  const expelledIds = getExpelledIds(normalizedEvents);
+  const normalizedEvents = useMemo(() => events.map((e) => normalizeEvent(e, match)), [events, match]);
+  const livePanels = useMemo(() => computeLivePanels(normalizedEvents), [normalizedEvents]);
+  const expelledIds = useMemo(() => getExpelledIds(normalizedEvents), [normalizedEvents]);
 
-  const subWindowMinutes = new Set(
-    normalizedEvents.filter((e) => e.type === 'substitution' && !e.atHalfTime).map((e) => e.minute)
-  );
-  const subWindowsFull = subWindowMinutes.size >= 3;
+  const subEvents = useMemo(() => normalizedEvents.filter((e) => e.type === 'substitution'), [normalizedEvents]);
+  const subWindowsFull = useMemo(() => {
+    const minutes = new Set(subEvents.filter((e) => !e.atHalfTime).map((e) => e.minute));
+    return minutes.size >= 3;
+  }, [subEvents]);
 
   if (isLoading) {
     return (
@@ -172,26 +184,62 @@ export function LiveMatchPage() {
   }
 
   return (
-    <div test-id="el-lp3x7q9m" className="px-4 py-4">
+    <div test-id="el-lp3x7q9m" className="px-4 py-4 max-sm:px-0 max-sm:py-2">
       <LiveMatchHeader match={match} liveStatus={currentStatus || match?.liveStatus} />
 
       {/* Fila unificada: control de estado + eventos */}
       {canControlTicker && (
-        <div className="flex gap-2 flex-wrap items-center justify-center mb-4">
-          {currentStatus !== 'FINISHED' && (
+        <div className="flex gap-2 flex-wrap items-center justify-center mb-4 max-sm:gap-1.5">
+          {currentStatus !== null && currentStatus !== 'FINISHED' && (
             <LiveMatchTicker
               currentLiveStatus={currentStatus}
               matchId={matchId}
               onStatusChange={setCurrentStatus}
+              isLineupReady={isValid}
+              categoryName={match?.categoryId?.name}
             />
           )}
-          <LiveMatchActions matchId={matchId} match={match} liveStatus={currentStatus} expelledIds={expelledIds} subWindowsFull={subWindowsFull} />
+          <LiveMatchActions matchId={matchId} match={match} liveStatus={currentStatus} expelledIds={expelledIds} subWindowsFull={subWindowsFull} subEvents={subEvents} />
+        </div>
+      )}
+
+      {/* Panel de alineación colapsable */}
+      {canControlTicker && callupId && currentStatus === 'NOT_STARTED' && (
+        <div className="mb-4 border border-base-300 rounded-xl overflow-hidden">
+          <button
+            onClick={() => setLineupOpen((o) => !o)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-base-200 hover:bg-base-300 transition-colors text-sm font-medium"
+          >
+            <span className="flex items-center gap-2">
+              <Icon name="sports_soccer" />
+              Alineación
+              {starterCount > 0 && (
+                <Badge variant={isValid ? 'success' : 'warning'} size="xs">
+                  {starterCount}/11
+                </Badge>
+              )}
+            </span>
+            <Icon name={lineupOpen ? 'expand_less' : 'expand_more'} />
+          </button>
+          {lineupOpen && (
+            <div className="p-4">
+              <LineupEditor
+                calledPlayers={calledPlayers}
+                onToggle={toggleStarter}
+                onSave={confirmLineup}
+                starterCount={starterCount}
+                isValid={isValid}
+                saving={savingLineup}
+                editable={currentStatus !== 'FINISHED'}
+              />
+            </div>
+          )}
         </div>
       )}
 
       {/* Grid 2 columnas: timeline + paneles */}
       {matchNormalized && (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
           <MatchTimeline timeline={normalizedEvents} match={matchNormalized} />
           <MatchPanels panels={livePanels} match={matchNormalized} />
         </div>

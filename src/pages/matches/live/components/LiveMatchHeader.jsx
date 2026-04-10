@@ -55,11 +55,11 @@ export function LiveMatchHeader({ match, liveStatus }) {
         </div>
 
         {/* Teams + score */}
-        <div className="px-5 py-4 pb-6 flex items-center justify-center gap-6">
+        <div className="px-5 py-4 pb-6 flex items-center justify-center gap-6 max-sm:gap-2 max-sm:px-2">
           {/* Local */}
-          <div className="flex items-center gap-3 flex-1 min-w-0 justify-end">
+          <div className="flex items-center gap-3 flex-1 min-w-0 justify-end max-sm:gap-1.5">
             <div className="text-right min-w-0">
-              <p className="text-base font-bold text-base-content leading-tight truncate">{homeName}</p>
+              <p className="text-base font-bold text-base-content leading-tight truncate max-sm:text-sm">{homeName}</p>
               <p className="text-[10px] text-base-content/40 uppercase tracking-wider">(Local)</p>
             </div>
             <Avatar name={homeName} size="xl" variant="primary" />
@@ -67,16 +67,16 @@ export function LiveMatchHeader({ match, liveStatus }) {
 
           {/* Score */}
           <div className="flex items-center gap-2 shrink-0">
-            <span className="text-5xl font-black tabular-nums leading-none text-base-content">{homeScore}</span>
+            <span className="text-5xl font-black tabular-nums leading-none text-base-content max-sm:text-4xl">{homeScore}</span>
             <span className="text-2xl font-bold text-base-content/30 leading-none">-</span>
-            <span className="text-5xl font-black tabular-nums leading-none text-base-content">{awayScore}</span>
+            <span className="text-5xl font-black tabular-nums leading-none text-base-content max-sm:text-4xl">{awayScore}</span>
           </div>
 
           {/* Visitante */}
-          <div className="flex items-center gap-3 flex-1 min-w-0 justify-start">
+          <div className="flex items-center gap-3 flex-1 min-w-0 justify-start max-sm:gap-1.5">
             <Avatar name={awayName} size="xl" variant="error" />
             <div className="text-left min-w-0">
-              <p className="text-base font-bold text-base-content leading-tight truncate">{awayName}</p>
+              <p className="text-base font-bold text-base-content leading-tight truncate max-sm:text-sm">{awayName}</p>
               <p className="text-[10px] text-base-content/40 uppercase tracking-wider">(Visitante)</p>
             </div>
           </div>
@@ -84,23 +84,23 @@ export function LiveMatchHeader({ match, liveStatus }) {
 
         {/* Meta info strip */}
         <div className="border-t border-base-300" />
-        <div className="bg-base-300 px-4 py-3 flex items-center justify-center gap-3 flex-wrap rounded-b-xl">
+        <div className="bg-base-300 px-4 py-3 flex items-center justify-center gap-3 flex-wrap rounded-b-xl max-sm:px-2 max-sm:gap-2">
           {match?.dateTime && (
             <>
               <InfoItem icon="calendar_month" label="Fecha" value={formatMatchDate(match.dateTime)} />
-              <span className="w-px h-5 bg-base-content/20 shrink-0" />
+              <span className="w-px h-5 bg-base-content/20 shrink-0 max-sm:hidden" />
               <InfoItem icon="schedule" label="Hora" value={formatMatchTime(match.dateTime)} />
             </>
           )}
           {match?.categoryId?.name && (
             <>
-              <span className="w-px h-5 bg-base-content/20 shrink-0" />
+              <span className="w-px h-5 bg-base-content/20 shrink-0 max-sm:hidden" />
               <InfoItem icon="category" label="Categoría" value={match.categoryId.name} />
             </>
           )}
           {match?.journey != null && (
             <>
-              <span className="w-px h-5 bg-base-content/20 shrink-0" />
+              <span className="w-px h-5 bg-base-content/20 shrink-0 max-sm:hidden" />
               <InfoItem icon="tag" label="Jornada" value={`J${match.journey}${match.season ? ` · ${match.season}` : ''}`} />
             </>
           )}

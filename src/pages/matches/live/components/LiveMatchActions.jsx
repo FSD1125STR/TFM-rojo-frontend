@@ -9,12 +9,21 @@ import { ModalLiveSub } from './ModalLiveSub';
 
 const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'SECOND_HALF', 'HALF_TIME']);
 
-export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new Set(), subWindowsFull = false }) {
+export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new Set(), subWindowsFull = false, subEvents = [] }) {
   const [players, setPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(null);
   const currentMinute = useMatchTimer(matchId, liveStatus, getHalfDuration(match?.categoryId?.name));
   const isHalfTime = liveStatus === 'HALF_TIME';
   const activePlayers = players.filter((p) => !expelledIds.has(String(p.id)));
+
+  const leftIds = new Set(subEvents.map((e) => String(e.playerOutId?._id ?? e.playerOutId)).filter(Boolean));
+  const enteredIds = new Set(subEvents.map((e) => String(e.playerInId?._id ?? e.playerInId)).filter(Boolean));
+  const outPlayers = activePlayers.filter((p) =>
+    enteredIds.has(String(p.id)) || (p.lineupRole === 'starter' && !leftIds.has(String(p.id)))
+  );
+  const inPlayers = activePlayers.filter((p) =>
+    p.lineupRole === 'substitute' && !enteredIds.has(String(p.id))
+  );
 
   useEffect(() => {
     if (!matchId) return;
@@ -29,7 +38,7 @@ export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new
 
   return (
     <>
-      <span test-id="el-la7x3k9m" className="w-px h-6 bg-base-300 shrink-0 self-center" />
+      <span test-id="el-la7x3k9m" className="w-px h-6 bg-base-300 shrink-0 self-center max-sm:hidden" />
 
       {!isHalfTime && (
         <>
@@ -86,7 +95,7 @@ export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new
         onClose={close}
         matchId={matchId}
         match={match}
-        players={activePlayers}
+        players={outPlayers.length > 0 ? outPlayers : activePlayers}
         currentMinute={currentMinute}
       />
       <ModalLiveCard
@@ -94,7 +103,7 @@ export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new
         onClose={close}
         matchId={matchId}
         match={match}
-        players={activePlayers}
+        players={outPlayers.length > 0 ? outPlayers : activePlayers}
         cardType="yellow_card"
         currentMinute={currentMinute}
       />
@@ -103,7 +112,7 @@ export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new
         onClose={close}
         matchId={matchId}
         match={match}
-        players={activePlayers}
+        players={outPlayers.length > 0 ? outPlayers : activePlayers}
         cardType="red_card"
         currentMinute={currentMinute}
       />
@@ -112,7 +121,8 @@ export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new
         onClose={close}
         matchId={matchId}
         match={match}
-        players={activePlayers}
+        outPlayers={outPlayers}
+        inPlayers={inPlayers}
         currentMinute={currentMinute}
       />
     </>

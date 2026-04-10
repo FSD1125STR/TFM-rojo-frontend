@@ -4,7 +4,7 @@ import { Button } from '../../../../components/ui/Button';
 import { SearchableSelect } from '../../../../components/ui/SearchableSelect';
 import { createMatchEvent } from '../../../../services/matchesService';
 
-export function ModalLiveSub({ isOpen, onClose, matchId, match, players, currentMinute }) {
+export function ModalLiveSub({ isOpen, onClose, matchId, match, outPlayers = [], inPlayers = [], currentMinute }) {
   const [playerOutId, setPlayerOutId] = useState('');
   const [playerInId, setPlayerInId] = useState('');
   const [minute, setMinute] = useState('');
@@ -15,7 +15,8 @@ export function ModalLiveSub({ isOpen, onClose, matchId, match, players, current
     if (isOpen) setMinute(currentMinute != null ? String(currentMinute) : '');
   }, [isOpen, currentMinute]);
 
-  const playerOptions = players.map((p) => ({ value: p.id, label: p.fullName }));
+  const outOptions = outPlayers.map((p) => ({ value: p.id, label: p.fullName }));
+  const inOptions = inPlayers.map((p) => ({ value: p.id, label: p.fullName }));
 
   async function handleSubmit() {
     if (!playerOutId) { setError('Selecciona el jugador que sale'); return; }
@@ -65,7 +66,7 @@ export function ModalLiveSub({ isOpen, onClose, matchId, match, players, current
           <SearchableSelect
             value={playerOutId}
             onChange={setPlayerOutId}
-            options={playerOptions}
+            options={outOptions}
             placeholder="Jugador que sale..."
             error={!!error && !playerOutId}
           />
@@ -79,7 +80,7 @@ export function ModalLiveSub({ isOpen, onClose, matchId, match, players, current
           <SearchableSelect
             value={playerInId}
             onChange={setPlayerInId}
-            options={playerOptions.filter((o) => o.value !== playerOutId)}
+            options={inOptions}
             placeholder="Jugador que entra..."
             error={!!error && !playerInId}
           />
