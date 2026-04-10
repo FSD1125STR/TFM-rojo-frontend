@@ -5,6 +5,7 @@ import { useHeader } from '../hooks/useHeader';
 import { useTodayMatches } from './matches/live/hooks/useTodayMatches';
 import { useLiveMatch } from '../hooks/useLiveMatchContext';
 import { updateLiveStatus } from '../services/matchesService';
+import { getCallupByMatch } from '../services/callupsService';
 import { showError } from '../utils/alerts';
 import { formatFechaRelativa, formatFechaAbsoluta } from './matches/data/matchesConfig';
 import { MatchMinute } from './matches/live/components/MatchMinute';
@@ -49,9 +50,26 @@ export function LiveMatch() {
     }
   }, [isFieldView, isLoading, active, notStarted, navigate]);
 
+  if (isFieldView && (isLoading || active.length > 0 || notStarted.length > 0)) {
+    return (
+      <div test-id="el-lv3d1r3c" className="flex items-center justify-center h-64">
+        <span className="loading loading-spinner loading-lg text-primary" />
+      </div>
+    );
+  }
+
   const handleStart = async (row) => {
     setStartingId(row._id);
     try {
+      const callupData = await getCallupByMatch(row._id);
+      const starterCount = (callupData.players ?? []).filter(
+        (p) => p.callupStatus === 'called' && p.lineupRole === 'starter'
+      ).length;
+      if (starterCount !== 11) {
+        showError('Configura la alineación (11 titulares) antes de iniciar el partido.');
+        setStartingId(null);
+        return;
+      }
       await updateLiveStatus(row._id, { liveStatus: 'FIRST_HALF' });
       navigate(`/directo/${row._id}`);
     } catch {

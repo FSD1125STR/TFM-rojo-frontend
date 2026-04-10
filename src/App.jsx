@@ -11,6 +11,7 @@ import { HeaderProvider } from "./context/HeaderContext.jsx";
 import { NotificationsProvider } from "./context/NotificationsContext.jsx";
 import { LiveMatchProvider } from "./context/LiveMatchContext.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { LiveProtectedRoute } from "./components/LiveProtectedRoute";
 import { AppShell } from "./components/layout/AppShell/AppShell";
 import { PublicLayout } from "./components/layout/PublicLayout/PublicLayout";
 
@@ -86,8 +87,8 @@ function AppRoutes() {
             <Route path="/equipos" element={<TeamsList />} />
           </Route>
 
-          {/* Ruta con permiso de partido en directo */}
-          <Route element={<ProtectedRoute permission="live.update" />}>
+          {/* Ruta de partido en directo: live.update O direccion con partido activo */}
+          <Route element={<LiveProtectedRoute />}>
             <Route path="/directo" element={<LiveMatch />} />
           </Route>
         </Route>

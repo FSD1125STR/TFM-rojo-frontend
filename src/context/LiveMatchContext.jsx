@@ -35,7 +35,7 @@ export function LiveMatchProvider({ children }) {
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
     const socketUrl = apiUrl.replace(/\/api\/?$/, '');
-    console.log('[LiveMatch Socket] Connecting to', socketUrl);
+
 
     const socket = io(socketUrl, {
       auth: { token },
@@ -45,7 +45,6 @@ export function LiveMatchProvider({ children }) {
     });
 
     socket.on('connect', () => {
-      console.log('[LiveMatch Socket] Connected:', socket.id);
       if (activeMatchIdRef.current) {
         socket.emit('join:match', activeMatchIdRef.current);
       }
@@ -70,7 +69,13 @@ export function LiveMatchProvider({ children }) {
     });
 
     socket.on('live:globalStatusChanged', (payload) => {
-      console.log('[LiveMatch Socket] live:globalStatusChanged', payload);
+      const status = payload.liveStatus ?? payload.status ?? '';
+      if (status === 'FINISHED' || status === 'NOT_STARTED') {
+        setHasLiveMatch(false);
+      } else if (LIVE_STATUSES.includes(status)) {
+        setHasLiveMatch(true);
+        if (payload.matchId) setActiveMatchId(payload.matchId);
+      }
     });
 
     socketRef.current = socket;
