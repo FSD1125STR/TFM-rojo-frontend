@@ -1,14 +1,8 @@
-import { Avatar } from "../../../components/ui/Avatar/Avatar";
-import { Badge } from "../../../components/ui/Badge/Badge";
+import { Avatar } from "../../../components/ui/Avatar";
+import { Badge } from "../../../components/ui/Badge";
+import { ROLE_CONFIGS } from "../data/roleConfigs";
 
-const ROLE_CONFIGS = {
-  administrador: { variant: "primary", icon: "admin_panel_settings" },
-  entrenador:    { variant: "info",    icon: "sports" },
-  delegado:      { variant: "warning", icon: "assignment_ind" },
-  direccion:     { variant: "secondary", icon: "visibility" },
-};
-
-export function useUsersTable({ onEditar, onEliminar }) {
+export function useUsersTable({ onVerDetalle, onEditar, onEliminar }) {
   const columns = [
     {
       key: "fullName",
@@ -35,7 +29,10 @@ export function useUsersTable({ onEditar, onEliminar }) {
       width: "20%",
       align: "center",
       render: (value) => {
-        const config = ROLE_CONFIGS[value?.toLowerCase()] || { variant: "neutral", icon: "person" };
+        const config = ROLE_CONFIGS[value?.toLowerCase()] || {
+          variant: "neutral",
+          icon: "person",
+        };
         return (
           <div className="pointer-events-none flex justify-center">
             <Badge
@@ -61,6 +58,11 @@ export function useUsersTable({ onEditar, onEliminar }) {
   ];
 
   const actions = [
+    onVerDetalle && {
+      label: "Ver Detalle",
+      icon: "visibility",
+      onClick: (row) => onVerDetalle(row),
+    },
     onEditar && { label: "Editar", icon: "edit", onClick: onEditar },
     onEliminar && {
       label: "Eliminar",
