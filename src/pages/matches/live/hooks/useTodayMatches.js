@@ -36,7 +36,7 @@ export function useTodayMatches() {
         .sort((a, b) => new Date(a.dateTime || a.date) - new Date(b.dateTime || b.date));
 
       setActive(todayNonCancelled.filter((m) => ACTIVE_STATUSES.has(m.liveStatus)));
-      setNotStarted(todayNonCancelled.filter((m) => !ACTIVE_STATUSES.has(m.liveStatus)));
+      setNotStarted(todayNonCancelled.filter((m) => !ACTIVE_STATUSES.has(m.liveStatus) && m.liveStatus !== 'FINISHED'));
     } catch (err) {
       setError(err);
     } finally {
