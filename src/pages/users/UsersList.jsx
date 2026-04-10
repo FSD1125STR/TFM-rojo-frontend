@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useHeader } from "../../hooks/useHeader";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { usePermissions } from "../../hooks/usePermissions";
-import { getUsers, createUser, updateUser, deleteUser } from '../../services/userService';
+import {
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} from "../../services/userService";
 import { DataTable } from "../../components/ui/DataTable";
 import { useUsersTable } from "./hooks/useUsersTable";
 import { ModalUser } from "./components/ModalUser";
@@ -15,6 +21,7 @@ import {
 } from "../../utils/alerts";
 
 export function UsersList() {
+  const navigate = useNavigate();
   const { checkPermission } = usePermissions();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +41,7 @@ export function UsersList() {
     setIsLoading(true);
     getUsers()
       .then(setUsers)
-      .catch(() => showError('Error al cargar la lista de personal'))
+      .catch(() => showError("Error al cargar la lista de personal"))
       .finally(() => setIsLoading(false));
   };
 
@@ -57,10 +64,10 @@ export function UsersList() {
     try {
       if (userSeleccionado) {
         await updateUser(userSeleccionado._id, formData);
-        showToast('Personal actualizado correctamente');
+        showToast("Personal actualizado correctamente");
       } else {
         await createUser(formData);
-        showToast('Nuevo miembro registrado con éxito');
+        showToast("Nuevo miembro registrado con éxito");
       }
       setIsModalOpen(false);
       setUserSeleccionado(null);
@@ -90,6 +97,7 @@ export function UsersList() {
   };
 
   const { columns, actions, searchConfig } = useUsersTable({
+    onVerDetalle: (row) => navigate(`/usuarios/${row._id}`),
     onEditar: canEdit ? handleEditar : undefined,
     onEliminar: canDelete ? handleEliminar : undefined,
   });
