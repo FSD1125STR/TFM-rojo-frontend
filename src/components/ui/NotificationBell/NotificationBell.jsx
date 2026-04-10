@@ -3,6 +3,18 @@ import { Icon } from '../Icon/Icon';
 import { IconButton } from '../IconButton/IconButton';
 import { NotificationBellProps } from './NotificationBell.props';
 
+const NOTIF_ICONS = {
+  MATCH_LIVE:        { name: 'sports',        className: 'text-success' },
+  MATCH_HALF_TIME:   { name: 'pause_circle',  className: 'text-warning' },
+  MATCH_SECOND_HALF: { name: 'sports',        className: 'text-success' },
+  MATCH_FINISHED:    { name: 'flag',          className: 'text-base-content/50' },
+  MATCH_GOAL_HOME:  { name: 'sports_soccer', className: 'text-primary' },
+  MATCH_GOAL_AWAY:  { name: 'sports_soccer', className: 'text-secondary' },
+  MATCH_RED:        { name: 'square',        className: 'text-error' },
+  CALLUP_CREATED:   { name: 'group',         className: 'text-info' },
+  CALLUP_SAVED:     { name: 'check_circle',  className: 'text-success' },
+};
+
 function formatDate(createdAt) {
   if (!createdAt) return '';
   return new Date(createdAt).toLocaleDateString('es-ES', {
@@ -69,7 +81,14 @@ export function NotificationBell({
                   className={`w-full flex items-start gap-3 px-4 py-3 hover:bg-base-200 text-left transition-colors cursor-pointer ${n.read ? 'opacity-60' : ''}`}
                   onClick={() => { onNotificationClick(n); setIsOpen(false); }}
                 >
-                  <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${n.read ? 'bg-transparent' : 'bg-primary'}`} />
+                  <div className="flex flex-col items-center gap-1 flex-shrink-0 mt-0.5">
+                    <Icon
+                      name={NOTIF_ICONS[n.type]?.name ?? 'notifications'}
+                      size="sm"
+                      className={NOTIF_ICONS[n.type]?.className ?? 'text-base-content/40'}
+                    />
+                    <span className={`w-1.5 h-1.5 rounded-full ${n.read ? 'bg-transparent' : 'bg-primary'}`} />
+                  </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm leading-snug">{n.message}</p>
                     <div className="flex items-center gap-2 mt-0.5">

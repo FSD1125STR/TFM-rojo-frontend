@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
@@ -13,7 +13,7 @@ export function NotificationsProvider({ children }) {
   const navigateRef = useRef(navigate);
   const pathnameRef = useRef(location.pathname);
   const [notifications, setNotifications] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const unreadCount = useMemo(() => notifications.filter((n) => !n.read).length, [notifications]);
   const socketRef = useRef(null);
 
   useEffect(() => { navigateRef.current = navigate; }, [navigate]);
@@ -23,7 +23,6 @@ export function NotificationsProvider({ children }) {
     try {
       const data = await getMyNotifications();
       setNotifications(data);
-      setUnreadCount(data.filter((n) => !n.read).length);
     } catch (err) {
       console.error('Error al cargar notificaciones:', err);
     }
@@ -36,16 +35,11 @@ export function NotificationsProvider({ children }) {
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
     const socketUrl = apiUrl.replace(/\/api\/?$/, '');
-    console.log('[Socket] Connecting to', socketUrl);
     const socket = io(socketUrl, {
       auth: { token },
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 2000,
-    });
-
-    socket.on('connect', () => {
-      console.log('[Socket] Connected:', socket.id);
     });
 
     socket.on('connect_error', (err) => {
@@ -66,9 +60,9 @@ export function NotificationsProvider({ children }) {
       };
 
       setNotifications((prev) => [newNotif, ...prev].slice(0, 10));
-      setUnreadCount((prev) => prev + 1);
 
       showNotification(payload.message, {
+        type: payload.type,
         categoryName: payload.categoryName,
         onClick: () => { if (payload.matchId) navigateRef.current(`/convocatorias/${payload.matchId}`); },
       });
@@ -89,15 +83,16 @@ export function NotificationsProvider({ children }) {
       };
 
       setNotifications((prev) => [newNotif, ...prev].slice(0, 10));
-      setUnreadCount((prev) => prev + 1);
 
       showNotification(payload.message, {
+        type: payload.type,
         categoryName: payload.categoryName,
         onClick: () => { if (payload.matchId) navigateRef.current(`/directo/${payload.matchId}`); },
       });
     });
 
     socket.on('match:event', (payload) => {
+      if (payload.triggeredBy?.id === user.id) return;
       // No mostrar toast si el usuario está viendo ese partido en directo
       if (pathnameRef.current === `/directo/${payload.matchId}`) return;
 
@@ -112,9 +107,9 @@ export function NotificationsProvider({ children }) {
       };
 
       setNotifications((prev) => [newNotif, ...prev].slice(0, 10));
-      setUnreadCount((prev) => prev + 1);
 
       showNotification(payload.message, {
+        type: payload.type,
         categoryName: payload.categoryName,
         onClick: () => { if (payload.matchId) navigateRef.current(`/directo/${payload.matchId}`); },
       });
@@ -135,7 +130,6 @@ export function NotificationsProvider({ children }) {
     setNotifications((prev) =>
       prev.map((n) => (n._id === notificationId ? { ...n, read: true } : n))
     );
-    setUnreadCount((prev) => Math.max(0, prev - 1));
 
     try {
       await markAsRead(notificationId);
@@ -143,14 +137,12 @@ export function NotificationsProvider({ children }) {
       setNotifications((prev) =>
         prev.map((n) => (n._id === notificationId ? { ...n, read: false } : n))
       );
-      setUnreadCount((prev) => prev + 1);
       console.error('Error al marcar notificación como leída:', err);
     }
   }, []);
 
   const markAllRead = useCallback(async () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    setUnreadCount(0);
     try {
       await markAllAsReadApi();
     } catch (err) {
