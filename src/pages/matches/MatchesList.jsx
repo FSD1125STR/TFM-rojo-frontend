@@ -228,20 +228,20 @@ export function MatchesList() {
         />
         <StatsCard
           title="% Victorias"
-          value={kpis?.winRate != null ? `${kpis.winRate}%` : '–'}
+          value={kpis?.winRate != null ? `${(+kpis.winRate).toFixed(2)}%` : '–'}
           icon="emoji_events"
           variant={kpis?.winRate >= 50 ? 'success' : kpis?.winRate >= 35 ? 'warning' : 'error'}
         />
         <StatsCard
           title="GF / Partido"
-          value={kpis?.goalsForPerMatch ?? '–'}
+          value={kpis?.goalsForPerMatch != null ? (+kpis.goalsForPerMatch).toFixed(2) : '–'}
           subtitle={kpis ? `${kpis.totalGoalsFor} goles totales` : undefined}
           icon="sports_soccer"
           variant={kpis?.goalsForPerMatch >= 2 ? 'success' : kpis?.goalsForPerMatch >= 1 ? 'warning' : 'error'}
         />
         <StatsCard
           title="GC / Partido"
-          value={kpis?.goalsAgainstPerMatch ?? '–'}
+          value={kpis?.goalsAgainstPerMatch != null ? (+kpis.goalsAgainstPerMatch).toFixed(2) : '–'}
           icon="shield"
           variant={kpis?.goalsAgainstPerMatch <= 1 ? 'success' : kpis?.goalsAgainstPerMatch <= 2 ? 'warning' : 'error'}
         />

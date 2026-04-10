@@ -6,6 +6,7 @@ import { MatchScoreHeader } from './components/MatchScoreHeader';
 import { MatchTimeline } from './components/MatchTimeline';
 import { MatchPanels } from './components/MatchPanels';
 import { getMatchById } from '../../services/matchesService';
+import { getCallupByMatch } from '../../services/callupsService';
 
 export function MatchDetail() {
   const { id } = useParams();
@@ -13,6 +14,7 @@ export function MatchDetail() {
   const location = useLocation();
 
   const [match, setMatch] = useState(null);
+  const [callupPlayers, setCallupPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -27,6 +29,10 @@ export function MatchDetail() {
       })
       .catch(() => setError('error'))
       .finally(() => setLoading(false));
+
+    getCallupByMatch(id)
+      .then(({ players }) => setCallupPlayers(players ?? []))
+      .catch(() => {});
   }, [id, location.key]);
 
   if (loading) {
@@ -69,7 +75,7 @@ export function MatchDetail() {
         <MatchScoreHeader match={match} />
         <div className="grid grid-cols-2 gap-4">
           <MatchTimeline timeline={match.timeline} match={match} />
-          <MatchPanels panels={match.panels} match={match} />
+          <MatchPanels panels={match.panels} match={match} callupPlayers={callupPlayers} />
         </div>
       </div>
     </div>

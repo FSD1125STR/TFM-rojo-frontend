@@ -15,6 +15,7 @@ export const estadoMatchConfig = {
 
 export const estadoOptions = [
   { label: 'Programado', value: 'scheduled' },
+  { label: 'En curso', value: 'live' },
   { label: 'Finalizado', value: 'finished' },
   { label: 'Cancelado', value: 'cancelled' },
 ];

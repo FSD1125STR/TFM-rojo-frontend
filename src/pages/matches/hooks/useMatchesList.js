@@ -95,8 +95,13 @@ export function useMatchesList() {
         }
       }
 
-      if (filterValues.status && match.status !== filterValues.status) {
-        return false;
+      if (filterValues.status) {
+        const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
+        if (filterValues.status === 'live') {
+          if (!LIVE_STATUSES.has(match.liveStatus)) return false;
+        } else if (match.status !== filterValues.status) {
+          return false;
+        }
       }
 
       if (filterValues.tipo) {
