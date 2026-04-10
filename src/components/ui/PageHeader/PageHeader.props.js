@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const PageHeaderProps = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   subtitle: PropTypes.string,
   showBack: PropTypes.bool,
   onBack: PropTypes.func,
