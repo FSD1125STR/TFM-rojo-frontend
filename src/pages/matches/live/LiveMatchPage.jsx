@@ -204,7 +204,7 @@ export function LiveMatchPage() {
       )}
 
       {/* Panel de alineación colapsable */}
-      {canControlTicker && callupId && currentStatus === 'NOT_STARTED' && (
+      {callupId && (canControlTicker ? currentStatus === 'NOT_STARTED' : isValid) && (
         <div className="mb-4 border border-base-300 rounded-xl overflow-hidden">
           <button
             onClick={() => setLineupOpen((o) => !o)}
@@ -230,7 +230,7 @@ export function LiveMatchPage() {
                 starterCount={starterCount}
                 isValid={isValid}
                 saving={savingLineup}
-                editable={currentStatus !== 'FINISHED'}
+                editable={canControlTicker && currentStatus !== 'FINISHED'}
               />
             </div>
           )}
