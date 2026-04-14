@@ -6,22 +6,14 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
+import { DEFAULT_COLORS } from './chartColors';
 
-const DEFAULT_COLORS = [
-  '#4a7c6f',
-  '#7aab9e',
-  '#c8a94e',
-  '#c05c3a',
-  '#5a9e6f',
-  '#4a6ea8',
-];
-
-export function PieChart({ data = [], colors = DEFAULT_COLORS, innerRadius = 0, height = 200, label }) {
+export function PieChart({ data = [], colors = DEFAULT_COLORS, innerRadius = 0, height = 200, label, showLegend = true }) {
   if (!data || data.length === 0) return null;
 
   return (
     <div className="rounded-xl border border-base-300 bg-base-200/50 p-4 shadow-md" test-id="el-pc9ie2h7">
-      {label && <p className="text-xs text-base-content/60 mb-4 font-medium">{label}</p>}
+      {label && <p className={`text-xs mb-4 font-medium ${showLegend ? 'text-base-content/60' : 'text-base-content/80'}`}>{label}</p>}
       <ResponsiveContainer width="100%" height={height}>
         <RPieChart>
           <Pie
@@ -38,7 +30,7 @@ export function PieChart({ data = [], colors = DEFAULT_COLORS, innerRadius = 0, 
             ))}
           </Pie>
           <Tooltip />
-          <Legend />
+          {showLegend && <Legend />}
         </RPieChart>
       </ResponsiveContainer>
     </div>

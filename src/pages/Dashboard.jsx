@@ -37,30 +37,19 @@ function ChartRenderer({ chart }) {
     return <BarChart data={data} xKey="label" series={seriesMapped} layout="vertical" label={label} />;
   }
 
-  if (type === 'bar') {
+  if (type === 'bar' || type === 'bar-horizontal') {
     const data = labels.map((l, i) =>
       series.reduce((acc, s) => ({ ...acc, [s.name]: s.data[i] }), { label: l })
     );
     const seriesMapped = series.map((s) => ({ key: s.name, name: s.name }));
-    return <BarChart data={data} xKey="label" series={seriesMapped} layout="vertical" label={label} />;
+    const layout = type === 'bar-horizontal' ? 'horizontal' : 'vertical';
+    return <BarChart data={data} xKey="label" series={seriesMapped} layout={layout} label={label} />;
   }
 
-  if (type === 'bar-horizontal') {
-    const data = labels.map((l, i) =>
-      series.reduce((acc, s) => ({ ...acc, [s.name]: s.data[i] }), { label: l })
-    );
-    const seriesMapped = series.map((s) => ({ key: s.name, name: s.name }));
-    return <BarChart data={data} xKey="label" series={seriesMapped} layout="horizontal" label={label} />;
-  }
-
-  if (type === 'pie') {
+  if (type === 'pie' || type === 'donut') {
     const data = labels.map((l, i) => ({ name: l, value: series[0]?.data[i] ?? 0 }));
-    return <PieChart data={data} innerRadius={0} label={label} />;
-  }
-
-  if (type === 'donut') {
-    const data = labels.map((l, i) => ({ name: l, value: series[0]?.data[i] ?? 0 }));
-    return <PieChart data={data} innerRadius={60} label={label} />;
+    const innerRadius = type === 'donut' ? '55%' : 0;
+    return <PieChart data={data} innerRadius={innerRadius} label={label} showLegend={chart.showLegend !== false} />;
   }
 
   return null;

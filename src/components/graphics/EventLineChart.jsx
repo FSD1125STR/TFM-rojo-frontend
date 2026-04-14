@@ -37,11 +37,12 @@ export function EventLineChart({
           )}
           <XAxis dataKey={xKey} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
           <YAxis
-            domain={yDomain}
+            domain={yDomain ?? [0, 'auto']}
             ticks={yTicks}
             tick={{ fontSize: 11 }}
             tickLine={false}
             axisLine={false}
+            allowDecimals={false}
           />
           <Tooltip
             content={({ active, payload }) => {

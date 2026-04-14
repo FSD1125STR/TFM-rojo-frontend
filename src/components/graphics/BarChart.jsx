@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts';
+import { DEFAULT_COLORS } from './chartColors';
 
 export function BarChart({ data = [], xKey = 'label', series = [], layout = 'vertical', height = 200, label }) {
   if (!data || data.length === 0) return null;
@@ -21,15 +22,15 @@ export function BarChart({ data = [], xKey = 'label', series = [], layout = 'ver
           layout={layout === 'horizontal' ? 'vertical' : 'horizontal'}
           margin={{ top: 4, right: 8, left: -24, bottom: 0 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.7 0 0 / 0.2)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#00000020" />
           {layout === 'vertical' ? (
             <>
               <XAxis dataKey={xKey} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
-              <YAxis tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
+              <YAxis tick={{ fontSize: 11 }} tickLine={false} axisLine={false} allowDecimals={false} domain={[0, 'auto']} />
             </>
           ) : (
             <>
-              <XAxis type="number" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
+              <XAxis type="number" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} allowDecimals={false} domain={[0, 'auto']} />
               <YAxis type="category" dataKey={xKey} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} width={80} />
             </>
           )}
@@ -40,7 +41,7 @@ export function BarChart({ data = [], xKey = 'label', series = [], layout = 'ver
               key={s.key}
               dataKey={s.key}
               name={s.name}
-              fill={s.color ?? `oklch(${60 - i * 8}% 0.18 ${160 + i * 30})`}
+              fill={s.color ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length]}
               radius={[3, 3, 0, 0]}
             />
           ))}

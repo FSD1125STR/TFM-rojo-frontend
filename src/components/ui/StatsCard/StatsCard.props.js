@@ -15,6 +15,8 @@ export const StatsCardProps = {
     'success',
     'warning',
     'error',
+    'purple',
+    'blue',
   ]),
   className: PropTypes.string,
 };

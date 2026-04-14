@@ -19,6 +19,8 @@ export function StatsCard({
     success: "bg-success/10 text-success border border-success/20",
     warning: "bg-warning/10 text-warning border border-warning/20",
     error: "bg-error/10 text-error border border-error/20",
+    purple: "bg-purple-500/10 text-purple-400 border border-purple-500/25",
+    blue: "bg-blue-500/10 text-blue-400 border border-blue-500/25",
   };
 
   const verticalVariantClasses = {
@@ -29,6 +31,8 @@ export function StatsCard({
     success: "bg-success/10 text-success border-success/20",
     warning: "bg-warning/10 text-warning border-warning/50",
     error: "bg-error/10 text-error border-error/40",
+    purple: "bg-purple-500/10 text-purple-400 border-purple-500/25",
+    blue: "bg-blue-500/10 text-blue-400 border-blue-500/25",
   };
 
   if (layout === "vertical") {
