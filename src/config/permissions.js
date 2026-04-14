@@ -1,4 +1,5 @@
 export const PERMISSIONS = {
+  "dashboard.view":    ["administrador", "direccion", "entrenador", "delegado"],
   "users.create":     ["administrador"],
   "users.view":       ["administrador", "direccion"],
   "users.edit":       ["administrador"],

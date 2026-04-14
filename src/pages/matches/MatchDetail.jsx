@@ -19,20 +19,31 @@ export function MatchDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getMatchById(id)
-      .then((data) => {
-        if (data?.forbidden) {
-          setError('forbidden');
-        } else {
-          setMatch(data);
-        }
-      })
-      .catch(() => setError('error'))
-      .finally(() => setLoading(false));
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
 
-    getCallupByMatch(id)
-      .then(({ players }) => setCallupPlayers(players ?? []))
-      .catch(() => {});
+    async function load() {
+      try {
+        const matchData = await getMatchById(id);
+        if (cancelled) return;
+        if (matchData?.forbidden) {
+          setError('forbidden');
+          return;
+        }
+        setMatch(matchData);
+        const callupData = await getCallupByMatch(id).catch(() => null);
+        if (cancelled) return;
+        setCallupPlayers(callupData?.players ?? []);
+      } catch {
+        if (!cancelled) setError('error');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
   }, [id, location.key]);
 
   if (loading) {
