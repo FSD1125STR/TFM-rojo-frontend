@@ -56,9 +56,7 @@ export function LiveMatchProvider({ children }) {
       }
     });
 
-    socket.on('connect_error', (err) => {
-      console.error('[LiveMatch Socket] Connection error:', err.message);
-    });
+    socket.on('connect_error', () => {});
 
     socket.on('event:created', (payload) => {
       setLastEvent(payload);

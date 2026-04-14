@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getMatchesKpis } from '../../../services/matchesService';
+import { showError, getApiErrorMsg } from '../../../utils/alerts';
 
 export function useMatchesKpis(categoryId) {
   const [kpis, setKpis] = useState(null);
@@ -11,7 +12,7 @@ export function useMatchesKpis(categoryId) {
 
     getMatchesKpis(categoryId)
       .then((data) => { if (!cancelled) setKpis(data); })
-      .catch((err) => { console.error('useMatchesKpis:', err); });
+      .catch((err) => { showError(getApiErrorMsg(err, 'Error al cargar estadísticas de partidos')); });
 
     return () => { cancelled = true; };
   }, [categoryId]);

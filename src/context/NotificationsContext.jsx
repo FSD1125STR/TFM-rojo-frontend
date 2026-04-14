@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 import { getMyNotifications, markAsRead, markAllAsRead as markAllAsReadApi } from '../services/notificationsService';
-import { showNotification } from '../utils/alerts';
+import { showNotification, showError, getApiErrorMsg } from '../utils/alerts';
 import { NotificationsContext } from './NotificationsContext.js';
 
 export function NotificationsProvider({ children }) {
@@ -24,7 +24,7 @@ export function NotificationsProvider({ children }) {
       const data = await getMyNotifications();
       setNotifications(data);
     } catch (err) {
-      console.error('Error al cargar notificaciones:', err);
+      showError(getApiErrorMsg(err, 'Error al cargar notificaciones'));
     }
   }, []);
 
@@ -42,9 +42,7 @@ export function NotificationsProvider({ children }) {
       reconnectionDelay: 2000,
     });
 
-    socket.on('connect_error', (err) => {
-      console.error('[Socket] Connection error:', err.message);
-    });
+    socket.on('connect_error', () => {});
 
     socket.on('callup:updated', (payload) => {
       if (payload.triggeredBy?.id === user.id) return;
@@ -137,18 +135,20 @@ export function NotificationsProvider({ children }) {
       setNotifications((prev) =>
         prev.map((n) => (n._id === notificationId ? { ...n, read: false } : n))
       );
-      console.error('Error al marcar notificación como leída:', err);
+      showError('No se pudo marcar la notificación como leída');
     }
   }, []);
 
   const markAllRead = useCallback(async () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    const prev = notifications;
+    setNotifications((n) => n.map((item) => ({ ...item, read: true })));
     try {
       await markAllAsReadApi();
     } catch (err) {
-      console.error('Error al marcar todas como leídas:', err);
+      setNotifications(prev);
+      showError('No se pudieron marcar todas las notificaciones como leídas');
     }
-  }, []);
+  }, [notifications]);
 
   return (
     <NotificationsContext.Provider value={{ notifications, unreadCount, markRead, markAllRead }}>

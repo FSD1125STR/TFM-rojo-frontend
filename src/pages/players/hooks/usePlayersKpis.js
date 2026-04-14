@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getPlayersKpis } from '../../../services/playersService';
+import { showError, getApiErrorMsg } from '../../../utils/alerts';
 
 export function usePlayersKpis(categoryId) {
   const [kpis, setKpis] = useState(null);
@@ -11,7 +12,7 @@ export function usePlayersKpis(categoryId) {
 
     getPlayersKpis(categoryId)
       .then((data) => { if (!cancelled) setKpis(data); })
-      .catch((err) => { console.error('usePlayersKpis:', err); });
+      .catch((err) => { showError(getApiErrorMsg(err, 'Error al cargar estadísticas de jugadores')); });
 
     return () => { cancelled = true; };
   }, [categoryId]);
