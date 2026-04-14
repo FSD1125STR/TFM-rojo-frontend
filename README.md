@@ -21,6 +21,7 @@ Frontend del proyecto FootMind - Gestión de equipos de fútbol base.
 | socket.io-client | 4.x | Comunicación en tiempo real (LiveMatch) |
 | recharts | 3.x | Gráficas y visualización de datos |
 | @dnd-kit | 6.x / 10.x | Drag & drop (convocatorias) |
+| @googlemaps/js-api-loader | - | Autocomplete de lugares (Google Places) |
 
 ## Requisitos
 
@@ -38,6 +39,7 @@ Crea un archivo `.env` en la raíz del proyecto:
 
 ```env
 VITE_API_URL=http://localhost:3000
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
 ```
 
 ## Ejecución
@@ -70,19 +72,46 @@ src/
 ├── assets/              # Logos, favicon, imágenes
 ├── components/
 │   ├── graphics/        # Componentes de gráficas (Recharts)
+│   │   ├── BarChart/
+│   │   ├── EventLineChart/
+│   │   ├── PieChart/
+│   │   └── ProgressBar/
 │   ├── ui/              # Componentes atómicos reutilizables
 │   │   ├── Avatar/
 │   │   ├── Badge/
 │   │   ├── Button/
 │   │   ├── Card/
+│   │   ├── CardListRow/
+│   │   ├── CardsList/
+│   │   ├── Collapse/
 │   │   ├── DataTable/
+│   │   ├── DataTableActions/
+│   │   ├── DatePicker/
+│   │   ├── DateTimePicker/
 │   │   ├── Divider/
+│   │   ├── FileUpload/
 │   │   ├── Icon/
 │   │   ├── IconButton/
+│   │   ├── InfoItem/
+│   │   ├── InsightCard/
+│   │   ├── KanbanColumn/
 │   │   ├── Modal/
+│   │   ├── NotificationBell/
+│   │   ├── PageHeader/
+│   │   ├── PlacesAutocomplete/
+│   │   ├── PlayerCard/
+│   │   ├── QuickActions/
+│   │   ├── RadioChipGroup/
 │   │   ├── SearchInput/
+│   │   ├── SearchableSelect/
 │   │   ├── SelectFilter/  # Single (DaisyUI) + Multi (Preline)
-│   │   └── ThemeToggle/
+│   │   ├── StatBox/
+│   │   ├── StatsCard/
+│   │   ├── StrengthPassword/
+│   │   ├── Tabs/
+│   │   ├── ThemeToggle/
+│   │   ├── Timeline/
+│   │   └── Toggle/
 │   └── layout/          # Componentes de layout
 │       ├── AppLogo/
 │       ├── AppShell/
@@ -98,6 +127,8 @@ src/
 ├── data/                # Datos mock y constantes
 ├── hooks/               # Custom hooks (useTheme, useSidebar, useAuth, useHeader, usePermissions)
 ├── pages/               # Vistas asociadas a rutas
+│   ├── Dashboard.jsx    # Panel principal con estadísticas
+│   ├── LiveMatch.jsx    # Vista de partido en directo
 │   ├── auth/            # Login, ForgotPassword, ResetPassword
 │   ├── players/         # Módulo jugadores
 │   │   ├── components/  # Modales y formularios específicos
@@ -109,6 +140,7 @@ src/
 │   │   ├── components/
 │   │   ├── hooks/
 │   │   ├── data/
+│   │   ├── live/        # Componentes específicos de partido en directo
 │   │   ├── MatchesList.jsx
 │   │   └── MatchDetail.jsx
 │   ├── callups/         # Módulo convocatorias
@@ -124,8 +156,12 @@ src/
 │   │   ├── UsersList.jsx
 │   │   └── UserDetail.jsx
 │   └── teams/           # Módulo equipos rivales
-├── services/            # Servicios API (authService, api)
-├── utils/               # Utilidades (alerts)
+│       ├── components/
+│       ├── hooks/
+│       ├── data/
+│       └── TeamsList.jsx
+├── services/            # Servicios API (axios)
+├── utils/               # Utilidades (alerts, normalize)
 ├── App.jsx              # Router y rutas
 ├── main.jsx             # Entry point
 └── index.css            # Estilos globales y temas DaisyUI
@@ -136,14 +172,37 @@ src/
 | Carpeta | Contenido |
 |---------|-----------|
 | `components/ui/` | Componentes atómicos y reutilizables (Button, Card, Icon...) |
+| `components/graphics/` | Componentes de visualización de datos (BarChart, PieChart...) |
 | `components/layout/` | Componentes de estructura (Sidebar, Header, AppShell...) |
 | `pages/` | Vistas asociadas a rutas, organizadas por módulo |
 | `pages/{módulo}/` | Lista y detalle de cada entidad (players, matches, etc.) |
 | `context/` | Context providers de React (AuthContext) |
-| `services/` | Servicios de API y lógica de negocio |
+| `services/` | Servicios de API (axios) por entidad |
 | `hooks/` | Custom hooks de React |
-| `utils/` | Funciones utilitarias (alerts, helpers) |
+| `utils/` | Funciones utilitarias (alerts, normalize) |
 | `data/` | Datos mock, constantes, configuración de menú |
+
+---
+
+## Servicios API
+
+Cada entidad tiene su propio servicio en `src/services/`:
+
+| Servicio | Entidad | Descripción |
+|----------|---------|-------------|
+| `api.js` | — | Instancia axios base con interceptores de auth |
+| `authService.js` | Auth | Login, logout, refresh token, reset password |
+| `callupsService.js` | Convocatorias | CRUD + gestión de jugadores convocados |
+| `categoriesService.js` | Categorías | Gestión de categorías del club |
+| `dashboardService.js` | Dashboard | Estadísticas y métricas del panel principal |
+| `liveMatchService.js` | Partido en directo | Eventos de partido, marcador, cambios |
+| `matchesService.js` | Partidos | CRUD de partidos |
+| `notificationsService.js` | Notificaciones | Lectura y marcado de notificaciones |
+| `placesService.js` | Lugares | Autocomplete de instalaciones (Google Places) |
+| `playersService.js` | Jugadores | CRUD + lesiones + sanciones |
+| `searchService.js` | Búsqueda | Búsqueda global de entidades |
+| `teamsService.js` | Equipos rivales | CRUD de equipos contrincantes |
+| `userService.js` | Usuarios | CRUD de usuarios del sistema |
 
 ---
 
@@ -223,6 +282,8 @@ El proyecto utiliza **Material Symbols** (outlined) a través del componente `<I
 | sports_soccer | `sports_soccer` | Partidos |
 | live_tv | `live_tv` | Partido en directo |
 | group | `group` | Usuarios |
+| notifications | `notifications` | Notificaciones |
+| shield | `shield` | Equipos rivales |
 
 ---
 
@@ -253,7 +314,7 @@ Componente principal que estructura la aplicación:
 
 ## Sistema de permisos
 
-El control de acceso se gestiona en `src/config/permissions.js`, que mapea 15 claves de permiso a los roles autorizados.
+El control de acceso se gestiona en `src/config/permissions.js`, que mapea claves de permiso a los roles autorizados.
 
 **Roles disponibles:** `administrador`, `direccion`, `entrenador`, `delegado`
 
@@ -267,6 +328,47 @@ if (checkPermission('players.edit')) {
 }
 ```
 
+### Tabla de permisos
+
+| Permiso | administrador | direccion | entrenador | delegado |
+|---------|:---:|:---:|:---:|:---:|
+| `dashboard.view` | ✓ | ✓ | ✓ | ✓ |
+| `players.view` | ✓ | ✓ | ✓ | ✓ |
+| `players.create` | ✓ | | | |
+| `players.edit` | ✓ | | | |
+| `players.injury` | ✓ | | ✓ | ✓ |
+| `players.sanction` | ✓ | | | ✓ |
+| `matches.view` | ✓ | ✓ | ✓ | ✓ |
+| `matches.create` | ✓ | | | |
+| `matches.edit` | ✓ | | | |
+| `callups.view` | ✓ | ✓ | ✓ | ✓ |
+| `callups.create` | ✓ | | ✓ | ✓ |
+| `callups.edit` | ✓ | | ✓ | ✓ |
+| `live.update` | ✓ | | ✓ | ✓ |
+| `stats.view` | ✓ | ✓ | ✓ | ✓ |
+| `teams.view` | ✓ | ✓ | ✓ | ✓ |
+| `teams.create` | ✓ | | | |
+| `teams.edit` | ✓ | | | |
+| `teams.delete` | ✓ | | | |
+| `users.view` | ✓ | ✓ | | |
+| `users.create` | ✓ | | | |
+| `users.edit` | ✓ | | | |
+| `users.delete` | ✓ | | | |
+| `categories.manage` | ✓ | | | |
+
+---
+
+## LiveMatch
+
+La vista `LiveMatch` permite gestionar un partido en tiempo real mediante **Socket.IO**:
+
+- Marcador en vivo
+- Registro de eventos (goles, tarjetas, sustituciones)
+- Estado del partido (primera parte, segunda parte, finalizado)
+- Sincronización en tiempo real entre múltiples clientes conectados
+
+Requiere que el backend tenga el servidor Socket.IO activo en la misma URL que `VITE_API_URL`.
+
 ---
 
 ## Testing
@@ -275,6 +377,14 @@ Todos los componentes incluyen atributo `test-id` para testing:
 
 ```jsx
 <button test-id="el-a1b2c3d4">Click</button>
+```
+
+- **Formato:** `test-id="el-{hash}"` donde `{hash}` son 8 caracteres alfanuméricos
+- **Nunca** usar nombres semánticos (`el-player-list`) ni abreviaturas (`el-plyrslst1`)
+- El atributo va siempre en el **elemento raíz** del componente
+
+```bash
+npm run test
 ```
 
 ---
