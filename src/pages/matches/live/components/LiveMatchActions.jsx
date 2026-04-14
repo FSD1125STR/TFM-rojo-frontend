@@ -6,8 +6,7 @@ import { useMatchTimer, getHalfDuration } from '../hooks/useMatchTimer';
 import { ModalLiveGoal } from './ModalLiveGoal';
 import { ModalLiveCard } from './ModalLiveCard';
 import { ModalLiveSub } from './ModalLiveSub';
-
-const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'SECOND_HALF', 'HALF_TIME']);
+import { LIVE_STATUSES as ACTIVE_STATUSES } from '../../data/matchesConfig';
 
 export function LiveMatchActions({ matchId, match, liveStatus, expelledIds = new Set(), subWindowsFull = false, subEvents = [] }) {
   const [players, setPlayers] = useState([]);

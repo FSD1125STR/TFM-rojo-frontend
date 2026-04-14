@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { showError } from '../../utils/alerts';
 import { PageHeader } from '../../components/ui/PageHeader';
+import { LIVE_STATUSES } from '../matches/data/matchesConfig';
 import { useCallupDetail } from './hooks/useCallupDetail';
 import { usePermissions } from '../../hooks/usePermissions';
 import { CallupsBoard } from './components/CallupsBoard';
@@ -15,8 +16,6 @@ const LINEUP_TABS = [
   { value: 'convocatoria', label: 'Convocatoria' },
   { value: 'alineacion', label: 'Alineación' },
 ];
-
-const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
 
 function formatMatchDateTime(dt) {
   if (!dt) return '';

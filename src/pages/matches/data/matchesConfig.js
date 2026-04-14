@@ -1,6 +1,8 @@
 import { formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+export const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
+
 export const statusLabels = {
   scheduled: 'Programado',
   finished: 'Finalizado',

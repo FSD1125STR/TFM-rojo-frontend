@@ -16,9 +16,8 @@ import {
   formatFechaRelativa,
   formatFechaAbsoluta,
   toLocalDateTimeInput,
+  LIVE_STATUSES,
 } from './data/matchesConfig';
-
-const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
 
 export function MatchesList() {
   const navigate = useNavigate();

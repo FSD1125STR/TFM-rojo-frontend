@@ -3,8 +3,7 @@ import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 import { getLiveMatches } from '../services/liveMatchService';
 import { LiveMatchContext } from './LiveMatchContext.js';
-
-const LIVE_STATUSES = ['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF'];
+import { LIVE_STATUSES } from '../pages/matches/data/matchesConfig';
 
 export function LiveMatchProvider({ children }) {
   const { user, token } = useAuth();
@@ -63,7 +62,7 @@ export function LiveMatchProvider({ children }) {
       setLiveStatus(status);
       if (status === 'FINISHED' || status === 'NOT_STARTED') {
         setHasLiveMatch(false);
-      } else if (LIVE_STATUSES.includes(status)) {
+      } else if (LIVE_STATUSES.has(status)) {
         setHasLiveMatch(true);
       }
     });
@@ -72,7 +71,7 @@ export function LiveMatchProvider({ children }) {
       const status = payload.liveStatus ?? payload.status ?? '';
       if (status === 'FINISHED' || status === 'NOT_STARTED') {
         setHasLiveMatch(false);
-      } else if (LIVE_STATUSES.includes(status)) {
+      } else if (LIVE_STATUSES.has(status)) {
         setHasLiveMatch(true);
         if (payload.matchId) setActiveMatchId(payload.matchId);
       }

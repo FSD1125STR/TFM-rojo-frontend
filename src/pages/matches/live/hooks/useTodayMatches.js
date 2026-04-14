@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../../../hooks/useAuth';
 import { getMatches } from '../../../../services/matchesService';
-
-const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
+import { LIVE_STATUSES as ACTIVE_STATUSES } from '../../data/matchesConfig';
 
 function isSameLocalDay(dateStr) {
   const d = new Date(dateStr);

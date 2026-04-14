@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { getMatches, createMatch, updateMatch, deleteMatch } from '../../../services/matchesService';
 import { getCategories } from '../../../services/categoriesService';
-import { estadoOptions, tipoOptions } from '../data/matchesConfig';
+import { estadoOptions, tipoOptions, LIVE_STATUSES } from '../data/matchesConfig';
 import { normalizeText } from '../../../utils/normalize';
 import { showConfirm } from '../../../utils/alerts';
 
@@ -96,7 +96,6 @@ export function useMatchesList() {
       }
 
       if (filterValues.status) {
-        const LIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
         if (filterValues.status === 'live') {
           if (!LIVE_STATUSES.has(match.liveStatus)) return false;
         } else if (match.status !== filterValues.status) {

@@ -7,13 +7,13 @@ import { useLiveMatch } from '../hooks/useLiveMatchContext';
 import { updateLiveStatus } from '../services/matchesService';
 import { getCallupByMatch } from '../services/callupsService';
 import { showError } from '../utils/alerts';
-import { formatFechaRelativa, formatFechaAbsoluta } from './matches/data/matchesConfig';
+import { formatFechaRelativa, formatFechaAbsoluta, LIVE_STATUSES } from './matches/data/matchesConfig';
 import { MatchMinute } from './matches/live/components/MatchMinute';
 import { PageHeader } from '../components/ui/PageHeader';
 import { CardsList } from '../components/ui/CardsList';
 
 const FIELD_ROLES = ['delegado', 'entrenador'];
-const ACTIVE_STATUSES = new Set(['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF']);
+const ACTIVE_STATUSES = LIVE_STATUSES;
 
 const LIVE_STATUS_LABELS = {
   FIRST_HALF: '1ª Parte',
@@ -91,9 +91,9 @@ export function LiveMatch() {
     return [
       {
         label: startingId === match._id ? 'Iniciando...' : 'Iniciar partido',
-        icon: 'play_arrow',
-        onClick: (row) => handleStart(row),
-        show: () => startingId !== match._id,
+        icon: startingId === match._id ? 'hourglass_top' : 'play_arrow',
+        onClick: (row) => { if (!startingId) handleStart(row); },
+        show: () => !startingId || startingId === match._id,
       },
     ];
   };
