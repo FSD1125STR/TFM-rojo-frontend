@@ -14,7 +14,18 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 export default defineConfig({
   plugins: [tailwindcss(), react()],
   test: {
-    projects: [{
+    projects: [
+    {
+      extends: true,
+      test: {
+        name: 'unit',
+        environment: 'jsdom',
+        globals: true,
+        setupFiles: ['./src/__tests__/setup.js'],
+        include: ['src/__tests__/**/*.test.{js,jsx}'],
+      }
+    },
+    {
       extends: true,
       plugins: [
         // The plugin will run tests for the stories defined in your Storybook config
