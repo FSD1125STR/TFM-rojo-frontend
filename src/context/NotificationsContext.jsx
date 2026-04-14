@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 import { getMyNotifications, markAsRead, markAllAsRead as markAllAsReadApi } from '../services/notificationsService';
 import { showNotification, showError, getApiErrorMsg } from '../utils/alerts';
-import { NotificationsContext } from './NotificationsContext.js';
+
+export const NotificationsContext = createContext(null);
 
 export function NotificationsProvider({ children }) {
   const { user, token } = useAuth();

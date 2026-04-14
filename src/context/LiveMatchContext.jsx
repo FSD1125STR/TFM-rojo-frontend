@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 import { getLiveMatches } from '../services/liveMatchService';
-import { LiveMatchContext } from './LiveMatchContext.js';
 import { LIVE_STATUSES } from '../pages/matches/data/matchesConfig';
+
+export const LiveMatchContext = createContext(null);
 
 export function LiveMatchProvider({ children }) {
   const { user, token } = useAuth();
