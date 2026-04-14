@@ -1,6 +1,8 @@
 import Swal from 'sweetalert2';
 
 const PRIMARY_BUTTON_COLOR = '#5C6F68';
+const NOTIF_TIMEOUT_MS = 10_000;
+const TOAST_TIMEOUT_MS = 3_000;
 
 export const showError = (message) => {
   return Swal.fire({
@@ -79,7 +81,7 @@ export const showNotification = (message, { categoryName, onClick, type } = {}) 
       ? `<span style="font-size:0.75rem;opacity:0.65;">${categoryName}</span>`
       : undefined,
     showConfirmButton: false,
-    timer: 10000,
+    timer: NOTIF_TIMEOUT_MS,
     timerProgressBar: true,
     didOpen: (toast) => {
       if (onClick) {
@@ -101,7 +103,7 @@ export const showToast = (message, icon = 'success') => {
     icon,
     title: message,
     showConfirmButton: false,
-    timer: 3000,
+    timer: TOAST_TIMEOUT_MS,
     timerProgressBar: true,
   });
 };

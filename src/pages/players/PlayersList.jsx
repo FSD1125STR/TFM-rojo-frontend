@@ -39,7 +39,7 @@ export function PlayersList() {
   }, []);
 
   useEffect(() => {
-    getPlayers(isAdmin || isDireccion ? null : categoryId).then(setJugadores).catch(console.error);
+    getPlayers(isAdmin || isDireccion ? null : categoryId).then(setJugadores).catch((err) => showError(getApiErrorMsg(err, 'Error al cargar los jugadores')));
   }, [isAdmin, isDireccion, categoryId]);
 
   const handleNuevoJugador = () => {

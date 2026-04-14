@@ -50,6 +50,26 @@ function normalizeEvent(event, match) {
   };
 }
 
+function processGoalEvent(event, pid, scorersMap) {
+  const isAnonymousRival = event.isOpponentGoal && !pid && !event.playerName;
+  const key = isAnonymousRival ? '__rival__' : (pid || event.playerName);
+  if (!key) return;
+  if (!scorersMap[key]) {
+    scorersMap[key] = { playerId: pid, playerName: isAnonymousRival ? 'Gol del rival' : event.playerName, teamId: event.teamId, goals: 0 };
+  }
+  scorersMap[key].goals++;
+}
+
+function processCardEvent(event, pid, cardsMap) {
+  const key = pid || event.playerName;
+  if (!key) return;
+  if (!cardsMap[key]) {
+    cardsMap[key] = { playerId: pid, playerName: event.playerName, teamId: event.teamId, yellowCards: 0, redCards: 0 };
+  }
+  if (event.type === 'yellow_card') cardsMap[key].yellowCards++;
+  else cardsMap[key].redCards++;
+}
+
 function computeLivePanels(events) {
   const scorersMap = {};
   const cardsMap = {};
@@ -59,36 +79,17 @@ function computeLivePanels(events) {
     // playerId puede ser objeto {_id} (API) o string (socket); normalizamos a string
     const pid = event.playerId ? String(event.playerId._id ?? event.playerId) : null;
 
-    if (event.type === 'goal') {
-      const isAnonymousRival = event.isOpponentGoal && !pid && !event.playerName;
-      const key = isAnonymousRival ? '__rival__' : (pid || event.playerName);
-      if (key) {
-        if (!scorersMap[key]) {
-          scorersMap[key] = {
-            playerId: pid,
-            playerName: isAnonymousRival ? 'Gol del rival' : event.playerName,
-            teamId: event.teamId,
-            goals: 0,
-          };
-        }
-        scorersMap[key].goals++;
-      }
-    } else if (event.type === 'yellow_card' || event.type === 'red_card') {
-      const key = pid || event.playerName;
-      if (key) {
-        if (!cardsMap[key]) {
-          cardsMap[key] = { playerId: pid, playerName: event.playerName, teamId: event.teamId, yellowCards: 0, redCards: 0 };
-        }
-        if (event.type === 'yellow_card') cardsMap[key].yellowCards++;
-        else cardsMap[key].redCards++;
-      }
-    } else if (event.type === 'substitution') {
-      substitutions.push({
-        teamId: event.teamId,
-        minute: event.minute,
-        playerInName: event.playerInName,
-        playerOutName: event.playerOutName,
-      });
+    switch (event.type) {
+      case 'goal':
+        processGoalEvent(event, pid, scorersMap);
+        break;
+      case 'yellow_card':
+      case 'red_card':
+        processCardEvent(event, pid, cardsMap);
+        break;
+      case 'substitution':
+        substitutions.push({ teamId: event.teamId, minute: event.minute, playerInName: event.playerInName, playerOutName: event.playerOutName });
+        break;
     }
   }
 

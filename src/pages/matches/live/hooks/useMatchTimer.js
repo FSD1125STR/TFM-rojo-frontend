@@ -29,11 +29,12 @@ function calcMinute(liveStatus, halfDuration, key1, key2) {
   return null;
 }
 
+const HALF_DURATIONS = { infantil: 35, cadete: 40, default: 45 };
+
 export function getHalfDuration(categoryName) {
   const name = (categoryName || '').toLowerCase();
-  if (name.includes('infantil')) return 35;
-  if (name.includes('cadete')) return 40;
-  return 45;
+  const entry = Object.entries(HALF_DURATIONS).find(([key]) => key !== 'default' && name.includes(key));
+  return entry ? entry[1] : HALF_DURATIONS.default;
 }
 
 function resolveTs(serverIso) {

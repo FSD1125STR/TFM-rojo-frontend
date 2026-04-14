@@ -3,6 +3,7 @@ import { SearchableSelect } from '../../../components/ui/SearchableSelect';
 import { FileUpload } from '../../../components/ui/FileUpload';
 import { Avatar } from '../../../components/ui/Avatar';
 import { getCategories } from '../../../services/categoriesService';
+import { showError, getApiErrorMsg } from '../../../utils/alerts';
 import { TeamFormProps } from './TeamForm.props';
 
 const LABEL_CLS = 'font-semibold text-[13px] text-base-content/70';
@@ -15,7 +16,7 @@ export function TeamForm({ formId, formData, onChange, onSubmit, initialData }) 
   useEffect(() => {
     getCategories().then((cats) => {
       setCategories(cats.map((c) => ({ value: c._id, label: `${c.name} — ${c.season}` })));
-    }).catch(console.error);
+    }).catch((err) => showError(getApiErrorMsg(err, 'Error al cargar las categorías')));
   }, []);
 
   useEffect(() => {

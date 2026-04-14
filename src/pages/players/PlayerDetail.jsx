@@ -9,7 +9,7 @@ import { PlayerMatchHistory } from './components/PlayerMatchHistory';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
 import { getPlayerById, getPlayerMatches, updatePlayer } from '../../services/playersService';
-import { showToast, showErrorInModal, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
+import { showToast, showError, showErrorInModal, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
 
 export function PlayerDetail() {
   const { id } = useParams();
@@ -28,12 +28,12 @@ export function PlayerDetail() {
   useEffect(() => {
     getPlayerById(id)
       .then(setJugador)
-      .catch(console.error)
+      .catch((err) => showError(getApiErrorMsg(err, 'Error al cargar el jugador')))
       .finally(() => setLoading(false));
 
     getPlayerMatches(id)
       .then(setHistorial)
-      .catch(console.error)
+      .catch((err) => showError(getApiErrorMsg(err, 'Error al cargar el historial')))
       .finally(() => setLoadingHistorial(false));
   }, [id, location.key]);
 
