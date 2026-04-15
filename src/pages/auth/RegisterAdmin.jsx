@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Button } from "../../components/ui/Button";
-import { Icon } from "../../components/ui/Icon";
 import { Card } from "../../components/ui/Card";
 import { showError } from "../../utils/alerts";
-import { StrengthIndicator } from "./components/StrengthIndicator";
+import { StrengthPassword } from "../../components/ui/StrengthPassword";
 import { LOGO_HORIZONTAL_URL as logoHorizontal } from '../../assets/brand.js';
 
 export function RegisterAdmin() {
@@ -20,8 +19,8 @@ export function RegisterAdmin() {
     registrationCode: "",
   });
 
+  const [isPasswordStrong, setIsPasswordStrong] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
 
   if (authLoading) return null;
   if (isAuthenticated) return <Navigate to="/" replace />;
@@ -38,15 +37,9 @@ export function RegisterAdmin() {
       return;
     }
 
-    if (formData.password.length < 8) {
-      showError("La contraseña debe tener al menos 8 caracteres");
-      return;
-    }
-
     setIsLoading(true);
     try {
       const { confirmPassword, ...payload } = formData;
-
       await register(payload);
       navigate("/");
     } catch (err) {
@@ -59,10 +52,7 @@ export function RegisterAdmin() {
   };
 
   return (
-    <div
-      test-id="el-r5t8n2m1"
-      className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12"
-    >
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <img src={logoHorizontal} alt="FootMind" className="h-16 mx-auto" />
@@ -117,29 +107,12 @@ export function RegisterAdmin() {
               <label className="label">
                 <span className="label-text">Contraseña</span>
               </label>
-              <div className="relative">
-                <input
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  className="input input-bordered w-full pr-10"
-                  onChange={handleChange}
-                  required
-                />
-                <button
-                  type="button"
-                  className="absolute top-0 right-0 h-full px-3 flex items-center text-base-content/50 hover:text-base-content transition-colors"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <Icon
-                    name={showPassword ? "visibility_off" : "visibility"}
-                    size="sm"
-                  />
-                </button>
-              </div>
-              {formData.password && (
-                <StrengthIndicator password={formData.password} />
-              )}
+              <StrengthPassword
+                onChange={(val, isValid) => {
+                  setFormData((prev) => ({ ...prev, password: val }));
+                  setIsPasswordStrong(isValid);
+                }}
+              />
             </div>
 
             <div className="form-control">
@@ -161,6 +134,7 @@ export function RegisterAdmin() {
               variant="primary"
               className="w-full mt-4"
               isLoading={isLoading}
+              isDisabled={isLoading || !isPasswordStrong || formData.password !== formData.confirmPassword}
             >
               Registrar Administrador
             </Button>
