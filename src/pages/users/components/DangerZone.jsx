@@ -40,7 +40,7 @@ export function DangerZone({ isActive, onToggleStatus, onDelete }) {
             es irreversible.
           </p>
           <Button variant="danger" className="w-full" onClick={onDelete}>
-            Eliminar del Club
+            Eliminar usuario
           </Button>
         </div>
       </div>

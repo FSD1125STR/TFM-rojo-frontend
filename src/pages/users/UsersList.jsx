@@ -84,12 +84,12 @@ export function UsersList() {
   const handleEliminar = async (user) => {
     const confirmed = await showConfirm(
       `¿Estás seguro de eliminar a ${user.fullName}?`,
-      "¿Eliminar miembro?",
+      "¿Eliminar usuario?",
     );
     if (!confirmed) return;
     try {
       await deleteUser(user._id);
-      showToast("Miembro eliminado del club");
+      showToast("Usuario eliminado correctamente");
       loadUsers();
     } catch (error) {
       showError("No se pudo eliminar al usuario");

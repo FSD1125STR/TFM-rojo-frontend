@@ -1,143 +1,116 @@
 import { useState } from "react";
-import { useSearchParams, Link, Navigate } from "react-router-dom";
+import { useSearchParams, Link, useNavigate, Navigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { Button } from "../components/ui/Button";
-import { Card } from "../components/ui/Card";
 import { Icon } from "../components/ui/Icon";
-import { showError } from "../utils/alerts";
+import { Card } from "../components/ui/Card";
+import { showError, showToast } from "../utils/alerts";
 import logoHorizontal from "../assets/logo-horizontal.png";
-import StrengthPassword from "../components/StrengthPassword";
+import { StrengthIndicator } from "../components/StrengthIndicator";
 
 export function ResetPassword() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+  const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isPasswordStrong, setIsPasswordStrong] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+  if (!token) return <Navigate to="/login" replace />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (password !== confirmPassword) {
       showError("Las contraseñas no coinciden");
       return;
     }
 
-    setIsLoading(true);
+    const isStrong =
+      password.length >= 8 &&
+      /[A-Z]/.test(password) &&
+      /\d/.test(password) &&
+      /[@$!%*?&]/.test(password);
+    if (!isStrong) {
+      showError("La contraseña no cumple los requisitos");
+      return;
+    }
 
+    setIsLoading(true);
     try {
       await authService.resetPassword(token, password);
-      setSuccess(true);
+      showToast("Contraseña actualizada correctamente");
+      navigate("/login");
     } catch (err) {
-      const message =
-        err.response?.data?.error ||
-        (err.response ? "Error al restablecer la contraseña" : "Sin conexión");
-      showError(message);
+      showError(err.response?.data?.error || "Error al restablecer");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#EBFFFD] px-4 font-montserrat">
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12 font-montserrat">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <img src={logoHorizontal} alt="FootMind" className="h-16" />
-          </div>
-          <h1 className="text-2xl font-bold text-[#5C6F68]">FootMind</h1>
+          <img src={logoHorizontal} alt="FootMind" className="h-16 mx-auto" />
         </div>
 
         <Card title="Nueva contraseña">
-          <p className="text-center text-base-content/60 text-sm mb-4">
-            Introduce tu nueva contraseña de acceso al club.
-          </p>
-
-          {success ? (
-            <div className="text-center">
-              <div className="flex justify-center mb-4">
-                <div className="bg-success/20 rounded-full p-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Contraseña</span>
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="input input-bordered w-full pr-10 bg-white"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute top-0 right-0 h-full px-3 flex items-center text-base-content/40"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
                   <Icon
-                    name="check_circle"
-                    size="lg"
-                    className="text-success"
+                    name={showPassword ? "visibility_off" : "visibility"}
+                    size="sm"
                   />
-                </div>
+                </button>
               </div>
-              <p className="text-base-content mb-4">
-                Tu contraseña ha sido restablecida correctamente.
-              </p>
-              <Link
-                to="/login"
-                className="btn bg-[#5C6F68] text-white w-full border-none hover:bg-[#8AA39B]"
-              >
-                Iniciar sesión
-              </Link>
+              <StrengthIndicator password={password} />
             </div>
-          ) : (
-            <>
-              <form onSubmit={handleSubmit}>
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text font-bold text-[#5C6F68]">
-                      Nueva contraseña
-                    </span>
-                  </label>
-                  <StrengthPassword
-                    onChange={(val, isValid) => {
-                      setPassword(val);
-                      setIsPasswordStrong(isValid);
-                    }}
-                  />
-                </div>
 
-                <div className="form-control mb-6">
-                  <label className="label">
-                    <span className="label-text font-bold text-[#5C6F68]">
-                      Confirmar contraseña
-                    </span>
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    className="input input-bordered w-full focus:border-[#5C6F68]"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    disabled={isLoading}
-                  />
-                </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Confirmar contraseña</span>
+              </label>
+              <input
+                type="password"
+                className={`input input-bordered w-full bg-white ${confirmPassword && password !== confirmPassword ? "input-error" : ""}`}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
 
-                <Button
-                  type="submit"
-                  className="w-full mb-4 bg-[#5C6F68] text-white border-none hover:bg-[#8AA39B]"
-                  isLoading={isLoading}
-                  isDisabled={
-                    isLoading ||
-                    !isPasswordStrong ||
-                    password !== confirmPassword
-                  }
-                >
-                  Restablecer contraseña
-                </Button>
-              </form>
+            <Button
+              type="submit"
+              className="w-full mt-4 bg-[#455a51] hover:bg-[#384a42] text-white border-none"
+              isLoading={isLoading}
+            >
+              Restablecer contraseña
+            </Button>
+          </form>
 
-              <div className="text-center">
-                <Link
-                  to="/login"
-                  className="link link-hover text-sm text-[#8AA39B]"
-                >
-                  Volver al login
-                </Link>
-              </div>
-            </>
-          )}
+          <div className="text-center mt-6">
+            <Link to="/login" className="link link-hover text-sm opacity-60">
+              ¿Ya tienes cuenta? Inicia sesión
+            </Link>
+          </div>
         </Card>
       </div>
     </div>

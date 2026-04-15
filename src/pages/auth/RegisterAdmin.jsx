@@ -5,7 +5,7 @@ import { Button } from "../../components/ui/Button";
 import { Icon } from "../../components/ui/Icon";
 import { Card } from "../../components/ui/Card";
 import { showError } from "../../utils/alerts";
-import { StrengthIndicator } from "./components/StrengthIndicator";
+import { StrengthIndicator } from "../../components/StrengthIndicator";
 import logoHorizontal from "../../assets/logo-horizontal.png";
 
 export function RegisterAdmin() {
@@ -46,7 +46,6 @@ export function RegisterAdmin() {
     setIsLoading(true);
     try {
       const { confirmPassword, ...payload } = formData;
-
       await register(payload);
       navigate("/");
     } catch (err) {
@@ -59,10 +58,7 @@ export function RegisterAdmin() {
   };
 
   return (
-    <div
-      test-id="el-r5t8n2m1"
-      className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12"
-    >
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <img src={logoHorizontal} alt="FootMind" className="h-16 mx-auto" />
