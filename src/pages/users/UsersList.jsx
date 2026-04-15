@@ -98,7 +98,7 @@ export function UsersList() {
       showToast("Usuario eliminado correctamente");
       loadUsers();
     } catch (error) {
-      showError("No se pudo eliminar al usuario");
+      showError(error?.response?.data?.error || "No se pudo eliminar al usuario");
     }
   };
 

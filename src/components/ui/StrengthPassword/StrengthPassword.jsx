@@ -26,7 +26,7 @@ const getStatusText = (strength) => {
   return "Muy segura";
 };
 
-export function StrengthPassword({ onChange }) {
+export function StrengthPassword({ onChange, id }) {
   const [password, setPassword] = useState("");
   const strength = calculateStrength(password);
 
@@ -39,6 +39,7 @@ export function StrengthPassword({ onChange }) {
   return (
     <div className="w-full" test-id="el-s9t3r4p5">
       <input
+        id={id}
         type="password"
         placeholder="••••••••"
         className="input input-bordered w-full focus:border-primary outline-none"

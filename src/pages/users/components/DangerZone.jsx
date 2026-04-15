@@ -8,10 +8,10 @@ export function DangerZone({ isActive, onToggleStatus, onDelete }) {
       className="card bg-base-100 border border-error/30 shadow-sm overflow-hidden"
       test-id="el-r4t5y6u7"
     >
-      <div className="bg-error/5 p-4 border-b border-error/20 flex items-center gap-2 text-error font-bold">
-        <Icon name="warning" />
+      <h3 className="bg-error/5 p-4 border-b border-error/20 flex items-center gap-2 text-error font-bold">
+        <Icon name="warning" aria-hidden="true" />
         Zona de Peligro
-      </div>
+      </h3>
       <div className="card-body space-y-4">
         <div>
           <h4 className="font-semibold text-sm mb-1">Estado de la cuenta</h4>

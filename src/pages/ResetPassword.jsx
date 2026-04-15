@@ -47,10 +47,11 @@ export function ResetPassword() {
         <Card title="Nueva contraseña">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="rp-password" className="label">
                 <span className="label-text">Contraseña</span>
               </label>
               <StrengthPassword
+                id="rp-password"
                 onChange={(val, isValid) => {
                   setPassword(val);
                   setIsPasswordStrong(isValid);
@@ -59,10 +60,11 @@ export function ResetPassword() {
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="rp-confirmPassword" className="label">
                 <span className="label-text">Confirmar contraseña</span>
               </label>
               <input
+                id="rp-confirmPassword"
                 type="password"
                 className={`input input-bordered w-full ${confirmPassword && password !== confirmPassword ? "input-error" : ""}`}
                 value={confirmPassword}

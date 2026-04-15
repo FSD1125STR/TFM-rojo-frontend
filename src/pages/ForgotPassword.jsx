@@ -60,10 +60,11 @@ export function ForgotPassword() {
             contraseña.
           </p>
 
+          <div aria-live="polite" aria-atomic="true">
           {success ? (
             <div className="text-center">
               <div className="flex justify-center mb-4">
-                <div className="w-20 h-20 bg-[#e9f0ed] rounded-full flex items-center justify-center shrink-0 border border-success/10">
+                <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center shrink-0 border border-success/10">
                   <Icon
                     name="mark_email_read"
                     size="lg"
@@ -119,6 +120,7 @@ export function ForgotPassword() {
               </div>
             </>
           )}
+          </div>
         </Card>
       </div>
     </div>

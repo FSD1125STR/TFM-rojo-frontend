@@ -52,7 +52,7 @@ export function RegisterAdmin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
+    <div test-id="el-n2b8k4p6" className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <img src={logoHorizontal} alt="FootMind" className="h-16 mx-auto" />
@@ -61,10 +61,11 @@ export function RegisterAdmin() {
         <Card title="Nuevo Administrador">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-fullName" className="label">
                 <span className="label-text">Nombre completo</span>
               </label>
               <input
+                id="ra-fullName"
                 name="fullName"
                 type="text"
                 className="input input-bordered w-full"
@@ -74,10 +75,11 @@ export function RegisterAdmin() {
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-email" className="label">
                 <span className="label-text">Email profesional</span>
               </label>
               <input
+                id="ra-email"
                 name="email"
                 type="email"
                 placeholder="tu@email.com"
@@ -88,12 +90,13 @@ export function RegisterAdmin() {
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-registrationCode" className="label">
                 <span className="label-text font-bold text-primary">
                   Código de Registro Club
                 </span>
               </label>
               <input
+                id="ra-registrationCode"
                 name="registrationCode"
                 type="text"
                 placeholder="VCF-XXXX-XXXX"
@@ -104,10 +107,11 @@ export function RegisterAdmin() {
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-password" className="label">
                 <span className="label-text">Contraseña</span>
               </label>
               <StrengthPassword
+                id="ra-password"
                 onChange={(val, isValid) => {
                   setFormData((prev) => ({ ...prev, password: val }));
                   setIsPasswordStrong(isValid);
@@ -116,10 +120,11 @@ export function RegisterAdmin() {
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-confirmPassword" className="label">
                 <span className="label-text">Confirmar contraseña</span>
               </label>
               <input
+                id="ra-confirmPassword"
                 name="confirmPassword"
                 type="password"
                 placeholder="••••••••"
