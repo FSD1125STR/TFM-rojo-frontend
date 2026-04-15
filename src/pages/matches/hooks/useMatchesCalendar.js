@@ -3,7 +3,7 @@ import { useAuth } from '../../../hooks/useAuth';
 import { getMatches } from '../../../services/matchesService';
 
 export function useMatchesCalendar() {
-  const { user, isAdmin, canViewAll } = useAuth();
+  const { user, canViewAll } = useAuth();
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
