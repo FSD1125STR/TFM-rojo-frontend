@@ -47,6 +47,7 @@ export function Sidebar({
               icon={item.icon}
               label={item.label}
               to={item.to}
+              end={item.end}
               collapsed={isCollapsed}
               onClick={isDrawer ? onNavigate : undefined}
               showLiveDot={item.to === '/directo' && hasLiveMatch}

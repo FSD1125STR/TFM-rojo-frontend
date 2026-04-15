@@ -211,6 +211,9 @@ export function MatchesList() {
       <PageHeader
         title="Partidos"
         subtitle="Gestiona los partidos del equipo"
+        secondaryActionLabel="Ver calendario"
+        secondaryActionIcon="calendar_month"
+        onSecondaryAction={() => navigate('/partidos/calendario')}
         {...(canCreate && {
           actionLabel: "Crear partido",
           actionIcon: "add",

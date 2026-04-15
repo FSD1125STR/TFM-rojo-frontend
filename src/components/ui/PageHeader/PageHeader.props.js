@@ -8,4 +8,7 @@ export const PageHeaderProps = {
   actionLabel: PropTypes.string,
   actionIcon: PropTypes.string,
   onAction: PropTypes.func,
+  secondaryActionLabel: PropTypes.string,
+  secondaryActionIcon: PropTypes.string,
+  onSecondaryAction: PropTypes.func,
 };
