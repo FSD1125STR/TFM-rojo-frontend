@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { showError, showToast } from '../utils/alerts';
 import { LOGO_HORIZONTAL_URL as logoHorizontal } from '../assets/brand.js';
-import { StrengthPassword } from '../components/ui/StrengthPassword';
+import { StrengthIndicator } from '../components/ui/StrengthIndicator';
 
 export function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -14,7 +14,6 @@ export function ResetPassword() {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isPasswordStrong, setIsPasswordStrong] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   if (!token) return <Navigate to="/login" replace />;
@@ -50,13 +49,17 @@ export function ResetPassword() {
               <label htmlFor="rp-password" className="label">
                 <span className="label-text">Contraseña</span>
               </label>
-              <StrengthPassword
+              <input
                 id="rp-password"
-                onChange={(val, isValid) => {
-                  setPassword(val);
-                  setIsPasswordStrong(isValid);
-                }}
+                type="password"
+                placeholder="••••••••"
+                className="input input-bordered w-full"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+                autoComplete="new-password"
               />
+              {password && <StrengthIndicator password={password} />}
             </div>
 
             <div className="form-control">
@@ -78,7 +81,7 @@ export function ResetPassword() {
               variant="primary"
               className="w-full"
               isLoading={isLoading}
-              isDisabled={isLoading || !isPasswordStrong || password !== confirmPassword}
+              isDisabled={isLoading}
             >
               Restablecer contraseña
             </Button>
