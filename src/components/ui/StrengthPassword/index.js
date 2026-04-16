@@ -1,1 +1,0 @@
-export { StrengthPassword } from "./StrengthPassword";

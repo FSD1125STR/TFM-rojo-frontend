@@ -107,7 +107,6 @@ src/
 │   │   ├── SelectFilter/  # Single (DaisyUI) + Multi (Preline)
 │   │   ├── StatBox/
 │   │   ├── StatsCard/
-│   │   ├── StrengthPassword/
 │   │   ├── Tabs/
 │   │   ├── ThemeToggle/
 │   │   ├── Timeline/
