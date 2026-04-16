@@ -3,7 +3,7 @@ import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
-import { showError, showToast } from '../utils/alerts';
+import { showError, showToast, getApiErrorMsg } from '../utils/alerts';
 import { LOGO_HORIZONTAL_URL as logoHorizontal } from '../assets/brand.js';
 import { StrengthIndicator } from '../components/ui/StrengthIndicator';
 
@@ -25,7 +25,7 @@ export function ResetPassword() {
       showError("El enlace de recuperación no es válido o ha expirado");
       navigate("/login", { replace: true });
     });
-  }, [token]);
+  }, [token, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,7 +39,7 @@ export function ResetPassword() {
       showToast("Contraseña actualizada correctamente");
       navigate("/login");
     } catch (err) {
-      showError(err.response?.data?.error || "Error al restablecer");
+      showError(getApiErrorMsg(err, "Error al restablecer"));
     } finally {
       setIsLoading(false);
     }
@@ -90,7 +90,6 @@ export function ResetPassword() {
               variant="primary"
               className="w-full"
               isLoading={isLoading}
-              isDisabled={isLoading}
             >
               Restablecer contraseña
             </Button>

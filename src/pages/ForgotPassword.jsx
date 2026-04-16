@@ -4,7 +4,7 @@ import { authService } from '../services/authService';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Icon } from '../components/ui/Icon';
-import { showError } from '../utils/alerts';
+import { showError, getApiErrorMsg } from '../utils/alerts';
 import { LOGO_HORIZONTAL_URL as logoHorizontal } from '../assets/brand.js';
 
 export function ForgotPassword() {
@@ -15,28 +15,13 @@ export function ForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email) {
-      showError("Por favor, introduce tu email");
-      return;
-    }
-
-    if (!email.includes("@")) {
-      showError("Por favor, introduce un email válido");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
       await authService.forgotPassword(email);
       setSuccess(true);
     } catch (err) {
-      const message =
-        err.response?.data?.error ||
-        (err.response
-          ? "Error al enviar el email"
-          : "Sin conexión. Verifica tu internet");
-      showError(message);
+      showError(getApiErrorMsg(err, err.response ? "Error al enviar el email" : "Sin conexión. Verifica tu internet"));
     } finally {
       setIsLoading(false);
     }
@@ -49,9 +34,7 @@ export function ForgotPassword() {
     >
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <img src={logoHorizontal} alt="FootMind" className="h-16" />
-          </div>
+          <img src={logoHorizontal} alt="FootMind" className="h-16 mx-auto" />
         </div>
 
         <Card title="Recuperar contraseña">
@@ -68,7 +51,7 @@ export function ForgotPassword() {
                   <Icon
                     name="mark_email_read"
                     size="lg"
-                    className="text-green-600"
+                    className="text-success"
                   />
                 </div>
               </div>
@@ -104,7 +87,6 @@ export function ForgotPassword() {
                   variant="primary"
                   className="w-full mb-4"
                   isLoading={isLoading}
-                  isDisabled={isLoading}
                 >
                   Enviar enlace
                 </Button>

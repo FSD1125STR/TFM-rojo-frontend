@@ -52,8 +52,10 @@ export function UserPermissions({ role }) {
                   perm.status ? "text-success" : "text-base-content/30"
                 }
                 size="sm"
+                aria-hidden="true"
               />
               <span className={`text-sm ${!perm.status && "opacity-50"}`}>
+                <span className="sr-only">{perm.status ? "Permitido: " : "Denegado: "}</span>
                 {perm.label}
               </span>
             </div>
