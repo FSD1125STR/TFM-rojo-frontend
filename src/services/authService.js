@@ -25,6 +25,11 @@ export const authService = {
     return response.data;
   },
 
+  async validateResetToken(token) {
+    const response = await api.get(`/auth/validate-reset-token?token=${token}`);
+    return response.data;
+  },
+
   async resetPassword(token, password) {
     const response = await api.post("/auth/reset-password", {
       token,

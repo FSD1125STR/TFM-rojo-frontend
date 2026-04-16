@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useSearchParams, Link, useNavigate, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
@@ -16,7 +16,16 @@ export function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  if (!token) return <Navigate to="/login" replace />;
+  useEffect(() => {
+    if (!token) {
+      navigate("/login", { replace: true });
+      return;
+    }
+    authService.validateResetToken(token).catch(() => {
+      showError("El enlace de recuperación no es válido o ha expirado");
+      navigate("/login", { replace: true });
+    });
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
