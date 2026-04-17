@@ -301,6 +301,44 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit, isAdmin
         </div>
       </div>
 
+      {formData.estado === 'Sancionado' && (
+        <div className="grid grid-cols-2 gap-3 mb-3 p-3 rounded-xl bg-warning/10 border border-warning/30">
+          <div className="form-control">
+            <label htmlFor="sanctionMatches" className="label py-1">
+              <span className={LABEL_CLS}>Partidos de sanción <span className="text-error">*</span></span>
+            </label>
+            <div className="relative">
+              <Icon name="block" className={ICON_CLS} />
+              <input
+                id="sanctionMatches"
+                type="number"
+                name="sanctionMatches"
+                value={formData.sanctionMatches}
+                onChange={handleChange}
+                className={INPUT_ICON_CLS}
+                placeholder="1"
+                min="1"
+                max="99"
+                required
+              />
+            </div>
+          </div>
+          <div className="form-control">
+            <label htmlFor="sanctionStartDate" className="label py-1">
+              <span className={LABEL_CLS}>Fecha inicio sanción</span>
+            </label>
+            <input
+              id="sanctionStartDate"
+              type="date"
+              name="sanctionStartDate"
+              value={formData.sanctionStartDate}
+              onChange={handleChange}
+              className={INPUT_CLS}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="form-control">
         <p id="player-photo-label" className={LABEL_CLS}>Foto del jugador</p>
         <div className="flex items-center gap-4 w-full">
@@ -337,6 +375,8 @@ PlayerForm.INITIAL_DATA = {
   categoriaId: '',
   foto: null,
   photoUrl: '',
+  sanctionMatches: '',
+  sanctionStartDate: '',
 };
 
 PlayerForm.propTypes = PlayerFormProps;

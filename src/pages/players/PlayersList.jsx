@@ -11,6 +11,8 @@ import { useAuth } from '../../hooks/useAuth';
 import { getPlayers, createPlayer, updatePlayer, archivePlayer, updatePlayerStatus } from '../../services/playersService';
 import { showConfirm, showSuccess, showError, showErrorInModal, showToast, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
 
+const STATUS_TO_ENUM = { 'Disponible': 'DISPONIBLE', 'Lesionado': 'LESIONADO', 'Sancionado': 'SANCIONADO', 'No disponible': 'NO_DISPONIBLE' };
+
 export function PlayersList() {
   const navigate = useNavigate();
   const { checkPermission } = usePermissions();
@@ -57,9 +59,13 @@ export function PlayersList() {
   };
 
   const handleGuardarJugador = async (datos) => {
+    const SKIP_FIELDS = new Set([
+      'foto', 'photoUrl', 'edad', 'sanctionMatches', 'sanctionStartDate',
+      ...(jugadorSeleccionado ? ['status'] : []),
+    ]);
     const fd = new FormData();
     Object.entries(datos).forEach(([k, v]) => {
-      if (k === 'foto' || k === 'photoUrl' || k === 'edad') return;
+      if (SKIP_FIELDS.has(k)) return;
       if (v !== undefined && v !== null) fd.append(k, v);
     });
     if (datos.foto instanceof File) fd.append('photo', datos.foto);
@@ -73,6 +79,15 @@ export function PlayersList() {
     try {
       if (jugadorSeleccionado) {
         await updatePlayer(jugadorSeleccionado.id, fd);
+        const currentStatusEnum = STATUS_TO_ENUM[jugadorSeleccionado.status] ?? jugadorSeleccionado.status;
+        if (datos.status && datos.status !== currentStatusEnum) {
+          const statusPayload = { status: datos.status };
+          if (datos.status === 'SANCIONADO') {
+            statusPayload.sanctionMatches = datos.sanctionMatches ?? 1;
+            if (datos.sanctionStartDate) statusPayload.sanctionStartDate = datos.sanctionStartDate;
+          }
+          await updatePlayerStatus(jugadorSeleccionado.id, statusPayload);
+        }
       } else {
         await createPlayer(fd);
       }

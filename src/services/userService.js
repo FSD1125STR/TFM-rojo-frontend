@@ -16,7 +16,7 @@ export async function createUser(userData) {
 }
 
 export async function updateUser(id, userData) {
-  const { data } = await api.put(`/users/${id}`, userData);
+  const { data } = await api.patch(`/users/${id}`, userData);
   return data;
 }
 

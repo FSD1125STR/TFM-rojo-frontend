@@ -45,13 +45,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const register = useCallback(async (userData) => {
-    const { token: newToken, user: newUser } =
-      await authService.register(userData);
-
-    setToken(newToken);
-    setUser(newUser);
-
-    return { token: newToken, user: newUser };
+    const result = await authService.register(userData);
+    return result;
   }, []);
 
   const logout = useCallback(() => {

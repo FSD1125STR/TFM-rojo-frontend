@@ -129,6 +129,7 @@ export function UsersList() {
         pagination
         paginationPerPage={8}
         className="mt-4"
+        onRowClick={(row) => navigate(`/usuarios/${row._id}`)}
       />
 
       <ModalUser

@@ -127,7 +127,7 @@ export function UserDetail() {
                 <InfoItem
                   icon="admin_panel_settings"
                   label="Rol"
-                  value={
+                  badge={
                     <Badge
                       variant={roleStyle.variant}
                       icon={roleStyle.icon}

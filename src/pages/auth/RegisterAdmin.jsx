@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Button } from "../../components/ui/Button";
 import { Icon } from "../../components/ui/Icon";
 import { Card } from "../../components/ui/Card";
-import { showError } from "../../utils/alerts";
+import { showError, showToast } from "../../utils/alerts";
 import { StrengthIndicator } from "../../components/ui/StrengthIndicator";
 import { LOGO_HORIZONTAL_URL as logoHorizontal } from '../../assets/brand.js';
 
@@ -47,7 +47,8 @@ export function RegisterAdmin() {
     try {
       const { confirmPassword, ...payload } = formData;
       await register(payload);
-      navigate("/");
+      showToast("Administrador registrado correctamente. Inicia sesión para continuar.");
+      navigate("/login");
     } catch (err) {
       showError(
         err.response?.data?.error || "Error al registrar Administrador",

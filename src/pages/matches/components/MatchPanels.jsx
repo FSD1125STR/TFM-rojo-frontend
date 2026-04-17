@@ -176,7 +176,7 @@ export function MatchPanels({ panels, match, callupPlayers = [] }) {
 
   return (
     <div test-id="el-f7a8b9c0" className="flex flex-col gap-4">
-      <Collapse title="Goleadores">
+      <Collapse title="Goleadores" defaultOpen>
         <ScorersSection
           scorers={p.scorers}
           homeTeamId={homeTeamId}
@@ -185,7 +185,7 @@ export function MatchPanels({ panels, match, callupPlayers = [] }) {
         />
       </Collapse>
 
-      <Collapse title="Tarjetas">
+      <Collapse title="Tarjetas" defaultOpen>
         <CardsSection
           cards={p.cards}
           homeTeamId={homeTeamId}
@@ -194,7 +194,7 @@ export function MatchPanels({ panels, match, callupPlayers = [] }) {
         />
       </Collapse>
 
-      <Collapse title="Cambios">
+      <Collapse title="Cambios" defaultOpen>
         <SubstitutionsSection
           substitutions={p.substitutions}
           homeTeamId={homeTeamId}
