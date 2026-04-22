@@ -8,7 +8,7 @@ export function useUsersTable({ onVerDetalle, onEditar, onEliminar, onToggleStat
       key: "fullName",
       label: "Usuario",
       sortable: true,
-      width: "30%",
+      width: "25%",
       render: (value, row) => (
         <div className="flex items-center gap-3 pointer-events-none">
           <Avatar name={value} src={row.photoUrl || undefined} size="sm" />
@@ -20,13 +20,13 @@ export function useUsersTable({ onVerDetalle, onEditar, onEliminar, onToggleStat
       key: "email",
       label: "Email",
       sortable: true,
-      width: "25%",
+      width: "22%",
     },
     {
       key: "role",
       label: "Rol",
       sortable: true,
-      width: "20%",
+      width: "17%",
       align: "center",
       render: (value) => {
         const config = ROLE_CONFIGS[value?.toLowerCase()] || {
@@ -51,7 +51,7 @@ export function useUsersTable({ onVerDetalle, onEditar, onEliminar, onToggleStat
     {
       key: "categoryId",
       label: "Categoría",
-      width: "13%",
+      width: "11%",
       align: "center",
       render: (cat) => cat?.name || <span className="opacity-30">—</span>,
     },
