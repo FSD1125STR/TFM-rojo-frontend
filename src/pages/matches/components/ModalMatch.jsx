@@ -67,7 +67,7 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
   }, [formData.journey, formData.categoryId, isEditing, initialData]);
 
   useEffect(() => {
-    if (isEditing || !formData.categoryId || !formData.opponentId) {
+    if (!isOpen || isEditing || !formData.categoryId || !formData.opponentId) {
       setDuplicateError('');
       return;
     }
@@ -82,7 +82,7 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
         }
       })
       .catch(() => setDuplicateError(''));
-  }, [formData.categoryId, formData.opponentId, formData.isHome, isEditing]);
+  }, [isOpen, formData.categoryId, formData.opponentId, formData.isHome, isEditing]);
 
   useEffect(() => {
     const isComplete = formData.dateTime.length === DATETIME_LOCAL_LENGTH;
