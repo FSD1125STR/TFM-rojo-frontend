@@ -8,6 +8,7 @@ import { PageHeader } from '../../components/ui/PageHeader';
 import { StatsCard } from '../../components/ui/StatsCard';
 import { CardsList } from '../../components/ui/CardsList';
 import { ModalMatch } from './components/ModalMatch';
+import { MatchMinute } from './live/components/MatchMinute';
 import { showToast, showError, showErrorInModal, showConfirm, showInputPrompt, showLoadingInModal, closeLoading } from '../../utils/alerts';
 import {
   estadoMatchConfig,
@@ -15,6 +16,7 @@ import {
   formatFechaRelativa,
   formatFechaAbsoluta,
   toLocalDateTimeInput,
+  LIVE_STATUSES,
 } from './data/matchesConfig';
 
 export function MatchesList() {
@@ -103,6 +105,7 @@ export function MatchesList() {
       items.push({
         label: 'En directo',
         icon: 'cell_tower',
+        indicator: true,
         onClick: (row) => navigate(`/directo/${row._id}`),
       });
     }
@@ -123,7 +126,7 @@ export function MatchesList() {
       });
     }
 
-    if (checkPermission('matches.edit') && match.status !== 'finished') {
+    if (checkPermission('matches.edit') && match.status !== 'finished' && !LIVE_STATUSES.has(match.liveStatus)) {
       items.push({
         label: 'Editar',
         icon: 'edit',
@@ -156,14 +159,15 @@ export function MatchesList() {
   };
 
   const renderContent = (match) => {
+    const isLive = LIVE_STATUSES.has(match.liveStatus);
     const cfg = estadoMatchConfig[match.status] || estadoMatchConfig.scheduled;
     const label = statusLabels[match.status] || match.status;
     const homeName = match.homeTeamId?.name || 'Equipo local';
     const awayName = match.awayTeamId?.name || 'Equipo visitante';
 
-    const badges = [
-      { label, variant: cfg.variant, icon: cfg.icon, width: cfg.width },
-    ];
+    const badges = isLive
+      ? [{ label: 'En curso', variant: 'warning', icon: 'cell_tower' }]
+      : [{ label, variant: cfg.variant, icon: cfg.icon, width: cfg.width }];
 
     const metaItems = [
       { icon: 'calendar_today', text: <span className="tooltip tooltip-right" data-tip={formatFechaAbsoluta(match.dateTime)}>{formatFechaRelativa(match.dateTime)}</span> },
@@ -172,13 +176,17 @@ export function MatchesList() {
       ...(canViewAll && match.categoryId?.name ? [{ icon: 'group', text: match.categoryId.name }] : []),
     ];
 
-    const content = match.status === 'finished' ? (
+    const showScore = match.status === 'finished' || isLive;
+    const content = showScore ? (
       <div className="flex items-center gap-4">
         <div className="text-center">
           <p className="text-sm text-base-content/50 m-0">{homeName}</p>
           <p className="text-3xl font-bold text-base-content m-0">{match.homeScore ?? '-'}</p>
         </div>
-        <span className="text-2xl font-bold text-base-content/30">-</span>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-2xl font-bold text-base-content/30">-</span>
+          {isLive && <MatchMinute match={match} />}
+        </div>
         <div className="text-center">
           <p className="text-sm text-base-content/50 m-0">{awayName}</p>
           <p className="text-3xl font-bold text-base-content m-0">{match.awayScore ?? '-'}</p>
@@ -193,7 +201,7 @@ export function MatchesList() {
       badges,
       meta: metaItems,
       content,
-      className: statusCardClasses[match.status] || '',
+      className: isLive ? '!bg-warning/5 border-warning/20' : (statusCardClasses[match.status] || ''),
     };
   };
 
@@ -202,6 +210,9 @@ export function MatchesList() {
       <PageHeader
         title="Partidos"
         subtitle="Gestiona los partidos del equipo"
+        secondaryActionLabel="Ver calendario"
+        secondaryActionIcon="calendar_month"
+        onSecondaryAction={() => navigate('/partidos/calendario')}
         {...(canCreate && {
           actionLabel: "Crear partido",
           actionIcon: "add",
@@ -219,20 +230,20 @@ export function MatchesList() {
         />
         <StatsCard
           title="% Victorias"
-          value={kpis?.winRate != null ? `${kpis.winRate}%` : '–'}
+          value={kpis?.winRate != null ? `${(+kpis.winRate).toFixed(2)}%` : '–'}
           icon="emoji_events"
           variant={kpis?.winRate >= 50 ? 'success' : kpis?.winRate >= 35 ? 'warning' : 'error'}
         />
         <StatsCard
           title="GF / Partido"
-          value={kpis?.goalsForPerMatch ?? '–'}
+          value={kpis?.goalsForPerMatch != null ? (+kpis.goalsForPerMatch).toFixed(2) : '–'}
           subtitle={kpis ? `${kpis.totalGoalsFor} goles totales` : undefined}
           icon="sports_soccer"
           variant={kpis?.goalsForPerMatch >= 2 ? 'success' : kpis?.goalsForPerMatch >= 1 ? 'warning' : 'error'}
         />
         <StatsCard
           title="GC / Partido"
-          value={kpis?.goalsAgainstPerMatch ?? '–'}
+          value={kpis?.goalsAgainstPerMatch != null ? (+kpis.goalsAgainstPerMatch).toFixed(2) : '–'}
           icon="shield"
           variant={kpis?.goalsAgainstPerMatch <= 1 ? 'success' : kpis?.goalsAgainstPerMatch <= 2 ? 'warning' : 'error'}
         />

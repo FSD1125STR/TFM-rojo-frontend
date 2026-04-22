@@ -4,9 +4,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { Button } from "../../components/ui/Button";
 import { Icon } from "../../components/ui/Icon";
 import { Card } from "../../components/ui/Card";
-import { showError } from "../../utils/alerts";
-import { StrengthIndicator } from "./components/StrengthIndicator";
-import logoHorizontal from "../../assets/logo-horizontal.png";
+import { showError, showToast } from "../../utils/alerts";
+import { StrengthIndicator } from "../../components/ui/StrengthIndicator";
+import { LOGO_HORIZONTAL_URL as logoHorizontal } from '../../assets/brand.js';
 
 export function RegisterAdmin() {
   const navigate = useNavigate();
@@ -20,8 +20,8 @@ export function RegisterAdmin() {
     registrationCode: "",
   });
 
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   if (authLoading) return null;
   if (isAuthenticated) return <Navigate to="/" replace />;
@@ -46,9 +46,9 @@ export function RegisterAdmin() {
     setIsLoading(true);
     try {
       const { confirmPassword, ...payload } = formData;
-
       await register(payload);
-      navigate("/");
+      showToast("Administrador registrado correctamente. Inicia sesión para continuar.");
+      navigate("/login");
     } catch (err) {
       showError(
         err.response?.data?.error || "Error al registrar Administrador",
@@ -59,10 +59,7 @@ export function RegisterAdmin() {
   };
 
   return (
-    <div
-      test-id="el-r5t8n2m1"
-      className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12"
-    >
+    <div test-id="el-n2b8k4p6" className="min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <img src={logoHorizontal} alt="FootMind" className="h-16 mx-auto" />
@@ -71,10 +68,11 @@ export function RegisterAdmin() {
         <Card title="Nuevo Administrador">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-fullName" className="label">
                 <span className="label-text">Nombre completo</span>
               </label>
               <input
+                id="ra-fullName"
                 name="fullName"
                 type="text"
                 className="input input-bordered w-full"
@@ -84,10 +82,11 @@ export function RegisterAdmin() {
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-email" className="label">
                 <span className="label-text">Email profesional</span>
               </label>
               <input
+                id="ra-email"
                 name="email"
                 type="email"
                 placeholder="tu@email.com"
@@ -98,12 +97,13 @@ export function RegisterAdmin() {
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-registrationCode" className="label">
                 <span className="label-text font-bold text-primary">
                   Código de Registro Club
                 </span>
               </label>
               <input
+                id="ra-registrationCode"
                 name="registrationCode"
                 type="text"
                 placeholder="VCF-XXXX-XXXX"
@@ -114,11 +114,12 @@ export function RegisterAdmin() {
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-password" className="label">
                 <span className="label-text">Contraseña</span>
               </label>
               <div className="relative">
                 <input
+                  id="ra-password"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
@@ -131,22 +132,18 @@ export function RegisterAdmin() {
                   className="absolute top-0 right-0 h-full px-3 flex items-center text-base-content/50 hover:text-base-content transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  <Icon
-                    name={showPassword ? "visibility_off" : "visibility"}
-                    size="sm"
-                  />
+                  <Icon name={showPassword ? "visibility_off" : "visibility"} size="sm" />
                 </button>
               </div>
-              {formData.password && (
-                <StrengthIndicator password={formData.password} />
-              )}
+              {formData.password && <StrengthIndicator password={formData.password} />}
             </div>
 
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="ra-confirmPassword" className="label">
                 <span className="label-text">Confirmar contraseña</span>
               </label>
               <input
+                id="ra-confirmPassword"
                 name="confirmPassword"
                 type="password"
                 placeholder="••••••••"
@@ -161,6 +158,7 @@ export function RegisterAdmin() {
               variant="primary"
               className="w-full mt-4"
               isLoading={isLoading}
+              isDisabled={isLoading}
             >
               Registrar Administrador
             </Button>

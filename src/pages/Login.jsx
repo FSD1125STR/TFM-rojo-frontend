@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button';
 import { Icon } from '../components/ui/Icon';
 import { Card } from '../components/ui/Card';
 import { showError, showToast } from '../utils/alerts';
-import logoHorizontal from '../assets/logo-horizontal.png';
+import { LOGO_HORIZONTAL_URL as logoHorizontal } from '../assets/brand.js';
 
 export function Login() {
   const navigate = useNavigate();

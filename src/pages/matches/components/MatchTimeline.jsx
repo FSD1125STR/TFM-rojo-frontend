@@ -1,5 +1,27 @@
 import { Timeline } from '../../../components/ui/Timeline';
 
+const SYSTEM_TYPES = new Set(['match_start', 'half_time', 'full_time']);
+
+function sortKey(e) {
+  if (e.type === 'match_start') return -Infinity;
+  if (e.type === 'full_time') return Infinity;
+  return e.minute;
+}
+
+function normalizeTimeline(events) {
+  if (!events?.length) return [];
+  const systemLatest = {};
+  for (const e of events) {
+    if (!SYSTEM_TYPES.has(e.type)) continue;
+    const id = String(e._id ?? e.id ?? '');
+    const cur = systemLatest[e.type];
+    if (!cur || id > String(cur._id ?? cur.id ?? '')) systemLatest[e.type] = e;
+  }
+  return events
+    .filter((e) => !SYSTEM_TYPES.has(e.type) || systemLatest[e.type] === e)
+    .sort((a, b) => sortKey(a) - sortKey(b));
+}
+
 const EVENT_LABELS = {
   goal:         'Gol',
   yellow_card:  'Tarjeta amarilla',
@@ -74,9 +96,9 @@ export function MatchTimeline({ timeline, match }) {
     <Timeline
       title="Timeline"
       className="shadow-md"
-      items={timeline ?? []}
+      items={normalizeTimeline(timeline)}
       getKey={(_, i) => i}
-      isSystem={(e) => e.type === 'half_time' || e.type === 'full_time'}
+      isSystem={(e) => e.type === 'half_time' || e.type === 'full_time' || e.type === 'match_start'}
       isLeft={(e) => !!(e.teamId && e.teamId === match.homeTeam.id)}
       renderMarker={(e) => (
         <span className="relative text-xs font-black text-base-content/40 bg-base-200 px-2">
@@ -101,7 +123,7 @@ export function MatchTimeline({ timeline, match }) {
         <div className="flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1">
           <EventIcon type={e.type} />
           <span className="text-xs font-bold text-base-content/40 uppercase tracking-wide">
-            {e.type === 'half_time' ? 'Descanso' : `Final · ${e.minute}'`}
+            {e.type === 'match_start' ? 'Inicio' : e.type === 'half_time' ? 'Descanso' : `Final · ${e.minute}'`}
           </span>
         </div>
       )}

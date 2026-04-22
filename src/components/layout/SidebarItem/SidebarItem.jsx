@@ -2,11 +2,12 @@ import { NavLink } from 'react-router-dom';
 import { SidebarItemProps } from './SidebarItem.props';
 import { Icon } from '../../ui/Icon/Icon';
 
-export function SidebarItem({ icon, label, to, collapsed = false, onClick, showLiveDot = false }) {
+export function SidebarItem({ icon, label, to, end = false, collapsed = false, onClick, showLiveDot = false }) {
   return (
     <li test-id="el-a3b4c5d6">
       <NavLink
         to={to}
+        end={end}
         onClick={onClick}
         className={({ isActive }) =>
           `${isActive ? 'menu-item-active bg-accent text-accent-content font-semibold' : ''} ${collapsed ? 'justify-center' : ''}`

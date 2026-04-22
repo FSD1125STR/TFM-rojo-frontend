@@ -27,21 +27,25 @@ export function ModalPlayer({ isOpen = false, onClose, onSave, initialData = nul
       if (initialData) {
         setFormData({
           ...PlayerForm.INITIAL_DATA,
-          nombre:          initialData.firstName ?? '',
-          apellidos:       initialData.lastName  ?? '',
-          fechaNacimiento: initialData.birthDate
+          nombre:            initialData.firstName ?? '',
+          apellidos:         initialData.lastName  ?? '',
+          fechaNacimiento:   initialData.birthDate
             ? new Date(initialData.birthDate).toISOString().split('T')[0] : '',
-          telefono:        initialData.phone     ?? '',
-          ciudad:          initialData.city      ?? '',
-          provincia:       initialData.province  ?? '',
-          direccion:       initialData.address   ?? '',
-          email:           initialData.email     ?? '',
-          dorsal:          initialData.dorsal    ?? '',
-          posicion:        initialData.position  ?? '',
-          estado:          initialData.status    ?? '',
-          foto:            null,
-          photoUrl:        initialData.photoUrl  ?? '',
-          categoriaId:     initialData.categoryId ?? '',
+          telefono:          initialData.phone     ?? '',
+          ciudad:            initialData.city      ?? '',
+          provincia:         initialData.province  ?? '',
+          direccion:         initialData.address   ?? '',
+          email:             initialData.email     ?? '',
+          dorsal:            initialData.dorsal    ?? '',
+          posicion:          initialData.position  ?? '',
+          estado:            initialData.status    ?? '',
+          foto:              null,
+          photoUrl:          initialData.photoUrl  ?? '',
+          categoriaId:       initialData.categoryId ?? '',
+          sanctionMatches:   initialData.sanction?.totalMatches ?? '',
+          sanctionStartDate: initialData.sanction?.startDate
+            ? new Date(initialData.sanction.startDate).toISOString().split('T')[0]
+            : '',
         });
         setEdad(PlayerForm.calcularEdad(
           initialData.birthDate
@@ -80,20 +84,22 @@ export function ModalPlayer({ isOpen = false, onClose, onSave, initialData = nul
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave?.({
-      fullName:   `${formData.nombre} ${formData.apellidos}`.trim(),
-      birthDate:  formData.fechaNacimiento,
-      position:   POSITION_MAP[formData.posicion] ?? formData.posicion,
-      status:     STATUS_MAP[formData.estado]     ?? formData.estado,
-      dorsal:     formData.dorsal ? parseInt(formData.dorsal) : undefined,
-      email:      formData.email,
-      phone:      formData.telefono,
-      city:       formData.ciudad,
-      province:   formData.provincia,
-      address:    formData.direccion,
-      categoryId: formData.categoriaId || undefined,
-      foto:       formData.foto,
-      photoUrl:   formData.photoUrl,
+      fullName:          `${formData.nombre} ${formData.apellidos}`.trim(),
+      birthDate:         formData.fechaNacimiento,
+      position:          POSITION_MAP[formData.posicion] ?? formData.posicion,
+      status:            STATUS_MAP[formData.estado]     ?? formData.estado,
+      dorsal:            formData.dorsal ? parseInt(formData.dorsal) : undefined,
+      email:             formData.email,
+      phone:             formData.telefono,
+      city:              formData.ciudad,
+      province:          formData.provincia,
+      address:           formData.direccion,
+      categoryId:        formData.categoriaId || undefined,
+      foto:              formData.foto,
+      photoUrl:          formData.photoUrl,
       edad,
+      sanctionMatches:   formData.sanctionMatches ? parseInt(formData.sanctionMatches) : undefined,
+      sanctionStartDate: formData.sanctionStartDate || undefined,
     });
   };
 

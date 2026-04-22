@@ -1,34 +1,50 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { Button } from '../../components/ui/Button';
-import { MatchInfoCard } from './components/MatchInfoCard';
 import { MatchScoreHeader } from './components/MatchScoreHeader';
 import { MatchTimeline } from './components/MatchTimeline';
 import { MatchPanels } from './components/MatchPanels';
 import { getMatchById } from '../../services/matchesService';
-import { statusLabels } from './data/matchesConfig';
+import { getCallupByMatch } from '../../services/callupsService';
 
 export function MatchDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [match, setMatch] = useState(null);
+  const [callupPlayers, setCallupPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getMatchById(id)
-      .then((data) => {
-        if (data?.forbidden) {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+
+    async function load() {
+      try {
+        const matchData = await getMatchById(id);
+        if (cancelled) return;
+        if (matchData?.forbidden) {
           setError('forbidden');
-        } else {
-          setMatch(data);
+          return;
         }
-      })
-      .catch(() => setError('error'))
-      .finally(() => setLoading(false));
-  }, [id]);
+        setMatch(matchData);
+        const callupData = await getCallupByMatch(id).catch(() => null);
+        if (cancelled) return;
+        setCallupPlayers(callupData?.players ?? []);
+      } catch {
+        if (!cancelled) setError('error');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
+  }, [id, location.key]);
 
   if (loading) {
     return <div className="p-6 text-center">Cargando...</div>;
@@ -53,34 +69,26 @@ export function MatchDetail() {
     );
   }
 
-  const isFinished = match.status === 'finished';
-  const title = isFinished ? '' : `${match.homeTeam.name} vs ${match.awayTeam.name}`;
-  const subtitle = isFinished ? undefined : `Jornada ${match.journey} · ${match.season} · ${statusLabels[match.status]}`;
+
+  const homeName = match.homeTeam?.name || 'Equipo local';
+  const awayName = match.awayTeam?.name || 'Equipo visitante';
+  const title = `Jornada ${match.journey ?? ''}: ${homeName} vs ${awayName}`;
 
   return (
     <div test-id="el-m8t5c3h1">
       <PageHeader
         title={title}
-        subtitle={subtitle}
         showBack
-        onBack={() => navigate('/partidos')}
+        onBack={() => navigate(location.state?.from ?? '/partidos')}
       />
 
-      {!isFinished && (
-        <div className="mt-6 max-w-xl">
-          <MatchInfoCard match={match} />
+      <div className="flex flex-col gap-4 mt-6">
+        <MatchScoreHeader match={match} />
+        <div className="grid grid-cols-2 gap-4">
+          <MatchTimeline timeline={match.timeline} match={match} />
+          <MatchPanels panels={match.panels} match={match} callupPlayers={callupPlayers} />
         </div>
-      )}
-
-      {isFinished && (
-        <div className="flex flex-col gap-4 mt-6">
-          <MatchScoreHeader match={match} />
-          <div className="grid grid-cols-2 gap-4">
-            <MatchTimeline timeline={match.timeline} match={match} />
-            <MatchPanels panels={match.panels} match={match} />
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

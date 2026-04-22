@@ -1,12 +1,21 @@
 import {
+  createContext,
   useState,
   useEffect,
   useCallback,
   useMemo,
 } from "react";
-import PropTypes from "prop-types";
 import { authService } from "../services/authService";
-import { AuthContext } from "./AuthContext.js";
+
+export const AuthContext = createContext({
+  user: null,
+  token: null,
+  isAuthenticated: false,
+  isLoading: true,
+  login: async () => {},
+  register: async () => {},
+  logout: () => {},
+});
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -36,13 +45,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const register = useCallback(async (userData) => {
-    const { token: newToken, user: newUser } =
-      await authService.register(userData);
-
-    setToken(newToken);
-    setUser(newUser);
-
-    return { token: newToken, user: newUser };
+    const result = await authService.register(userData);
+    return result;
   }, []);
 
   const logout = useCallback(() => {
@@ -68,6 +72,3 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};

@@ -4,6 +4,7 @@ import { Button } from '../../../../components/ui/Button';
 import { LiveMatchTimelineProps } from './LiveMatchTimeline.props';
 
 const EVENT_ICON = {
+  match_start: { name: 'play_arrow', className: 'text-base-content' },
   goal: { name: 'sports_soccer', className: 'text-success' },
   yellow_card: { name: 'square', className: 'text-yellow-400' },
   red_card: { name: 'square', className: 'text-red-500' },
@@ -13,6 +14,9 @@ const EVENT_ICON = {
 };
 
 function EventDescription({ event }) {
+  if (event.type === 'match_start') return <span>Inicio del partido</span>;
+  if (event.type === 'half_time') return <span>Descanso</span>;
+  if (event.type === 'full_time') return <span>Fin del partido</span>;
   if (event.type === 'substitution') {
     const outName = event.playerOutId?.fullName || event.playerOut || 'Desconocido';
     const inName = event.playerInId?.fullName || event.playerIn || 'Desconocido';

@@ -27,9 +27,14 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
     setDuplicateError('');
     setDateError('');
     if (initialData) {
+      const weAreHome = !!initialData.homeTeamId?.isOurTeam;
+      const opponentTeam = weAreHome ? initialData.awayTeamId : initialData.homeTeamId;
+      const opponentId = opponentTeam?._id || opponentTeam || '';
       setFormData({
         ...MatchForm.INITIAL_DATA,
         categoryId: initialData.categoryId?._id || initialData.categoryId || '',
+        opponentId: String(opponentId),
+        isHome: weAreHome,
         dateTime: toLocalDateTimeInput(initialData.dateTime),
         journey: initialData.journey ?? '',
         venue: initialData.venue || null,
@@ -62,7 +67,7 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
   }, [formData.journey, formData.categoryId, isEditing, initialData]);
 
   useEffect(() => {
-    if (isEditing || !formData.categoryId || !formData.opponentId) {
+    if (!isOpen || isEditing || !formData.categoryId || !formData.opponentId) {
       setDuplicateError('');
       return;
     }
@@ -77,7 +82,7 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
         }
       })
       .catch(() => setDuplicateError(''));
-  }, [formData.categoryId, formData.opponentId, formData.isHome, isEditing]);
+  }, [isOpen, formData.categoryId, formData.opponentId, formData.isHome, isEditing]);
 
   useEffect(() => {
     const isComplete = formData.dateTime.length === DATETIME_LOCAL_LENGTH;
@@ -118,11 +123,9 @@ export function ModalMatch({ isOpen = false, onClose, onSave, initialData = null
       return;
     }
     const payload = {
-      ...(!isEditing && {
-        categoryId: formData.categoryId,
-        opponentId: formData.opponentId,
-        isHome: formData.isHome,
-      }),
+      ...(!isEditing && { categoryId: formData.categoryId }),
+      opponentId: formData.opponentId,
+      isHome: formData.isHome,
       dateTime: new Date(formData.dateTime).toISOString(),
       ...(formData.journey !== '' && { journey: parseInt(formData.journey) }),
       ...(formData.venue && { venue: formData.venue }),

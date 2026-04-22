@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { Button } from '../../components/ui/Button';
 import { ModalPlayer } from './components/ModalPlayer';
@@ -8,12 +8,13 @@ import { PlayerStatsCard } from './components/PlayerStatsCard';
 import { PlayerMatchHistory } from './components/PlayerMatchHistory';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
-import { getPlayerById, getPlayerMatches, updatePlayer } from '../../services/playersService';
-import { showToast, showErrorInModal, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
+import { getPlayerById, getPlayerMatches, updatePlayer, updatePlayerStatus } from '../../services/playersService';
+import { showToast, showError, showErrorInModal, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
 
 export function PlayerDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { checkPermission } = usePermissions();
   const { isAdmin, user } = useAuth();
   const categoryId = user?.categoryId?._id || user?.categoryId || null;
@@ -27,14 +28,14 @@ export function PlayerDetail() {
   useEffect(() => {
     getPlayerById(id)
       .then(setJugador)
-      .catch(console.error)
+      .catch((err) => showError(getApiErrorMsg(err, 'Error al cargar el jugador')))
       .finally(() => setLoading(false));
 
     getPlayerMatches(id)
       .then(setHistorial)
-      .catch(console.error)
+      .catch((err) => showError(getApiErrorMsg(err, 'Error al cargar el historial')))
       .finally(() => setLoadingHistorial(false));
-  }, [id]);
+  }, [id, location.key]);
 
   const canEdit = checkPermission('players.edit');
 
@@ -65,6 +66,16 @@ export function PlayerDetail() {
     showLoadingInModal('Actualizando jugador...');
     try {
       await updatePlayer(jugador.id, fd);
+      const STATUS_TO_ENUM = { 'Disponible': 'DISPONIBLE', 'Lesionado': 'LESIONADO', 'Sancionado': 'SANCIONADO', 'No disponible': 'NO_DISPONIBLE' };
+      const currentStatusEnum = STATUS_TO_ENUM[jugador.status] ?? jugador.status;
+      if (datos.status && datos.status !== currentStatusEnum) {
+        const statusPayload = { status: datos.status };
+        if (datos.status === 'SANCIONADO') {
+          statusPayload.sanctionMatches = datos.sanctionMatches ?? 1;
+          if (datos.sanctionStartDate) statusPayload.sanctionStartDate = datos.sanctionStartDate;
+        }
+        await updatePlayerStatus(jugador.id, statusPayload);
+      }
       const fresh = await getPlayerById(id);
       setJugador(fresh);
       closeLoading();

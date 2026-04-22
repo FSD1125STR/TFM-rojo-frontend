@@ -12,6 +12,9 @@ export function PageHeader({
   actionLabel,
   actionIcon,
   onAction,
+  secondaryActionLabel,
+  secondaryActionIcon,
+  onSecondaryAction,
 }) {
   const navigate = useNavigate();
 
@@ -24,6 +27,7 @@ export function PageHeader({
   };
 
   const hasAction = actionLabel && onAction;
+  const hasSecondaryAction = secondaryActionLabel && onSecondaryAction;
 
   return (
     <div test-id="el-p1g2h3d4" className="flex items-start justify-between gap-4">
@@ -44,11 +48,21 @@ export function PageHeader({
           )}
         </div>
       </div>
-      {hasAction && (
-        <Button variant="secondary" size="sm" className="gap-2" onClick={onAction}>
-          {actionIcon && <Icon name={actionIcon} size="sm" />}
-          {actionLabel}
-        </Button>
+      {(hasAction || hasSecondaryAction) && (
+        <div className="flex items-center gap-2">
+          {hasSecondaryAction && (
+            <Button variant="secondary" size="sm" className="gap-2" onClick={onSecondaryAction}>
+              {secondaryActionIcon && <Icon name={secondaryActionIcon} size="sm" />}
+              {secondaryActionLabel}
+            </Button>
+          )}
+          {hasAction && (
+            <Button variant="secondary" size="sm" className="gap-2" onClick={onAction}>
+              {actionIcon && <Icon name={actionIcon} size="sm" />}
+              {actionLabel}
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );

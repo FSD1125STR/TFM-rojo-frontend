@@ -108,7 +108,7 @@ export function PlayerStatsCard({ jugador, historial }) {
           />
           <ProgressBar
             label="Media de goles/partido"
-            value={barsAnimated ? Math.min(parseFloat(mediaGoles) * 100, 100) : 0}
+            value={barsAnimated ? Math.round(Math.min(parseFloat(mediaGoles) * 100, 100)) : 0}
             subtitle={`${jugador.goals} goles en ${jugador.matchesPlayed} partidos`}
             color="var(--color-primary)"
             animated

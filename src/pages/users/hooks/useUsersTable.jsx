@@ -1,23 +1,17 @@
-import { Avatar } from "../../../components/ui/Avatar/Avatar";
-import { Badge } from "../../../components/ui/Badge/Badge";
+import { Avatar } from "../../../components/ui/Avatar";
+import { Badge } from "../../../components/ui/Badge";
+import { ROLE_CONFIGS } from "../data/roleConfigs";
 
-const ROLE_CONFIGS = {
-  administrador: { variant: "primary", icon: "admin_panel_settings" },
-  entrenador:    { variant: "info",    icon: "sports" },
-  delegado:      { variant: "warning", icon: "assignment_ind" },
-  direccion:     { variant: "secondary", icon: "visibility" },
-};
-
-export function useUsersTable({ onEditar, onEliminar }) {
+export function useUsersTable({ onVerDetalle, onEditar, onEliminar, onToggleStatus }) {
   const columns = [
     {
       key: "fullName",
       label: "Usuario",
       sortable: true,
-      width: "30%",
+      width: "25%",
       render: (value, row) => (
         <div className="flex items-center gap-3 pointer-events-none">
-          <Avatar name={value} src={row.image} size="sm" />
+          <Avatar name={value} src={row.photoUrl || undefined} size="sm" />
           <span className="font-medium text-base-content">{value}</span>
         </div>
       ),
@@ -26,16 +20,19 @@ export function useUsersTable({ onEditar, onEliminar }) {
       key: "email",
       label: "Email",
       sortable: true,
-      width: "25%",
+      width: "22%",
     },
     {
       key: "role",
       label: "Rol",
       sortable: true,
-      width: "20%",
+      width: "17%",
       align: "center",
       render: (value) => {
-        const config = ROLE_CONFIGS[value?.toLowerCase()] || { variant: "neutral", icon: "person" };
+        const config = ROLE_CONFIGS[value?.toLowerCase()] || {
+          variant: "neutral",
+          icon: "person",
+        };
         return (
           <div className="pointer-events-none flex justify-center">
             <Badge
@@ -54,14 +51,44 @@ export function useUsersTable({ onEditar, onEliminar }) {
     {
       key: "categoryId",
       label: "Categoría",
-      width: "15%",
+      width: "11%",
       align: "center",
       render: (cat) => cat?.name || <span className="opacity-30">—</span>,
+    },
+    {
+      key: "isActive",
+      label: "Estado",
+      width: "10%",
+      align: "center",
+      render: (value) => (
+        <div className="flex justify-center pointer-events-none">
+          <Badge variant={value ? "success" : "neutral"} size="sm">
+            {value ? "Activo" : "Inactivo"}
+          </Badge>
+        </div>
+      ),
     },
   ];
 
   const actions = [
+    onVerDetalle && {
+      label: "Ver Detalle",
+      icon: "visibility",
+      onClick: (row) => onVerDetalle(row),
+    },
     onEditar && { label: "Editar", icon: "edit", onClick: onEditar },
+    onToggleStatus && {
+      label: "Activar",
+      icon: "person",
+      onClick: onToggleStatus,
+      show: (row) => !row.isActive,
+    },
+    onToggleStatus && {
+      label: "Desactivar",
+      icon: "person_off",
+      onClick: onToggleStatus,
+      show: (row) => row.isActive,
+    },
     onEliminar && {
       label: "Eliminar",
       icon: "delete",

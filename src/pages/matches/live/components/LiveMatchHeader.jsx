@@ -1,5 +1,9 @@
-import { Icon } from '../../../../components/ui/Icon';
+import { Avatar } from '../../../../components/ui/Avatar';
 import { Badge } from '../../../../components/ui/Badge';
+import { Card } from '../../../../components/ui/Card';
+import { formatMatchDate, formatMatchTime } from '../../data/matchesConfig';
+import { useMatchTimer, getHalfDuration } from '../hooks/useMatchTimer';
+import { useLiveMatch } from '../../../../hooks/useLiveMatchContext';
 import { LiveMatchHeaderProps } from './LiveMatchHeader.props';
 
 const STATUS_CONFIG = {
@@ -10,37 +14,102 @@ const STATUS_CONFIG = {
   FINISHED:    { label: 'Finalizado',   variant: 'default', pulse: false },
 };
 
+function InfoItem({ icon, label, value }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="flex items-center gap-1 text-[9px] font-bold text-base-content/50 uppercase tracking-wider shrink-0">
+        <span className="material-symbols-outlined text-[11px]">{icon}</span>
+        {label}
+      </span>
+      <span className="text-xs font-semibold text-base-content truncate">{value}</span>
+    </div>
+  );
+}
+
 export function LiveMatchHeader({ match, liveStatus }) {
   const homeName = match?.homeTeamId?.name || 'Local';
   const awayName = match?.awayTeamId?.name || 'Visitante';
+  const homeLogoUrl = match?.homeTeamId?.logoUrl || undefined;
+  const awayLogoUrl = match?.awayTeamId?.logoUrl || undefined;
   const homeScore = match?.homeScore ?? 0;
   const awayScore = match?.awayScore ?? 0;
-  const statusCfg = STATUS_CONFIG[liveStatus] || STATUS_CONFIG.NOT_STARTED;
+  const statusCfg = STATUS_CONFIG[liveStatus] ?? STATUS_CONFIG.NOT_STARTED;
+
+  const halfDuration = getHalfDuration(match?.categoryId?.name);
+  const { matchStartTimestamps } = useLiveMatch();
+  const minute = useMatchTimer(match?._id, liveStatus, halfDuration, matchStartTimestamps.firstHalfStartAt, matchStartTimestamps.secondHalfStartAt);
 
   return (
-    <div test-id="el-lh4x9p2q" className="bg-base-200 rounded-2xl p-6 mb-4">
-      <div className="flex justify-center mb-3">
-        <Badge variant={statusCfg.variant} className={statusCfg.pulse ? 'animate-pulse' : ''}>
-          {statusCfg.pulse && <Icon name="radio_button_checked" size="sm" className="mr-1" />}
-          {statusCfg.label}
-        </Badge>
-      </div>
-
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex-1 text-center">
-          <p className="text-sm text-base-content/60 mb-1 leading-tight">{homeName}</p>
-          <p className="text-5xl font-bold text-base-content">{homeScore}</p>
+    <div test-id="el-lh4x9p2q" className="mb-4">
+      <Card padding="none" className="shadow-md">
+        {/* Status badge + cronómetro */}
+        <div className="px-5 pt-4 pb-2 flex flex-col items-center gap-1">
+          <Badge
+            variant={statusCfg.variant}
+            icon={statusCfg.pulse ? 'radio_button_checked' : undefined}
+            className={statusCfg.pulse ? 'animate-pulse' : ''}
+          >
+            {statusCfg.label}
+          </Badge>
+          {minute !== null && (
+            <span className="text-2xl font-mono font-bold text-base-content/80 leading-none">
+              {minute}&apos;
+            </span>
+          )}
         </div>
 
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-3xl font-bold text-base-content/30">-</span>
+        {/* Teams + score */}
+        <div className="px-5 py-4 pb-6 flex items-center justify-center gap-6 max-sm:gap-2 max-sm:px-2">
+          {/* Local */}
+          <div className="flex items-center gap-3 flex-1 min-w-0 justify-end max-sm:gap-1.5">
+            <div className="text-right min-w-0">
+              <p className="text-base font-bold text-base-content leading-tight truncate max-sm:text-sm">{homeName}</p>
+              <p className="text-[10px] text-base-content/40 uppercase tracking-wider">(Local)</p>
+            </div>
+            <Avatar src={homeLogoUrl} name={homeName} size="xl" variant="primary" />
+          </div>
+
+          {/* Score */}
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-5xl font-black tabular-nums leading-none text-base-content max-sm:text-4xl">{homeScore}</span>
+            <span className="text-2xl font-bold text-base-content/30 leading-none">-</span>
+            <span className="text-5xl font-black tabular-nums leading-none text-base-content max-sm:text-4xl">{awayScore}</span>
+          </div>
+
+          {/* Visitante */}
+          <div className="flex items-center gap-3 flex-1 min-w-0 justify-start max-sm:gap-1.5">
+            <Avatar src={awayLogoUrl} name={awayName} size="xl" variant="error" />
+            <div className="text-left min-w-0">
+              <p className="text-base font-bold text-base-content leading-tight truncate max-sm:text-sm">{awayName}</p>
+              <p className="text-[10px] text-base-content/40 uppercase tracking-wider">(Visitante)</p>
+            </div>
+          </div>
         </div>
 
-        <div className="flex-1 text-center">
-          <p className="text-sm text-base-content/60 mb-1 leading-tight">{awayName}</p>
-          <p className="text-5xl font-bold text-base-content">{awayScore}</p>
+        {/* Meta info strip */}
+        <div className="border-t border-base-300" />
+        <div className="bg-base-300 px-4 py-3 flex items-center justify-center gap-3 flex-wrap rounded-b-xl max-sm:px-2 max-sm:gap-2">
+          {match?.dateTime && (
+            <>
+              <InfoItem icon="calendar_month" label="Fecha" value={formatMatchDate(match.dateTime)} />
+              <span className="w-px h-5 bg-base-content/20 shrink-0 max-sm:hidden" />
+              <InfoItem icon="schedule" label="Hora" value={formatMatchTime(match.dateTime)} />
+            </>
+          )}
+          {match?.categoryId?.name && (
+            <>
+              <span className="w-px h-5 bg-base-content/20 shrink-0 max-sm:hidden" />
+              <InfoItem icon="category" label="Categoría" value={match.categoryId.name} />
+            </>
+          )}
+          {match?.journey != null && (
+            <>
+              <span className="w-px h-5 bg-base-content/20 shrink-0 max-sm:hidden" />
+              <InfoItem icon="tag" label="Jornada" value={`J${match.journey}${match.season ? ` · ${match.season}` : ''}`} />
+            </>
+          )}
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

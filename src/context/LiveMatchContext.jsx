@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 import { getLiveMatches } from '../services/liveMatchService';
-import { LiveMatchContext } from './LiveMatchContext.js';
+import { LIVE_STATUSES } from '../pages/matches/data/matchesConfig';
 
-const LIVE_STATUSES = ['FIRST_HALF', 'HALF_TIME', 'SECOND_HALF'];
+export const LiveMatchContext = createContext(null);
 
 export function LiveMatchProvider({ children }) {
   const { user, token } = useAuth();
@@ -15,6 +15,8 @@ export function LiveMatchProvider({ children }) {
   const [liveStatus, setLiveStatus] = useState('');
   const [hasLiveMatch, setHasLiveMatch] = useState(false);
   const [lastEvent, setLastEvent] = useState(null);
+  const [isLoadingLive, setIsLoadingLive] = useState(true);
+  const [matchStartTimestamps, setMatchStartTimestamps] = useState({ firstHalfStartAt: null, secondHalfStartAt: null });
 
   // Fetch inicial para saber si hay partido en directo al cargar la app
   useEffect(() => {
@@ -25,9 +27,14 @@ export function LiveMatchProvider({ children }) {
           setHasLiveMatch(true);
           setActiveMatchId(list[0]._id);
           setLiveStatus(list[0].liveStatus);
+          setMatchStartTimestamps({
+            firstHalfStartAt:  list[0].firstHalfStartAt  ?? null,
+            secondHalfStartAt: list[0].secondHalfStartAt ?? null,
+          });
         }
       })
-      .catch(() => {}); // silencioso — el dot es cosmético
+      .catch(() => {})
+      .finally(() => setIsLoadingLive(false));
   }, [user, token]);
 
   useEffect(() => {
@@ -35,7 +42,7 @@ export function LiveMatchProvider({ children }) {
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
     const socketUrl = apiUrl.replace(/\/api\/?$/, '');
-    console.log('[LiveMatch Socket] Connecting to', socketUrl);
+
 
     const socket = io(socketUrl, {
       auth: { token },
@@ -45,15 +52,12 @@ export function LiveMatchProvider({ children }) {
     });
 
     socket.on('connect', () => {
-      console.log('[LiveMatch Socket] Connected:', socket.id);
       if (activeMatchIdRef.current) {
         socket.emit('join:match', activeMatchIdRef.current);
       }
     });
 
-    socket.on('connect_error', (err) => {
-      console.error('[LiveMatch Socket] Connection error:', err.message);
-    });
+    socket.on('connect_error', () => {});
 
     socket.on('event:created', (payload) => {
       setLastEvent(payload);
@@ -62,15 +66,25 @@ export function LiveMatchProvider({ children }) {
     socket.on('match:liveStatusUpdated', (payload) => {
       const status = payload.liveStatus ?? payload.status ?? '';
       setLiveStatus(status);
+      setMatchStartTimestamps({
+        firstHalfStartAt:  payload.firstHalfStartAt  ?? null,
+        secondHalfStartAt: payload.secondHalfStartAt ?? null,
+      });
       if (status === 'FINISHED' || status === 'NOT_STARTED') {
         setHasLiveMatch(false);
-      } else if (LIVE_STATUSES.includes(status)) {
+      } else if (LIVE_STATUSES.has(status)) {
         setHasLiveMatch(true);
       }
     });
 
     socket.on('live:globalStatusChanged', (payload) => {
-      console.log('[LiveMatch Socket] live:globalStatusChanged', payload);
+      const status = payload.liveStatus ?? payload.status ?? '';
+      if (status === 'FINISHED' || status === 'NOT_STARTED') {
+        setHasLiveMatch(false);
+      } else if (LIVE_STATUSES.has(status)) {
+        setHasLiveMatch(true);
+        if (payload.matchId) setActiveMatchId(payload.matchId);
+      }
     });
 
     socketRef.current = socket;
@@ -113,7 +127,9 @@ export function LiveMatchProvider({ children }) {
         activeMatchId,
         liveStatus,
         hasLiveMatch,
+        isLoadingLive,
         lastEvent,
+        matchStartTimestamps,
         isMatchLive,
         joinMatch,
         leaveMatch,

@@ -4,21 +4,9 @@ import { FileUpload } from '../../../components/ui/FileUpload';
 import { Avatar } from '../../../components/ui/Avatar';
 import { DatePicker } from '../../../components/ui/DatePicker';
 import { getCategories } from '../../../services/categoriesService';
+import { showError, getApiErrorMsg } from '../../../utils/alerts';
 import { PlayerFormProps } from './PlayerForm.props';
-
-const posiciones = [
-  { value: 'Portero', label: 'Portero' },
-  { value: 'Defensa', label: 'Defensa' },
-  { value: 'Centrocampista', label: 'Centrocampista' },
-  { value: 'Delantero', label: 'Delantero' },
-];
-
-const estados = [
-  { value: 'Disponible', label: 'Disponible' },
-  { value: 'Lesionado', label: 'Lesionado' },
-  { value: 'Sancionado', label: 'Sancionado' },
-  { value: 'No disponible', label: 'No disponible' },
-];
+import { POSICIONES, ESTADOS } from '../data/playerConfig';
 
 const calcularEdad = (fechaNacimiento) => {
   if (!fechaNacimiento) return null;
@@ -30,6 +18,11 @@ const calcularEdad = (fechaNacimiento) => {
     edad--;
   }
   return edad;
+};
+
+const getAgeLabel = (edad) => {
+  if (edad === null) return '-- años';
+  return edad === 1 ? `${edad} año` : `${edad} años`;
 };
 
 const LABEL_CLS = 'font-semibold text-[13px] text-base-content/70';
@@ -46,7 +39,7 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit, isAdmin
     if (isAdmin) {
       getCategories().then((cats) => {
         setCategories(cats.map((c) => ({ value: c._id, label: `${c.name} — ${c.season}` })));
-      }).catch(console.error);
+      }).catch((err) => showError(getApiErrorMsg(err, 'Error al cargar las categorías')));
     }
   }, [isAdmin]);
 
@@ -169,7 +162,7 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit, isAdmin
           </div>
           <div className="input input-bordered input-sm w-full flex items-center justify-center gap-1.5 bg-success/15 font-semibold border-success/30">
             <Icon name="cake" className="text-primary text-lg" />
-            <span>{edad !== null ? edad == 1 ? `${edad} año` : `${edad} años` : '-- años'}</span>
+            <span>{getAgeLabel(edad)}</span>
           </div>
         </div>
       </div>
@@ -283,7 +276,7 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit, isAdmin
             required
           >
             <option value="">Seleccionar posición</option>
-            {posiciones.map((pos) => (
+            {POSICIONES.map((pos) => (
               <option key={pos.value} value={pos.value}>{pos.label}</option>
             ))}
           </select>
@@ -301,12 +294,50 @@ export function PlayerForm({ formId, formData, edad, onChange, onSubmit, isAdmin
             required
           >
             <option value="">Seleccionar estado</option>
-            {estados.map((est) => (
+            {ESTADOS.map((est) => (
               <option key={est.value} value={est.value}>{est.label}</option>
             ))}
           </select>
         </div>
       </div>
+
+      {formData.estado === 'Sancionado' && (
+        <div className="grid grid-cols-2 gap-3 mb-3 p-3 rounded-xl bg-warning/10 border border-warning/30">
+          <div className="form-control">
+            <label htmlFor="sanctionMatches" className="label py-1">
+              <span className={LABEL_CLS}>Partidos de sanción <span className="text-error">*</span></span>
+            </label>
+            <div className="relative">
+              <Icon name="block" className={ICON_CLS} />
+              <input
+                id="sanctionMatches"
+                type="number"
+                name="sanctionMatches"
+                value={formData.sanctionMatches}
+                onChange={handleChange}
+                className={INPUT_ICON_CLS}
+                placeholder="1"
+                min="1"
+                max="99"
+                required
+              />
+            </div>
+          </div>
+          <div className="form-control">
+            <label htmlFor="sanctionStartDate" className="label py-1">
+              <span className={LABEL_CLS}>Fecha inicio sanción</span>
+            </label>
+            <input
+              id="sanctionStartDate"
+              type="date"
+              name="sanctionStartDate"
+              value={formData.sanctionStartDate}
+              onChange={handleChange}
+              className={INPUT_CLS}
+            />
+          </div>
+        </div>
+      )}
 
       <div className="form-control">
         <p id="player-photo-label" className={LABEL_CLS}>Foto del jugador</p>
@@ -344,6 +375,8 @@ PlayerForm.INITIAL_DATA = {
   categoriaId: '',
   foto: null,
   photoUrl: '',
+  sanctionMatches: '',
+  sanctionStartDate: '',
 };
 
 PlayerForm.propTypes = PlayerFormProps;

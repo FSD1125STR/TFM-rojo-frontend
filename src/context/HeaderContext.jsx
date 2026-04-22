@@ -1,6 +1,12 @@
-import { useState, useMemo, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { HeaderContext } from './HeaderContext.js';
+import { createContext, useState, useMemo, useCallback } from 'react';
+
+export const HeaderContext = createContext({
+  title: '',
+  breadcrumbs: [],
+  actions: null,
+  setHeader: () => {},
+  resetHeader: () => {},
+});
 
 export function HeaderProvider({ children }) {
   const [header, setHeaderState] = useState({
@@ -30,6 +36,3 @@ export function HeaderProvider({ children }) {
   );
 }
 
-HeaderProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};

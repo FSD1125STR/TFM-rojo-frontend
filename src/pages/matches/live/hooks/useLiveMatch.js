@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getLiveMatchById } from '../../../../services/liveMatchService';
+import { getMatchById } from '../../../../services/matchesService';
 import { useLiveMatch as useLiveMatchContext } from '../../../../hooks/useLiveMatchContext';
 
 export function useLiveMatch(matchId) {
@@ -13,6 +14,13 @@ export function useLiveMatch(matchId) {
     joinMatch(matchId);
     getLiveMatchById(matchId)
       .then(({ match: m }) => setMatch(m))
+      .catch((err) => {
+        const status = err?.response?.status;
+        if (status === 404) {
+          return getMatchById(matchId).then((m) => setMatch(m));
+        }
+        throw err;
+      })
       .catch(setError)
       .finally(() => setIsLoading(false));
     return () => leaveMatch();

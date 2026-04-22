@@ -1,4 +1,5 @@
 export const PERMISSIONS = {
+  "dashboard.view":    ["administrador", "direccion", "entrenador", "delegado"],
   "users.create":     ["administrador"],
   "users.view":       ["administrador", "direccion"],
   "users.edit":       ["administrador"],
@@ -14,7 +15,7 @@ export const PERMISSIONS = {
   "callups.create":   ["administrador", "entrenador", "delegado"],
   "callups.edit":     ["administrador", "entrenador", "delegado"],
   "callups.view":     ["administrador", "direccion", "entrenador", "delegado"],
-  "live.update":      ["administrador", "direccion", "delegado"],
+  "live.update":      ["administrador", "delegado", "entrenador"],
   "stats.view":       ["administrador", "direccion", "entrenador", "delegado"],
   "categories.manage":["administrador"],
   "teams.view":        ["administrador", "direccion", "entrenador", "delegado"],

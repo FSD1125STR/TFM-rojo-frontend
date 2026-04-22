@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AppLogoProps } from './AppLogo.props';
-import logoHorizontal from '../../../assets/logo-horizontal.png';
-import logo from '../../../assets/logo.png';
+import { LOGO_URL as logo, LOGO_HORIZONTAL_URL as logoHorizontal } from '../../../assets/brand.js';
 
 export function AppLogo({ collapsed = false }) {
   return (

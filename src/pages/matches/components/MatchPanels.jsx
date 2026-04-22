@@ -1,4 +1,55 @@
-import { Card } from '../../../components/ui/Card';
+import { Collapse } from '../../../components/ui/Collapse';
+
+const POSITION_ORDER = ['PO', 'DFC', 'LI', 'LD', 'MC', 'MCD', 'MCI', 'EXD', 'EXI', 'DC'];
+const POSITION_RANK = Object.fromEntries(POSITION_ORDER.map((p, i) => [p, i]));
+
+function sortPlayers(players) {
+  return [...players].sort((a, b) => {
+    const rA = POSITION_RANK[a.position] ?? 99;
+    const rB = POSITION_RANK[b.position] ?? 99;
+    if (rA !== rB) return rA - rB;
+    return (a.dorsal ?? 999) - (b.dorsal ?? 999);
+  });
+}
+
+function LineupList({ players, emptyText }) {
+  if (!players.length) return <p className="text-sm text-base-content/50 italic">{emptyText}</p>;
+  return (
+    <ul className="flex flex-col gap-1">
+      {sortPlayers(players).map((p) => (
+        <li key={p.id} className="flex items-center gap-2 px-1 py-1">
+          <span className="text-xs font-bold text-base-content/40 w-5 text-right shrink-0">{p.dorsal ?? '—'}</span>
+          <span className="text-xs text-base-content/40 w-8 shrink-0">{p.position ?? ''}</span>
+          <span className="text-sm text-base-content">{p.fullName}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function LineupSection({ callupPlayers }) {
+  const starters = callupPlayers.filter((p) => p.callupStatus === 'called' && p.lineupRole === 'starter');
+  const substitutes = callupPlayers.filter((p) => p.callupStatus === 'called' && p.lineupRole === 'substitute');
+  if (!starters.length && !substitutes.length) return null;
+  return (
+    <Collapse title="Alineación">
+      <div className="flex flex-col gap-4">
+        {starters.length > 0 && (
+          <div>
+            <p className="text-[10px] font-semibold text-base-content/40 uppercase tracking-widest mb-1">Titulares</p>
+            <LineupList players={starters} emptyText="Sin titulares" />
+          </div>
+        )}
+        {substitutes.length > 0 && (
+          <div>
+            <p className="text-[10px] font-semibold text-base-content/40 uppercase tracking-widest mb-1">Suplentes</p>
+            <LineupList players={substitutes} emptyText="Sin suplentes" />
+          </div>
+        )}
+      </div>
+    </Collapse>
+  );
+}
 
 function getShort(name) {
   if (!name) return '';
@@ -117,39 +168,42 @@ function SubstitutionsSection({ substitutions, homeTeamId, homeShort, awayShort 
   );
 }
 
-export function MatchPanels({ panels, match }) {
+export function MatchPanels({ panels, match, callupPlayers = [] }) {
   const homeTeamId = match.homeTeam.id;
   const homeShort = getShort(match.homeTeam.name);
   const awayShort = getShort(match.awayTeam.name);
+  const p = panels ?? {};
 
   return (
     <div test-id="el-f7a8b9c0" className="flex flex-col gap-4">
-      <Card title="Goleadores" className="shadow-md">
+      <Collapse title="Goleadores" defaultOpen>
         <ScorersSection
-          scorers={panels.scorers}
+          scorers={p.scorers}
           homeTeamId={homeTeamId}
           homeShort={homeShort}
           awayShort={awayShort}
         />
-      </Card>
+      </Collapse>
 
-      <Card title="Tarjetas" className="shadow-md">
+      <Collapse title="Tarjetas" defaultOpen>
         <CardsSection
-          cards={panels.cards}
+          cards={p.cards}
           homeTeamId={homeTeamId}
           homeShort={homeShort}
           awayShort={awayShort}
         />
-      </Card>
+      </Collapse>
 
-      <Card title="Cambios" className="shadow-md">
+      <Collapse title="Cambios" defaultOpen>
         <SubstitutionsSection
-          substitutions={panels.substitutions}
+          substitutions={p.substitutions}
           homeTeamId={homeTeamId}
           homeShort={homeShort}
           awayShort={awayShort}
         />
-      </Card>
+      </Collapse>
+
+      <LineupSection callupPlayers={callupPlayers} />
     </div>
   );
 }

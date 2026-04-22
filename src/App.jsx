@@ -11,6 +11,7 @@ import { HeaderProvider } from "./context/HeaderContext.jsx";
 import { NotificationsProvider } from "./context/NotificationsContext.jsx";
 import { LiveMatchProvider } from "./context/LiveMatchContext.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { LiveProtectedRoute } from "./components/LiveProtectedRoute";
 import { AppShell } from "./components/layout/AppShell/AppShell";
 import { PublicLayout } from "./components/layout/PublicLayout/PublicLayout";
 
@@ -23,7 +24,7 @@ import { RegisterAdmin } from "./pages/auth/RegisterAdmin";
 // Páginas protegidas
 import { Dashboard } from "./pages/Dashboard";
 import { PlayersList, PlayerDetail } from "./pages/players";
-import { MatchesList, MatchDetail } from "./pages/matches";
+import { MatchesList, MatchDetail, MatchesCalendar } from "./pages/matches";
 import { LiveMatchPage } from "./pages/matches/live/LiveMatchPage";
 import { CallupsList, CallupDetail } from "./pages/callups";
 import { UsersList, UserDetail } from "./pages/users";
@@ -65,6 +66,7 @@ function AppRoutes() {
           {/* Rutas con permiso de partidos */}
           <Route element={<ProtectedRoute permission="matches.view" />}>
             <Route path="/partidos" element={<MatchesList />} />
+            <Route path="/partidos/calendario" element={<MatchesCalendar />} />
             <Route path="/partidos/:id" element={<MatchDetail />} />
             <Route path="/directo/:id" element={<LiveMatchPage />} />
           </Route>
@@ -86,8 +88,8 @@ function AppRoutes() {
             <Route path="/equipos" element={<TeamsList />} />
           </Route>
 
-          {/* Ruta con permiso de partido en directo */}
-          <Route element={<ProtectedRoute permission="live.update" />}>
+          {/* Ruta de partido en directo: live.update O direccion con partido activo */}
+          <Route element={<LiveProtectedRoute />}>
             <Route path="/directo" element={<LiveMatch />} />
           </Route>
         </Route>

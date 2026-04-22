@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useHeader } from "../../hooks/useHeader";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { usePermissions } from "../../hooks/usePermissions";
-import { getUsers, createUser, updateUser, deleteUser } from '../../services/userService';
+import {
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  toggleUserStatus,
+} from "../../services/userService";
 import { DataTable } from "../../components/ui/DataTable";
 import { useUsersTable } from "./hooks/useUsersTable";
 import { ModalUser } from "./components/ModalUser";
@@ -15,6 +22,7 @@ import {
 } from "../../utils/alerts";
 
 export function UsersList() {
+  const navigate = useNavigate();
   const { checkPermission } = usePermissions();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +42,7 @@ export function UsersList() {
     setIsLoading(true);
     getUsers()
       .then(setUsers)
-      .catch(() => showError('Error al cargar la lista de personal'))
+      .catch(() => showError("Error al cargar la lista de personal"))
       .finally(() => setIsLoading(false));
   };
 
@@ -53,55 +61,78 @@ export function UsersList() {
   };
 
   const handleGuardar = async (formData) => {
+    const fd = new FormData();
+    Object.entries(formData).forEach(([k, v]) => {
+      if (k === 'foto' || k === 'photoUrl') return;
+      if (v !== undefined && v !== null && v !== '') fd.append(k, v);
+    });
+    if (formData.foto instanceof File) fd.append('photo', formData.foto);
+    if (formData.foto === false) fd.append('removePhoto', 'true');
+
     showLoadingInModal(userSeleccionado ? "Actualizando..." : "Registrando...");
     try {
       if (userSeleccionado) {
-        await updateUser(userSeleccionado._id, formData);
-        showToast('Personal actualizado correctamente');
+        await updateUser(userSeleccionado._id, fd);
+        showToast("Personal actualizado correctamente");
       } else {
-        await createUser(formData);
-        showToast('Nuevo miembro registrado con éxito');
+        await createUser(fd);
+        showToast("Nuevo miembro registrado con éxito");
       }
+      closeLoading();
       setIsModalOpen(false);
       setUserSeleccionado(null);
       loadUsers();
     } catch (error) {
-      showError(
-        error?.response?.data?.error || "Error al procesar la solicitud",
-      );
-    } finally {
       closeLoading();
+      showError(error?.response?.data?.error || "Error al procesar la solicitud");
+    }
+  };
+
+  const handleToggleStatus = async (user) => {
+    const action = user.isActive ? 'desactivar' : 'activar';
+    const confirmed = await showConfirm(
+      `¿${user.isActive ? 'Desactivar' : 'Activar'} a ${user.fullName}?`,
+    );
+    if (!confirmed) return;
+    try {
+      await toggleUserStatus(user._id);
+      showToast(`Usuario ${action === 'activar' ? 'activado' : 'desactivado'} correctamente`);
+      loadUsers();
+    } catch {
+      showError('No se pudo cambiar el estado del usuario');
     }
   };
 
   const handleEliminar = async (user) => {
     const confirmed = await showConfirm(
       `¿Estás seguro de eliminar a ${user.fullName}?`,
-      "¿Eliminar miembro?",
+      "¿Eliminar usuario?",
     );
     if (!confirmed) return;
     try {
       await deleteUser(user._id);
-      showToast("Miembro eliminado del club");
+      showToast("Usuario eliminado correctamente");
       loadUsers();
     } catch (error) {
-      showError("No se pudo eliminar al usuario");
+      showError(error?.response?.data?.error || "No se pudo eliminar al usuario");
     }
   };
 
   const { columns, actions, searchConfig } = useUsersTable({
+    onVerDetalle: (row) => navigate(`/usuarios/${row._id}`),
     onEditar: canEdit ? handleEditar : undefined,
     onEliminar: canDelete ? handleEliminar : undefined,
+    onToggleStatus: canEdit ? handleToggleStatus : undefined,
   });
 
   return (
-    <div test-id="el-users-list">
+    <div test-id="el-u8s3r5l9">
       <PageHeader
         title="Usuarios"
         subtitle="Gestiona el personal, sus roles y accesos al sistema"
         {...(canCreate && {
           actionLabel: "Nuevo Usuario",
-          actionIcon: "person_add",
+          actionIcon: "add",
           onAction: handleNuevo,
         })}
       />
@@ -115,6 +146,7 @@ export function UsersList() {
         pagination
         paginationPerPage={8}
         className="mt-4"
+        onRowClick={(row) => navigate(`/usuarios/${row._id}`)}
       />
 
       <ModalUser

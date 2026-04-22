@@ -17,7 +17,7 @@ export function Sidebar({
   className = ''
 }) {
   const { user: authUser, logout } = useAuth();
-  const { checkPermission } = usePermissions();
+  const { checkPermission, role } = usePermissions();
   const { hasLiveMatch } = useLiveMatch();
   const user = userProp || authUser;
   const handleLogout = onLogoutProp || logout;
@@ -26,7 +26,14 @@ export function Sidebar({
 
   const sidebarWidth = isCollapsed ? 'w-24' : 'w-64';
 
-  const visibleItems = menuItems.filter(item => !item.permission || checkPermission(item.permission));
+  const visibleItems = menuItems.filter((item) => {
+    if (item.permission && !checkPermission(item.permission)) {
+      // direccion ve el item /directo solo cuando hay partido en directo
+      if (item.liveOnly && role === 'direccion' && hasLiveMatch) return true;
+      return false;
+    }
+    return true;
+  });
 
   const sidebarContent = (
     <div test-id="el-i1j2k3l4" className={`flex flex-col h-full bg-base-100 border-r border-base-300 ${isDrawer ? 'w-64' : sidebarWidth}`}>
@@ -40,6 +47,7 @@ export function Sidebar({
               icon={item.icon}
               label={item.label}
               to={item.to}
+              end={item.end}
               collapsed={isCollapsed}
               onClick={isDrawer ? onNavigate : undefined}
               showLiveDot={item.to === '/directo' && hasLiveMatch}

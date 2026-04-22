@@ -1,6 +1,8 @@
 import Swal from 'sweetalert2';
 
 const PRIMARY_BUTTON_COLOR = '#5C6F68';
+const NOTIF_TIMEOUT_MS = 10_000;
+const TOAST_TIMEOUT_MS = 3_000;
 
 export const showError = (message) => {
   return Swal.fire({
@@ -49,17 +51,37 @@ export const showSuccess = (message) => {
   });
 };
 
-export const showNotification = (message, { categoryName, onClick } = {}) => {
+const NOTIF_TOAST_ICONS = {
+  MATCH_LIVE:        { icon: 'sports',        color: '#22c55e' },
+  MATCH_HALF_TIME:   { icon: 'pause_circle',  color: '#f59e0b' },
+  MATCH_SECOND_HALF: { icon: 'sports',        color: '#22c55e' },
+  MATCH_FINISHED:    { icon: 'flag',          color: '#6b7280' },
+  MATCH_GOAL_HOME:  { icon: 'sports_soccer', color: '#3b82f6' },
+  MATCH_GOAL_AWAY:  { icon: 'sports_soccer', color: '#8b5cf6' },
+  MATCH_RED:        { icon: 'square',        color: '#ef4444' },
+  CALLUP_CREATED:   { icon: 'group',         color: '#0ea5e9' },
+  CALLUP_SAVED:     { icon: 'check_circle',  color: '#22c55e' },
+};
+
+export const showNotification = (message, { categoryName, onClick, type } = {}) => {
+  const notifIcon = type ? NOTIF_TOAST_ICONS[type] : null;
+  const iconConfig = notifIcon
+    ? {
+        iconHtml: `<span class="material-symbols-outlined" style="font-size:1.75rem;color:${notifIcon.color}">${notifIcon.icon}</span>`,
+        iconColor: 'transparent',
+      }
+    : { icon: 'info' };
+
   return Swal.fire({
     toast: true,
     position: 'bottom-end',
-    icon: 'info',
+    ...iconConfig,
     title: message,
     html: categoryName
       ? `<span style="font-size:0.75rem;opacity:0.65;">${categoryName}</span>`
       : undefined,
     showConfirmButton: false,
-    timer: 10000,
+    timer: NOTIF_TIMEOUT_MS,
     timerProgressBar: true,
     didOpen: (toast) => {
       if (onClick) {
@@ -81,7 +103,7 @@ export const showToast = (message, icon = 'success') => {
     icon,
     title: message,
     showConfirmButton: false,
-    timer: 3000,
+    timer: TOAST_TIMEOUT_MS,
     timerProgressBar: true,
   });
 };

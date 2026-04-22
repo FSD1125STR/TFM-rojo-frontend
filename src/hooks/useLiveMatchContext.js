@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { LiveMatchContext } from '../context/LiveMatchContext';
+import { LiveMatchContext } from '../context/LiveMatchContext.jsx';
 
 export function useLiveMatch() {
   const ctx = useContext(LiveMatchContext);
