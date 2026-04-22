@@ -2,7 +2,7 @@ import { Avatar } from "../../../components/ui/Avatar";
 import { Badge } from "../../../components/ui/Badge";
 import { ROLE_CONFIGS } from "../data/roleConfigs";
 
-export function useUsersTable({ onVerDetalle, onEditar, onEliminar }) {
+export function useUsersTable({ onVerDetalle, onEditar, onEliminar, onToggleStatus }) {
   const columns = [
     {
       key: "fullName",
@@ -51,9 +51,22 @@ export function useUsersTable({ onVerDetalle, onEditar, onEliminar }) {
     {
       key: "categoryId",
       label: "Categoría",
-      width: "15%",
+      width: "13%",
       align: "center",
       render: (cat) => cat?.name || <span className="opacity-30">—</span>,
+    },
+    {
+      key: "isActive",
+      label: "Estado",
+      width: "10%",
+      align: "center",
+      render: (value) => (
+        <div className="flex justify-center pointer-events-none">
+          <Badge variant={value ? "success" : "neutral"} size="sm">
+            {value ? "Activo" : "Inactivo"}
+          </Badge>
+        </div>
+      ),
     },
   ];
 
@@ -64,6 +77,18 @@ export function useUsersTable({ onVerDetalle, onEditar, onEliminar }) {
       onClick: (row) => onVerDetalle(row),
     },
     onEditar && { label: "Editar", icon: "edit", onClick: onEditar },
+    onToggleStatus && {
+      label: "Activar",
+      icon: "person",
+      onClick: onToggleStatus,
+      show: (row) => !row.isActive,
+    },
+    onToggleStatus && {
+      label: "Desactivar",
+      icon: "person_off",
+      onClick: onToggleStatus,
+      show: (row) => row.isActive,
+    },
     onEliminar && {
       label: "Eliminar",
       icon: "delete",

@@ -5,4 +5,5 @@ export const LiveMatchTickerProps = {
   matchId: PropTypes.string.isRequired,
   onStatusChange: PropTypes.func.isRequired,
   isLineupReady: PropTypes.bool,
+  hasCallup: PropTypes.bool,
 };

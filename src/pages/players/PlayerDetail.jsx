@@ -8,7 +8,7 @@ import { PlayerStatsCard } from './components/PlayerStatsCard';
 import { PlayerMatchHistory } from './components/PlayerMatchHistory';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useAuth } from '../../hooks/useAuth';
-import { getPlayerById, getPlayerMatches, updatePlayer } from '../../services/playersService';
+import { getPlayerById, getPlayerMatches, updatePlayer, updatePlayerStatus } from '../../services/playersService';
 import { showToast, showError, showErrorInModal, showLoadingInModal, closeLoading, getApiErrorMsg } from '../../utils/alerts';
 
 export function PlayerDetail() {
@@ -66,6 +66,16 @@ export function PlayerDetail() {
     showLoadingInModal('Actualizando jugador...');
     try {
       await updatePlayer(jugador.id, fd);
+      const STATUS_TO_ENUM = { 'Disponible': 'DISPONIBLE', 'Lesionado': 'LESIONADO', 'Sancionado': 'SANCIONADO', 'No disponible': 'NO_DISPONIBLE' };
+      const currentStatusEnum = STATUS_TO_ENUM[jugador.status] ?? jugador.status;
+      if (datos.status && datos.status !== currentStatusEnum) {
+        const statusPayload = { status: datos.status };
+        if (datos.status === 'SANCIONADO') {
+          statusPayload.sanctionMatches = datos.sanctionMatches ?? 1;
+          if (datos.sanctionStartDate) statusPayload.sanctionStartDate = datos.sanctionStartDate;
+        }
+        await updatePlayerStatus(jugador.id, statusPayload);
+      }
       const fresh = await getPlayerById(id);
       setJugador(fresh);
       closeLoading();

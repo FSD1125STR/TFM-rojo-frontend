@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import { DEFAULT_COLORS } from './chartColors';
 
-export function BarChart({ data = [], xKey = 'label', series = [], layout = 'vertical', height = 200, label }) {
+export function BarChart({ data = [], xKey = 'label', series = [], layout = 'vertical', height = 200, label, yAxisWidth = 120 }) {
   if (!data || data.length === 0) return null;
 
   return (
@@ -31,7 +31,7 @@ export function BarChart({ data = [], xKey = 'label', series = [], layout = 'ver
           ) : (
             <>
               <XAxis type="number" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} allowDecimals={false} domain={[0, 'auto']} />
-              <YAxis type="category" dataKey={xKey} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} width={80} />
+              <YAxis type="category" dataKey={xKey} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} width={yAxisWidth} />
             </>
           )}
           <Tooltip />

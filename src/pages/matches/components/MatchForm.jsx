@@ -26,70 +26,68 @@ export function MatchForm({ formId, formData, isEditing, categoryOptions = [], t
   return (
     <form id={formId} onSubmit={onSubmit} test-id="el-f2a3b4c5">
       {!isEditing && (
-        <>
-          <div className="form-control mb-3">
-            <label htmlFor="categoryId" className="label py-1">
-              <span className={LABEL_CLS}>Categoría <span className="text-error">*</span></span>
-            </label>
-            <select
-              id="categoryId"
-              name="categoryId"
-              value={formData.categoryId}
-              onChange={handleChange}
-              className={SELECT_CLS}
-              required
-            >
-              <option value="">Seleccionar categoría</option>
-              {categoryOptions.map((opt) => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 mb-3">
-            <div className="form-control">
-              <label htmlFor="isHome" className="label py-1">
-                <span className={LABEL_CLS}>Tipo de partido <span className="text-error">*</span></span>
-              </label>
-              <select
-                id="isHome"
-                name="isHome"
-                value={formData.isHome ? 'local' : 'visitante'}
-                onChange={(e) => onChange('isHome', e.target.value === 'local')}
-                className={SELECT_CLS}
-                required
-              >
-                <option value="local">Local</option>
-                <option value="visitante">Visitante</option>
-              </select>
-            </div>
-            <div className="form-control">
-              <label htmlFor="opponentId" className="label py-1">
-                <span className={LABEL_CLS}>
-                  Equipo rival <span className="text-error">*</span>
-                </span>
-              </label>
-              <SearchableSelect
-                id="opponentId"
-                name="opponentId"
-                value={formData.opponentId}
-                onChange={(val) => onChange('opponentId', val)}
-                options={teamOptions}
-                placeholder={opponentDisabled ? 'Selecciona primero una categoría' : 'Buscar equipo rival...'}
-                disabled={opponentDisabled}
-                error={!!duplicateError}
-                required
-              />
-              {duplicateError && (
-                <span className="text-error text-[11px] mt-0.5 flex items-center gap-1">
-                  <Icon name="error" className="text-[13px]" />
-                  {duplicateError}
-                </span>
-              )}
-            </div>
-          </div>
-        </>
+        <div className="form-control mb-3">
+          <label htmlFor="categoryId" className="label py-1">
+            <span className={LABEL_CLS}>Categoría <span className="text-error">*</span></span>
+          </label>
+          <select
+            id="categoryId"
+            name="categoryId"
+            value={formData.categoryId}
+            onChange={handleChange}
+            className={SELECT_CLS}
+            required
+          >
+            <option value="">Seleccionar categoría</option>
+            {categoryOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
       )}
+
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <div className="form-control">
+          <label htmlFor="isHome" className="label py-1">
+            <span className={LABEL_CLS}>Tipo de partido <span className="text-error">*</span></span>
+          </label>
+          <select
+            id="isHome"
+            name="isHome"
+            value={formData.isHome ? 'local' : 'visitante'}
+            onChange={(e) => onChange('isHome', e.target.value === 'local')}
+            className={SELECT_CLS}
+            required
+          >
+            <option value="local">Local</option>
+            <option value="visitante">Visitante</option>
+          </select>
+        </div>
+        <div className="form-control">
+          <label htmlFor="opponentId" className="label py-1">
+            <span className={LABEL_CLS}>
+              Equipo rival <span className="text-error">*</span>
+            </span>
+          </label>
+          <SearchableSelect
+            id="opponentId"
+            name="opponentId"
+            value={formData.opponentId}
+            onChange={(val) => onChange('opponentId', val)}
+            options={teamOptions}
+            placeholder={isEditing ? 'Buscar equipo rival...' : (opponentDisabled ? 'Selecciona primero una categoría' : 'Buscar equipo rival...')}
+            disabled={!isEditing && opponentDisabled}
+            error={!!duplicateError}
+            required
+          />
+          {duplicateError && (
+            <span className="text-error text-[11px] mt-0.5 flex items-center gap-1">
+              <Icon name="error" className="text-[13px]" />
+              {duplicateError}
+            </span>
+          )}
+        </div>
+      </div>
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="form-control">

@@ -23,7 +23,7 @@ function buildSystemEvent(transition, halfDuration) {
   return { ...transition.systemEvent }; // match_start mantiene minute: 0
 }
 
-export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange, isLineupReady, categoryName }) {
+export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange, isLineupReady, hasCallup, categoryName }) {
   const [isLoading, setIsLoading] = useState(false);
   const halfDuration = getHalfDuration(categoryName);
   const { matchStartTimestamps } = useLiveMatch();
@@ -38,6 +38,11 @@ export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange, is
 
   const handleClick = async () => {
     const { next } = transition;
+
+    if (next === 'FIRST_HALF' && !hasCallup) {
+      showError('No hay convocatoria para este partido. Crea una convocatoria antes de iniciarlo.');
+      return;
+    }
 
     if (next === 'FIRST_HALF' && !isLineupReady) {
       showError('Configura la alineación (11 titulares) antes de iniciar el partido.');
@@ -65,8 +70,9 @@ export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange, is
         await updateLiveStatus(matchId, { liveStatus: next, comments: value || '' });
         onStatusChange(next);
         showToast('Partido finalizado');
-      } catch {
-        showError('No se pudo actualizar el estado del partido');
+      } catch (err) {
+        const msg = err?.response?.data?.message || err?.message || 'No se pudo actualizar el estado del partido';
+        showError(msg);
       } finally {
         setIsLoading(false);
       }
@@ -75,9 +81,7 @@ export function LiveMatchTicker({ currentLiveStatus, matchId, onStatusChange, is
 
     setIsLoading(true);
     try {
-      const systemEvent = transition.systemEvent
-        ? { ...transition.systemEvent, minute: currentLiveStatus === 'FIRST_HALF' ? halfDuration : halfDuration * 2 }
-        : null;
+      const systemEvent = buildSystemEvent(transition, halfDuration);
       if (systemEvent) await createMatchEvent(matchId, systemEvent);
       await updateLiveStatus(matchId, { liveStatus: next });
       onStatusChange(next);

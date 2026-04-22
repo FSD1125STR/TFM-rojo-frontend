@@ -66,16 +66,15 @@ export function useMatchTimer(matchId, liveStatus, halfDuration, serverTs1 = nul
       // Primera vez que recibimos un estado real
       if (liveStatus === 'FIRST_HALF') {
         const storedTs = getStoredTs(key1);
-        // Si el timestamp rancio implica un minuto >= halfDuration, está obsoleto → machacar
         const isStale = storedTs && Math.floor((Date.now() - storedTs) / 60_000) >= halfDuration;
-        if (!storedTs || isStale) {
+        if (!storedTs || (isStale && serverTs1)) {
           localStorage.setItem(key1, resolveTs(serverTs1).toString());
         }
       }
       if (liveStatus === 'SECOND_HALF') {
         const storedTs = getStoredTs(key2);
         const isStale = storedTs && Math.floor((Date.now() - storedTs) / 60_000) >= halfDuration;
-        if (!storedTs || isStale) {
+        if (!storedTs || (isStale && serverTs2)) {
           localStorage.setItem(key2, resolveTs(serverTs2).toString());
         }
       }

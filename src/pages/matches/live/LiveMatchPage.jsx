@@ -197,6 +197,7 @@ export function LiveMatchPage() {
               matchId={matchId}
               onStatusChange={setCurrentStatus}
               isLineupReady={isValid}
+              hasCallup={!!callupId}
               categoryName={match?.categoryId?.name}
             />
           )}

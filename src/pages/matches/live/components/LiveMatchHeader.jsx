@@ -29,6 +29,8 @@ function InfoItem({ icon, label, value }) {
 export function LiveMatchHeader({ match, liveStatus }) {
   const homeName = match?.homeTeamId?.name || 'Local';
   const awayName = match?.awayTeamId?.name || 'Visitante';
+  const homeLogoUrl = match?.homeTeamId?.logoUrl || undefined;
+  const awayLogoUrl = match?.awayTeamId?.logoUrl || undefined;
   const homeScore = match?.homeScore ?? 0;
   const awayScore = match?.awayScore ?? 0;
   const statusCfg = STATUS_CONFIG[liveStatus] ?? STATUS_CONFIG.NOT_STARTED;
@@ -64,7 +66,7 @@ export function LiveMatchHeader({ match, liveStatus }) {
               <p className="text-base font-bold text-base-content leading-tight truncate max-sm:text-sm">{homeName}</p>
               <p className="text-[10px] text-base-content/40 uppercase tracking-wider">(Local)</p>
             </div>
-            <Avatar name={homeName} size="xl" variant="primary" />
+            <Avatar src={homeLogoUrl} name={homeName} size="xl" variant="primary" />
           </div>
 
           {/* Score */}
@@ -76,7 +78,7 @@ export function LiveMatchHeader({ match, liveStatus }) {
 
           {/* Visitante */}
           <div className="flex items-center gap-3 flex-1 min-w-0 justify-start max-sm:gap-1.5">
-            <Avatar name={awayName} size="xl" variant="error" />
+            <Avatar src={awayLogoUrl} name={awayName} size="xl" variant="error" />
             <div className="text-left min-w-0">
               <p className="text-base font-bold text-base-content leading-tight truncate max-sm:text-sm">{awayName}</p>
               <p className="text-[10px] text-base-content/40 uppercase tracking-wider">(Visitante)</p>

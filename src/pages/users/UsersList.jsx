@@ -8,6 +8,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  toggleUserStatus,
 } from "../../services/userService";
 import { DataTable } from "../../components/ui/DataTable";
 import { useUsersTable } from "./hooks/useUsersTable";
@@ -87,6 +88,21 @@ export function UsersList() {
     }
   };
 
+  const handleToggleStatus = async (user) => {
+    const action = user.isActive ? 'desactivar' : 'activar';
+    const confirmed = await showConfirm(
+      `¿${user.isActive ? 'Desactivar' : 'Activar'} a ${user.fullName}?`,
+    );
+    if (!confirmed) return;
+    try {
+      await toggleUserStatus(user._id);
+      showToast(`Usuario ${action === 'activar' ? 'activado' : 'desactivado'} correctamente`);
+      loadUsers();
+    } catch {
+      showError('No se pudo cambiar el estado del usuario');
+    }
+  };
+
   const handleEliminar = async (user) => {
     const confirmed = await showConfirm(
       `¿Estás seguro de eliminar a ${user.fullName}?`,
@@ -106,6 +122,7 @@ export function UsersList() {
     onVerDetalle: (row) => navigate(`/usuarios/${row._id}`),
     onEditar: canEdit ? handleEditar : undefined,
     onEliminar: canDelete ? handleEliminar : undefined,
+    onToggleStatus: canEdit ? handleToggleStatus : undefined,
   });
 
   return (
@@ -115,7 +132,7 @@ export function UsersList() {
         subtitle="Gestiona el personal, sus roles y accesos al sistema"
         {...(canCreate && {
           actionLabel: "Nuevo Usuario",
-          actionIcon: "person_add",
+          actionIcon: "add",
           onAction: handleNuevo,
         })}
       />
