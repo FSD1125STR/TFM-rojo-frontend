@@ -43,7 +43,9 @@ export function NotificationsProvider({ children }) {
       reconnectionDelay: 2000,
     });
 
-    socket.on('connect_error', () => {});
+    socket.on('connect_error', (err) => {
+      console.warn('[NotificationsSocket] connect_error:', err?.message);
+    });
 
     socket.on('callup:updated', (payload) => {
       if (payload.triggeredBy?.id === user.id) return;

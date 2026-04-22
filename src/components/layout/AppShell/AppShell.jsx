@@ -4,14 +4,12 @@ import { Sidebar } from '../Sidebar/Sidebar';
 import { HeaderBar } from '../HeaderBar/HeaderBar';
 import { useSidebar } from '../../../hooks/useSidebar';
 import { HeaderContext } from '../../../context/HeaderContext.jsx';
-import { NotificationsProvider } from '../../../context/NotificationsContext.jsx';
 
 export function AppShell() {
   const { mode, drawerOpen, toggleSidebar, closeDrawer } = useSidebar();
   const { actions } = useContext(HeaderContext);
 
   return (
-    <NotificationsProvider>
     <div test-id="el-q9r0s1t2" className="drawer lg:drawer-open">
       <input
         type="checkbox"
@@ -39,6 +37,5 @@ export function AppShell() {
         onNavigate={closeDrawer}
       />
     </div>
-    </NotificationsProvider>
   );
 }
