@@ -11,13 +11,7 @@ export const authService = {
 
   async register(userData) {
     const response = await api.post("/auth/register", userData);
-    const { token, user } = response.data;
-
-    if (token) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-    }
-    return { token, user };
+    return response.data;
   },
 
   async forgotPassword(email) {

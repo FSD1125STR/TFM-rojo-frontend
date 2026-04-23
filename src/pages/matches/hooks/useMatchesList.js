@@ -115,17 +115,39 @@ export function useMatchesList() {
   }, [matches, searchValue, filterValues]);
 
   const sortedData = useMemo(() => {
+    if (!sortValue) {
+      const byDateAsc  = (a, b) => new Date(a.dateTime) - new Date(b.dateTime);
+      const byDateDesc = (a, b) => new Date(b.dateTime) - new Date(a.dateTime);
+      const programados = filteredData.filter(m => m.status === 'scheduled' || LIVE_STATUSES.has(m.liveStatus)).sort(byDateAsc);
+      const finalizados = filteredData.filter(m => m.status === 'finished').sort(byDateDesc);
+      const cancelados  = filteredData.filter(m => m.status === 'cancelled').sort(byDateAsc);
+      return [...programados, ...finalizados, ...cancelados];
+    }
+
+    if (sortValue === 'dateTime_desc') {
+      const asc  = (a, b) => new Date(a.dateTime) - new Date(b.dateTime);
+      const desc = (a, b) => new Date(b.dateTime) - new Date(a.dateTime);
+      const programados = filteredData.filter(m => m.status === 'scheduled' || LIVE_STATUSES.has(m.liveStatus)).sort(asc);
+      const finalizados = filteredData.filter(m => m.status === 'finished').sort(desc);
+      const cancelados  = filteredData.filter(m => m.status === 'cancelled').sort(asc);
+      return [...programados, ...finalizados, ...cancelados];
+    }
+
+    if (sortValue === 'dateTime_asc') {
+      const asc  = (a, b) => new Date(a.dateTime) - new Date(b.dateTime);
+      const desc = (a, b) => new Date(b.dateTime) - new Date(a.dateTime);
+      const programados = filteredData.filter(m => m.status === 'scheduled' || LIVE_STATUSES.has(m.liveStatus)).sort(desc);
+      const finalizados = filteredData.filter(m => m.status === 'finished').sort(asc);
+      const cancelados  = filteredData.filter(m => m.status === 'cancelled').sort(asc);
+      return [...finalizados, ...programados, ...cancelados];
+    }
+
     const sorted = [...filteredData];
     const [field, direction] = sortValue.split('_');
     const asc = direction === 'asc' ? 1 : -1;
 
     sorted.sort((a, b) => {
-      if (field === 'dateTime') {
-        return asc * (new Date(a.dateTime) - new Date(b.dateTime));
-      }
-      if (field === 'journey') {
-        return asc * ((a.journey || 0) - (b.journey || 0));
-      }
+      if (field === 'journey') return asc * ((a.journey || 0) - (b.journey || 0));
       return 0;
     });
 
