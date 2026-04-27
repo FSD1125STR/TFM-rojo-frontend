@@ -33,6 +33,18 @@ export function LiveMatch() {
   }, [globalLiveStatus, reload]);
 
   const role = user?.role;
+
+  const canUserStartMatch = (match) => {
+    if (!user) return false;
+    if (role === 'administrador') return true;
+    if (role === 'delegado' || role === 'entrenador') {
+      const userCatId = user?.categoryId?._id || user?.categoryId;
+      const matchCatId = match?.categoryId?._id || match?.categoryId;
+      return userCatId && matchCatId && userCatId.toString() === matchCatId.toString();
+    }
+    return false;
+  };
+
   const isFieldView = FIELD_ROLES.includes(role);
 
   useHeader({
@@ -88,6 +100,7 @@ export function LiveMatch() {
         },
       ];
     }
+    if (!canUserStartMatch(match)) return [];
     return [
       {
         label: startingId === match._id ? 'Iniciando...' : 'Iniciar partido',
