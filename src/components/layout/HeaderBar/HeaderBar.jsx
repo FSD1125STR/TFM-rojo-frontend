@@ -25,7 +25,11 @@ export function HeaderBar({
 
   const handleNotificationClick = (n) => {
     markRead(n._id);
-    if (n.matchId) navigate(`/convocatorias/${n.matchId}`);
+    if (!n.matchId) return;
+    const route = n.type?.startsWith('CALLUP')
+      ? `/convocatorias/${n.matchId}`
+      : `/directo/${n.matchId}`;
+    navigate(route);
   };
 
   return (
