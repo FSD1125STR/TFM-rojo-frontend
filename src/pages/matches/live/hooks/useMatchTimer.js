@@ -17,13 +17,13 @@ function calcMinute(liveStatus, halfDuration, key1, key2) {
   if (liveStatus === 'FIRST_HALF') {
     const ts = getStoredTs(key1);
     if (!ts) return 0;
-    return Math.min(Math.floor((now - ts) / 60_000), halfDuration);
+    return Math.max(0, Math.min(Math.floor((now - ts) / 60_000), halfDuration));
   }
 
   if (liveStatus === 'SECOND_HALF') {
     const ts = getStoredTs(key2);
     if (!ts) return halfDuration;
-    return halfDuration + Math.min(Math.floor((now - ts) / 60_000), halfDuration);
+    return halfDuration + Math.max(0, Math.min(Math.floor((now - ts) / 60_000), halfDuration));
   }
 
   return null;
@@ -92,6 +92,21 @@ export function useMatchTimer(matchId, liveStatus, halfDuration, serverTs1 = nul
     if (liveStatus === 'FINISHED' || liveStatus === 'NOT_STARTED') {
       localStorage.removeItem(key1);
       localStorage.removeItem(key2);
+    }
+
+    if (liveStatus === 'FIRST_HALF' && prev === 'FIRST_HALF' && serverTs1) {
+      const storedMs = getStoredTs(key1);
+      const serverMs = new Date(serverTs1).getTime();
+      if (!storedMs || Math.abs(serverMs - storedMs) > 5_000) {
+        localStorage.setItem(key1, serverMs.toString());
+      }
+    }
+    if (liveStatus === 'SECOND_HALF' && prev === 'SECOND_HALF' && serverTs2) {
+      const storedMs = getStoredTs(key2);
+      const serverMs = new Date(serverTs2).getTime();
+      if (!storedMs || Math.abs(serverMs - storedMs) > 5_000) {
+        localStorage.setItem(key2, serverMs.toString());
+      }
     }
   }, [liveStatus, halfDuration, key1, key2, serverTs1, serverTs2]);
 
