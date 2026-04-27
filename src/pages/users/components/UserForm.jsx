@@ -100,7 +100,11 @@ export function UserForm({
             <select
               className={SELECT_CLS}
               value={formData.role}
-              onChange={(e) => onChange('role', e.target.value)}
+              onChange={(e) => {
+                const newRole = e.target.value;
+                onChange('role', newRole);
+                if (['administrador', 'direccion'].includes(newRole)) onChange('categoryId', '');
+              }}
             >
               {CREATABLE_ROLES.map(({ value, label }) => (
                 <option key={value} value={value}>{label}</option>
@@ -126,24 +130,26 @@ export function UserForm({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-        <div className="form-control">
-          <label className="label py-1">
-            <span className={LABEL_CLS}>Categoría</span>
-          </label>
-          <div className="relative">
-            <Icon name="group" className={ICON_CLS} />
-            <select
-              className={SELECT_CLS}
-              value={formData.categoryId}
-              onChange={(e) => onChange('categoryId', e.target.value)}
-            >
-              <option value="">Sin categoría</option>
-              {categories.map((cat) => (
-                <option key={cat.value} value={cat.value}>{cat.label}</option>
-              ))}
-            </select>
+        {!['administrador', 'direccion'].includes(formData.role) && (
+          <div className="form-control">
+            <label className="label py-1">
+              <span className={LABEL_CLS}>Categoría</span>
+            </label>
+            <div className="relative">
+              <Icon name="group" className={ICON_CLS} />
+              <select
+                className={SELECT_CLS}
+                value={formData.categoryId}
+                onChange={(e) => onChange('categoryId', e.target.value)}
+              >
+                <option value="">Sin categoría</option>
+                {categories.map((cat) => (
+                  <option key={cat.value} value={cat.value}>{cat.label}</option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
+        )}
         <div className="form-control">
           <label className="label py-1">
             <span className={LABEL_CLS}>
